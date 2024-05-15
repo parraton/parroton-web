@@ -1,0 +1,147 @@
+{
+  "root": true,
+  "env": {
+    "node": true,
+    "es6": true,
+    "jest": true,
+    "es2021": true,
+    "browser": true,
+    "jest/globals": true
+  },
+  "plugins": [
+    "compat",
+    "lodash",
+    "unicorn",
+    "unused-imports",
+    "@typescript-eslint",
+    "react",
+    "prettier"
+  ],
+  "extends": [
+    "plugin:compat/recommended",
+    "plugin:lodash/recommended",
+    "plugin:unicorn/recommended",
+    "plugin:tailwindcss/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "eslint:recommended",
+    "next",
+    "next/core-web-vitals",
+    "plugin:prettier/recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./tsconfig.json",
+    "ecmaVersion": "latest",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "rules": {
+    "compat/compat": "error",
+    "react-hooks/exhaustive-deps": "error",
+    "jsx-quotes": [
+      "error",
+      "prefer-single"
+    ],
+    "react/jsx-filename-extension": [
+      1,
+      {
+        "extensions": [
+          ".jsx",
+          ".tsx"
+        ]
+      }
+    ],
+    "max-len": [
+      "error",
+      {
+        "code": 140,
+        "ignoreComments": true,
+        "ignoreStrings": true
+      }
+    ],
+    "no-ternary": "off",
+    "import/named": "off",
+    "import/default": "off",
+    "import/no-unresolved": "off",
+    "unicorn/filename-case": "off",
+    "jsx-a11y/anchor-is-valid": "off",
+    "react/react-in-jsx-scope": "off",
+    "import/no-default-export": "off",
+    "unicorn/no-zero-fractions": "off",
+    "lodash/prefer-lodash-method": "off",
+    "unicorn/prevent-abbreviations": "off",
+    "tailwindcss/no-custom-classname": "off",
+    "unicorn/no-await-expression-member": "off",
+    "no-useless-fallback-in-spread": "off",
+    "no-undef": "off",
+    "prettier/prettier": [
+      "error",
+      {
+        "semi": true,
+        "tabWidth": 2,
+        "useTabs": false,
+        "printWidth": 100,
+        "endOfLine": "auto",
+        "singleQuote": true,
+        "proseWrap": "always",
+        "bracketSpacing": true,
+        "trailingComma": "all",
+        "jsxSingleQuote": true,
+        "arrowParens": "always",
+        "plugins": [
+          "prettier-plugin-tailwindcss"
+        ],
+        "tailwindConfig": "./tailwind.config.ts"
+      }
+    ],
+    "no-void": "off",
+    "no-console": "off",
+    "no-empty-interface": "off"
+  },
+  "overrides": [
+    {
+      "files": [
+        "tests/**"
+      ],
+      "plugins": [
+        "jest",
+        "jest-dom",
+        "testing-library"
+      ],
+      "extends": [
+        "plugin:jest/recommended",
+        "plugin:jest-dom/recommended",
+        "plugin:testing-library/react"
+      ],
+      "rules": {
+        "jest/expect-expect": "off"
+      }
+    }
+  ],
+  "settings": {
+    "polyfills": [
+      "fetch"
+    ],
+    "jest": {
+      "version": 29
+    },
+    "import/resolver": {
+      "alias": {
+        "map": [
+          [
+            "@",
+            "./src"
+          ]
+        ],
+        "extensions": [
+          ".js",
+          ".jsx",
+          ".ts",
+          ".tsx",
+          ".json"
+        ]
+      }
+    }
+  }
+}

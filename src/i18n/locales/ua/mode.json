@@ -1,0 +1,8 @@
+{
+  "toggle_mode_text": "Змінити тему",
+  "toggle_mode": {
+    "light": "Світла",
+    "dark": "Темна",
+    "system": "Системна"
+  }
+}

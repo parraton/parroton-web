@@ -1,0 +1,91 @@
+{
+  "common": {
+    "close": "Закрити",
+    "openWallet": "Відкрити гаманець",
+    "copyLink": "Копіювати посилання",
+    "linkCopied": "Посилання скопійовано",
+    "copied": "Скопійовано",
+    "yourWallet": "Ваш гаманець",
+    "retry": "Повторити",
+    "get": "Отримати",
+    "mobile": "Мобільний",
+    "browserExtension": "Розширення для браузера",
+    "desktop": "Робочий стіл"
+  },
+  "button": {
+    "connectWallet": "Підключити гаманець",
+    "dropdown": {
+      "copy": "Скопіювати адресу",
+      "copied": "Адреса скопійована!",
+      "disconnect": "Відключити"
+    }
+  },
+  "notifications": {
+    "confirm": {
+      "header": "Відкрийте {{ name }} для підтвердження транзакції."
+    },
+    "transactionSent": {
+      "header": "Транзакція відправлена",
+      "text": "Ваша транзакція буде оброблена за кілька секунд."
+    },
+    "transactionCanceled": {
+      "header": "Транзакцію скасовано",
+      "text": "На вашому рахунку не буде зроблено змін."
+    }
+  },
+  "walletItem": {
+    "walletOn": "Гаманець увімкнено",
+    "recent": "Нещодавні",
+    "installed": "Встановлені",
+    "popular": "Популярні"
+  },
+  "walletModal": {
+    "loading": "Завантаження гаманців",
+    "wallets": "Гаманці",
+    "mobileUniversalModal": {
+      "connectYourWallet": "Підключіть свій гаманець",
+      "openWalletOnTelegramOrSelect": "Відкрийте гаманець в Telegram або виберіть свій гаманець для підключення",
+      "openWalletOnTelegram": "Відкрити гаманець в Telegram",
+      "openLink": "Відкрити посилання",
+      "scan": "Скануйте за допомогою мобільного гаманця"
+    },
+    "desktopUniversalModal": {
+      "connectYourWallet": "Підключіть свій гаманець",
+      "scan": "Скануйте за допомогою мобільного гаманця",
+      "availableWallets": "Доступні гаманці"
+    },
+    "mobileConnectionModal": {
+      "showQR": "Показати QR-код",
+      "scanQR": "Скануйте QR-код нижче за допомогою камери вашого телефону або {{ name }}",
+      "continueIn": "Продовжуйте у {{ name }}…",
+      "connectionDeclined": "Підключення відхилено"
+    },
+    "desktopConnectionModal": {
+      "scanQR": "Скануйте QR-код нижче за допомогою камери вашого телефону або {{ name }}",
+      "continueInExtension": "Продовжуйте у розширенні браузера {{ name }}…",
+      "dontHaveExtension": "Схоже, у вас немає встановленого розширення браузера {{ name }}",
+      "getWallet": "Отримати {{ name }}",
+      "continueOnDesktop": "Продовжуйте на робочому столі у {{ name }}…",
+      "openWalletOnTelegram": "Відкрити гаманець в Telegram на робочому столі",
+      "connectionDeclined": "Підключення відхилено"
+    },
+    "infoModal": {
+      "whatIsAWallet": "Що таке гаманець",
+      "secureDigitalAssets": "Безпечне зберігання цифрових активів",
+      "walletProtects": "Гаманець захищає та керує вашими цифровими активами, включаючи TON, токени та колекціонні предмети.",
+      "controlIdentity": "Керуйте вашою ідентичністю Web3",
+      "manageIdentity": "Керуйте вашою цифровою ідентичністю та отримуйте доступ до децентралізованих додатків легко. Зберігайте контроль над вашими даними та взаємодійте з блокчейн-екосистемою безпечно.",
+      "effortlessCryptoTransactions": "Легкі криптотранзакції",
+      "easilySend": "Легко відправляйте, отримуйте, відслідковуйте ваші криптовалюти. Оптимізуйте ваші операції за допомогою децентралізованих додатків.",
+      "getAWallet": "Отримати гаманець"
+    }
+  },
+  "actionModal": {
+    "confirmTransaction": {
+      "header": "Підтвердіть транзакцію в {{ name }}",
+      "text": "Це займе лише хвилину."
+    },
+    "transactionSent": "$notifications.transactionSent",
+    "transactionCanceled": "$notifications.transactionCanceled"
+  }
+}

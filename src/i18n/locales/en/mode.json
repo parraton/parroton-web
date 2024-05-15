@@ -1,0 +1,8 @@
+{
+  "toggle_mode_text": "Toggle Mode",
+  "toggle_mode": {
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  }
+}
