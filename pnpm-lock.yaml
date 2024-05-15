@@ -18,10 +18,10 @@ importers:
         specifier: ^1.0.2
         version: 1.0.2(@types/react@18.3.2)(react@18.3.1)
       '@tonconnect/ui':
-        specifier: ^2.0.2
+        specifier: 2.0.2
         version: 2.0.2
       '@tonconnect/ui-react':
-        specifier: ^2.0.2
+        specifier: 2.0.2
         version: 2.0.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       accept-language:
         specifier: ^3.0.18

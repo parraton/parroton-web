@@ -4,8 +4,9 @@
   "private": true,
   "scripts": {
     "setup": "node ./scripts/setup.js",
-    "dev": "npm run setup && next dev",
-    "build": "next build",
+    "prebuild": "node ./scripts/prebuild.js",
+    "dev": "npm run setup & next dev",
+    "build": "npm run prebuild & next build",
     "start": "next start",
     "lint": "next lint",
     "oxlint": "pnpx oxlint --import-plugin --jest-plugin --jsx-a11y-plugin --nextjs-plugin -D all -A nursery -c ./.eslintrc.json --deny-warnings",

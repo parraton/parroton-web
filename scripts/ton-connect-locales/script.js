@@ -50,6 +50,24 @@ const i18nDictionary = {
     })
 }
 
+const localStr = JSON.stringify(uaLocal)
+
+function addUaLocaleToTonConnectBuild()  {
+  const ruMark = 'ru:yr(mr)';
+  const uaLocal = `ua:yr(${localStr})`;
+
+  const tonConnectLocalesPath = path.resolve(require.resolve('@tonconnect/ui'), '..', '..', 'dist', 'tonconnect-ui.min.js');
+
+  const tonConnectLocalesFile = fs.readFileSync(tonConnectLocalesPath, 'utf8');
+
+  const newTonConnectLocalesFile = tonConnectLocalesFile.replace(ruMark, `${ruMark},${uaLocal}`);
+
+  fs.writeFileSync(tonConnectLocalesPath, newTonConnectLocalesFile, 'utf8');
+
+  console.log(`Added ua locale to @ton-connect/ui for ${tonConnectLocalesPath}`);
+}
+
 module.exports = {
-    addUaLocaleToTonConnect
+    addUaLocaleToTonConnect,
+    addUaLocaleToTonConnectBuild
 }
