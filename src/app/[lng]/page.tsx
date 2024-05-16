@@ -1,16 +1,15 @@
 import type { Metadata } from 'next';
-import type { WithLocaleParams } from '@types';
 import { Demo } from '@components/Demo';
 import { serverTranslation } from '@i18n';
+import { RouteInfoToLayout } from '@routes/makeRoute';
+import { Route } from './page.info';
 
-interface Props {
-  params: { id: string };
-}
-
-export async function generateMetadata({ params }: WithLocaleParams<Props>): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: RouteInfoToLayout<typeof Route>): Promise<Metadata> {
   const { lng } = params;
 
-  const { t } = await serverTranslation(lng, 'common');
+  const { t } = await serverTranslation(lng!, 'common');
 
   return {
     title: t('app_title'),

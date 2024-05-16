@@ -5,7 +5,8 @@ import { Navbar } from '@components/navbar';
 import { languages } from '@i18n/settings';
 import { dir } from 'i18next';
 import { SandwichProvider } from '@components/providers/sandwich';
-import { WithLocaleParams } from '@types';
+import { Route } from '@app/[lng]/page.info';
+import { RouteInfoToLayout } from '@routes/makeRoute';
 
 const fontSans = FontSans({
   subsets: ['latin'],
@@ -19,13 +20,13 @@ export async function generateStaticParams() {
 export default function RootLayout({
   children,
   params: { lng },
-}: React.PropsWithChildren<WithLocaleParams>) {
+}: React.PropsWithChildren<RouteInfoToLayout<typeof Route>>) {
   return (
     <html lang={lng} dir={dir(lng)}>
       <body className={cn('min-h-screen bg-background font-sans antialiased', fontSans.variable)}>
         <SandwichProvider>
           <div>
-            <Navbar lng={lng} />
+            <Navbar lng={lng!} />
             {children}
           </div>
         </SandwichProvider>

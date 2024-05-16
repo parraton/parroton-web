@@ -19,6 +19,15 @@ export interface RouteInfo<Params extends z.ZodSchema, Search extends z.ZodSchem
   description?: string;
 }
 
+type OptionalFields<T extends object, F extends keyof T> = Omit<T, F> & Partial<Pick<T, F>>;
+
+export type RouteInfoToLayout<
+  Info extends OptionalFields<RouteInfo<z.ZodSchema, z.ZodSchema>, 'search'>,
+> = {
+  params: z.output<Info['params']>;
+  search: Info['search'] extends z.ZodSchema ? z.output<Info['search']> : undefined;
+};
+
 export interface GetInfo<Result extends z.ZodSchema> {
   result: Result;
 }

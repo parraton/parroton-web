@@ -13,7 +13,7 @@ import { useCookies } from 'react-cookie';
 import resourcesToBackend from 'i18next-resources-to-backend';
 // import LocizeBackend from 'i18next-locize-backend'
 import LanguageDetector from 'i18next-browser-languagedetector';
-import { cookieName, fallbackLng, getOptions, languages } from './settings';
+import { cookieName, fallbackLng, getOptions, Language, languages } from './settings';
 import { useParams } from 'next/navigation';
 
 const runsOnServerSide = typeof window === 'undefined';
@@ -45,11 +45,11 @@ export function useTranslation<
   ns,
   options,
 }: {
-  lng?: string;
+  lng?: Language;
   ns?: Ns;
   options?: UseTranslationOptions<KPrefix>;
 } = {}): UseTranslationResponse<FallbackNs<Ns>, KPrefix> {
-  const { lng: lang } = useParams<{ lng: string }>();
+  const { lng: lang } = useParams<{ lng: Language }>();
   if (!lng && lang) lng = lang;
   if (!lng || !languages.includes(lng)) lng = fallbackLng;
   const [cookies, setCookie] = useCookies([cookieName]);
