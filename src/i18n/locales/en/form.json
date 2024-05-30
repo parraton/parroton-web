@@ -1,0 +1,12 @@
+{
+  "deposit_title": "Deposit",
+  "deposit_description": "Deposit your lp and get rewards",
+  "withdraw_title": "Withdraw",
+  "withdraw_description": "Withdraw your lp and rewards",
+  "validation": {
+    "min_deposit": "Deposit can not be less or equal {{minDeposit}}",
+    "max_deposit": "Deposit can not be more than {{maxDeposit}}",
+    "min_withdraw": "Withdraw can not be less or equal {{minWithdraw}}",
+    "max_withdraw": "Withdraw can not be more than {{maxWithdraw}}"
+  }
+}

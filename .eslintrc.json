@@ -97,7 +97,16 @@
     ],
     "no-void": "off",
     "no-console": "off",
-    "no-empty-interface": "off"
+    "no-empty-interface": "off",
+    "react/jsx-no-literals": [
+      "error",
+      {
+        "noStrings": true,
+        "ignoreProps": true,
+        "noAttributeStrings": false
+      }
+    ],
+    "unicorn/no-null": "off",
   },
   "overrides": [
     {

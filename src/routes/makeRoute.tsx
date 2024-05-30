@@ -5,7 +5,7 @@ Derived from: https://www.flightcontrol.dev/blog/fix-nextjs-routing-to-have-full
 /* eslint-disable max-lines */
 /* eslint-disable import/no-anonymous-default-export */
 /* eslint-disable max-params */
-import { z } from 'zod';
+import {z} from 'zod';
 import queryString from 'query-string';
 import Link from 'next/link';
 import React from 'react';
@@ -21,12 +21,19 @@ export interface RouteInfo<Params extends z.ZodSchema, Search extends z.ZodSchem
 
 type OptionalFields<T extends object, F extends keyof T> = Omit<T, F> & Partial<Pick<T, F>>;
 
-export type RouteInfoToLayout<
-  Info extends OptionalFields<RouteInfo<z.ZodSchema, z.ZodSchema>, 'search'>,
-> = {
-  params: z.output<Info['params']>;
-  search: Info['search'] extends z.ZodSchema ? z.output<Info['search']> : undefined;
+type Prettify<T> = {
+  [K in keyof T]: T[K];
 };
+
+export type RouteInfoToLayout<
+  Info extends OptionalFields<RouteInfo<z.ZodSchema, z.ZodSchema>, 'search'> = RouteInfo<
+    z.ZodSchema,
+    z.ZodSchema
+  >,
+> = Prettify<{
+  params: z.output<Info['params']>;
+  searchParams: Info['search'] extends z.ZodSchema ? z.output<Info['search']> : undefined;
+}>;
 
 export interface GetInfo<Result extends z.ZodSchema> {
   result: Result;
@@ -122,15 +129,15 @@ export type RouteBuilder<
 
   Link: React.FC<
     Omit<LinkProps, 'href'> &
-      z.input<Params> & {
-        search?: z.input<Search>;
-      } & { children?: React.ReactNode }
+    z.input<Params> & {
+    search?: z.input<Search>;
+  } & { children?: React.ReactNode }
   >;
   ParamsLink: React.FC<
     Omit<LinkProps, 'href'> & {
-      params?: z.input<Params>;
-      search?: z.input<Search>;
-    } & { children?: React.ReactNode }
+    params?: z.input<Params>;
+    search?: z.input<Search>;
+  } & { children?: React.ReactNode }
   >;
 };
 
@@ -396,11 +403,11 @@ export function makeRoute<
   urlBuilder.routeName = info.name;
 
   urlBuilder.ParamsLink = function RouteLink({
-    params: linkParams,
-    search: linkSearch,
-    children,
-    ...props
-  }: Omit<LinkProps, 'href'> & {
+                                               params: linkParams,
+                                               search: linkSearch,
+                                               children,
+                                               ...props
+                                             }: Omit<LinkProps, 'href'> & {
     params?: z.input<Params>;
     search?: z.input<Search>;
   } & { children?: React.ReactNode }) {
@@ -412,20 +419,30 @@ export function makeRoute<
   };
 
   urlBuilder.Link = function RouteLink({
-    search: linkSearch,
-    children,
-    ...props
-  }: Omit<LinkProps, 'href'> &
+                                         search: linkSearch,
+                                         children,
+                                         ...props
+                                       }: Omit<LinkProps, 'href'> &
     z.input<Params> & {
-      search?: z.input<Search>;
-    } & { children?: React.ReactNode }) {
+    search?: z.input<Search>;
+  } & { children?: React.ReactNode }) {
     const params = info.params.parse(props);
-    const extraProps = { ...props };
+    const extraProps = {...props};
     for (const key of Object.keys(params)) {
       delete extraProps[key];
     }
+
+    const searchParams = info.search.parse(linkSearch ?? {});
+
+    console.log({
+      route,
+      linkSearch,
+      // infoSearch: info.search,
+      searchParams,
+    });
+
     return (
-      <Link {...extraProps} href={urlBuilder(info.params.parse(props), linkSearch)}>
+      <Link {...extraProps} href={urlBuilder(info.params.parse(props), searchParams)}>
         {children}
       </Link>
     );

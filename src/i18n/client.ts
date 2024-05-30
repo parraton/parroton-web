@@ -48,7 +48,7 @@ export function useTranslation<
   lng?: Language;
   ns?: Ns;
   options?: UseTranslationOptions<KPrefix>;
-} = {}): UseTranslationResponse<FallbackNs<Ns>, KPrefix> {
+} = {}): UseTranslationResponse<FallbackNs<Ns>, KPrefix> & { lng: Language } {
   const { lng: lang } = useParams<{ lng: Language }>();
   if (!lng && lang) lng = lang;
   if (!lng || !languages.includes(lng)) lng = fallbackLng;
@@ -77,5 +77,5 @@ export function useTranslation<
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [lng, cookies.i18next]);
   }
-  return ret;
+  return Object.assign(ret, { lng });
 }

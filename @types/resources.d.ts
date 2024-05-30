@@ -1,7 +1,9 @@
 interface Resources {
   "common": {
     "app_title": "Parroton",
-    "app_description": "Description for Parroton"
+    "app_description": "Description for Parroton",
+    "submit": "Submit",
+    "amount": "Amount"
   },
   "demo": {
     "button_text": "Click me",
@@ -9,6 +11,18 @@ interface Resources {
     "sonner_massage": "Hello, I'm a sonner, message: {{message}}",
     "sonner_undo": "Undo",
     "sonner_description": "This is a sonner button, date: {{date}}"
+  },
+  "form": {
+    "deposit_title": "Deposit",
+    "deposit_description": "Deposit your lp and get rewards",
+    "withdraw_title": "Withdraw",
+    "withdraw_description": "Withdraw your lp and rewards",
+    "validation": {
+      "min_deposit": "Deposit can not be less or equal {{minDeposit}}",
+      "max_deposit": "Deposit can not be more than {{maxDeposit}}",
+      "min_withdraw": "Withdraw can not be less or equal {{minWithdraw}}",
+      "max_withdraw": "Withdraw can not be more than {{maxWithdraw}}"
+    }
   },
   "language": {
     "en": "English",
@@ -29,6 +43,14 @@ interface Resources {
     "dialog_close": "Close",
     "mode_title": "Color mode",
     "language_title": "Language"
+  },
+  "vault-card": {
+    "balance": "Wallet",
+    "deposited": "Deposited",
+    "apy": "APY",
+    "daily": "Daily",
+    "tvl": "TVL",
+    "manage": "Manage Vault"
   }
 }
 

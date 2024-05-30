@@ -8,6 +8,12 @@ importers:
 
   .:
     dependencies:
+      '@dedust/sdk':
+        specifier: ^0.8.7
+        version: 0.8.7(@ton/core@0.56.3(@ton/crypto@3.2.0))(@tonconnect/sdk@3.0.2)(axios@1.7.2)
+      '@orbs-network/ton-access':
+        specifier: ^2.3.3
+        version: 2.3.3
       '@radix-ui/react-avatar':
         specifier: ^1.0.4
         version: 1.0.4(@types/react-dom@18.3.0)(@types/react@18.3.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -20,9 +26,21 @@ importers:
       '@radix-ui/react-icons':
         specifier: ^1.3.0
         version: 1.3.0(react@18.3.1)
+      '@radix-ui/react-label':
+        specifier: ^2.0.2
+        version: 2.0.2(@types/react-dom@18.3.0)(@types/react@18.3.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-slot':
         specifier: ^1.0.2
         version: 1.0.2(@types/react@18.3.2)(react@18.3.1)
+      '@radix-ui/react-tabs':
+        specifier: ^1.0.4
+        version: 1.0.4(@types/react-dom@18.3.0)(@types/react@18.3.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@ton/core':
+        specifier: ^0.56.3
+        version: 0.56.3(@ton/crypto@3.2.0)
+      '@ton/ton':
+        specifier: ^13.11.1
+        version: 13.11.1(@ton/core@0.56.3(@ton/crypto@3.2.0))(@ton/crypto@3.2.0)
       '@tonconnect/ui':
         specifier: 2.0.2
         version: 2.0.2
@@ -38,6 +56,9 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
+      formik:
+        specifier: ^2.4.6
+        version: 2.4.6(react@18.3.1)
       i18next:
         specifier: ^23.11.4
         version: 23.11.4
@@ -74,6 +95,9 @@ importers:
       sonner:
         specifier: ^1.4.41
         version: 1.4.41(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      swr:
+        specifier: ^2.2.5
+        version: 2.2.5(react@18.3.1)
       tailwind-merge:
         specifier: ^2.3.0
         version: 2.3.0
@@ -83,6 +107,9 @@ importers:
       zod:
         specifier: ^3.23.8
         version: 3.23.8
+      zod-formik-adapter:
+        specifier: ^1.3.0
+        version: 1.3.0(formik@2.4.6(react@18.3.1))(zod@3.23.8)
     devDependencies:
       '@types/node':
         specifier: ^20
@@ -129,6 +156,9 @@ importers:
       eslint-plugin-prettier:
         specifier: ^5.1.3
         version: 5.1.3(eslint-config-prettier@9.1.0(eslint@8.57.0))(eslint@8.57.0)(prettier@3.2.5)
+      eslint-plugin-react:
+        specifier: ^7.34.1
+        version: 7.34.1(eslint@8.57.0)
       eslint-plugin-tailwindcss:
         specifier: 3.15.1
         version: 3.15.1(tailwindcss@3.4.3)
@@ -201,6 +231,13 @@ packages:
   '@babel/types@7.24.5':
     resolution: {integrity: sha512-6mQNsaLeXTw0nxYUYu+NSa4Hx4BlF1x1x8/PMFbiR+GBSr+2DkECc69b8hgy2frEodNcvPffeH8YfWd3LI6jhQ==}
     engines: {node: '>=6.9.0'}
+
+  '@dedust/sdk@0.8.7':
+    resolution: {integrity: sha512-xW7bcdIUD09t9h5iUA+jCR0qLOnjvloYXNgEJbajPmIdXrCal8R+UoLE26a/5as0h6B2DmuC4peSYMoiHDFSlg==}
+    peerDependencies:
+      '@ton/core': '>=0.52.0'
+      '@tonconnect/sdk': '>=2.1.2'
+      axios: '>=1.5.0'
 
   '@eslint-community/eslint-utils@4.4.0':
     resolution: {integrity: sha512-1/sA4dwrzBAyeUoQ6oxahHKmrZvsnLCg4RfxW3ZFGGmQkSNQPFNLV9CUEFQP1x9EYXHTo5p6xdhZM1Ne9p/AfA==}
@@ -342,6 +379,9 @@ packages:
   '@nodelib/fs.walk@1.2.8':
     resolution: {integrity: sha512-oGB+UxlgWcgQkgwo8GcEGwemoTFt3FIO9ababBmaGwXIoBKZ+GTy0pP185beGg7Llih/NSHSV2XAs1lnznocSg==}
     engines: {node: '>= 8'}
+
+  '@orbs-network/ton-access@2.3.3':
+    resolution: {integrity: sha512-b1miCPts7wBG9JKYgzXIRZQm/LMy5Uk1mNK8NzlcXHL3HRHJkkFbuYJGuj3IkWCiIicW3Ipp4sYnn3Fwo4oB0g==}
 
   '@oxlint/darwin-arm64@0.3.4':
     resolution: {integrity: sha512-MRoL9iN981B0gXRSHYlXu4NRqgObtl6JaHzOJemmOTnj3H7T9zO7V47+bQk7bWARKClRN7Fzy9IuDFPDqNneTQ==}
@@ -535,6 +575,19 @@ packages:
       '@types/react':
         optional: true
 
+  '@radix-ui/react-label@2.0.2':
+    resolution: {integrity: sha512-N5ehvlM7qoTLx7nWPodsPYPgMzA5WM8zZChQg8nyFJKnDO5WHdba1vv5/H6IO5LtJMfD2Q3wh1qHFGNtK0w3bQ==}
+    peerDependencies:
+      '@types/react': '*'
+      '@types/react-dom': '*'
+      react: ^16.8 || ^17.0 || ^18.0
+      react-dom: ^16.8 || ^17.0 || ^18.0
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      '@types/react-dom':
+        optional: true
+
   '@radix-ui/react-menu@2.0.6':
     resolution: {integrity: sha512-BVkFLS+bUC8HcImkRKPSiVumA1VPOOEC5WBMiT+QAVsPzW1FJzI9KnqgGxVDPBcql5xXrHkD3JOVoXWEXD8SYA==}
     peerDependencies:
@@ -622,6 +675,19 @@ packages:
       '@types/react':
         optional: true
 
+  '@radix-ui/react-tabs@1.0.4':
+    resolution: {integrity: sha512-egZfYY/+wRNCflXNHx+dePvnz9FbmssDTJBtgRfDY7e8SE5oIo3Py2eCB1ckAbh1Q7cQ/6yJZThJ++sgbxibog==}
+    peerDependencies:
+      '@types/react': '*'
+      '@types/react-dom': '*'
+      react: ^16.8 || ^17.0 || ^18.0
+      react-dom: ^16.8 || ^17.0 || ^18.0
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      '@types/react-dom':
+        optional: true
+
   '@radix-ui/react-use-callback-ref@1.0.1':
     resolution: {integrity: sha512-D94LjX4Sp0xJFVaoQOd3OO9k7tpBYNOXdVhkltUbGv2Qb9OXdrg/CpsjlZv7ia14Sylv398LswWBVVu5nqKzAQ==}
     peerDependencies:
@@ -687,6 +753,23 @@ packages:
 
   '@swc/helpers@0.5.5':
     resolution: {integrity: sha512-KGYxvIOXcceOAbEk4bi/dVLEK9z8sZ0uBB3Il5b1rhfClSpcX0yfRO0KmTkqR2cnQDymwLB+25ZyMzICg/cm/A==}
+
+  '@ton/core@0.56.3':
+    resolution: {integrity: sha512-HVkalfqw8zqLLPehtq0CNhu5KjVzc7IrbDwDHPjGoOSXmnqSobiWj8a5F+YuWnZnEbQKtrnMGNOOjVw4LG37rg==}
+    peerDependencies:
+      '@ton/crypto': '>=3.2.0'
+
+  '@ton/crypto-primitives@2.0.0':
+    resolution: {integrity: sha512-wttiNClmGbI6Dfy/8oyNnsIV0b/qYkCJz4Gn4eP62lJZzMtVQ94Ko7nikDX1EfYHkLI1xpOitWpW+8ZuG6XtDg==}
+
+  '@ton/crypto@3.2.0':
+    resolution: {integrity: sha512-50RkwReEuV2FkxSZ8ht/x9+n0ZGtwRKGsJ0ay4I/HFhkYVG/awIIBQeH0W4j8d5lADdO5h01UtX8PJ8AjiejjA==}
+
+  '@ton/ton@13.11.1':
+    resolution: {integrity: sha512-tcLdHzwhS5bmS0EGstcmfYK0ZeRrNz1AUIzUGKq/Xh0MGEwfP1qZBMloGGHLQnyZdRQ1D7Wx4g4mBKNrvG6DcQ==}
+    peerDependencies:
+      '@ton/core': '>=0.56.0'
+      '@ton/crypto': '>=3.2.0'
 
   '@tonconnect/isomorphic-eventsource@0.0.2':
     resolution: {integrity: sha512-B4UoIjPi0QkvIzZH5fV3BQLWrqSYABdrzZQSI9sJA9aA+iC0ohOzFwVVGXanlxeDAy1bcvPbb29f6sVUk0UnnQ==}
@@ -978,6 +1061,9 @@ packages:
   ast-types-flow@0.0.8:
     resolution: {integrity: sha512-OH/2E5Fg20h2aPrbe+QL8JZQFko0YZaF+j4mnQ7BGhfavO7OpSLa8a0y9sBwomHdSbkhTS8TQNayBfnW5DwbvQ==}
 
+  asynckit@0.4.0:
+    resolution: {integrity: sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q==}
+
   available-typed-arrays@1.0.7:
     resolution: {integrity: sha512-wvUjBtSGN7+7SjNpq/9M2Tg350UZD3q62IFZLbRAR1bSMlCo1ZaeW+BJ+D090e4hIIZLBcTDWe4Mh4jvUDajzQ==}
     engines: {node: '>= 0.4'}
@@ -985,6 +1071,9 @@ packages:
   axe-core@4.7.0:
     resolution: {integrity: sha512-M0JtH+hlOL5pLQwHOLNYZaXuhqmvS8oExsqB1SBYgA4Dk7u/xx+YdGHXaK5pyUfed5mYXdlYiphWq3G8cRi5JQ==}
     engines: {node: '>=4'}
+
+  axios@1.7.2:
+    resolution: {integrity: sha512-2A8QhOMrbomlDuiLeK9XibIBzuHeRcqqNOHp0Cyp5EoJ1IFDh+XZH3A6BkXtv0K4gFGCI0Y4BM7B1wOEi0Rmgw==}
 
   axobject-query@3.2.1:
     resolution: {integrity: sha512-jsyHu61e6N4Vbz/v18DHwWYKK0bSWLqn47eeDSKPB7m8tqMHF9YJ+mhIk2lVteyZrY8tnSj/jHOv4YiTCuCJgg==}
@@ -1112,6 +1201,10 @@ packages:
   color-name@1.1.4:
     resolution: {integrity: sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA==}
 
+  combined-stream@1.0.8:
+    resolution: {integrity: sha512-FQN4MRfuJeHf7cBbBMJFXhKSDq+2kAArBlmRBvcvFE5BB1HZKXtSFASDhdlz9zOYwxh8lDdnvmMOe/+5cdoEdg==}
+    engines: {node: '>= 0.8'}
+
   commander@12.0.0:
     resolution: {integrity: sha512-MwVNWlYjDTtOjX5PiD7o5pK0UrFU/OYgcJfjjK4RaHZETNtjJqrZa9Y9ds88+A+f+d5lv+561eZ+yCKoS3gbAA==}
     engines: {node: '>=18'}
@@ -1157,6 +1250,9 @@ packages:
     resolution: {integrity: sha512-t/Ygsytq+R995EJ5PZlD4Cu56sWa8InXySaViRzw9apusqsOO2bQP+SbYzAhR0pFKoB+43lYy8rWban9JSuXnA==}
     engines: {node: '>= 0.4'}
 
+  dataloader@2.2.2:
+    resolution: {integrity: sha512-8YnDaaf7N3k/q5HnTJVuzSyLETjoZjVmHc4AeKAzOvKHEFQKcn64OKBfzHYtE9zGjctNM7V9I0MfnUVLpi7M5g==}
+
   debug@3.2.7:
     resolution: {integrity: sha512-CFjzYYAi4ThfiQvizrFQevTTXHtnCqWfe7x1AhgEscTz6ZbLbfoLRLPugTQyBth6f8ZERVUSyWHFD/7Wu4t1XQ==}
     peerDependencies:
@@ -1185,6 +1281,10 @@ packages:
   deep-is@0.1.4:
     resolution: {integrity: sha512-oIPzksmTg4/MriiaYGO+okXDT7ztn/w3Eptv/+gSIdMdKsJo0u4CfYNFJPy+4SKMuCqGw2wxnA+URMg3t8a/bQ==}
 
+  deepmerge@2.2.1:
+    resolution: {integrity: sha512-R9hc1Xa/NOBi9WRVUWg19rl1UB7Tt4kuPd+thNJgFZoxXsTz7ncaPaeIm+40oSGuP33DfMb4sZt1QIGiJzC4EA==}
+    engines: {node: '>=0.10.0'}
+
   deepmerge@4.3.1:
     resolution: {integrity: sha512-3sUqbMEc77XqpdNO7FRyRog+eW3ph+GYCbj+rK+uYyRMuwsVy0rMiVtPn+QJlKFvWP/1PYpapqYn0Me2knFn+A==}
     engines: {node: '>=0.10.0'}
@@ -1196,6 +1296,10 @@ packages:
   define-properties@1.2.1:
     resolution: {integrity: sha512-8QmQKqEASLd5nx0U1B1okLElbUuuttJ/AnYmRXbbbGDWh6uS208EjD4Xqq/I9wK7u0v6O08XhTWnt5XtEbR6Dg==}
     engines: {node: '>= 0.4'}
+
+  delayed-stream@1.0.0:
+    resolution: {integrity: sha512-ZySD7Nf91aLB0RxL4KGrKHBXl7Eds1DAmEdcoVawXnLD7SDhpNgtuII2aAkg7a7QS41jxPSZ17p4VdGnMHk3MQ==}
+    engines: {node: '>=0.4.0'}
 
   dequal@2.0.3:
     resolution: {integrity: sha512-0je+qPKHEMohvfRTCEo3CrPG6cAzAYgmzKyxRiYSSDkS6eGJdyVJm7WaYA5ECaAD9wLB2T4EEeymA5aFVcYXCA==}
@@ -1547,12 +1651,30 @@ packages:
   flatted@3.3.1:
     resolution: {integrity: sha512-X8cqMLLie7KsNUDSdzeN8FYK9rEt4Dt67OsG/DNGnYTSDBG4uFAJFBnUeiV+zCVAvwFy56IjM9sH51jVaEhNxw==}
 
+  follow-redirects@1.15.6:
+    resolution: {integrity: sha512-wWN62YITEaOpSK584EZXJafH1AGpO8RVgElfkuXbTOrPX4fIfOyEpW/CsiNd8JdYrAoOvafRTOEnvsO++qCqFA==}
+    engines: {node: '>=4.0'}
+    peerDependencies:
+      debug: '*'
+    peerDependenciesMeta:
+      debug:
+        optional: true
+
   for-each@0.3.3:
     resolution: {integrity: sha512-jqYfLp7mo9vIyQf8ykW2v7A+2N4QjeCeI5+Dz9XraiO1ign81wjiH7Fb9vSOWvQfNtmSa4H2RoQTrrXivdUZmw==}
 
   foreground-child@3.1.1:
     resolution: {integrity: sha512-TMKDUnIte6bfb5nWv7V/caI169OHgvwjb7V4WkeUvbQQdjr5rWKqHFiKWb/fcOwB+CzBT+qbWjvj+DVwRskpIg==}
     engines: {node: '>=14'}
+
+  form-data@4.0.0:
+    resolution: {integrity: sha512-ETEklSGi5t0QMZuiXoA/Q6vcnxcLQP5vdugSpuAyi6SVGi2clPPp+xgEhuMaHC+zGgn31Kd235W35f7Hykkaww==}
+    engines: {node: '>= 6'}
+
+  formik@2.4.6:
+    resolution: {integrity: sha512-A+2EI7U7aG296q2TLGvNapDNTZp1khVt5Vk0Q/fyfSROss0V/V6+txt2aJnwEos44IxTCW/LYAi/zgWzlevj+g==}
+    peerDependencies:
+      react: '>=16.8.0'
 
   fs-extra@11.2.0:
     resolution: {integrity: sha512-PmDi3uwK5nFuXh7XDTlVnS17xJS7vW36is2+w3xcv8SVxiB4NyATf4ctkVY5bkSjX0Y4nbvZCq1/EjtEyr9ktw==}
@@ -1868,6 +1990,9 @@ packages:
   isexe@2.0.0:
     resolution: {integrity: sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==}
 
+  isomorphic-fetch@3.0.0:
+    resolution: {integrity: sha512-qvUtwJ3j6qwsF3jLxkZ72qCgjMysPzDfeV240JHiGZsANBYd+EEuu35v7dfrJ9Up0Ak07D7GGSkGhCHTqg/5wA==}
+
   iterator.prototype@1.1.2:
     resolution: {integrity: sha512-DR33HMMr8EzwuRL8Y9D3u2BMj8+RqSE850jfGu59kS7tbmPLzGkZmVSfyCFSDxuZiEY6Rzt3T2NA/qU+NwVj1w==}
 
@@ -1914,6 +2039,9 @@ packages:
   jsonfile@6.1.0:
     resolution: {integrity: sha512-5dgndWOriYSm5cnYaJNhalLNDKOqFwyDB/rr1E9ZsGciGvKPs8R2xYGCacuf3z6K1YKDz182fd+fY3cn3pMqXQ==}
 
+  jssha@3.2.0:
+    resolution: {integrity: sha512-QuruyBENDWdN4tZwJbQq7/eAK85FqrI4oDbXjy5IBhYD+2pTJyBUWZe8ctWaCkrV0gy6AaelgOZZBMeswEa/6Q==}
+
   jsx-ast-utils@3.3.5:
     resolution: {integrity: sha512-ZZow9HBI5O6EPgSJLUb8n2NKgmVWTwCvHGwFuJlMjvLFqlGG6pjirPhtdsseaLZjSibD8eegzmYpUZwoIlj2cQ==}
     engines: {node: '>=4.0'}
@@ -1959,6 +2087,9 @@ packages:
     resolution: {integrity: sha512-iPZK6eYjbxRu3uB4/WZ3EsEIMJFMqAoopl3R+zuq0UjcAm/MO6KCweDgPfP3elTztoKP3KtnVHxTn2NHBSDVUw==}
     engines: {node: '>=10'}
 
+  lodash-es@4.17.21:
+    resolution: {integrity: sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==}
+
   lodash.memoize@4.1.2:
     resolution: {integrity: sha512-t7j+NzmgnQzTAYXcsHYLgimltOV1MXHtlOWf6GjL9Kj8GK5FInw5JotxvbOs+IvV1/Dzo04/fCGfLVs7aXb4Ag==}
 
@@ -1998,6 +2129,14 @@ packages:
   micromatch@4.0.5:
     resolution: {integrity: sha512-DMy+ERcEW2q8Z2Po+WNXuw3c5YaUSFjAO5GsJqfEl7UjvtIuFKO6ZrKvcItdy98dwFI2N1tg3zNIdKaQT+aNdA==}
     engines: {node: '>=8.6'}
+
+  mime-db@1.52.0:
+    resolution: {integrity: sha512-sPU4uV7dYlvtWJxwwxHD0PuihVNiE7TyAbQ5SWxDCB9mUYvOgroQOwYQQOKPJ8CIbE+1ETVlOoK1UC2nU3gYvg==}
+    engines: {node: '>= 0.6'}
+
+  mime-types@2.1.35:
+    resolution: {integrity: sha512-ZDY+bPm5zTTF+YpCrAU9nK0UgICYPT0QtT1NZWFv4s++TNkcgVaT0g6+4R2uI4MjQjzysHB1zxuWL50hzaeXiw==}
+    engines: {node: '>= 0.6'}
 
   mimic-fn@2.1.0:
     resolution: {integrity: sha512-OqbOk5oEQeAZ8WXWydlu9HJjz9WVdEIvamMCcXmuqUYjTknH/sqsWvhQ3vgwKFRR1HpjvNBKQ37nbJgYzGqGcg==}
@@ -2354,6 +2493,9 @@ packages:
   prop-types@15.8.1:
     resolution: {integrity: sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==}
 
+  proxy-from-env@1.1.0:
+    resolution: {integrity: sha512-D+zkORCbA9f1tdWRK0RaCR3GPv50cMxcrz4X8k5LTSUD1Dkw47mKJEZQNunItRTkWwgtaUSo1RVFRIG9ZXiFYg==}
+
   punycode@2.3.1:
     resolution: {integrity: sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg==}
     engines: {node: '>=6'}
@@ -2374,6 +2516,9 @@ packages:
     resolution: {integrity: sha512-5m4nQKp+rZRb09LNH59GM4BxTh9251/ylbKIbpe7TpGxfJ+9kv6BLkLBXIjjspbgbnIBNqlI23tRnTWT0snUIw==}
     peerDependencies:
       react: ^18.3.1
+
+  react-fast-compare@2.0.4:
+    resolution: {integrity: sha512-suNP+J1VU1MWFKcyt7RtjiSWUjvidmQSlqu+eHslq+342xCbGTYmC0mEhPCOHxlW0CywylOC1u2DFAT+bv4dBw==}
 
   react-i18next@14.1.1:
     resolution: {integrity: sha512-QSiKw+ihzJ/CIeIYWrarCmXJUySHDwQr5y8uaNIkbxoGRm/5DukkxZs+RPla79IKyyDPzC/DRlgQCABHtrQuQQ==}
@@ -2674,6 +2819,14 @@ packages:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
     engines: {node: '>= 0.4'}
 
+  swr@2.2.5:
+    resolution: {integrity: sha512-QtxqyclFeAsxEUeZIYmsaQ0UjimSq1RZ9Un7I68/0ClKK/U3LoyQunwkQfJZr2fc22DfIXLNDc2wFyTEikCUpg==}
+    peerDependencies:
+      react: ^16.11.0 || ^17.0.0 || ^18.0.0
+
+  symbol.inspect@1.0.1:
+    resolution: {integrity: sha512-YQSL4duoHmLhsTD1Pw8RW6TZ5MaTX5rXJnqacJottr2P2LZBF/Yvrc3ku4NUpMOm8aM0KOCqM+UAkMA5HWQCzQ==}
+
   synckit@0.8.8:
     resolution: {integrity: sha512-HwOKAP7Wc5aRGYdKH+dw0PRRpbO841v2DENBtjnR5HFWoiNByAl7vrx3p0G/rCyYXQsrxqtX48TImFtPcIHSpQ==}
     engines: {node: ^14.18.0 || >=16.0.0}
@@ -2695,6 +2848,9 @@ packages:
     resolution: {integrity: sha512-GNzQvQTOIP6RyTfE2Qxb8ZVlNmw0n88vp1szwWRimP02mnTsx3Wtn5qRdqY9w2XduFNUgvOwhNnQsjwCp+kqaQ==}
     engines: {node: '>=6'}
 
+  teslabot@1.5.0:
+    resolution: {integrity: sha512-e2MmELhCgrgZEGo7PQu/6bmYG36IDH+YrBI1iGm6jovXkeDIGa3pZ2WSqRjzkuw2vt1EqfkZoV5GpXgqL8QJVg==}
+
   text-table@0.2.0:
     resolution: {integrity: sha512-N+8UisAXDGk8PFXP4HAzVR9nbfmVJ3zYLAWiTIoqC5v5isinhr+r5uaO8+7r3BMfuNIufIsA7RdpVgacC2cSpw==}
 
@@ -2704,6 +2860,9 @@ packages:
 
   thenify@3.3.1:
     resolution: {integrity: sha512-RVZSIV5IG10Hk3enotrhvz0T9em6cyHBLkH/YAZuKqd8hRkKhSfCGIcP2KUY0EPxndzANBmNllzWPwak+bheSw==}
+
+  tiny-warning@1.0.3:
+    resolution: {integrity: sha512-lBN9zLN/oAf68o3zNXYrdCt1kP8WsiGW8Oo2ka41b2IM5JL/S1CTyX1rW0mb/zSuJun0ZUrDxx4sqvYS2FWzPA==}
 
   to-fast-properties@2.0.0:
     resolution: {integrity: sha512-/OaKK0xYrs3DmxRYqL/yDc+FxFUVYhDlXMhRmv3z915w2HF1tnN1omB354j8VUGO/hbRzyD6Y3sA7v7GS/ceog==}
@@ -2837,6 +2996,11 @@ packages:
       '@types/react':
         optional: true
 
+  use-sync-external-store@1.2.2:
+    resolution: {integrity: sha512-PElTlVMwpblvbNqQ82d2n6RjStvdSoNe9FG28kNfz3WiXilJm4DdNkEzRhCZuIDwY8U08WVihhGR5iRqAwfDiw==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+
   util-deprecate@1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
 
@@ -2849,6 +3013,9 @@ packages:
 
   webidl-conversions@3.0.1:
     resolution: {integrity: sha512-2JAn3z8AR6rjK8Sm8orRC0h/bcl/DqL7tRPdGZ4I1CjdF+EaMLmYxBHyXuKL849eucPFhvBoxMsflfOb8kxaeQ==}
+
+  whatwg-fetch@3.6.20:
+    resolution: {integrity: sha512-EqhiFU6daOA8kpjOWTL0olhVOF3i7OrFzSYiGsEMB8GcXS+RrzauAERX65xMeNWVqxA6HXH2m69Z9LaKKdisfg==}
 
   whatwg-url@5.0.0:
     resolution: {integrity: sha512-saE57nupxk6v3HY35+jzBwYa0rKSy0XR8JSxZPwgLr7ys0IBzhGviA1/TUGJLmSVqs8pb9AnvICXEuOHLprYTw==}
@@ -2904,6 +3071,12 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
 
+  zod-formik-adapter@1.3.0:
+    resolution: {integrity: sha512-qWsVwRYqpRod5BL35pRXHD6UOugiyaEyLPO04rCN/uKTCFCR+VElPEG26+3wNrxGP7y5XmJM+4/0MrABnRYZrw==}
+    peerDependencies:
+      formik: ^2.2.9
+      zod: ^3.22.4
+
   zod@3.23.8:
     resolution: {integrity: sha512-XBx9AXhXktjUqnepgTiE5flcKIYWi/rme0Eaj+5Y0lftuGBq+jyRu/md4WnuxqgP1ubdpNCsYEYPxrzVHD8d6g==}
 
@@ -2942,6 +3115,12 @@ snapshots:
       '@babel/helper-string-parser': 7.24.1
       '@babel/helper-validator-identifier': 7.24.5
       to-fast-properties: 2.0.0
+
+  '@dedust/sdk@0.8.7(@ton/core@0.56.3(@ton/crypto@3.2.0))(@tonconnect/sdk@3.0.2)(axios@1.7.2)':
+    dependencies:
+      '@ton/core': 0.56.3(@ton/crypto@3.2.0)
+      '@tonconnect/sdk': 3.0.2
+      axios: 1.7.2
 
   '@eslint-community/eslint-utils@4.4.0(eslint@8.57.0)':
     dependencies:
@@ -3067,6 +3246,12 @@ snapshots:
     dependencies:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.17.1
+
+  '@orbs-network/ton-access@2.3.3':
+    dependencies:
+      isomorphic-fetch: 3.0.0
+    transitivePeerDependencies:
+      - encoding
 
   '@oxlint/darwin-arm64@0.3.4':
     optional: true
@@ -3242,6 +3427,16 @@ snapshots:
     optionalDependencies:
       '@types/react': 18.3.2
 
+  '@radix-ui/react-label@2.0.2(@types/react-dom@18.3.0)(@types/react@18.3.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+    dependencies:
+      '@babel/runtime': 7.24.5
+      '@radix-ui/react-primitive': 1.0.3(@types/react-dom@18.3.0)(@types/react@18.3.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+    optionalDependencies:
+      '@types/react': 18.3.2
+      '@types/react-dom': 18.3.0
+
   '@radix-ui/react-menu@2.0.6(@types/react-dom@18.3.0)(@types/react@18.3.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@babel/runtime': 7.24.5
@@ -3345,6 +3540,23 @@ snapshots:
     optionalDependencies:
       '@types/react': 18.3.2
 
+  '@radix-ui/react-tabs@1.0.4(@types/react-dom@18.3.0)(@types/react@18.3.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+    dependencies:
+      '@babel/runtime': 7.24.5
+      '@radix-ui/primitive': 1.0.1
+      '@radix-ui/react-context': 1.0.1(@types/react@18.3.2)(react@18.3.1)
+      '@radix-ui/react-direction': 1.0.1(@types/react@18.3.2)(react@18.3.1)
+      '@radix-ui/react-id': 1.0.1(@types/react@18.3.2)(react@18.3.1)
+      '@radix-ui/react-presence': 1.0.1(@types/react-dom@18.3.0)(@types/react@18.3.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@radix-ui/react-primitive': 1.0.3(@types/react-dom@18.3.0)(@types/react@18.3.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@radix-ui/react-roving-focus': 1.0.4(@types/react-dom@18.3.0)(@types/react@18.3.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@radix-ui/react-use-controllable-state': 1.0.1(@types/react@18.3.2)(react@18.3.1)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+    optionalDependencies:
+      '@types/react': 18.3.2
+      '@types/react-dom': 18.3.0
+
   '@radix-ui/react-use-callback-ref@1.0.1(@types/react@18.3.2)(react@18.3.1)':
     dependencies:
       '@babel/runtime': 7.24.5
@@ -3403,6 +3615,33 @@ snapshots:
     dependencies:
       '@swc/counter': 0.1.3
       tslib: 2.6.2
+
+  '@ton/core@0.56.3(@ton/crypto@3.2.0)':
+    dependencies:
+      '@ton/crypto': 3.2.0
+      symbol.inspect: 1.0.1
+
+  '@ton/crypto-primitives@2.0.0':
+    dependencies:
+      jssha: 3.2.0
+
+  '@ton/crypto@3.2.0':
+    dependencies:
+      '@ton/crypto-primitives': 2.0.0
+      jssha: 3.2.0
+      tweetnacl: 1.0.3
+
+  '@ton/ton@13.11.1(@ton/core@0.56.3(@ton/crypto@3.2.0))(@ton/crypto@3.2.0)':
+    dependencies:
+      '@ton/core': 0.56.3(@ton/crypto@3.2.0)
+      '@ton/crypto': 3.2.0
+      axios: 1.7.2
+      dataloader: 2.2.2
+      symbol.inspect: 1.0.1
+      teslabot: 1.5.0
+      zod: 3.23.8
+    transitivePeerDependencies:
+      - debug
 
   '@tonconnect/isomorphic-eventsource@0.0.2':
     dependencies:
@@ -3806,11 +4045,21 @@ snapshots:
 
   ast-types-flow@0.0.8: {}
 
+  asynckit@0.4.0: {}
+
   available-typed-arrays@1.0.7:
     dependencies:
       possible-typed-array-names: 1.0.0
 
   axe-core@4.7.0: {}
+
+  axios@1.7.2:
+    dependencies:
+      follow-redirects: 1.15.6
+      form-data: 4.0.0
+      proxy-from-env: 1.1.0
+    transitivePeerDependencies:
+      - debug
 
   axobject-query@3.2.1:
     dependencies:
@@ -3938,6 +4187,10 @@ snapshots:
 
   color-name@1.1.4: {}
 
+  combined-stream@1.0.8:
+    dependencies:
+      delayed-stream: 1.0.0
+
   commander@12.0.0: {}
 
   commander@4.1.1: {}
@@ -3980,6 +4233,8 @@ snapshots:
       es-errors: 1.3.0
       is-data-view: 1.0.1
 
+  dataloader@2.2.2: {}
+
   debug@3.2.7:
     dependencies:
       ms: 2.1.3
@@ -4010,6 +4265,8 @@ snapshots:
 
   deep-is@0.1.4: {}
 
+  deepmerge@2.2.1: {}
+
   deepmerge@4.3.1: {}
 
   define-data-property@1.1.4:
@@ -4023,6 +4280,8 @@ snapshots:
       define-data-property: 1.1.4
       has-property-descriptors: 1.0.2
       object-keys: 1.1.1
+
+  delayed-stream@1.0.0: {}
 
   dequal@2.0.3: {}
 
@@ -4521,6 +4780,8 @@ snapshots:
 
   flatted@3.3.1: {}
 
+  follow-redirects@1.15.6: {}
+
   for-each@0.3.3:
     dependencies:
       is-callable: 1.2.7
@@ -4529,6 +4790,24 @@ snapshots:
     dependencies:
       cross-spawn: 7.0.3
       signal-exit: 4.1.0
+
+  form-data@4.0.0:
+    dependencies:
+      asynckit: 0.4.0
+      combined-stream: 1.0.8
+      mime-types: 2.1.35
+
+  formik@2.4.6(react@18.3.1):
+    dependencies:
+      '@types/hoist-non-react-statics': 3.3.5
+      deepmerge: 2.2.1
+      hoist-non-react-statics: 3.3.2
+      lodash: 4.17.21
+      lodash-es: 4.17.21
+      react: 18.3.1
+      react-fast-compare: 2.0.4
+      tiny-warning: 1.0.3
+      tslib: 2.6.2
 
   fs-extra@11.2.0:
     dependencies:
@@ -4839,6 +5118,13 @@ snapshots:
 
   isexe@2.0.0: {}
 
+  isomorphic-fetch@3.0.0:
+    dependencies:
+      node-fetch: 2.7.0
+      whatwg-fetch: 3.6.20
+    transitivePeerDependencies:
+      - encoding
+
   iterator.prototype@1.1.2:
     dependencies:
       define-properties: 1.2.1
@@ -4883,6 +5169,8 @@ snapshots:
     optionalDependencies:
       graceful-fs: 4.2.11
 
+  jssha@3.2.0: {}
+
   jsx-ast-utils@3.3.5:
     dependencies:
       array-includes: 3.1.8
@@ -4923,6 +5211,8 @@ snapshots:
     dependencies:
       p-locate: 5.0.0
 
+  lodash-es@4.17.21: {}
+
   lodash.memoize@4.1.2: {}
 
   lodash.merge@4.6.2: {}
@@ -4958,6 +5248,12 @@ snapshots:
     dependencies:
       braces: 3.0.2
       picomatch: 2.3.1
+
+  mime-db@1.52.0: {}
+
+  mime-types@2.1.35:
+    dependencies:
+      mime-db: 1.52.0
 
   mimic-fn@2.1.0: {}
 
@@ -5260,6 +5556,8 @@ snapshots:
       object-assign: 4.1.1
       react-is: 16.13.1
 
+  proxy-from-env@1.1.0: {}
+
   punycode@2.3.1: {}
 
   query-string@9.0.0:
@@ -5282,6 +5580,8 @@ snapshots:
       loose-envify: 1.4.0
       react: 18.3.1
       scheduler: 0.23.2
+
+  react-fast-compare@2.0.4: {}
 
   react-i18next@14.1.1(i18next@23.11.4)(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
@@ -5591,6 +5891,14 @@ snapshots:
 
   supports-preserve-symlinks-flag@1.0.0: {}
 
+  swr@2.2.5(react@18.3.1):
+    dependencies:
+      client-only: 0.0.1
+      react: 18.3.1
+      use-sync-external-store: 1.2.2(react@18.3.1)
+
+  symbol.inspect@1.0.1: {}
+
   synckit@0.8.8:
     dependencies:
       '@pkgr/core': 0.1.1
@@ -5633,6 +5941,8 @@ snapshots:
 
   tapable@2.2.1: {}
 
+  teslabot@1.5.0: {}
+
   text-table@0.2.0: {}
 
   thenify-all@1.6.0:
@@ -5642,6 +5952,8 @@ snapshots:
   thenify@3.3.1:
     dependencies:
       any-promise: 1.3.0
+
+  tiny-warning@1.0.3: {}
 
   to-fast-properties@2.0.0: {}
 
@@ -5769,6 +6081,10 @@ snapshots:
     optionalDependencies:
       '@types/react': 18.3.2
 
+  use-sync-external-store@1.2.2(react@18.3.1):
+    dependencies:
+      react: 18.3.1
+
   util-deprecate@1.0.2: {}
 
   validate-npm-package-license@3.0.4:
@@ -5779,6 +6095,8 @@ snapshots:
   void-elements@3.1.0: {}
 
   webidl-conversions@3.0.1: {}
+
+  whatwg-fetch@3.6.20: {}
 
   whatwg-url@5.0.0:
     dependencies:
@@ -5852,5 +6170,10 @@ snapshots:
   yaml@2.4.2: {}
 
   yocto-queue@0.1.0: {}
+
+  zod-formik-adapter@1.3.0(formik@2.4.6(react@18.3.1))(zod@3.23.8):
+    dependencies:
+      formik: 2.4.6(react@18.3.1)
+      zod: 3.23.8
 
   zod@3.23.8: {}

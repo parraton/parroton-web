@@ -1,15 +1,13 @@
 import type { Metadata } from 'next';
-import { Demo } from '@components/Demo';
 import { serverTranslation } from '@i18n';
 import { RouteInfoToLayout } from '@routes/makeRoute';
 import { Route } from './page.info';
+import { mocks, VaultCard } from '@components/vault-card';
 
 export async function generateMetadata({
   params,
 }: RouteInfoToLayout<typeof Route>): Promise<Metadata> {
-  const { lng } = params;
-
-  const { t } = await serverTranslation(lng!, 'common');
+  const { t } = await serverTranslation(params.lng!, 'common');
 
   return {
     title: t('app_title'),
@@ -17,10 +15,12 @@ export async function generateMetadata({
   };
 }
 
-export default function Home() {
+export default function Home({ params }: RouteInfoToLayout<typeof Route>) {
   return (
     <main className='flex min-h-screen flex-col items-center justify-between p-24'>
-      <Demo />
+      {mocks.map((data, index) => (
+        <VaultCard key={index} data={data} locale={params.lng!} />
+      ))}
     </main>
   );
 }
