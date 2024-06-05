@@ -67,8 +67,8 @@ export const scene = async (sender: Sender) => {
 const assets: [Asset, Asset] = [Asset.native(), Asset.jetton(TOKEN_ADDRESS)];
 
 export const poolDeposit = async (sender: Sender) => {
-  const jettonAmount = toNano(1);
-  const tonAmount = toNano(0.1);
+  const jettonAmount = toNano(10);
+  const tonAmount = toNano(1);
 
   const tonClient = await tonClientPromise;
   const dedustFactory = tonClient.open(DeDustFactory.createFromAddress(DEDUST_ADDRESS));
