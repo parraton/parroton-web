@@ -21,7 +21,7 @@ export function useConnection(): { sender: Sender; connected: boolean } {
   }, [TonConnectUI]);
 
   return {
-    sender: new Sender(TonConnectUI.connector),
+    sender: new Sender(TonConnectUI?.connector),
     connected,
   };
 }
