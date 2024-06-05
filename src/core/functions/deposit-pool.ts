@@ -2,7 +2,9 @@ import {toNano, OpenedContract} from '@ton/core';
 import {AssetType, JettonRoot, Pool, PoolType, VaultJetton} from '@dedust/sdk';
 import {DeDustFactory} from '../contracts/dedust-factory';
 import {HOLE_ADDRESS, tonClientPromise} from '../config';
-import {Sender} from "@utils/sender";
+import {Sender, successTransaction} from "@utils/sender";
+import {lastValueFrom} from "rxjs";
+import {toast} from "sonner";
 
 export async function depositPool(
   dedustFactory: OpenedContract<DeDustFactory>,
@@ -26,17 +28,21 @@ export async function depositPool(
   const nativeVault = tonClient.open(await dedustFactory.getNativeVault());
   const jettonVault = tonClient.open(await dedustFactory.getJettonVault(jettonAddress));
 
-  const tonDepositResult = await nativeVault.sendDepositLiquidity(sender, {
+  await nativeVault.sendDepositLiquidity(sender, {
     poolType: PoolType.VOLATILE,
     assets: assets,
     targetBalances: assetAmounts,
     amount: tonAmount,
   });
 
+  const depositLiquidityHash = await lastValueFrom(successTransaction)
+
+  toast.success(`Deposit liquidity transaction hash: ${depositLiquidityHash}`);
+
   const jettonRoot = tonClient.open(JettonRoot.createFromAddress(jettonAddress));
   const investorJettonWallet = tonClient.open(await jettonRoot.getWallet(sender.address!));
 
-  const jettonTransferResult = await investorJettonWallet.sendTransfer(sender, toNano('1.2'), {
+  await investorJettonWallet.sendTransfer(sender, toNano('1.2'), {
     amount: jettonAmount,
     destination: jettonVault.address,
     responseAddress: sender.address!,
@@ -48,5 +54,8 @@ export async function depositPool(
     }),
   });
 
-  return {tonDepositResult, jettonTransferResult};
+  const jettonTransferHash = await lastValueFrom(successTransaction)
+
+  toast.success(`Jetton transfer transaction hash: ${jettonTransferHash}`);
+  toast.success(`Pool deposited successfully: ${tonAmount} TON and ${jettonAmount} jUSDT`);
 }

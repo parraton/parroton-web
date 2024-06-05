@@ -18,16 +18,6 @@ export function PoolDeposit() {
       tonAmount,
     } = await poolDeposit(sender);
 
-    const hash = await firstValueFrom(successTransaction);
-
-    toast.info(
-      <div>
-        <div>Transaction has been sent</div>
-        <div>Deposited: {fromNano(jettonAmount)} jUSDT, {fromNano(tonAmount)} TON</div>
-        <Link href={`${process.env.NEXT_PUBLIC_TONVIEWER_URL}/transaction/${hash}`} target='_blank'>View
-          transaction</Link>
-      </div>
-    );
   }
 
   return (
