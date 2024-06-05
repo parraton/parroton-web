@@ -3,7 +3,7 @@ import {AssetType, JettonRoot, Pool, PoolType, VaultJetton} from '@dedust/sdk';
 import {DeDustFactory} from '../contracts/dedust-factory';
 import {HOLE_ADDRESS, tonClientPromise} from '../config';
 import {Sender, successTransaction} from "@utils/sender";
-import {lastValueFrom} from "rxjs";
+import {firstValueFrom, lastValueFrom} from "rxjs";
 import {toast} from "sonner";
 
 export async function depositPool(
@@ -35,10 +35,10 @@ export async function depositPool(
     amount: tonAmount,
   });
 
-  const depositLiquidityHash = await lastValueFrom(successTransaction)
+  const depositLiquidityHash = await firstValueFrom(successTransaction)
 
   console.log({depositLiquidityHash});
-  
+
   const jettonRoot = tonClient.open(JettonRoot.createFromAddress(jettonAddress));
   const investorJettonWallet = tonClient.open(await jettonRoot.getWallet(sender.address!));
 
@@ -54,7 +54,7 @@ export async function depositPool(
     }),
   });
 
-  const jettonTransferHash = await lastValueFrom(successTransaction)
+  const jettonTransferHash = await firstValueFrom(successTransaction)
 
   console.log({jettonTransferHash});
 }
