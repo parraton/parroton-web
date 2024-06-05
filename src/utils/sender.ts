@@ -113,7 +113,7 @@ export const errorTransaction = transactionSubject.pipe(
 const bocToHash = async (boc: BOC): Promise<TXHash> => {
   const bocCell = TonWeb.boc.Cell.oneFromBoc(TonWeb.utils.base64ToBytes(boc));
 
-  return TonWeb.utils.bytesToBase64(await bocCell.hash());
+  return TonWeb.utils.bytesToHex(await bocCell.hash())
 }
 
 export class Sender implements ISender {
