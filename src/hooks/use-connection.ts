@@ -9,13 +9,17 @@ export function useConnection(): { sender: Sender; connected: boolean } {
   const [connected, setConnected] = useState(false);
 
   useEffect(() => {
+    TonConnectUI.connectionRestored.then((value) => {
+      setConnected(value);
+    })
+
     return TonConnectUI.onStatusChange((wallet) => {
       const isConnected = wallet?.provider;
 
       setConnected(Boolean(isConnected));
     });
   }, [TonConnectUI]);
-  
+
   return {
     sender: new Sender(TonConnectUI.connector),
     connected,

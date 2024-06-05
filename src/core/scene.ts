@@ -1,11 +1,11 @@
-import { deposit } from '@core/functions/deposit';
-import { withdraw } from '@core/functions/withdraw';
-import { Address, Sender, toNano } from '@ton/core';
-import { Asset, JettonRoot, PoolType } from '@dedust/sdk';
-import { SharesWallet } from '@core/contracts/shares-wallet';
-import { Vault } from '@core/contracts/vault';
-import { mint } from '@core/functions/mint';
-import { JettonMinter } from '@core/contracts/jetton-minter';
+import {deposit} from '@core/functions/deposit';
+import {withdraw} from '@core/functions/withdraw';
+import {Address, Sender, toNano} from '@ton/core';
+import {Asset, JettonRoot, PoolType} from '@dedust/sdk';
+import {SharesWallet} from '@core/contracts/shares-wallet';
+import {Vault} from '@core/contracts/vault';
+import {mint} from '@core/functions/mint';
+import {JettonMinter} from '@core/contracts/jetton-minter';
 import {
   DEDUST_ADDRESS,
   POOL_ADDRESS,
@@ -13,9 +13,9 @@ import {
   tonClientPromise,
   VAULT_ADDRESS,
 } from '@core/config';
-import { depositPool } from '@core/functions/deposit-pool';
-import { DeDustFactory } from '@core/contracts/dedust-factory';
-import { exists } from '@core/helpers';
+import {depositPool} from '@core/functions/deposit-pool';
+import {DeDustFactory} from '@core/contracts/dedust-factory';
+import {exists} from '@core/helpers';
 
 export const scene = async (sender: Sender) => {
   const jettonAmount = toNano(10);
@@ -27,7 +27,7 @@ export const scene = async (sender: Sender) => {
 
   const tonClient = await tonClientPromise;
 
-  console.log({ sender });
+  console.log({sender});
 
   const SENDER_ADDRESS = exists<Address>(sender.address);
 
@@ -54,12 +54,29 @@ export const scene = async (sender: Sender) => {
   const jettonAsset = Asset.jetton(jettonMinter.address);
   const assets: [Asset, Asset] = [nativeAsset, jettonAsset];
 
-  const pool = tonClient.open(await dedustFactory.getPool(PoolType.VOLATILE, assets));
   console.debug('POOL IS OPENED');
 
   // await mint(jettonMinter, sender, SENDER_ADDRESS, jettonAmount);
-  // await depositPool(dedustFactory, pool, sender, tonAmount, jettonAmount);
-  await deposit(investorLpWallet, vault, sender, jettonAmount);
-  //
-  await withdraw(investorSharesWallet, sender, toNano(5));
+
+  // await deposit(investorLpWallet, vault, sender, jettonAmount);
+  // //
+  // await withdraw(investorSharesWallet, sender, toNano(5));
 };
+
+const assets: [Asset, Asset] = [Asset.native(), Asset.jetton(TOKEN_ADDRESS)];
+
+export const poolDeposit = async (sender: Sender) => {
+  const jettonAmount = toNano(10);
+  const tonAmount = toNano(1);
+
+  const tonClient = await tonClientPromise;
+  const dedustFactory = tonClient.open(DeDustFactory.createFromAddress(DEDUST_ADDRESS));
+  const pool = tonClient.open(await dedustFactory.getPool(PoolType.VOLATILE, assets));
+
+  await depositPool(dedustFactory, pool, sender, tonAmount, jettonAmount);
+
+  return {
+    jettonAmount,
+    tonAmount,
+  }
+}

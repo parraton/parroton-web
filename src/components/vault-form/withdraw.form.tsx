@@ -61,7 +61,7 @@ export function WithdrawForm() {
           toast.success(
             <div>
               <div>Transaction is complete</div>
-              <Link href={`${process.env.NEXT_PUBLIC_TONVIEWER_URL}/transactions/${successHash}`}>View
+              <Link href={`${process.env.NEXT_PUBLIC_TONVIEWER_URL}/transaction/${successHash}`}>View
                 transaction</Link>
             </div>
           );
