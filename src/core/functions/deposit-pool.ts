@@ -1,7 +1,8 @@
-import { toNano, OpenedContract, Sender } from '@ton/core';
-import { AssetType, JettonRoot, Pool, PoolType, VaultJetton } from '@dedust/sdk';
-import { DeDustFactory } from '../contracts/dedust-factory';
-import { HOLE_ADDRESS, tonClientPromise } from '../config';
+import {toNano, OpenedContract} from '@ton/core';
+import {AssetType, JettonRoot, Pool, PoolType, VaultJetton} from '@dedust/sdk';
+import {DeDustFactory} from '../contracts/dedust-factory';
+import {HOLE_ADDRESS, tonClientPromise} from '../config';
+import {Sender} from "@utils/sender";
 
 export async function depositPool(
   dedustFactory: OpenedContract<DeDustFactory>,
@@ -47,5 +48,5 @@ export async function depositPool(
     }),
   });
 
-  return { tonDepositResult, jettonTransferResult };
+  return {tonDepositResult, jettonTransferResult};
 }

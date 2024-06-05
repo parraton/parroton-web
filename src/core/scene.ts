@@ -1,6 +1,6 @@
 import {deposit} from '@core/functions/deposit';
 import {withdraw} from '@core/functions/withdraw';
-import {Address, Sender, toNano} from '@ton/core';
+import {Address, toNano} from '@ton/core';
 import {Asset, JettonRoot, PoolType} from '@dedust/sdk';
 import {SharesWallet} from '@core/contracts/shares-wallet';
 import {Vault} from '@core/contracts/vault';
@@ -16,6 +16,7 @@ import {
 import {depositPool} from '@core/functions/deposit-pool';
 import {DeDustFactory} from '@core/contracts/dedust-factory';
 import {exists} from '@core/helpers';
+import {Sender} from "@utils/sender";
 
 export const scene = async (sender: Sender) => {
   const jettonAmount = toNano(10);

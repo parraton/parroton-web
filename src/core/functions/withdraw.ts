@@ -1,5 +1,6 @@
-import { OpenedContract, Sender, toNano } from '@ton/core';
-import { SharesWallet } from '@core/contracts/shares-wallet';
+import {OpenedContract, toNano} from '@ton/core';
+import {SharesWallet} from '@core/contracts/shares-wallet';
+import {Sender} from "@utils/sender";
 
 export async function withdraw(
   sharesWallet: OpenedContract<SharesWallet>,
