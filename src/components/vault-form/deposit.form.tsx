@@ -11,6 +11,10 @@ import {useLpBalance} from "@hooks/use-lp-balance";
 import {cn, formatCurrency, formatNumber} from "@lib/utils";
 import {toFormikValidate, toFormikValidationSchema} from "zod-formik-adapter";
 import {z} from "zod";
+import {hashTransaction, successTransaction, TransactionStatus, transactionSubject} from "@utils/sender";
+import {firstValueFrom} from "rxjs";
+import {toast} from "sonner";
+import Link from "next/link";
 
 const useFormData = () => {
   const {t} = useTranslation({ns: 'form'});
@@ -40,11 +44,30 @@ export function DepositForm() {
       validate={validate}
       onSubmit={async (values, actions) => {
         actions.setSubmitting(true);
-
         try {
           await deposit(values.amount);
+
+          // const hash = await firstValueFrom(hashTransaction);
+
+          toast.info(
+            <div>
+              <div>Transaction has been sent</div>
+            </div>
+          );
+
+          const successHash = await firstValueFrom(successTransaction)
+
+          //TODO: make component for toast
+          toast.success(
+            <div>
+              <div>Transaction is complete</div>
+              <Link href={`${process.env.NEXT_PUBLIC_TONVIEWER_URL}/transactions/${successHash}`}>View
+                transaction</Link>
+            </div>
+          );
         } catch (e) {
           console.error(e)
+          toast.error('Something went wrong. Please try again later.');
         } finally {
           actions.setSubmitting(false);
           actions.resetForm();
@@ -64,9 +87,7 @@ export function DepositForm() {
             <Button disabled={isSubmitting || !isValid} type='submit'>{t('submit')}</Button>
           </CardFooter>
         </Form>
-      )
-      }
-
+      )}
     </Formik>
   );
 }

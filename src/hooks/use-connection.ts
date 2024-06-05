@@ -1,8 +1,8 @@
 'use client';
 
-import { useTonConnectUI } from '@tonconnect/ui-react';
-import { Address, Sender, SenderArguments } from '@ton/core';
-import { useEffect, useState } from 'react';
+import {useTonConnectUI} from '@tonconnect/ui-react';
+import {useEffect, useState} from 'react';
+import {Sender} from "@utils/sender";
 
 export function useConnection(): { sender: Sender; connected: boolean } {
   const [TonConnectUI] = useTonConnectUI();
@@ -15,24 +15,9 @@ export function useConnection(): { sender: Sender; connected: boolean } {
       setConnected(Boolean(isConnected));
     });
   }, [TonConnectUI]);
+  
   return {
-    sender: {
-      send: async (args: SenderArguments) => {
-        await TonConnectUI?.sendTransaction({
-          messages: [
-            {
-              address: args.to.toString(),
-              amount: args.value.toString(),
-              payload: args.body?.toBoc().toString('base64'),
-            },
-          ],
-          validUntil: Date.now() + 6 * 60 * 1000,
-        });
-      },
-      address: TonConnectUI?.account?.address
-        ? Address.parse(TonConnectUI.account.address)
-        : undefined,
-    },
+    sender: new Sender(TonConnectUI.connector),
     connected,
   };
 }

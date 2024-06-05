@@ -23,6 +23,6 @@ export const tonClientPromise = (async () => {
   });
 
   return new TonClient4({
-    endpoint: exists<string>(process.env.NEXT_PUBLIC_TON_CLIENT_ENDPOINT),
+    endpoint: exists<string>(process.env.NEXT_PUBLIC_TON_CLIENT_URL),
   });
 })();

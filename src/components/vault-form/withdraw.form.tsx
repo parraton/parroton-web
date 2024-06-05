@@ -11,6 +11,10 @@ import {toFormikValidate} from "zod-formik-adapter";
 import {z} from "zod";
 import {cn, formatNumber} from "@lib/utils";
 import {useSharesBalance} from "@hooks/use-shares-balance";
+import {toast} from "sonner";
+import {firstValueFrom} from "rxjs";
+import {successTransaction} from "@utils/sender";
+import Link from "next/link";
 
 const useFormData = () => {
   const {t} = useTranslation({ns: 'form'});
@@ -40,9 +44,30 @@ export function WithdrawForm() {
       validate={validate}
       onSubmit={async (values, actions) => {
         actions.setSubmitting(true);
-
         try {
           await withdraw(values.amount);
+
+          // const hash = await firstValueFrom(hashTransaction);
+
+          toast.info(
+            <div>
+              <div>Transaction has been sent</div>
+            </div>
+          );
+
+          const successHash = await firstValueFrom(successTransaction)
+
+          //TODO: make component for toast
+          toast.success(
+            <div>
+              <div>Transaction is complete</div>
+              <Link href={`${process.env.NEXT_PUBLIC_TONVIEWER_URL}/transactions/${successHash}`}>View
+                transaction</Link>
+            </div>
+          );
+        } catch (e) {
+          console.error(e)
+          toast.error('Something went wrong. Please try again later.');
         } finally {
           actions.setSubmitting(false);
           actions.resetForm();
