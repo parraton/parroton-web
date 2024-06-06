@@ -12,7 +12,7 @@ export class Sender implements ISender {
   private messages: SendTransactionRequest['messages'] = [];
 
   get address(): Address | undefined {
-    return this.ton.account ? Address.parse(this.ton.account.address) : undefined;
+    return this.ton?.account ? Address.parse(this.ton.account.address) : undefined;
   }
 
   constructor(

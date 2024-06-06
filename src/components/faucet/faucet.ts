@@ -22,23 +22,25 @@ const fixAssets = (candidateAssets: [Asset, Asset]): [Asset, Asset] => {
   return assets as [Asset, Asset];
 };
 
-export const faucet = async (sender: Sender, vaultAddress: Address) => {
+export const faucetToken = async (sender: Sender, vaultAddress: Address) => {
   if (!sender.address) {
     throw new Error('Wallet is not connected');
   }
 
-  const { poolAddress, jettonMasterAddress } = await getStrategyInfoByVault(vaultAddress);
+  const { jettonMasterAddress } = await getStrategyInfoByVault(vaultAddress);
 
   const rawJettonMinter = JettonMinter.createFromAddress(jettonMasterAddress);
   const jettonMinter = tonClient.open(rawJettonMinter);
 
-  console.log({
-    vaultAddress: vaultAddress.toString(),
-    jettonMasterAddress: jettonMasterAddress.toString(),
-    poolAddress: poolAddress.toString(),
-  });
-
   await mint(jettonMinter, sender, sender.address, jettonAmount);
+};
+
+export const faucetLp = async (sender: Sender, vaultAddress: Address) => {
+  if (!sender.address) {
+    throw new Error('Wallet is not connected');
+  }
+
+  const { poolAddress } = await getStrategyInfoByVault(vaultAddress);
 
   const rawPool = Pool.createFromAddress(poolAddress);
   const pool = tonClient.open(rawPool);

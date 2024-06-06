@@ -2,7 +2,7 @@
 
 import { Button } from '@UI/button';
 import { useConnection } from '@hooks/use-connection';
-import { faucet } from './faucet';
+import { faucetToken } from './faucet';
 import { firstValueFrom } from 'rxjs';
 import { successTransaction } from '@utils/transaction-subjects';
 import { toast } from 'sonner';
@@ -12,14 +12,14 @@ import { VaultPage } from '@routes';
 import { Address } from '@ton/core';
 
 const transactionSent = 'Transaction sent';
-const Faucet = 'Faucet';
+const FaucetToken = 'Faucet';
 
-export function FaucetButton() {
+export function FaucetTokenButton() {
   const { vault } = useParams(VaultPage);
   const { sender } = useConnection({ batch: true });
 
   const handleFaucet = async () => {
-    await faucet(sender, Address.parse(vault));
+    await faucetToken(sender, Address.parse(vault));
 
     const hash = await firstValueFrom(successTransaction);
 
@@ -31,5 +31,5 @@ export function FaucetButton() {
     );
   };
 
-  return <Button onClick={handleFaucet}>{Faucet}</Button>;
+  return <Button onClick={handleFaucet}>{FaucetToken}</Button>;
 }
