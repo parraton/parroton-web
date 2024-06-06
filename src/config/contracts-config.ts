@@ -1,6 +1,7 @@
 import { Address } from '@ton/core';
 
 type AddressDict<T extends Record<string, string>> = {
+  // eslint-disable-next-line no-unused-vars
   [K in keyof T]: Address;
 };
 

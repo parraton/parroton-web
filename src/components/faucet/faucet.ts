@@ -32,13 +32,13 @@ export const faucet = async (sender: Sender, vaultAddress: Address) => {
   const rawJettonMinter = JettonMinter.createFromAddress(jettonMasterAddress);
   const jettonMinter = tonClient.open(rawJettonMinter);
 
-  // console.log({
-  //   vaultAddress: vaultAddress.toString(),
-  //   jettonMasterAddress: jettonMasterAddress.toString(),
-  //   poolAddress: poolAddress.toString(),
-  // });
+  console.log({
+    vaultAddress: vaultAddress.toString(),
+    jettonMasterAddress: jettonMasterAddress.toString(),
+    poolAddress: poolAddress.toString(),
+  });
 
-  // await mint(jettonMinter, sender, sender.address, jettonAmount);
+  await mint(jettonMinter, sender, sender.address, jettonAmount);
 
   const rawPool = Pool.createFromAddress(poolAddress);
   const pool = tonClient.open(rawPool);
@@ -52,13 +52,13 @@ export const faucet = async (sender: Sender, vaultAddress: Address) => {
   const dedustFactory = tonClient.open(rawDeDustFactory);
   const nativeVault = tonClient.open(await dedustFactory.getNativeVault());
   const jettonVault = tonClient.open(await dedustFactory.getJettonVault(jettonAddress));
-  //
-  // await nativeVault.sendDepositLiquidity(sender, {
-  //   poolType: PoolType.VOLATILE,
-  //   assets: assets,
-  //   targetBalances: assetAmounts,
-  //   amount: tonAmount,
-  // });
+
+  await nativeVault.sendDepositLiquidity(sender, {
+    poolType: PoolType.VOLATILE,
+    assets: assets,
+    targetBalances: assetAmounts,
+    amount: tonAmount,
+  });
 
   const jettonRoot = tonClient.open(JettonRoot.createFromAddress(jettonAddress));
   const investorJettonWallet = tonClient.open(await jettonRoot.getWallet(sender.address!));

@@ -4,11 +4,11 @@ import { tonClient } from '@core/config';
 import { JettonRoot, JettonWallet } from '@dedust/sdk';
 import { Strategy } from '@core/contracts/strategy';
 
-export function exists<T>(value: T | null | undefined | any): T {
+export function exists<T>(value: T | null | undefined | unknown): T {
   if (value == undefined) {
     throw new Error('Value does not exist');
   }
-  return value;
+  return value as T;
 }
 
 export const getSharesWallet = async (vault: OpenedContract<Vault>, sender: Address) => {

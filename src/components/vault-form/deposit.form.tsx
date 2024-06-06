@@ -8,7 +8,7 @@ import { Input } from '@UI/input';
 import { useDeposit } from '@hooks/use-deposit';
 import { useTranslation } from '@i18n/client';
 import { useLpBalance } from '@hooks/use-lp-balance';
-import { cn, formatCurrency, formatNumber } from '@lib/utils';
+import { cn, formatNumber } from '@lib/utils';
 import { toFormikValidate } from 'zod-formik-adapter';
 import { z } from 'zod';
 import { firstValueFrom } from 'rxjs';

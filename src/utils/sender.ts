@@ -1,7 +1,10 @@
+/* eslint-disable no-unused-vars */
+
 import { Address, beginCell, Sender as ISender, SenderArguments, storeStateInit } from '@ton/core';
 import { ITonConnect } from '@tonconnect/ui';
 import { SendTransactionRequest } from '@tonconnect/sdk';
-import { TransactionStatus, transactionSubject } from '@utils/transaction-subjects';
+import { transactionSubject } from '@utils/transaction-subjects';
+import { TransactionStatus } from '@types';
 
 const DEFAULT_TTL = 5 * 60 * 1000;
 

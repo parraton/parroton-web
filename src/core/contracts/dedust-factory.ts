@@ -1,3 +1,4 @@
+/* eslint-disable */
 import {
   Address,
   beginCell,
@@ -8,7 +9,7 @@ import {
   SendMode,
 } from '@ton/core';
 import DeDustFactoryStorage from '../assets/DeDustFactory.storage.json';
-import { Factory } from '@dedust/sdk';
+import {Factory} from '@dedust/sdk';
 
 export type DeDustFactoryConfig = {};
 
@@ -30,7 +31,7 @@ export class DeDustFactory extends Factory {
 
   static createFromConfig(config: DeDustFactoryConfig, code: Cell, workchain = 0) {
     const data = deDustFactoryConfigToCell(config);
-    const init = { code, data };
+    const init = {code, data};
     return new DeDustFactory(contractAddress(workchain, init), init);
   }
 

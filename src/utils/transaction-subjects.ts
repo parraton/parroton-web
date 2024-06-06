@@ -1,14 +1,7 @@
 import { filter, interval, map, Subject, takeUntil } from 'rxjs';
 import { TonApiTransaction } from '@utils/types';
 import TonWeb from 'tonweb';
-
-export enum TransactionStatus {
-  Pending,
-  Success,
-  Error,
-
-  Hash = 3,
-}
+import { TransactionStatus } from '@types';
 
 type TXHash = string;
 type BOC = string;

@@ -11,7 +11,6 @@ import {
 import { Language } from '@i18n/settings';
 import { serverTranslation } from '@i18n';
 import { VaultPage } from '@routes';
-import { addresses } from '@config/contracts-config';
 
 export type VaultCardProps = {
   title: string;

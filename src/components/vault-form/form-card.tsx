@@ -2,7 +2,7 @@ import { serverTranslation } from '@i18n';
 import { Language } from '@i18n/settings';
 import { Card, CardDescription, CardHeader, CardTitle } from '@UI/card';
 import { PropsWithChildren } from 'react';
-import { Actions } from '@components/vault-form/form';
+import { Actions } from '@types';
 
 export async function FormCard({
   action,

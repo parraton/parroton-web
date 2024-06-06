@@ -7,13 +7,7 @@ import { serverTranslation } from '@i18n';
 import { FormCard } from '@components/vault-form/form-card';
 import { FaucetButton } from '@components/faucet/faucet-button';
 import { cn } from '@lib/utils';
-
-export enum Actions {
-  deposit = 'deposit',
-  withdraw = 'withdraw',
-  faucet = 'faucet',
-  claim = 'claim',
-}
+import { Actions } from '@types';
 
 const keysCount = Object.keys(Actions).length;
 
