@@ -9,6 +9,7 @@ import { FaucetLpButton } from '@components/faucet/faucet-lp.button';
 import { cn } from '@lib/utils';
 import { Actions } from '@types';
 import { FaucetTokenButton } from '@components/faucet/faucet-token.button';
+import { CardFooter } from '@UI/card';
 
 export async function Form({ lng }: { lng: Language }) {
   const { t } = await serverTranslation(lng, 'form');
@@ -33,8 +34,10 @@ export async function Form({ lng }: { lng: Language }) {
       </TabsContent>
       <TabsContent value={Actions.faucet}>
         <FormCard action={Actions.faucet} lng={lng}>
-          <FaucetTokenButton />
-          <FaucetLpButton />
+          <CardFooter className={'justify-between'}>
+            <FaucetTokenButton />
+            <FaucetLpButton />
+          </CardFooter>
         </FormCard>
       </TabsContent>
       <TabsContent value={Actions.claim}>
