@@ -1,14 +1,13 @@
-import {RouteInfoToLayout} from '@routes/makeRoute';
-import {Route} from './page.info';
-import {RouteHoc} from '@routes/hoc';
-import {cn} from '@lib/utils';
-import {Form} from '@components/vault-form/form';
+import { RouteInfoToLayout } from '@routes/makeRoute';
+import { Route } from './page.info';
+import { RouteHoc } from '@routes/hoc';
+import { cn } from '@lib/utils';
+import { Form } from '@components/vault-form/form';
 
-function VaultPage({params, searchParams}: RouteInfoToLayout<typeof Route>) {
-
+function VaultPage({ params }: RouteInfoToLayout<typeof Route>) {
   return (
     <div className={cn('grid h-max place-items-center')}>
-      <Form lng={params.lng!}/>
+      <Form lng={params.lng!} />
     </div>
   );
 }

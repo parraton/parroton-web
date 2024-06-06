@@ -1,7 +1,7 @@
 'use client';
 
-import {TonConnectButton} from "@tonconnect/ui-react";
+import { TonConnectButton } from '@tonconnect/ui-react';
 
 export function ConnectWallet() {
-  return <TonConnectButton/>
+  return <TonConnectButton />;
 }

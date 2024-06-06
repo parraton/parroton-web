@@ -2,7 +2,11 @@ import type { Metadata } from 'next';
 import { serverTranslation } from '@i18n';
 import { RouteInfoToLayout } from '@routes/makeRoute';
 import { Route } from './page.info';
-import { mocks, VaultCard } from '@components/vault-card';
+import { VaultCard, VaultCardProps } from '@components/vault-card';
+import { addresses } from '@config/contracts-config';
+import { tonClient } from '@core/config';
+import { Vault } from '@core';
+import { OpenedContract } from '@ton/core';
 
 export async function generateMetadata({
   params,
@@ -15,10 +19,32 @@ export async function generateMetadata({
   };
 }
 
-export default function Home({ params }: RouteInfoToLayout<typeof Route>) {
+const vaultsAddresses = Object.values(addresses.vaults).map(({ vault }) => vault);
+const vaults = vaultsAddresses.map((vault) => {
+  const rawVault = Vault.createFromAddress(vault);
+  return tonClient.open(rawVault);
+});
+
+const getVaultCardData = async (vault: OpenedContract<Vault>): Promise<VaultCardProps> => {
+  return {
+    title: 'ETH (ezETH Market)',
+    tags: ['ezETH', 'ETH'],
+    balance: '13.98',
+    currency: 'ETH',
+    deposited: '12.02',
+    apy: '7.94',
+    daily: '0.02',
+    tvl: '1298343.32',
+    address: vault.address.toString(),
+  };
+};
+
+export default async function Home({ params }: RouteInfoToLayout<typeof Route>) {
+  const vaultsData = await Promise.all(vaults.map(getVaultCardData));
+
   return (
     <main className='flex min-h-screen flex-col items-center justify-between p-24'>
-      {mocks.map((data, index) => (
+      {vaultsData.map((data, index) => (
         <VaultCard key={index} data={data} locale={params.lng!} />
       ))}
     </main>

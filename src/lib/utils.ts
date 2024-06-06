@@ -1,6 +1,6 @@
-import {type ClassValue, clsx} from 'clsx';
-import {twMerge} from 'tailwind-merge';
-import {Language} from '@i18n/settings';
+import { type ClassValue, clsx } from 'clsx';
+import { twMerge } from 'tailwind-merge';
+import { Language } from '@i18n/settings';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -13,12 +13,12 @@ const languageToIntlLocaleMap: Record<Language, Intl.LocalesArgument> = {
 
 export const formatNumber = (num: number | string | undefined | null, locale: Language = 'en') => {
   //TODO: Implement the function that will return '~~~~' if num is undefined or null
-  if (num === undefined || num === null) return '~~~~'
+  if (num === undefined || num === null) return '~~~~';
 
   return new Intl.NumberFormat(languageToIntlLocaleMap[locale], {
     minimumFractionDigits: 2,
   }).format(Number(num));
-}
+};
 
 export const formatCurrency = (
   num: number | string,

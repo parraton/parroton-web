@@ -11,8 +11,9 @@ import {
 import { Language } from '@i18n/settings';
 import { serverTranslation } from '@i18n';
 import { VaultPage } from '@routes';
+import { addresses } from '@config/contracts-config';
 
-type VaultCardProps = {
+export type VaultCardProps = {
   title: string;
   tags: string[];
   balance: string;
@@ -21,42 +22,10 @@ type VaultCardProps = {
   apy: string;
   daily: string;
   tvl: string;
+  address: string;
 };
 
 type CardProps = React.ComponentProps<typeof Card> & { data: VaultCardProps; locale: Language };
-
-export const mocks: Array<VaultCardProps> = [
-  {
-    title: 'ETH (ezETH Market)',
-    tags: ['ezETH', 'ETH'],
-    balance: '13.98',
-    currency: 'ETH',
-    deposited: '12.02',
-    apy: '7.94',
-    daily: '0.02',
-    tvl: '1298343.32',
-  },
-  {
-    title: 'ETH (ezETH Market)',
-    tags: ['ezETH', 'ETH'],
-    balance: '13.98',
-    currency: 'ETH',
-    deposited: '12.02',
-    apy: '7.94',
-    daily: '0.02',
-    tvl: '1298343.32',
-  },
-  {
-    title: 'ETH (ezETH Market)',
-    tags: ['ezETH', 'ETH'],
-    balance: '13.98',
-    currency: 'ETH',
-    deposited: '12.02',
-    apy: '7.94',
-    daily: '0.02',
-    tvl: '1298343.32',
-  },
-];
 
 function NanoInfo({ title, value }: { title: string; value: string }) {
   return (
@@ -97,7 +66,7 @@ export async function VaultCard({ data, locale, className, ...props }: CardProps
       </CardContent>
       <CardFooter>
         <Button className='w-full' asChild>
-          <VaultPage.Link vault={data.title} lng={locale}>
+          <VaultPage.Link vault={data.address} lng={locale}>
             {t('manage')}
           </VaultPage.Link>
         </Button>

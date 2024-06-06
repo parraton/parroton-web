@@ -5,7 +5,7 @@ Derived from: https://www.flightcontrol.dev/blog/fix-nextjs-routing-to-have-full
 /* eslint-disable max-lines */
 /* eslint-disable import/no-anonymous-default-export */
 /* eslint-disable max-params */
-import {z} from 'zod';
+import { z } from 'zod';
 import queryString from 'query-string';
 import Link from 'next/link';
 import React from 'react';
@@ -129,15 +129,15 @@ export type RouteBuilder<
 
   Link: React.FC<
     Omit<LinkProps, 'href'> &
-    z.input<Params> & {
-    search?: z.input<Search>;
-  } & { children?: React.ReactNode }
+      z.input<Params> & {
+        search?: z.input<Search>;
+      } & { children?: React.ReactNode }
   >;
   ParamsLink: React.FC<
     Omit<LinkProps, 'href'> & {
-    params?: z.input<Params>;
-    search?: z.input<Search>;
-  } & { children?: React.ReactNode }
+      params?: z.input<Params>;
+      search?: z.input<Search>;
+    } & { children?: React.ReactNode }
   >;
 };
 
@@ -403,11 +403,11 @@ export function makeRoute<
   urlBuilder.routeName = info.name;
 
   urlBuilder.ParamsLink = function RouteLink({
-                                               params: linkParams,
-                                               search: linkSearch,
-                                               children,
-                                               ...props
-                                             }: Omit<LinkProps, 'href'> & {
+    params: linkParams,
+    search: linkSearch,
+    children,
+    ...props
+  }: Omit<LinkProps, 'href'> & {
     params?: z.input<Params>;
     search?: z.input<Search>;
   } & { children?: React.ReactNode }) {
@@ -419,15 +419,15 @@ export function makeRoute<
   };
 
   urlBuilder.Link = function RouteLink({
-                                         search: linkSearch,
-                                         children,
-                                         ...props
-                                       }: Omit<LinkProps, 'href'> &
+    search: linkSearch,
+    children,
+    ...props
+  }: Omit<LinkProps, 'href'> &
     z.input<Params> & {
-    search?: z.input<Search>;
-  } & { children?: React.ReactNode }) {
+      search?: z.input<Search>;
+    } & { children?: React.ReactNode }) {
     const params = info.params.parse(props);
-    const extraProps = {...props};
+    const extraProps = { ...props };
     for (const key of Object.keys(params)) {
       delete extraProps[key];
     }

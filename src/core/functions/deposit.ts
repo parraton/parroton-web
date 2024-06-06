@@ -1,7 +1,7 @@
-import {OpenedContract, toNano} from '@ton/core';
-import {JettonWallet} from '@dedust/sdk';
-import {Vault} from '../contracts/vault';
-import {Sender} from "@utils/sender";
+import { OpenedContract, toNano } from '@ton/core';
+import { JettonWallet } from '@dedust/sdk';
+import { Vault } from '../contracts/vault';
+import { Sender } from '@utils/sender';
 
 export async function deposit(
   investorLpWallet: OpenedContract<JettonWallet>,

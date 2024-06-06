@@ -1,26 +1,31 @@
-import {useConnection} from '@hooks/use-connection';
-import {Address, fromNano} from '@ton/core';
-import useSWR from "swr";
-import {getLpWallet} from "@core";
-import {formatCurrency} from "@lib/utils";
+import { useConnection } from '@hooks/use-connection';
+import { Address, fromNano } from '@ton/core';
+import useSWR from 'swr';
+import { getLpWallet } from '@core';
+import { usePool } from '@hooks/use-pool';
 
-const getLpBalance = async (senderAddress: Address) => {
-  const lpWallet = await getLpWallet(senderAddress);
+const getLpBalance = async (senderAddress: Address, poolAddress: Address) => {
+  const lpWallet = await getLpWallet(senderAddress, poolAddress);
   const data = await lpWallet.getWalletData();
 
-//TODO: fix decimals
+  //TODO: fix decimals
   return fromNano(data.balance);
 };
 
-export const useLpBalance = () => {
-  const {sender} = useConnection();
+export const useLpBalance = (vaultAddress: string) => {
+  const { sender } = useConnection();
 
+  const { pool } = usePool(vaultAddress);
 
-  const {data, error} = useSWR(['lpBalance'], async () => {
-    if (!sender.address) return null;
+  const { data, error } = useSWR(
+    ['lpBalance', sender.address?.toString(), vaultAddress],
+    async () => {
+      if (!sender.address || !pool) return null;
 
-    return await getLpBalance(sender.address);
-  }, {refreshInterval: 5_000});
+      return await getLpBalance(sender.address, pool);
+    },
+    { refreshInterval: 5000 },
+  );
 
   return {
     balance: data,

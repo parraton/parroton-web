@@ -10,33 +10,32 @@ import {
 } from '@ton/core';
 
 export type VaultConfig = {
+  distributionPoolAddress: Address;
   sharesTotalSupply: bigint;
   depositedLp: bigint;
-  token0Balance: bigint;
-  token1Balance: bigint;
-  poolType: number;
-  adminAddress: Address;
+  managementFeeRate: bigint;
+  managementFee: bigint;
   depositLpWalletAddress: Address;
-  token0WalletAddress: Address;
-  token1WalletAddress: Address;
-  // referral: Address;
+  adminAddress: Address;
+  managerAddress: Address;
+  strategyAddress: Address;
   sharesWalletCode: Cell;
   tempUpgrade: Cell;
 };
 
 export function vaultConfigToCell(config: VaultConfig): Cell {
   return beginCell()
+    .storeAddress(config.distributionPoolAddress)
     .storeCoins(config.sharesTotalSupply)
     .storeCoins(config.depositedLp)
-    .storeCoins(config.token0Balance)
-    .storeCoins(config.token1Balance)
-    .storeUint(config.poolType, 1)
-    .storeAddress(config.adminAddress)
+    .storeCoins(config.managementFeeRate)
+    .storeCoins(config.managementFee)
+    .storeAddress(config.depositLpWalletAddress)
     .storeRef(
       beginCell()
-        .storeAddress(config.depositLpWalletAddress)
-        .storeAddress(config.token0WalletAddress)
-        .storeAddress(config.token1WalletAddress)
+        .storeAddress(config.adminAddress)
+        .storeAddress(config.managerAddress)
+        .storeAddress(config.strategyAddress)
         .endCell(),
     )
     .storeRef(config.sharesWalletCode)
@@ -52,8 +51,8 @@ export const Opcodes = {
   excesses: 0xd5_32_76_db,
   transfer: 0xf_8a_7e_a5,
   set_deposit_lp_wallet_address: 0x77_19_b8_4f,
-  set_token_0_wallet_address: 0x71_49_c6_91,
-  set_token_1_wallet_address: 0xdf_21_57_00,
+  set_strategy_address: 0xa3_d7_61_1f,
+  reinvest: 0x8_12_d4_e3,
 };
 
 export class Vault implements Contract {
@@ -130,12 +129,20 @@ export class Vault implements Contract {
     });
   }
 
-  async sendSetToken0WalletAddress(
+  async sendReinvest(
     provider: ContractProvider,
     via: Sender,
     opts: {
       value: bigint;
-      walletAddress: Address;
+      totalReward: bigint;
+      amountToSwap: bigint;
+      limit: bigint;
+      tonTargetBalance: bigint;
+      depositFee: bigint;
+      depositFwdFee: bigint;
+      transferFee: bigint;
+      jettonTargetBalance: bigint;
+      deadline: number;
       queryId?: number;
     },
   ) {
@@ -143,19 +150,31 @@ export class Vault implements Contract {
       value: opts.value,
       sendMode: SendMode.PAY_GAS_SEPARATELY,
       body: beginCell()
-        .storeUint(Opcodes.set_token_0_wallet_address, 32)
+        .storeUint(Opcodes.reinvest, 32)
         .storeUint(opts.queryId ?? 0, 64)
-        .storeAddress(opts.walletAddress)
+        .storeCoins(opts.totalReward)
+        .storeRef(
+          beginCell()
+            .storeCoins(opts.amountToSwap)
+            .storeCoins(opts.limit)
+            .storeUint(opts.deadline, 32)
+            .storeCoins(opts.tonTargetBalance)
+            .storeCoins(opts.jettonTargetBalance)
+            .storeCoins(opts.depositFee)
+            .storeCoins(opts.depositFwdFee)
+            .storeCoins(opts.transferFee)
+            .endCell(),
+        )
         .endCell(),
     });
   }
 
-  async sendSetToken1WalletAddress(
+  async sendSetStrategyAddress(
     provider: ContractProvider,
     via: Sender,
     opts: {
       value: bigint;
-      walletAddress: Address;
+      strategyAddress: Address;
       queryId?: number;
     },
   ) {
@@ -163,9 +182,9 @@ export class Vault implements Contract {
       value: opts.value,
       sendMode: SendMode.PAY_GAS_SEPARATELY,
       body: beginCell()
-        .storeUint(Opcodes.set_token_1_wallet_address, 32)
+        .storeUint(Opcodes.set_strategy_address, 32)
         .storeUint(opts.queryId ?? 0, 64)
-        .storeAddress(opts.walletAddress)
+        .storeAddress(opts.strategyAddress)
         .endCell(),
     });
   }
@@ -173,15 +192,15 @@ export class Vault implements Contract {
   async getVaultData(provider: ContractProvider): Promise<VaultConfig> {
     const result = await provider.get('get_vault_data', []);
     return {
+      distributionPoolAddress: result.stack.readAddress(),
       sharesTotalSupply: result.stack.readBigNumber(),
       depositedLp: result.stack.readBigNumber(),
-      token0Balance: result.stack.readBigNumber(),
-      token1Balance: result.stack.readBigNumber(),
-      poolType: result.stack.readNumber(),
-      adminAddress: result.stack.readAddress(),
+      managementFeeRate: result.stack.readBigNumber(),
+      managementFee: result.stack.readBigNumber(),
       depositLpWalletAddress: result.stack.readAddress(),
-      token0WalletAddress: result.stack.readAddress(),
-      token1WalletAddress: result.stack.readAddress(),
+      adminAddress: result.stack.readAddress(),
+      managerAddress: result.stack.readAddress(),
+      strategyAddress: result.stack.readAddress(),
       sharesWalletCode: result.stack.readCell(),
       tempUpgrade: result.stack.readCell(),
     };

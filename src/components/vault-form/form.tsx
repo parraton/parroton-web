@@ -1,33 +1,52 @@
-import {Tabs, TabsContent, TabsList, TabsTrigger} from '@components/ui/tabs';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs';
 
-import {actions} from '@app/[lng]/[vault]/page.info';
-import {DepositForm} from '@components/vault-form/deposit.form';
-import {WithdrawForm} from '@components/vault-form/withdraw.form';
-import {Language} from '@i18n/settings';
-import {serverTranslation} from '@i18n';
-import {DepositCard} from '@components/vault-form/deposit.card';
-import {WithdrawCard} from '@components/vault-form/withdraw.card';
-import {PoolDeposit} from "@components/pool-deposit";
+import { DepositForm } from '@components/vault-form/deposit.form';
+import { WithdrawForm } from '@components/vault-form/withdraw.form';
+import { Language } from '@i18n/settings';
+import { serverTranslation } from '@i18n';
+import { FormCard } from '@components/vault-form/form-card';
+import { FaucetButton } from '@components/faucet/faucet-button';
+import { cn } from '@lib/utils';
 
-export async function Form({lng}: { lng: Language }) {
-  const {t} = await serverTranslation(lng, 'form');
+export enum Actions {
+  deposit = 'deposit',
+  withdraw = 'withdraw',
+  faucet = 'faucet',
+  claim = 'claim',
+}
+
+const keysCount = Object.keys(Actions).length;
+
+export async function Form({ lng }: { lng: Language }) {
+  const { t } = await serverTranslation(lng, 'form');
 
   return (
-    <Tabs defaultValue={actions.deposit} className='w-[400px]'>
-      <TabsList className='grid w-full grid-cols-2'>
-        <TabsTrigger value={actions.deposit}>{t('deposit_title')}</TabsTrigger>
-        <TabsTrigger value={actions.withdraw}>{t('withdraw_title')}</TabsTrigger>
+    <Tabs defaultValue={Actions.deposit} className='w-[400px]'>
+      <TabsList className={cn('grid w-full', `grid-cols-${keysCount}`)}>
+        <TabsTrigger value={Actions.deposit}>{t('deposit_title')}</TabsTrigger>
+        <TabsTrigger value={Actions.withdraw}>{t('withdraw_title')}</TabsTrigger>
+        <TabsTrigger value={Actions.faucet}>{t('faucet_title')}</TabsTrigger>
+        <TabsTrigger value={Actions.claim}>{t('claim_title')}</TabsTrigger>
       </TabsList>
-      <PoolDeposit/>
-      <TabsContent value={actions.deposit}>
-        <DepositCard lng={lng}>
-          <DepositForm/>
-        </DepositCard>
+      <TabsContent value={Actions.deposit}>
+        <FormCard action={Actions.deposit} lng={lng}>
+          <DepositForm />
+        </FormCard>
       </TabsContent>
-      <TabsContent value={actions.withdraw}>
-        <WithdrawCard lng={lng}>
-          <WithdrawForm/>
-        </WithdrawCard>
+      <TabsContent value={Actions.withdraw}>
+        <FormCard action={Actions.withdraw} lng={lng}>
+          <WithdrawForm />
+        </FormCard>
+      </TabsContent>
+      <TabsContent value={Actions.faucet}>
+        <FormCard action={Actions.faucet} lng={lng}>
+          <FaucetButton />
+        </FormCard>
+      </TabsContent>
+      <TabsContent value={Actions.claim}>
+        <FormCard action={Actions.claim} lng={lng}>
+          <div>Claim</div>
+        </FormCard>
       </TabsContent>
     </Tabs>
   );

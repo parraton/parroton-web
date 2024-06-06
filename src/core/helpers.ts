@@ -1,7 +1,8 @@
 import { Address, OpenedContract } from '@ton/core';
 import { SharesWallet, Vault } from '@core/contracts';
-import { POOL_ADDRESS, tonClientPromise, VAULT_ADDRESS } from '@core/config';
+import { tonClient } from '@core/config';
 import { JettonRoot, JettonWallet } from '@dedust/sdk';
+import { Strategy } from '@core/contracts/strategy';
 
 export function exists<T>(value: T | null | undefined | any): T {
   if (value == undefined) {
@@ -11,7 +12,6 @@ export function exists<T>(value: T | null | undefined | any): T {
 }
 
 export const getSharesWallet = async (vault: OpenedContract<Vault>, sender: Address) => {
-  const tonClient = await tonClientPromise;
   const rawWalletAddress = await vault.getWalletAddress(sender);
 
   const rawSharesWallet = SharesWallet.createFromAddress(rawWalletAddress);
@@ -19,22 +19,30 @@ export const getSharesWallet = async (vault: OpenedContract<Vault>, sender: Addr
   return tonClient.open(rawSharesWallet);
 };
 
-export const getVault = async (vaultAddress = VAULT_ADDRESS) => {
-  const tonClient = await tonClientPromise;
-
+export const getVault = async (vaultAddress: Address) => {
   const rawVault = Vault.createFromAddress(vaultAddress);
   return tonClient.open(rawVault);
 };
 
 export const getLpWallet = async (
   senderAddress: Address,
-  poolAddress = POOL_ADDRESS,
+  poolAddress: Address,
 ): Promise<OpenedContract<JettonWallet>> => {
-  const tonClient = await tonClientPromise;
   const rawPool = JettonRoot.createFromAddress(poolAddress);
 
   const jettonRoot = tonClient.open(rawPool);
 
   const rawLpWallet = await jettonRoot.getWallet(senderAddress);
   return tonClient.open(rawLpWallet);
+};
+
+export const getStrategyInfoByVault = async (vaultAddress: Address) => {
+  const rawVault = Vault.createFromAddress(vaultAddress);
+  const vault = tonClient.open(rawVault);
+
+  const { strategyAddress } = await vault.getVaultData();
+  const rawStrategy = Strategy.createFromAddress(strategyAddress);
+  const strategy = tonClient.open(rawStrategy);
+
+  return await strategy.getStrategyData();
 };

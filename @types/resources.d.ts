@@ -17,6 +17,10 @@ interface Resources {
     "deposit_description": "Deposit your lp and get rewards",
     "withdraw_title": "Withdraw",
     "withdraw_description": "Withdraw your lp and rewards",
+    "faucet_title": "Faucet",
+    "faucet_description": "Get some free tokens",
+    "claim_title": "Claim",
+    "claim_description": "Claim your rewards",
     "validation": {
       "min_deposit": "Deposit can not be less or equal {{minDeposit}}",
       "max_deposit": "Deposit can not be more than {{maxDeposit}}",

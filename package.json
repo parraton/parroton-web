@@ -27,6 +27,7 @@
     "@radix-ui/react-tabs": "^1.0.4",
     "@ton/core": "^0.56.3",
     "@ton/ton": "^13.11.1",
+    "@tonconnect/sdk": "^3.0.3",
     "@tonconnect/ui": "2.0.2",
     "@tonconnect/ui-react": "2.0.2",
     "accept-language": "^3.0.18",

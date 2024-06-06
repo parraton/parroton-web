@@ -37,7 +37,6 @@
     }
   },
   "rules": {
-    "compat/compat": "error",
     "react-hooks/exhaustive-deps": "error",
     "jsx-quotes": [
       "error",
@@ -107,6 +106,8 @@
       }
     ],
     "unicorn/no-null": "off",
+    "compat/compat": "off",
+    "unicorn/no-array-callback-reference": "off"
   },
   "overrides": [
     {
