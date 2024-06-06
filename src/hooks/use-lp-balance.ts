@@ -4,7 +4,7 @@ import useSWR from 'swr';
 import { getLpWallet } from '@core';
 import { usePool } from '@hooks/use-pool';
 
-const getLpBalance = async (senderAddress: Address, poolAddress: Address) => {
+export const getLpBalance = async (senderAddress: Address, poolAddress: Address) => {
   const lpWallet = await getLpWallet(senderAddress, poolAddress);
   const data = await lpWallet.getWalletData();
 

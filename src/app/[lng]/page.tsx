@@ -8,6 +8,8 @@ import { tonClient } from '@core/config';
 import { Vault } from '@core';
 import { OpenedContract } from '@ton/core';
 
+// import { getLpBalance } from '@hooks/use-lp-balance';
+
 export async function generateMetadata({
   params,
 }: RouteInfoToLayout<typeof Route>): Promise<Metadata> {
@@ -26,6 +28,11 @@ const vaults = vaultsAddresses.map((vault) => {
 });
 
 const getVaultCardData = async (vault: OpenedContract<Vault>): Promise<VaultCardProps> => {
+  // const data = await vault.getVaultData();
+  //
+  //
+  // const balance = await getLpBalance(vault.address.toString());
+
   return {
     title: 'ETH (ezETH Market)',
     tags: ['ezETH', 'ETH'],

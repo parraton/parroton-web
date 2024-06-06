@@ -36,11 +36,15 @@ export const getLpWallet = async (
   return tonClient.open(rawLpWallet);
 };
 
-export const getStrategyInfoByVault = async (vaultAddress: Address) => {
+export const getVaultData = async (vaultAddress: Address) => {
   const rawVault = Vault.createFromAddress(vaultAddress);
   const vault = tonClient.open(rawVault);
 
-  const { strategyAddress } = await vault.getVaultData();
+  return await vault.getVaultData();
+};
+
+export const getStrategyInfoByVault = async (vaultAddress: Address) => {
+  const { strategyAddress } = await getVaultData(vaultAddress);
   const rawStrategy = Strategy.createFromAddress(strategyAddress);
   const strategy = tonClient.open(rawStrategy);
 

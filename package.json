@@ -16,6 +16,7 @@
     "dr:build:watch": "npx declarative-routing build --watch"
   },
   "dependencies": {
+    "@dedust/apiary-v1": "^0.0.1",
     "@dedust/sdk": "^0.8.7",
     "@orbs-network/ton-access": "^2.3.3",
     "@radix-ui/react-avatar": "^1.0.4",

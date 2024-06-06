@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@dedust/apiary-v1':
+        specifier: ^0.0.1
+        version: 0.0.1(@ton/core@0.56.3(@ton/crypto@3.2.0))
       '@dedust/sdk':
         specifier: ^0.8.7
         version: 0.8.7(@ton/core@0.56.3(@ton/crypto@3.2.0))(@tonconnect/sdk@3.0.3)(axios@1.7.2)
@@ -995,6 +998,11 @@ packages:
   '@babel/types@7.24.6':
     resolution: {integrity: sha512-WaMsgi6Q8zMgMth93GvWPXkhAIEobfsIkLTacoVZoK1J0CevIPGYY2Vo5YvJGqyHqXM6P4ppOYGsIRU8MM9pFQ==}
     engines: {node: '>=6.9.0'}
+
+  '@dedust/apiary-v1@0.0.1':
+    resolution: {integrity: sha512-P9Jv+zpErgdyUuqJVa1JXw7e10LNkqwUMCWXcN/v52NRG+4Z31wl27AE+W6NwXE7T5LeCoaJzL4/f2Sdn/vLmA==}
+    peerDependencies:
+      '@ton/core': '>=0.53.0'
 
   '@dedust/sdk@0.8.7':
     resolution: {integrity: sha512-xW7bcdIUD09t9h5iUA+jCR0qLOnjvloYXNgEJbajPmIdXrCal8R+UoLE26a/5as0h6B2DmuC4peSYMoiHDFSlg==}
@@ -7090,6 +7098,10 @@ snapshots:
       '@babel/helper-validator-identifier': 7.24.6
       to-fast-properties: 2.0.0
     optional: true
+
+  '@dedust/apiary-v1@0.0.1(@ton/core@0.56.3(@ton/crypto@3.2.0))':
+    dependencies:
+      '@ton/core': 0.56.3(@ton/crypto@3.2.0)
 
   '@dedust/sdk@0.8.7(@ton/core@0.56.3(@ton/crypto@3.2.0))(@tonconnect/sdk@3.0.3)(axios@1.7.2)':
     dependencies:

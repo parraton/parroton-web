@@ -109,7 +109,9 @@
     "compat/compat": "off",
     "unicorn/no-array-callback-reference": "off",
     "unicorn/no-abusive-eslint-disable": "off",
-    "lodash/prefer-is-nil": "off"
+    "lodash/prefer-is-nil": "off",
+    "unicorn/no-static-only-class": "off",
+    "no-empty": "off"
   },
   "overrides": [
     {

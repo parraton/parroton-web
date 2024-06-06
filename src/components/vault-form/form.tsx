@@ -9,7 +9,9 @@ import { FaucetLpButton } from '@components/faucet/faucet-lp.button';
 import { cn } from '@lib/utils';
 import { Actions } from '@types';
 import { FaucetTokenButton } from '@components/faucet/faucet-token.button';
-import { CardFooter } from '@UI/card';
+import { CardContent, CardFooter } from '@UI/card';
+import { ClaimBalance } from '@components/claim/claim-balance';
+import { ClaimButton } from '@components/claim/claim.button';
 
 export async function Form({ lng }: { lng: Language }) {
   const { t } = await serverTranslation(lng, 'form');
@@ -42,7 +44,10 @@ export async function Form({ lng }: { lng: Language }) {
       </TabsContent>
       <TabsContent value={Actions.claim}>
         <FormCard action={Actions.claim} lng={lng}>
-          <div>Claim</div>
+          <CardContent className='space-y-2 '>
+            <ClaimBalance />
+            <ClaimButton />
+          </CardContent>
         </FormCard>
       </TabsContent>
     </Tabs>
