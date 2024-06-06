@@ -16,7 +16,7 @@ const FaucetToken = 'Faucet';
 
 export function FaucetTokenButton() {
   const { vault } = useParams(VaultPage);
-  const { sender } = useConnection({ batch: true });
+  const { sender } = useConnection();
 
   const handleFaucet = async () => {
     await faucetToken(sender, Address.parse(vault));
