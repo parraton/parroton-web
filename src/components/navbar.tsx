@@ -10,7 +10,7 @@ export async function Navbar({ lng }: { lng: Language }) {
   const { t } = await serverTranslation(lng, 'common');
 
   return (
-    <nav className={cn('flex h-24 justify-between bg-lime-200')}>
+    <nav className={cn('flex h-24 justify-between bg-purple-200 dark:bg-purple-950')}>
       <div className={cn('container flex items-center justify-between')}>
         <Home.Link className={cn('flex items-center gap-2')}>
           <Image src='/images/logo.png' alt='Home' width={24} height={24} />

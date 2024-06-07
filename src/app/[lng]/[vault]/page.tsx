@@ -6,7 +6,7 @@ import { Form } from '@components/vault-form/form';
 
 function VaultPage({ params }: RouteInfoToLayout<typeof Route>) {
   return (
-    <div className={cn('grid h-max place-items-center')}>
+    <div className={cn('grid h-max grid-cols-2 place-items-center items-center self-start')}>
       <Form lng={params.lng!} />
     </div>
   );
