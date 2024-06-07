@@ -16,15 +16,15 @@ const usdtVault = toAddressesDict({
   extraDistributionPool: 'EQBDJhFGiwHf17N4KCDgDS8GkGDeNadWzg_Ek23DN7WNAuVN',
 });
 
-// const scaleVault = toAddressesDict({
-//   vault: 'EQCx3v_v6OTg58BDMIBIREewZ1rfFjyzbgEivXbpZGN9J6_P',
-//   extraDistributionPool: 'EQCG-vwexBCTFh17mU2ffwRusqkv2PbqQa1mhZt5NUtMhCZt',
-// });
-//
-// const notVault = toAddressesDict({
-//   vault: 'EQDzgLurE_klqVvHAdyZ1hBGQpgHCiDFpRg4bnu_-DUyxX4g',
-//   extraDistributionPool: 'EQA-Nx5mMcP8_BXlh6qJ_oLsFPguCsoa0Pn4Nbg6cI3SNE-8',
-// });
+const scaleVault = toAddressesDict({
+  vault: 'EQCx3v_v6OTg58BDMIBIREewZ1rfFjyzbgEivXbpZGN9J6_P',
+  extraDistributionPool: 'EQCG-vwexBCTFh17mU2ffwRusqkv2PbqQa1mhZt5NUtMhCZt',
+});
+
+const notVault = toAddressesDict({
+  vault: 'EQDzgLurE_klqVvHAdyZ1hBGQpgHCiDFpRg4bnu_-DUyxX4g',
+  extraDistributionPool: 'EQA-Nx5mMcP8_BXlh6qJ_oLsFPguCsoa0Pn4Nbg6cI3SNE-8',
+});
 
 const commonAddresses = toAddressesDict({
   dedustFactory: 'EQDHcPxlCOSN_s-Vlw53bFpibNyKpZHV6xHhxGAAT_21nCFU',
@@ -34,6 +34,6 @@ const commonAddresses = toAddressesDict({
 });
 
 export const addresses = {
-  vaults: [usdtVault], //, scaleVault, notVault],
+  vaults: [usdtVault, scaleVault, notVault],
   ...commonAddresses,
 } as const;
