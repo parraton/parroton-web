@@ -2,13 +2,8 @@ import type { Metadata } from 'next';
 import { serverTranslation } from '@i18n';
 import { RouteInfoToLayout } from '@routes/makeRoute';
 import { Route } from './page.info';
-import { VaultCard, VaultCardProps } from '@components/vault-card';
+import { Vault } from '@components/vault/vault';
 import { addresses } from '@config/contracts-config';
-import { tonClient } from '@core/config';
-import { Vault } from '@core';
-import { OpenedContract } from '@ton/core';
-
-// import { getLpBalance } from '@hooks/use-lp-balance';
 
 export async function generateMetadata({
   params,
@@ -21,38 +16,11 @@ export async function generateMetadata({
   };
 }
 
-const vaultsAddresses = Object.values(addresses.vaults).map(({ vault }) => vault);
-const vaults = vaultsAddresses.map((vault) => {
-  const rawVault = Vault.createFromAddress(vault);
-  return tonClient.open(rawVault);
-});
-
-const getVaultCardData = async (vault: OpenedContract<Vault>): Promise<VaultCardProps> => {
-  // const data = await vault.getVaultData();
-  //
-  //
-  // const balance = await getLpBalance(vault.address.toString());
-
-  return {
-    title: 'ETH (ezETH Market)',
-    tags: ['ezETH', 'ETH'],
-    balance: '13.98',
-    currency: 'ETH',
-    deposited: '12.02',
-    apy: '7.94',
-    daily: '0.02',
-    tvl: '1298343.32',
-    address: vault.address.toString(),
-  };
-};
-
-export default async function Home({ params }: RouteInfoToLayout<typeof Route>) {
-  const vaultsData = await Promise.all(vaults.map(getVaultCardData));
-
+export default function Home({ params }: RouteInfoToLayout<typeof Route>) {
   return (
-    <main className='flex min-h-screen flex-col items-center justify-between p-24'>
-      {vaultsData.map((data, index) => (
-        <VaultCard key={index} data={data} locale={params.lng!} />
+    <main className='grid min-h-screen grid-cols-2 items-center gap-4 p-24'>
+      {addresses.vaults.map(({ vault }, index) => (
+        <Vault key={index} lng={params.lng!} address={vault.toString()} />
       ))}
     </main>
   );

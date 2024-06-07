@@ -8,12 +8,6 @@ const getSharesBalance = async (senderAddress: Address, vaultAddress: Address) =
   const sharesWallet = await getSharesWallet(vault, senderAddress);
   const data = await sharesWallet.getWalletData();
 
-  console.log({
-    data,
-    vaultAddress: vaultAddress.toString(),
-    senderAddress: senderAddress.toString(),
-  });
-
   //TODO: fix decimals
   return fromNano(data.balance);
 };
@@ -30,8 +24,6 @@ export const useSharesBalance = (vaultAddress: string) => {
     },
     { refreshInterval: 5000 },
   );
-
-  console.log({ useSharesBalance: data });
 
   return {
     balance: data,

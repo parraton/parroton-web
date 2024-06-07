@@ -434,13 +434,6 @@ export function makeRoute<
 
     const searchParams = info.search.parse(linkSearch ?? {});
 
-    console.log({
-      route,
-      linkSearch,
-      // infoSearch: info.search,
-      searchParams,
-    });
-
     return (
       <Link {...extraProps} href={urlBuilder(info.params.parse(props), searchParams)}>
         {children}

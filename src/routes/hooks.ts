@@ -53,7 +53,6 @@ function convertURLSearchParamsToObject(
   }
 
   const obj: Record<string, string | string[]> = {};
-  // @ts-expect-error - TS doesn't know about iterator
   for (const [key, value] of params.entries()) {
     obj[key] = params.getAll(key).length > 1 ? params.getAll(key) : value;
   }

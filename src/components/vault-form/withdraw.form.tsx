@@ -79,24 +79,30 @@ export function WithdrawForm() {
         }
       }}
     >
-      <Form>
-        <CardContent className='space-y-2'>
-          <div className='space-y-1'>
-            <Label htmlFor='current'>
-              {t('amount')}. Balance: {formatNumber(balance, lng)}
-            </Label>
-            <Field name='amount' id='current' type='number' as={Input} />
-            <ErrorMessage
-              className={cn('text-sm text-red-500', 'mt-1')}
-              component='div'
-              name='amount'
-            />
-          </div>
-        </CardContent>
-        <CardFooter>
-          <Button type='submit'>{t('submit')}</Button>
-        </CardFooter>
-      </Form>
+      {({ isSubmitting, isValid }) => {
+        return (
+          <Form>
+            <CardContent className='space-y-2'>
+              <div className='space-y-1'>
+                <Label htmlFor='current'>
+                  {t('amount')}. Balance: {formatNumber(balance, lng)}
+                </Label>
+                <Field name='amount' id='current' type='number' as={Input} />
+                <ErrorMessage
+                  className={cn('text-sm text-red-500', 'mt-1')}
+                  component='div'
+                  name='amount'
+                />
+              </div>
+            </CardContent>
+            <CardFooter>
+              <Button type='submit' disabled={isSubmitting || !isValid}>
+                {t('submit')}
+              </Button>
+            </CardFooter>
+          </Form>
+        );
+      }}
     </Formik>
   );
 }
