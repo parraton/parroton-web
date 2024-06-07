@@ -111,7 +111,8 @@
     "unicorn/no-abusive-eslint-disable": "off",
     "lodash/prefer-is-nil": "off",
     "unicorn/no-static-only-class": "off",
-    "no-empty": "off"
+    "no-empty": "off",
+    "lodash/prefer-lodash-typecheck": "off"
   },
   "overrides": [
     {
