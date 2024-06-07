@@ -52,6 +52,7 @@
     "swr": "^2.2.5",
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",
+    "tonapi-sdk-js": "^1.0.10",
     "tonweb": "^0.0.66",
     "zod": "^3.23.8",
     "zod-formik-adapter": "^1.3.0"

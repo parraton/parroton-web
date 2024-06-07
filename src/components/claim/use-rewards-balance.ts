@@ -1,4 +1,4 @@
-import { useVaultDistributionPool } from '@components/claim/use-vault-distribution-pool';
+import { useVaultDistributionPool } from '@hooks/use-vault-distribution-pool';
 import { VaultPage } from '@routes';
 import { useParams } from '@routes/hooks';
 import useSWR from 'swr';

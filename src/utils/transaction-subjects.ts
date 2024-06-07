@@ -1,7 +1,7 @@
 import { filter, interval, map, Subject, takeUntil } from 'rxjs';
-import { TonApiTransaction } from '@utils/types';
 import TonWeb from 'tonweb';
 import { TransactionStatus } from '@types';
+import { tonApiHttpClient } from '@core/tonapi';
 
 type TXHash = string;
 type BOC = string;
@@ -40,10 +40,6 @@ export const hashTransaction = transactionSubject.pipe(
   map((x) => x.data as TXHash),
 );
 
-const createUrl = (hash: TXHash) => {
-  return process.env.NEXT_PUBLIC_TONAPI_URL + '/v2/events/' + hash;
-};
-
 pendingTransaction.subscribe(async (boc) => {
   console.log('Pending transaction', { boc });
 
@@ -59,15 +55,7 @@ pendingTransaction.subscribe(async (boc) => {
       takeUntil(successTransaction),
       takeUntil(errorTransaction),
       map(async () => {
-        const url = createUrl(hash);
-
-        const response = await fetch(url);
-
-        if (!response.ok) {
-          return false;
-        }
-
-        const { in_progress } = (await response.json()) as TonApiTransaction;
+        const { in_progress } = await tonApiHttpClient.events.getEvent(hash);
 
         console.log({ in_progress });
 

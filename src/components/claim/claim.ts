@@ -3,7 +3,7 @@ import { DistributionPool } from '@dedust/apiary-v1';
 import { Address, OpenedContract } from '@ton/core';
 import { claimDeDustDistributionRewards } from './claim-de-dust-distribution-rewards';
 import { fetchDictionaryFromIpfs } from '@components/claim/fetch-dictionary-from-ipfs';
-import { getVaultDistributionPool } from '@components/claim/use-vault-distribution-pool';
+import { getVaultDistributionPool } from '@hooks/use-vault-distribution-pool';
 
 export const getRewardsDictionary = async (distributionPool: OpenedContract<DistributionPool>) => {
   const { dataUri } = await distributionPool.getRewardsData();

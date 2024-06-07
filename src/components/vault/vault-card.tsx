@@ -1,19 +1,21 @@
+'use client';
+
 import { cn, formatCurrency, formatNumber, formatPercentage } from '@lib/utils';
 import { Button } from '@UI/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@UI/card';
 import { Language } from '@i18n/settings';
-import { serverTranslation } from '@i18n';
 import { VaultPage } from '@routes';
 import { Maybe } from '@types';
+import { useTranslation } from '@i18n/client';
 
 export type VaultCardProps = {
   title: string;
   balance: Maybe<string>;
   currency: string;
   deposited: Maybe<string>;
-  apy: string;
-  daily: string;
-  tvl: string;
+  apy: Maybe<string>;
+  daily: Maybe<string>;
+  tvl: Maybe<string>;
   address: string;
 };
 
@@ -28,8 +30,10 @@ function NanoInfo({ title, value }: { title: string; value: string }) {
   );
 }
 
-export async function VaultCard({ data, locale, className, ...props }: CardProps) {
-  const { t } = await serverTranslation(locale, 'vault-card');
+export function VaultCard({ data, locale, className, ...props }: CardProps) {
+  const { t } = useTranslation({
+    ns: 'vault-card',
+  });
 
   return (
     <Card className={cn('w-[380px]', className)} {...props}>
@@ -48,9 +52,9 @@ export async function VaultCard({ data, locale, className, ...props }: CardProps
             data.deposited ? `${formatNumber(data.deposited, locale)} ${data.currency}` : '~~~~'
           }
         />
-        <NanoInfo title={t('apy')} value={formatPercentage(data.apy)} />
-        <NanoInfo title={t('daily')} value={formatPercentage(data.daily)} />
-        <NanoInfo title={t('tvl')} value={formatCurrency(data.tvl, locale)} />
+        <NanoInfo title={t('apy')} value={data.apy ? formatPercentage(data.apy) : '~~~~'} />
+        <NanoInfo title={t('daily')} value={data.daily ? formatPercentage(data.daily) : '~~~~'} />
+        <NanoInfo title={t('tvl')} value={data.tvl ? formatCurrency(data.tvl, locale) : '~~~~'} />
       </CardContent>
       <CardFooter>
         <Button className='w-full' asChild>

@@ -1,13 +1,14 @@
 {
   "decimals": "9",
-  "description": "Reinvestment pool for SCALE/TON => TON farm on Dedust",
+  "description": "Reinvestment pool for USDT/TON => TON farm on Dedust",
   "image": "https://static.storm.tg/usdt-slp-logo.png",
-  "name": "Dedust SCALE/TON",
+  "name": "Dedust USDT/TON",
   "social": [
     "https://parroton.org/"
   ],
-  "symbol": "SCALE/TON LP",
+  "symbol": "USDT/TON LP",
   "websites": [
     "https://parroton.org"
   ]
 }
+
