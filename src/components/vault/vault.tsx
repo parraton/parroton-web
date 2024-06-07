@@ -2,7 +2,8 @@
 import { VaultCard, VaultCardProps } from '@components/vault/vault-card';
 import { useLpBalance } from '@hooks/use-lp-balance';
 import { useSharesBalance } from '@hooks/use-shares-balance';
-// import { usePool } from '@hooks/use-pool';
+import { usePool } from '@hooks/use-pool';
+
 import { Language } from '@i18n/settings';
 import { Suspense } from 'react';
 import { JettonRoot } from '@dedust/sdk';
@@ -34,7 +35,9 @@ const useVaultMetadata = (vaultAddress: string) => {
 };
 
 const usePoolNumbers = (vaultAddress: string) => {
-  // const { pool } = usePool(vaultAddress.toString());
+  const { pool } = usePool(vaultAddress.toString());
+
+  console.log({ pool });
 
   return {
     apy: '7.94',
