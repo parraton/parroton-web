@@ -31,12 +31,12 @@ export async function Settings({ lng }: { lng: Language }) {
           <DialogTitle>{t('dialog_title')}</DialogTitle>
           <DialogDescription>{t('dialog_description')}</DialogDescription>
         </DialogHeader>
-        <div className='grid grid-cols-2 gap-2'>
-          <div className={cn('flex flex-col gap-1')}>
+        <div className='custom-toggler-list'>
+          <div className={cn('custom-toggler')}>
             <span className={cn('text-xs')}>{t('mode_title')}</span>
             <ModeToggle />
           </div>
-          <div className={cn('flex flex-col gap-1')}>
+          <div className={cn('custom-toggler')}>
             <span className={cn('text-xs')}>{t('language_title')}</span>
             <LanguageToggle />
           </div>

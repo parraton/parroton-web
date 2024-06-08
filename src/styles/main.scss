@@ -282,6 +282,13 @@ a {
 }
 
 .custom-dialog {
+  max-width: 90vw;
+  width: 90vw;
+
+  @media (min-width: 768px) {
+    width: 500px;
+  }
+
   &::after {
     content: "";
     display: flex;
@@ -432,5 +439,31 @@ a {
   }
   100% {
     transform: translate3d(0px, -1vw, 0px);
+  }
+}
+
+.custom-toggler-list {
+  display: grid;
+  grid-template-rows: auto auto;
+  gap: 15px;
+
+  @media (min-width: 768px) {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+  }
+}
+
+.custom-toggler {
+  display: grid;
+  grid-template-columns: auto auto;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 20px;
+
+  @media (min-width: 768px) {
+    grid-template-columns: auto;
+    grid-template-rows: auto auto;
+    gap: 10px;
   }
 }
