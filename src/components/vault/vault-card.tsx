@@ -65,7 +65,7 @@ export function VaultCard({ data, locale, className, ...props }: CardProps) {
             }
           />
           <LinkedInfo title={t('apy')} value={data.apy ? formatPercentage(data.apy) : '~~~~'} />
-          <NanoInfo title={t('daily')} value={data.daily ? `${Math.floor(data.daily)}%` : '~~~~'} />
+          <NanoInfo title={t('daily')} value={data.daily ? formatPercentage(data.daily) : '~~~~'} />
           <NanoInfo title={t('tvl')} value={data.tvl ? formatCurrency(data.tvl, locale) : '~~~~'} />
         </CardContent>
       </Card>
