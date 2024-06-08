@@ -2,5 +2,8 @@
   "app_title": "Parroton",
   "app_description": "Description for Parroton",
   "submit": "Submit",
-  "amount": "Amount"
+  "amount": "Amount",
+  "deposit": "Deposit",
+  "withdraw": "Withdraw",
+  "rewards": "Claim Rewards"
 }

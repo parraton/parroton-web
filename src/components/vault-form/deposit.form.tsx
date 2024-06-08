@@ -94,8 +94,8 @@ export function DepositForm() {
             </div>
           </CardContent>
           <CardFooter>
-            <Button disabled={isSubmitting || !isValid} type='submit'>
-              {t('submit')}
+            <Button disabled={isSubmitting || !isValid} type='submit' className='custom-main-btn'>
+              {t('deposit')}
             </Button>
           </CardFooter>
         </Form>

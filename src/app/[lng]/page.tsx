@@ -18,10 +18,10 @@ export async function generateMetadata({
 
 export default function Home({ params }: RouteInfoToLayout<typeof Route>) {
   return (
-    <div className={'grid grid-cols-2 items-center '}>
+    <>
       {addresses.vaults.map(({ vault }, index) => (
         <Vault key={index} lng={params.lng!} address={vault.toString()} />
       ))}
-    </div>
+    </>
   );
 }

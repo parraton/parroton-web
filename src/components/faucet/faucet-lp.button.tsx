@@ -12,7 +12,7 @@ import { VaultPage } from '@routes';
 import { Address } from '@ton/core';
 
 const transactionSent = 'Transaction sent';
-const Faucet = 'Faucet Lp';
+const Faucet = 'Deposit Dex Lp';
 
 export function FaucetLpButton() {
   const { vault } = useParams(VaultPage);
@@ -31,5 +31,9 @@ export function FaucetLpButton() {
     );
   };
 
-  return <Button onClick={handleFaucet}>{Faucet}</Button>;
+  return (
+    <Button onClick={handleFaucet} className='custom-secondary-btn'>
+      {Faucet}
+    </Button>
+  );
 }

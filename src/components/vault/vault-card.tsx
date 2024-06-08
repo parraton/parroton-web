@@ -1,12 +1,11 @@
 'use client';
 
 import { cn, formatCurrency, formatNumber, formatPercentage } from '@lib/utils';
-import { Button } from '@UI/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@UI/card';
+import { Card, CardContent, CardTitle } from '@UI/card';
 import { Language } from '@i18n/settings';
-import { VaultPage } from '@routes';
 import { Maybe } from '@types';
 import { useTranslation } from '@i18n/client';
+import Link from '../../../node_modules/next/link';
 
 export type VaultCardProps = {
   title: string;
@@ -23,9 +22,22 @@ type CardProps = React.ComponentProps<typeof Card> & { data: VaultCardProps; loc
 
 function NanoInfo({ title, value }: { title: string; value: string }) {
   return (
-    <div className='flex justify-between'>
-      <span className='text-xs text-gray-500'>{title}</span>
-      <span>{value}</span>
+    <div className='custom-card-info'>
+      <span className='custom-card-title'>{title}</span>
+      <span className='custom-card-value' title={value}>
+        {value}
+      </span>
+    </div>
+  );
+}
+
+function LinkedInfo({ title, value }: { title: string; value: string }) {
+  return (
+    <div className='custom-card-info'>
+      <span className='custom-card-title'>{title}</span>
+      <span className='custom-card-link' title={value}>
+        {value}
+      </span>
     </div>
   );
 }
@@ -36,33 +48,25 @@ export function VaultCard({ data, locale, className, ...props }: CardProps) {
   });
 
   return (
-    <Card className={cn('w-[380px]', className)} {...props}>
-      <CardHeader>
-        <CardTitle>{data.title}</CardTitle>
-        <CardDescription className={cn('flex gap-2')}></CardDescription>
-      </CardHeader>
-      <CardContent className='grid gap-4'>
-        <NanoInfo
-          title={t('balance')}
-          value={data.balance ? `${formatNumber(data.balance, locale)} ${data.currency}` : '~~~~'}
-        />
-        <NanoInfo
-          title={t('deposited')}
-          value={
-            data.deposited ? `${formatNumber(data.deposited, locale)} ${data.currency}` : '~~~~'
-          }
-        />
-        <NanoInfo title={t('apy')} value={data.apy ? formatPercentage(data.apy) : '~~~~'} />
-        <NanoInfo title={t('daily')} value={data.daily ? formatPercentage(data.daily) : '~~~~'} />
-        <NanoInfo title={t('tvl')} value={data.tvl ? formatCurrency(data.tvl, locale) : '~~~~'} />
-      </CardContent>
-      <CardFooter>
-        <Button className='w-full' asChild>
-          <VaultPage.Link vault={data.address} lng={locale}>
-            {t('manage')}
-          </VaultPage.Link>
-        </Button>
-      </CardFooter>
-    </Card>
+    <Link href={data.address} className='custom-wrapper'>
+      <Card className={cn('custom-card', className)} {...props}>
+        <CardContent className='custom-card-content'>
+          <CardTitle className='custom-card-header'>{data.title}</CardTitle>
+          <NanoInfo
+            title={t('balance')}
+            value={data.balance ? `${formatNumber(data.balance, locale)} ${data.currency}` : '~~~~'}
+          />
+          <NanoInfo
+            title={t('deposited')}
+            value={
+              data.deposited ? `${formatNumber(data.deposited, locale)} ${data.currency}` : '~~~~'
+            }
+          />
+          <LinkedInfo title={t('apy')} value={data.apy ? formatPercentage(data.apy) : '~~~~'} />
+          <NanoInfo title={t('daily')} value={data.daily ? formatPercentage(data.daily) : '~~~~'} />
+          <NanoInfo title={t('tvl')} value={data.tvl ? formatCurrency(data.tvl, locale) : '~~~~'} />
+        </CardContent>
+      </Card>
+    </Link>
   );
 }
