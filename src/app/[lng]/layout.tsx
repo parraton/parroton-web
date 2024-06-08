@@ -8,6 +8,8 @@ import { SandwichProvider } from '@components/providers/sandwich';
 import { Route } from '@app/[lng]/page.info';
 import { RouteInfoToLayout } from '@routes/makeRoute';
 
+import '../../styles/main.scss';
+
 const fontSans = FontSans({
   subsets: ['latin'],
   variable: '--font-sans',
@@ -27,7 +29,8 @@ export default function RootLayout({
         <SandwichProvider>
           <div className={cn('grid min-h-screen', 'grid-rows-[auto,1fr]')}>
             <Navbar lng={lng!} />
-            <main className='grid min-h-screen gap-4 p-24 pt-14'>{children}</main>
+            {/* <main className='grid min-h-screen gap-4 p-24 pt-14'>{children}</main> */}
+            <main className='custom-main-container bg-background'>{children}</main>
           </div>
         </SandwichProvider>
       </body>

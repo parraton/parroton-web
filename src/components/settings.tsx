@@ -27,7 +27,7 @@ export async function Settings({ lng }: { lng: Language }) {
           <SlidersHorizontal className='size-4' />
         </Button>
       </DialogTrigger>
-      <DialogContent className='sm:max-w-md'>
+      <DialogContent className='custom-dialog sm:max-w-md'>
         <DialogHeader>
           <DialogTitle>{t('dialog_title')}</DialogTitle>
           <DialogDescription>{t('dialog_description')}</DialogDescription>
@@ -42,13 +42,7 @@ export async function Settings({ lng }: { lng: Language }) {
             <LanguageToggle />
           </div>
         </div>
-        <DialogFooter className='sm:justify-end'>
-          <DialogClose asChild>
-            <Button type='button' variant='secondary'>
-              {t('dialog_close')}
-            </Button>
-          </DialogClose>
-        </DialogFooter>
+        <DialogFooter className='sm:justify-end'></DialogFooter>
       </DialogContent>
     </Dialog>
   );
