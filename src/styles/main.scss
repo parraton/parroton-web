@@ -284,6 +284,7 @@ a {
 .custom-dialog {
   max-width: 90vw;
   width: 90vw;
+  border-radius: 20px;
 
   @media (min-width: 768px) {
     width: 500px;
@@ -421,9 +422,9 @@ a {
   animation: bobble 2s infinite !important;
 
   @media (min-width: 768px) {
-    width: 48vw;
-    height: 68vw;
-    min-width: 48vw;
+    height: 80vh;
+    width: 80vh;
+    min-width: 80vh;
     background-position: bottom;
   }
 }
