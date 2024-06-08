@@ -48,7 +48,7 @@ export function VaultCard({ data, locale, className, ...props }: CardProps) {
   });
 
   return (
-    <Link href={data.address}>
+    <Link href={data.address} className='custom-wrapper'>
       <Card className={cn('custom-card', className)} {...props}>
         <CardContent className='custom-card-content'>
           <CardTitle className='custom-card-header'>{data.title}</CardTitle>

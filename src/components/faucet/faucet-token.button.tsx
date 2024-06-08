@@ -12,7 +12,7 @@ import { VaultPage } from '@routes';
 import { Address } from '@ton/core';
 
 const transactionSent = 'Transaction sent';
-const FaucetToken = 'Faucet Token';
+const FaucetToken = 'Mint Jettons';
 
 export function FaucetTokenButton() {
   const { vault } = useParams(VaultPage);

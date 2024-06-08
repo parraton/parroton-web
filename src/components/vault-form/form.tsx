@@ -17,7 +17,7 @@ export async function Form({ lng }: { lng: Language }) {
   const { t } = await serverTranslation(lng, 'form');
 
   return (
-    <Tabs defaultValue={Actions.deposit} className='w-[400px]'>
+    <Tabs defaultValue={Actions.deposit} className='w-full'>
       <TabsList className={cn('grid w-full', `grid-cols-4`)}>
         <TabsTrigger value={Actions.deposit}>{t('deposit_title')}</TabsTrigger>
         <TabsTrigger value={Actions.withdraw}>{t('withdraw_title')}</TabsTrigger>
