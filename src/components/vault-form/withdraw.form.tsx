@@ -85,7 +85,7 @@ export function WithdrawForm() {
             <CardContent className='space-y-2'>
               <div className='space-y-1'>
                 <Label htmlFor='current'>
-                  {t('amount')}. Balance: {formatNumber(balance, lng)}
+                  {t('amount')}: {formatNumber(balance, lng)}
                 </Label>
                 <Field name='amount' id='current' type='number' as={Input} />
                 <ErrorMessage
