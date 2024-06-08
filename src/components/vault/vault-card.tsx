@@ -1,10 +1,8 @@
 'use client';
 
 import { cn, formatCurrency, formatNumber, formatPercentage } from '@lib/utils';
-import { Button } from '@UI/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@UI/card';
+import { Card, CardContent, CardTitle } from '@UI/card';
 import { Language } from '@i18n/settings';
-import { VaultPage } from '@routes';
 import { Maybe } from '@types';
 import { useTranslation } from '@i18n/client';
 import Link from '../../../node_modules/next/link';

@@ -3,7 +3,6 @@ import { SlidersHorizontal } from 'lucide-react';
 import { Button } from '@UI/button';
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,

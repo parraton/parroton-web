@@ -1,11 +1,9 @@
 'use client';
 
-import { useTranslation } from '@i18n/client';
 import { useChangeLanguage } from './use-change-language';
 
 export function LanguageToggle() {
-  const { t: langt } = useTranslation({ ns: 'language' });
-  const { currentLanguage, languages, changeLanguage } = useChangeLanguage();
+  const { currentLanguage, changeLanguage } = useChangeLanguage();
 
   return (
     <input
