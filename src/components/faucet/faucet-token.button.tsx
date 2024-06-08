@@ -31,5 +31,9 @@ export function FaucetTokenButton() {
     );
   };
 
-  return <Button onClick={handleFaucet}>{FaucetToken}</Button>;
+  return (
+    <Button onClick={handleFaucet} className='custom-main-btn'>
+      {FaucetToken}
+    </Button>
+  );
 }

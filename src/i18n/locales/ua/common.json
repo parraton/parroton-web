@@ -1,4 +1,7 @@
 {
   "app_title": "Parroton",
-  "app_description": "Опис для Parroton"
+  "app_description": "Опис для Parroton",
+  "deposit": "Депозит",
+  "withdraw": "Вивести",
+  "rewards": "Забрати нагороди"
 }

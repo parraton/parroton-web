@@ -31,5 +31,9 @@ export function FaucetLpButton() {
     );
   };
 
-  return <Button onClick={handleFaucet}>{Faucet}</Button>;
+  return (
+    <Button onClick={handleFaucet} className='custom-secondary-btn'>
+      {Faucet}
+    </Button>
+  );
 }

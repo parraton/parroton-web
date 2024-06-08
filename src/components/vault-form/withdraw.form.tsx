@@ -96,8 +96,8 @@ export function WithdrawForm() {
               </div>
             </CardContent>
             <CardFooter>
-              <Button type='submit' disabled={isSubmitting || !isValid}>
-                {t('submit')}
+              <Button type='submit' disabled={isSubmitting || !isValid} className='custom-main-btn'>
+                {t('withdraw')}
               </Button>
             </CardFooter>
           </Form>
