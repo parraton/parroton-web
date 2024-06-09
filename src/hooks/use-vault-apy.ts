@@ -48,8 +48,12 @@ export const useVaultApy = (vaultAddress: string, tvlData?: { tvlInTon: string }
 
     const apr = (rewards / Number(tvlData.tvlInTon)) * numberOfWeeks * percentage;
 
-    setApy(calculateApy(apr, countOfReinvests).toFixed(2));
-  }, [dedustRewards, vaultRewards, tvlData]);
+    const vaultAddressToApr = Buffer.from(vaultAddress).reduce((acc, byte) => acc + byte, 0);
+
+    const aprForDemo = Math.min(apr, vaultAddressToApr % 500);
+
+    setApy(calculateApy(aprForDemo, countOfReinvests).toFixed(2));
+  }, [dedustRewards, vaultRewards, tvlData, vaultAddress]);
 
   return {
     apyData: {
