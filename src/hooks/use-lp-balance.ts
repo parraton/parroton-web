@@ -1,11 +1,11 @@
 import { useConnection } from '@hooks/use-connection';
 import { Address, fromNano } from '@ton/core';
 import useSWR from 'swr';
-import { getLpWallet } from '@core';
+import { getWallet } from '@core';
 import { usePool } from '@hooks/use-pool';
 
 export const getLpBalance = async (senderAddress: Address, poolAddress: Address) => {
-  const lpWallet = await getLpWallet(senderAddress, poolAddress);
+  const lpWallet = await getWallet(senderAddress, poolAddress);
   const data = await lpWallet.getWalletData();
 
   //TODO: fix decimals

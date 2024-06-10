@@ -14,6 +14,7 @@ export const useVaultApy = (vaultAddress: string, tvlData?: { tvlInTon: string }
   const { distributionPool: vaultDistributionPool } = useVaultDistributionPool(vaultAddress);
 
   const [apy, setApy] = useState<string | null>(null);
+  const [extraApr, setExtraApr] = useState<string | null>(null);
 
   const { data: dedustRewards, error } = useSWR(
     ['dedust-rewards', vaultAddress, Boolean(dedustDistributionPool)],
@@ -44,20 +45,22 @@ export const useVaultApy = (vaultAddress: string, tvlData?: { tvlInTon: string }
     if (dedustRewards && vaultRewards) {
       console.log({ dedustRewards, vaultRewards });
     }
-    const rewards = Number(dedustRewards) + Number(vaultRewards);
 
-    const apr = (rewards / Number(tvlData.tvlInTon)) * numberOfWeeks * percentage;
+    const apr = (Number(dedustRewards) / Number(tvlData.tvlInTon)) * numberOfWeeks * percentage;
+    const extraApr = (Number(vaultRewards) / Number(tvlData.tvlInTon)) * numberOfWeeks * percentage;
 
     const vaultAddressToApr = Buffer.from(vaultAddress).reduce((acc, byte) => acc + byte, 0);
 
     const aprForDemo = Math.min(apr, vaultAddressToApr % 500);
 
     setApy(calculateApy(aprForDemo, countOfReinvests).toFixed(2));
+    setExtraApr(extraApr.toFixed(2));
   }, [dedustRewards, vaultRewards, tvlData, vaultAddress]);
 
   return {
     apyData: {
       apy,
+      extraApr,
       daily: apy ? (Number(apy) / countOfReinvests).toFixed(2) : undefined,
     },
     error,

@@ -5,13 +5,12 @@ import { WithdrawForm } from '@components/vault-form/withdraw.form';
 import { Language } from '@i18n/settings';
 import { serverTranslation } from '@i18n';
 import { FormCard } from '@components/vault-form/form-card';
-import { FaucetLpButton } from '@components/faucet/faucet-lp.button';
 import { cn } from '@lib/utils';
 import { Actions } from '@types';
-import { FaucetTokenButton } from '@components/faucet/faucet-token.button';
 import { CardContent, CardFooter } from '@UI/card';
 import { ClaimBalance } from '@components/claim/claim-balance';
 import { ClaimButton } from '@components/claim/claim.button';
+import { FaucetForm } from '@components/vault-form/faucet.form';
 
 export async function Form({ lng }: { lng: Language }) {
   const { t } = await serverTranslation(lng, 'form');
@@ -37,8 +36,7 @@ export async function Form({ lng }: { lng: Language }) {
       <TabsContent value={Actions.faucet}>
         <FormCard action={Actions.faucet} lng={lng}>
           <CardFooter className={'justify-between'}>
-            <FaucetTokenButton />
-            <FaucetLpButton />
+            <FaucetForm />
           </CardFooter>
         </FormCard>
       </TabsContent>

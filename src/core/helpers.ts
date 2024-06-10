@@ -27,7 +27,7 @@ export const getVault = async (vaultAddress: Address) => {
   return tonClient.open(rawVault);
 };
 
-export const getLpWallet = async (
+export const getWallet = async (
   senderAddress: Address,
   poolAddress: Address,
 ): Promise<OpenedContract<JettonWallet>> => {

@@ -21,6 +21,7 @@ export function Vault({ address, lng }: { address: string; lng: Language }) {
     deposited: sharesBalance,
     apy: poolNumbers?.apy,
     daily: poolNumbers?.daily,
+    extraApr: poolNumbers?.extraApr,
     tvl: poolNumbers?.tvlInUsd,
     address,
   };

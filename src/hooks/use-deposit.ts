@@ -1,4 +1,4 @@
-import { deposit as depositApi, getVault, getLpWallet } from '@core';
+import { deposit as depositApi, getVault, getWallet } from '@core';
 import { Address, toNano } from '@ton/core';
 import { useConnection } from '@hooks/use-connection';
 import { useParams } from '@routes/hooks';
@@ -17,7 +17,7 @@ export const useDeposit = () => {
     }
 
     const vault = await getVault(Address.parse(vaultAddress));
-    const investorLpWallet = await getLpWallet(sender.address, pool);
+    const investorLpWallet = await getWallet(sender.address, pool);
 
     const atomicAmount = toNano(amount);
 

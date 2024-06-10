@@ -8,7 +8,7 @@ import { Input } from '@UI/input';
 import { useDeposit } from '@hooks/use-deposit';
 import { useTranslation } from '@i18n/client';
 import { useLpBalance } from '@hooks/use-lp-balance';
-import { cn, formatNumber } from '@lib/utils';
+import { cn, formatCurrency, formatNumber } from '@lib/utils';
 import { toFormikValidate } from 'zod-formik-adapter';
 import { z } from 'zod';
 import { firstValueFrom } from 'rxjs';
@@ -17,11 +17,15 @@ import { TonviewerLink } from '@components/tonviewer-link';
 import { successTransaction } from '@utils/transaction-subjects';
 import { useParams } from '@routes/hooks';
 import { VaultPage } from '@routes';
+import { useVaultMetadata } from '@hooks/use-vault-metadata';
+import { useVaultTvl } from '@hooks/use-vault-tvl';
+import { multiplyIfPossible } from '@utils/multiply-if-possible';
 
 const useFormData = () => {
   const { t } = useTranslation({ ns: 'form' });
   const { vault } = useParams(VaultPage);
-
+  const { tvlData } = useVaultTvl(vault);
+  const { metadata } = useVaultMetadata(vault);
   const { balance } = useLpBalance(vault);
 
   const validate = toFormikValidate(
@@ -33,13 +37,20 @@ const useFormData = () => {
     }),
   );
 
-  return { balance, validate };
+  console.log({ tvlData });
+
+  return {
+    balance,
+    validate,
+    currency: metadata?.symbol ?? '~~~~',
+    dollarEquivalent: multiplyIfPossible(tvlData?.priceForOne, balance),
+  };
 };
 
 export function DepositForm() {
   const { t, lng } = useTranslation({ ns: 'common' });
   const { deposit } = useDeposit();
-  const { balance, validate } = useFormData();
+  const { balance, validate, currency, dollarEquivalent } = useFormData();
 
   return (
     <Formik
@@ -83,7 +94,8 @@ export function DepositForm() {
           <CardContent className='space-y-2'>
             <div className='space-y-1'>
               <Label htmlFor='amount'>
-                {t('amount')}: {formatNumber(balance, lng)}
+                {t('amount')}: {formatNumber(balance, lng)} {currency} (
+                {dollarEquivalent ? formatCurrency(`${dollarEquivalent}`, lng) : '~~~~'})
               </Label>
               <Field name='amount' id='amount' type='number' as={Input} />
               <ErrorMessage

@@ -3,15 +3,18 @@ import { useDedustDistributionPool } from '@hooks/use-dedust-distribution-pool';
 import useSWR from 'swr';
 import { tonClient } from '@core/config';
 import { Address, fromNano } from '@ton/core';
+import { JettonRoot } from '@dedust/sdk';
+import { usePool } from '@hooks/use-pool';
 
 export const useVaultTvl = (vaultAddress: string) => {
   const { tonPrice } = useTonPrice();
   const { distributionPool } = useDedustDistributionPool(vaultAddress);
+  const { pool } = usePool(vaultAddress);
 
   const { data: tvlData, error } = useSWR(
-    ['vault-numbers', vaultAddress, tonPrice, Boolean(distributionPool)],
+    ['vault-numbers', vaultAddress, tonPrice, Boolean(distributionPool), Boolean(pool)],
     async () => {
-      if (!distributionPool) return;
+      if (!distributionPool || !pool) return;
 
       const {
         last: { seqno },
@@ -25,11 +28,16 @@ export const useVaultTvl = (vaultAddress: string) => {
 
       const poolTvl = tvl * Number(tonPrice);
 
-      console.log({ tvlInTon: tvl });
+      const rawJetton = JettonRoot.createFromAddress(pool);
+      const jetton = tonClient.open(rawJetton);
+      const { totalSupply } = await jetton.getJettonData();
+
+      const supply = fromNano(totalSupply);
 
       return {
         tvlInTon: `${tvl}`,
         tvlInUsd: `${poolTvl}`,
+        priceForOne: `${poolTvl / Number(supply)}`,
       };
     },
     {

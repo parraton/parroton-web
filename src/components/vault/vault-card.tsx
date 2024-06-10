@@ -5,7 +5,7 @@ import { Card, CardContent, CardTitle } from '@UI/card';
 import { Language } from '@i18n/settings';
 import { Maybe } from '@types';
 import { useTranslation } from '@i18n/client';
-import Link from '../../../node_modules/next/link';
+import Link from 'next/link';
 
 export type VaultCardProps = {
   title: string;
@@ -14,6 +14,7 @@ export type VaultCardProps = {
   deposited: Maybe<string>;
   apy: Maybe<string>;
   daily: Maybe<string>;
+  extraApr: Maybe<string>;
   tvl: Maybe<string>;
   address: string;
 };
@@ -64,6 +65,10 @@ export function VaultCard({ data, locale, className, ...props }: CardProps) {
           />
           <LinkedInfo title={t('apy')} value={data.apy ? formatPercentage(data.apy) : '~~~~'} />
           <NanoInfo title={t('daily')} value={data.daily ? formatPercentage(data.daily) : '~~~~'} />
+          <NanoInfo
+            title={t('extraApr')}
+            value={data.extraApr ? formatPercentage(data.extraApr) : '~~~~'}
+          />
           <NanoInfo title={t('tvl')} value={data.tvl ? formatCurrency(data.tvl, locale) : '~~~~'} />
         </CardContent>
       </Card>

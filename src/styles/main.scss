@@ -65,6 +65,13 @@ a {
 
 .custom-wrapper {
   z-index: 2;
+
+  &:hover {
+    transform: scale(1.02) translate(0, -6px);
+    transition: transform 0.2s ease-in-out;
+  }
+
+  transition: transform 0.1s ease-in-out;
 }
 
 .custom-card-content {
@@ -75,7 +82,7 @@ a {
   gap: 10px;
 
   @media (min-width: 768px) {
-    grid-template-columns: 1.5fr repeat(2, 0.5fr) repeat(2, 1fr) 0.5fr;
+    grid-template-columns: 1.5fr repeat(2, 0.5fr) repeat(3, 1fr) 0.5fr;
     grid-template-rows: auto;
     gap: 20px;
   }
