@@ -1,11 +1,12 @@
 'use client';
 import { useRewardsBalance } from '@components/claim/use-rewards-balance';
 import { formatNumber } from '@lib/utils';
-import { useTranslation } from '@i18n/client';
+import { useParams } from '@routes/hooks';
+import { VaultPage } from '@routes';
 
 export function ClaimBalance() {
+  const { lng } = useParams(VaultPage);
   const { balance } = useRewardsBalance();
-  const { lng } = useTranslation({ ns: 'common' });
 
   return <div>Your rewards balance: {formatNumber(balance, lng)}</div>;
 }

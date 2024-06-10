@@ -40,7 +40,12 @@ export function useRewardsBalance() {
   const { distributionAccount } = useDistributionAccount(distributionPool);
 
   const { data, error } = useSWR(
-    ['rewards-balance', distributionPool?.address, sender.address?.toString()],
+    [
+      'rewards-balance',
+      Boolean(distributionAccount),
+      Boolean(distributionPool),
+      sender.address?.toString(),
+    ],
     async () => {
       if (!sender.address || !distributionPool || !distributionAccount) return null;
 
@@ -58,6 +63,8 @@ export function useRewardsBalance() {
     },
     { refreshInterval: 5000 },
   );
+
+  console.log({ data, error });
 
   return {
     balance: data,
