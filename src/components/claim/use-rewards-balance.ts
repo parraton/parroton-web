@@ -47,19 +47,26 @@ export function useRewardsBalance() {
       sender.address?.toString(),
     ],
     async () => {
-      if (!sender.address || !distributionPool || !distributionAccount) return null;
-
-      let totalPaid = 0n;
       try {
-        const result = await distributionAccount.getAccountData();
-        totalPaid = result.totalPaid;
-      } catch {}
+        if (!sender.address || !distributionPool || !distributionAccount) return null;
 
-      const rewardsDictionary = await getRewardsDictionary(distributionPool);
+        let totalPaid = 0n;
+        try {
+          const result = await distributionAccount.getAccountData();
+          totalPaid = result.totalPaid;
+        } catch {}
 
-      const value = rewardsDictionary.get(sender.address);
+        const rewardsDictionary = await getRewardsDictionary(distributionPool);
 
-      return value ? fromNano(value - totalPaid) : undefined;
+        const value = rewardsDictionary.get(sender.address);
+
+        console.log({ totalPaid, value });
+
+        return value ? fromNano(value - totalPaid) : undefined;
+      } catch (error) {
+        console.error(error);
+        throw error;
+      }
     },
     { refreshInterval: 5000 },
   );
