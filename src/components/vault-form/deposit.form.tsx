@@ -20,6 +20,7 @@ import { VaultPage } from '@routes';
 import { useVaultMetadata } from '@hooks/use-vault-metadata';
 import { useVaultTvl } from '@hooks/use-vault-tvl';
 import { multiplyIfPossible } from '@utils/multiply-if-possible';
+import { OrLoader } from '@components/loader/loader';
 
 const useFormData = () => {
   const { t } = useTranslation({ ns: 'form' });
@@ -42,7 +43,7 @@ const useFormData = () => {
   return {
     balance,
     validate,
-    currency: metadata?.symbol ?? '~~~~',
+    currency: metadata?.symbol,
     dollarEquivalent: multiplyIfPossible(tvlData?.priceForOne, balance),
   };
 };
@@ -93,9 +94,10 @@ export function DepositForm() {
         <Form>
           <CardContent className='space-y-2'>
             <div className='space-y-1'>
-              <Label htmlFor='amount'>
-                {t('amount')}: {formatNumber(balance, lng)} {currency} (
-                {dollarEquivalent ? formatCurrency(`${dollarEquivalent}`, lng) : '~~~~'})
+              <Label className={'flex items-center gap-1'} htmlFor='amount'>
+                {t('amount')}: {<OrLoader value={balance} modifier={(x) => formatNumber(x, lng)} />}{' '}
+                {<OrLoader value={currency} />} (
+                <OrLoader value={dollarEquivalent} modifier={(x) => formatCurrency(x, lng)} />)
               </Label>
               <Field name='amount' id='amount' type='number' as={Input} />
               <ErrorMessage

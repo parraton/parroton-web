@@ -1,8 +1,9 @@
 {
   "balance": "У гамаці",
   "deposited": "Внесок",
+  "currency": "Валюта",
   "apy": "APY",
   "daily": "Денний",
-  "tvl": "TVL",
-  "manage": "Керувати"
+  "extraApr": "Додатковий APR",
+  "tvl": "TVL"
 }

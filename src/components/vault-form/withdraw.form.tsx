@@ -20,6 +20,7 @@ import { VaultPage } from '@routes';
 import { useVaultMetadata } from '@hooks/use-vault-metadata';
 import { multiplyIfPossible } from '@utils/multiply-if-possible';
 import { useVaultTvl } from '@hooks/use-vault-tvl';
+import { OrLoader } from '@components/loader/loader';
 
 const useFormData = () => {
   const { t } = useTranslation({ ns: 'form' });
@@ -93,9 +94,11 @@ export function WithdrawForm() {
           <Form>
             <CardContent className='space-y-2'>
               <div className='space-y-1'>
-                <Label htmlFor='current'>
-                  {t('amount')}: {formatNumber(balance, lng)} {currency} (
-                  {dollarEquivalent ? formatCurrency(`${dollarEquivalent}`, lng) : '~~~~'})
+                <Label className={'flex items-center gap-1'} htmlFor='amount'>
+                  {t('amount')}:{' '}
+                  {<OrLoader value={balance} modifier={(x) => formatNumber(x, lng)} />}{' '}
+                  {<OrLoader value={currency} />} (
+                  <OrLoader value={dollarEquivalent} modifier={(x) => formatCurrency(x, lng)} />)
                 </Label>
                 <Field name='amount' id='current' type='number' as={Input} />
                 <ErrorMessage

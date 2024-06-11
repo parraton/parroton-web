@@ -97,14 +97,14 @@
     "no-void": "off",
     "no-console": "off",
     "no-empty-interface": "off",
-    //    "react/jsx-no-literals": [
-    //      "error",
-    //      {
-    //        "noStrings": true,
-    //        "ignoreProps": true,
-    //        "noAttributeStrings": false
-    //      }
-    //    ],
+    "react/jsx-no-literals": [
+      "error",
+      {
+        "noStrings": true,
+        "ignoreProps": true,
+        "noAttributeStrings": false
+      }
+    ],
     "unicorn/no-null": "off",
     "compat/compat": "off",
     "unicorn/no-array-callback-reference": "off",

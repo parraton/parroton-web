@@ -1,9 +1,9 @@
 {
   "balance": "Wallet",
   "deposited": "Deposited",
+  "currency": "Currency",
   "apy": "APY",
   "daily": "Daily",
   "extraApr": "Extra APR",
-  "tvl": "TVL",
-  "manage": "Manage Vault"
+  "tvl": "TVL"
 }

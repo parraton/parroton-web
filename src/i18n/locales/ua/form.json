@@ -1,0 +1,16 @@
+{
+  "deposit_title": "Депозит",
+  "deposit_description": "Депозитуйте свій lp-jetton та отримайте нагороди",
+  "withdraw_title": "Вивести",
+  "withdraw_description": "Виведіть свій lp-jetton та нагороди",
+  "faucet_title": "Кран",
+  "faucet_description": "Отримайте безкоштовні токени",
+  "claim_title": "Нагороди",
+  "claim_description": "Отримайте свої нагороди",
+  "validation": {
+    "min_deposit": "Мінімальний депозит {{minDeposit}}",
+    "max_deposit": "Максимальний депозит {{maxDeposit}}",
+    "min_withdraw": "Неможливо вивести менше {{minWithdraw}}",
+    "max_withdraw": "Неможливо вивести більше {{maxWithdraw}}"
+  }
+}

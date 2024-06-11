@@ -1,0 +1,60 @@
+$dash-width: 6px;
+$dash-height: 3px;
+$column-gap: 2px;
+$animation-duration: 0.4s;
+$animation-smoothing: 0.4;
+$dash-quantity: 4;
+
+@mixin dash-index-animation($index, $quantity) {
+  .dash:nth-child(#{$index}) {
+    animation-name: dash-animation;
+    animation-duration: calc(var(--duration) * #{$quantity});
+    animation-timing-function: linear;
+    animation-delay: calc(var(--duration) * (#{$index} - 1) * var(--smoothing));
+    animation-iteration-count: infinite;
+  }
+}
+
+@mixin create-inline-loading-animation($quantity) {
+  @for $i from 1 through $quantity {
+    @include dash-index-animation($i, $quantity);
+  }
+}
+
+.inline-loading {
+  --main-color: hsl(var(--primary-foreground));
+  --secondary-color: hsl(var(--secondary-foreground));
+  min-height: 1em;
+
+  display: flex;
+  align-items: center;
+  column-gap: $column-gap;
+
+  &.animation {
+    --duration: #{$animation-duration};
+    --smoothing: #{$animation-smoothing};
+
+    @include create-inline-loading-animation($dash-quantity);
+  }
+}
+
+.dash {
+  width: calc($dash-width * var(--zoom));
+  height: calc($dash-height * var(--zoom));
+  background-color: var(--main-color);
+}
+
+@keyframes dash-animation {
+  0% {
+    background-color: var(--main-color);
+  }
+  12.5% {
+    background-color: var(--secondary-color);
+  }
+  25% {
+    background-color: var(--main-color);
+  }
+  100% {
+    background-color: var(--main-color);
+  }
+}

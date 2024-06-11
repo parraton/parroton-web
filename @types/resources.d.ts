@@ -2,18 +2,10 @@ interface Resources {
   "common": {
     "app_title": "Parroton",
     "app_description": "Description for Parroton",
-    "submit": "Submit",
     "amount": "Amount",
     "deposit": "Deposit",
     "withdraw": "Withdraw",
     "rewards": "Claim Rewards"
-  },
-  "demo": {
-    "button_text": "Click me",
-    "sonner_button_text": "Click me too",
-    "sonner_massage": "Hello, I'm a sonner, message: {{message}}",
-    "sonner_undo": "Undo",
-    "sonner_description": "This is a sonner button, date: {{date}}"
   },
   "form": {
     "deposit_title": "Deposit",
@@ -54,11 +46,11 @@ interface Resources {
   "vault-card": {
     "balance": "Wallet",
     "deposited": "Deposited",
+    "currency": "Currency",
     "apy": "APY",
     "daily": "Daily",
     "extraApr": "Extra APR",
-    "tvl": "TVL",
-    "manage": "Manage Vault"
+    "tvl": "TVL"
   }
 }
 

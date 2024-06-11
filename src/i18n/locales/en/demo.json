@@ -1,7 +1,0 @@
-{
-  "button_text": "Click me",
-  "sonner_button_text": "Click me too",
-  "sonner_massage": "Hello, I'm a sonner, message: {{message}}",
-  "sonner_undo": "Undo",
-  "sonner_description": "This is a sonner button, date: {{date}}"
-}

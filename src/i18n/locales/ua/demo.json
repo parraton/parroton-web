@@ -1,7 +1,0 @@
-{
-  "button_text": "Ткни на мене",
-  "sonner_button_text": "І на мене ткни",
-  "sonner_massage": "Привіт, я сонер, повідомлення {{message}}",
-  "sonner_undo": "Відмінити",
-  "sonner_description": "Це опис, дата: {{date}}"
-}

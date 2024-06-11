@@ -66,8 +66,6 @@ export function useRewardsBalance() {
     { refreshInterval: 5000 },
   );
 
-  console.log({ data, error });
-
   return {
     balance: data,
     error,
