@@ -112,7 +112,8 @@
     "lodash/prefer-is-nil": "off",
     "unicorn/no-static-only-class": "off",
     "no-empty": "off",
-    "lodash/prefer-lodash-typecheck": "off"
+    "lodash/prefer-lodash-typecheck": "off",
+    "unicorn/no-negated-condition": "off"
   },
   "overrides": [
     {
