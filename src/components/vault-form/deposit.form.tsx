@@ -1,4 +1,5 @@
 'use client';
+/* eslint-disable react/jsx-no-literals */
 
 import { CardContent, CardFooter } from '@UI/card';
 import { Label } from '@UI/label';
@@ -13,7 +14,6 @@ import { toFormikValidate } from 'zod-formik-adapter';
 import { z } from 'zod';
 import { firstValueFrom } from 'rxjs';
 import { toast } from 'sonner';
-import { TonviewerLink } from '@components/tonviewer-link';
 import { successTransaction } from '@utils/transaction-subjects';
 import { useParams } from '@routes/hooks';
 import { VaultPage } from '@routes';
@@ -21,6 +21,8 @@ import { useVaultMetadata } from '@hooks/use-vault-metadata';
 import { useVaultTvl } from '@hooks/use-vault-tvl';
 import { multiplyIfPossible } from '@utils/multiply-if-possible';
 import { OrLoader } from '@components/loader/loader';
+import { TransactionSent } from '@components/transactions/sent';
+import { TransactionCompleted } from '@components/transactions/completed';
 
 const useFormData = () => {
   const { t } = useTranslation({ ns: 'form' });
@@ -64,23 +66,12 @@ export function DepositForm() {
         try {
           await deposit(values.amount);
 
-          toast.info(
-            <div>
-              <div>Transaction has been sent</div>
-            </div>,
-          );
+          toast.info(<TransactionSent />);
 
           const successHash = await firstValueFrom(successTransaction);
 
-          console.log('Transaction is complete', { successHash });
-
           //TODO: make component for toast
-          toast.success(
-            <div>
-              <div>Transaction is complete</div>
-              <TonviewerLink hash={successHash} />
-            </div>,
-          );
+          toast.success(<TransactionCompleted hash={successHash} />);
         } catch (error) {
           console.error(error);
           toast.error('Something went wrong. Please try again later.');

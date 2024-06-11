@@ -43,7 +43,8 @@ export const Loader: FC<DashPlugProps> = ({ zoom, animation, className, quantity
   );
 };
 
-export function OrLoader<T>(props: { value?: T | null; modifier?: (value: T) => ReactNode }) {
+//eslint-disable-next-line no-unused-vars
+export function OrLoader<T>(props: { value?: T | null; modifier?: (_: T) => ReactNode }) {
   return !props.value ? (
     <Loader animation />
   ) : props.modifier ? (

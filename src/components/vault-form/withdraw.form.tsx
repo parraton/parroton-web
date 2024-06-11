@@ -1,4 +1,5 @@
 'use client';
+/* eslint-disable react/jsx-no-literals */
 
 import { CardContent, CardFooter } from '@UI/card';
 import { Label } from '@UI/label';
@@ -21,6 +22,7 @@ import { useVaultMetadata } from '@hooks/use-vault-metadata';
 import { multiplyIfPossible } from '@utils/multiply-if-possible';
 import { useVaultTvl } from '@hooks/use-vault-tvl';
 import { OrLoader } from '@components/loader/loader';
+import { TransactionSent } from '@components/transactions/sent';
 
 const useFormData = () => {
   const { t } = useTranslation({ ns: 'form' });
@@ -63,23 +65,11 @@ export function WithdrawForm() {
         try {
           await withdraw(values.amount);
 
-          // const hash = await firstValueFrom(hashTransaction);
-
-          toast.info(
-            <div>
-              <div>Transaction has been sent</div>
-            </div>,
-          );
+          toast.info(<TransactionSent />);
 
           const successHash = await firstValueFrom(successTransaction);
 
-          //TODO: make component for toast
-          toast.success(
-            <div>
-              <div>Transaction is complete</div>
-              <TonviewerLink hash={successHash} />
-            </div>,
-          );
+          toast.success(<TonviewerLink hash={successHash} />);
         } catch (error) {
           console.error(error);
           toast.error('Something went wrong. Please try again later.');

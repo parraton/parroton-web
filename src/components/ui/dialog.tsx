@@ -1,4 +1,5 @@
 'use client';
+/* eslint-disable react/jsx-no-literals */
 
 import * as React from 'react';
 import * as DialogPrimitive from '@radix-ui/react-dialog';

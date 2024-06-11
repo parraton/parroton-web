@@ -12,5 +12,8 @@
     "max_deposit": "Deposit can not be more than {{maxDeposit}}",
     "min_withdraw": "Withdraw can not be less or equal {{minWithdraw}}",
     "max_withdraw": "Withdraw can not be more than {{maxWithdraw}}"
+  },
+  "claim": {
+    "text": "Your rewards balance: {{balance}} TON({{dollar}})"
   }
 }

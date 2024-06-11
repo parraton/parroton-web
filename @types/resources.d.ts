@@ -21,6 +21,9 @@ interface Resources {
       "max_deposit": "Deposit can not be more than {{maxDeposit}}",
       "min_withdraw": "Withdraw can not be less or equal {{minWithdraw}}",
       "max_withdraw": "Withdraw can not be more than {{maxWithdraw}}"
+    },
+    "claim": {
+      "text": "Your rewards balance: {{balance}} TON({{dollar}})"
     }
   },
   "language": {
@@ -42,6 +45,11 @@ interface Resources {
     "dialog_close": "Close",
     "mode_title": "Color mode",
     "language_title": "Language"
+  },
+  "transaction": {
+    "sent": "Transaction Sent",
+    "view_explorer": "View Explorer",
+    "completed": "Transaction Completed"
   },
   "vault-card": {
     "balance": "Wallet",
