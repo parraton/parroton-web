@@ -11,6 +11,7 @@ import { OrLoader } from '@components/loader/loader';
 import { ReactNode } from 'react';
 import { useTranslation } from '@i18n/client';
 import { formatCurrency, formatNumber, formatPercentage } from '@lib/utils';
+import { Carousel } from '@components/carousel/carousel';
 
 const useVaultInfo = () => {
   const { vault, lng } = useParams(VaultPage);
@@ -23,7 +24,7 @@ const useVaultInfo = () => {
 };
 
 const NanoInfoPlate = ({ title, value }: { title: ReactNode; value: ReactNode }) => (
-  <div className={'flex flex-col gap-2 rounded border bg-gradient-to-b p-3'}>
+  <div className={'flex flex-col items-center gap-2 bg-gradient-to-b p-3'}>
     <div className={'text-l z-20 font-medium'}>{title}</div>
     <div className={'z-20 text-sm font-bold'}>{value}</div>
   </div>
@@ -38,7 +39,7 @@ export function VaultInfo() {
       <h1 className={'scroll-m-20 text-4xl font-medium tracking-tight lg:text-5xl'}>
         {metadata?.name ?? '~~~~'}
       </h1>
-      <Card className={'grid grid-cols-2 gap-2 p-6 sm:grid-cols-3'}>
+      <Carousel slidesToShow={4}>
         <NanoInfoPlate
           title={t('balance')}
           value={
@@ -93,7 +94,7 @@ export function VaultInfo() {
             <OrLoader value={poolNumbers?.tvlInUsd} modifier={(x) => formatCurrency(x, lng)} />
           }
         />
-      </Card>
+      </Carousel>
     </div>
   );
 }
