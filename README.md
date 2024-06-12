@@ -1,36 +1,120 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Parroton
+
+**Parroton** is a simple reinvestment platform built on top of DeDust. This project leverages modern web technologies
+including Next.js, TypeScript, TailwindCSS, and more to provide a seamless experience for reinvesting in DeDust.
+
+## Table of Contents
+
+- [Overview](#overview)
+- [Getting Started](#getting-started)
+    - [Prerequisites](#prerequisites)
+    - [Installation](#installation)
+    - [Running the Development Server](#running-the-development-server)
+- [Scripts](#scripts)
+- [Main Dependencies](#main-dependencies)
+- [Project Structure](#project-structure)
+- [Contributing](#contributing)
+- [License](#license)
+
+## Overview
+
+Parroton simplifies the process of reinvesting in DeDust by providing an intuitive platform with enhanced security and
+performance.
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
+Ensure you have the following installed on your local development machine:
+
+- Node.js (>= 14.0.0)
+- pnpm (>= 6.0.0)
+
+### Installation
+
+1. Clone the repository:
+    ```sh
+    git clone https://github.com/digberi/parroton.git
+    ```
+
+2. Navigate to the project directory:
+    ```sh
+    cd parroton
+    ```
+
+3. Install the dependencies:
+    ```sh
+    pnpm install
+    ```
+
+### Running the Development Server
+
+To start the development server, run:
+
+```sh
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The application will be available at `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- **`setup`**: Executes the setup script (`./scripts/setup.js`).
+- **`prebuild`**: Executes the prebuild script (`./scripts/prebuild.js`).
+- **`dev`**: Runs setup and starts the Next.js development server.
+- **`build`**: Runs prebuild and builds the Next.js application for production.
+- **`start`**: Starts the Next.js application in production mode.
+- **`lint`**: Runs the Next.js linting process.
+- **`oxlint`**: Runs the custom `oxlint` with specific plugins and configurations.
+- **`g`**: Adds a new component using the Shadcn-UI generator.
+- **`type-locales`**: Generates TypeScript types for i18n locales.
+- **`dr:build`**: Builds the declarative routing configuration.
+- **`dr:build:watch`**: Watches for changes and rebuilds the declarative routing configuration.
+- **`prepare`**: Runs Husky to prepare Git hooks.
 
-## Learn More
+## Main Dependencies
 
-To learn more about Next.js, take a look at the following resources:
+### Production
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Next.js**: React framework for server-rendered applications.
+- **React**: JavaScript library for building user interfaces.
+- **TailwindCSS**: Utility-first CSS framework.
+- **i18next**: Internationalization library.
+- **Formik**: Form management library for React.
+- **Ton**: Libraries for TON blockchain integration.
+- **DeDust SDK**: SDK for interacting with DeDust services.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+### Development
 
-## Deploy on Vercel
+- **TypeScript**: Superset of JavaScript that adds static typing.
+- **ESLint**: Linting utility for JavaScript and TypeScript.
+- **Prettier**: Code formatting tool.
+- **Husky**: Git hooks manager.
+- **Declarative Routing**: Declarative routing configuration.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Project Structure
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- **`/public`**: Static assets.
+- **`/src`**: Source code.
+    - **`/components`**: React components.
+    - **`/app`**: Next.ja app routing and configuration.
+    - **`/core`**: Core application logic.
+    - **`/hooks`**: Custom React hooks.
+    - **`/i18n`**: Internationalization resources.
+    - **`/routes`**: Declarative routing configuration.
+    - **`/styles`**: Styling files.
+    - **`/utils`**: Utility functions.
+
+## Contributing
+
+Contributions are welcome! Please follow the established code style and conventions. For major changes, open an issue
+first to discuss what you would like to change.
+
+## License
+
+This project is licensed under the MIT License. See the LICENSE file for more information.
+
+---
+
+This README.md provides an overview of the project's structure, installation steps, available scripts, and key features.
+Customize the repository URL and additional details as needed.

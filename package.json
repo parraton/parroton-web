@@ -1,5 +1,6 @@
 {
-  "name": "next-js-template",
+  "name": "parroton",
+  "description": "Parroton is a simple reinvestment platform on top of DeDust.",
   "version": "0.1.0",
   "private": true,
   "scripts": {
