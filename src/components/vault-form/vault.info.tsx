@@ -6,7 +6,6 @@ import { useLpBalance } from '@hooks/use-lp-balance';
 import { useSharesBalance } from '@hooks/use-shares-balance';
 import { useVaultMetadata } from '@hooks/use-vault-metadata';
 import { usePoolNumbers } from '@hooks/use-pool-numbers';
-import { Card } from '@UI/card';
 import { OrLoader } from '@components/loader/loader';
 import { ReactNode } from 'react';
 import { useTranslation } from '@i18n/client';
