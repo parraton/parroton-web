@@ -113,8 +113,3 @@ first to discuss what you would like to change.
 ## License
 
 This project is licensed under the MIT License. See the LICENSE file for more information.
-
----
-
-This README.md provides an overview of the project's structure, installation steps, available scripts, and key features.
-Customize the repository URL and additional details as needed.
