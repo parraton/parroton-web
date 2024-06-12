@@ -2,7 +2,6 @@
 
 import { VaultPage } from '@routes';
 import { useParams } from '@routes/hooks';
-import { useLpBalance } from '@hooks/use-lp-balance';
 import { useSharesBalance } from '@hooks/use-shares-balance';
 import { useVaultMetadata } from '@hooks/use-vault-metadata';
 import { usePoolNumbers } from '@hooks/use-pool-numbers';
@@ -14,12 +13,11 @@ import { Carousel } from '@components/carousel/carousel';
 
 const useVaultInfo = () => {
   const { vault, lng } = useParams(VaultPage);
-  const { balance: lpBalance } = useLpBalance(vault);
   const { balance: sharesBalance } = useSharesBalance(vault);
   const { metadata } = useVaultMetadata(vault);
   const { poolNumbers } = usePoolNumbers(vault);
 
-  return { lpBalance, sharesBalance, metadata, poolNumbers, lng };
+  return { sharesBalance, metadata, poolNumbers, lng };
 };
 
 const NanoInfoPlate = ({ title, value }: { title: ReactNode; value: ReactNode }) => (
@@ -30,7 +28,7 @@ const NanoInfoPlate = ({ title, value }: { title: ReactNode; value: ReactNode })
 );
 
 export function VaultInfo() {
-  const { lpBalance, sharesBalance, metadata, poolNumbers, lng } = useVaultInfo();
+  const { sharesBalance, metadata, poolNumbers, lng } = useVaultInfo();
   const { t } = useTranslation({ ns: 'vault-card' });
 
   return (
@@ -39,22 +37,6 @@ export function VaultInfo() {
         {metadata?.name ?? '~~~~'}
       </h1>
       <Carousel slidesToShow={4}>
-        <NanoInfoPlate
-          title={t('balance')}
-          value={
-            <OrLoader
-              value={
-                lpBalance && metadata?.symbol
-                  ? {
-                      lpBalance,
-                      currency: metadata?.symbol,
-                    }
-                  : undefined
-              }
-              modifier={({ lpBalance, currency }) => `${formatNumber(lpBalance, lng)} ${currency}`}
-            />
-          }
-        />
         <NanoInfoPlate
           title={t('deposited')}
           value={
