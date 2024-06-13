@@ -10,7 +10,7 @@ import {
   SendMode,
 } from '@ton/core';
 
-export type TonJettonTonStrategyConfig = {
+export type StrategyConfig = {
   vaultAddress: Address;
   jettonMasterAddress: Address;
   poolAddress: Address;
@@ -18,13 +18,12 @@ export type TonJettonTonStrategyConfig = {
   depositLpWalletAddress: Address;
   jettonWalletAddress: Address;
   adminAddress: Address;
-  jettonBalance: bigint;
   jettonVaultAddress: Address;
   nativeVaultAddress: Address;
   tempUpgrade: Cell;
 };
 
-export function tonJettonTonStrategyConfigToCell(config: TonJettonTonStrategyConfig): Cell {
+export function tonJettonTonStrategyConfigToCell(config: StrategyConfig): Cell {
   return beginCell()
     .storeAddress(config.vaultAddress)
     .storeAddress(config.jettonMasterAddress)
@@ -35,7 +34,6 @@ export function tonJettonTonStrategyConfigToCell(config: TonJettonTonStrategyCon
         .storeAddress(config.depositLpWalletAddress)
         .storeAddress(config.jettonWalletAddress)
         .storeAddress(config.adminAddress)
-        .storeCoins(config.jettonBalance)
         .endCell(),
     )
     .storeRef(
@@ -68,7 +66,7 @@ export class Strategy implements Contract {
     return new Strategy(address);
   }
 
-  static createFromConfig(config: TonJettonTonStrategyConfig, code: Cell, workchain = 0) {
+  static createFromConfig(config: StrategyConfig, code: Cell, workchain = 0) {
     const data = tonJettonTonStrategyConfigToCell(config);
     const init = { code, data };
     return new Strategy(contractAddress(workchain, init), init);
@@ -156,7 +154,7 @@ export class Strategy implements Contract {
     });
   }
 
-  async getStrategyData(provider: ContractProvider): Promise<TonJettonTonStrategyConfig> {
+  async getStrategyData(provider: ContractProvider): Promise<StrategyConfig> {
     const result = await provider.get('get_strategy_data', []);
     return {
       vaultAddress: result.stack.readAddress(),
@@ -166,7 +164,6 @@ export class Strategy implements Contract {
       depositLpWalletAddress: result.stack.readAddress(),
       jettonWalletAddress: result.stack.readAddress(),
       adminAddress: result.stack.readAddress(),
-      jettonBalance: result.stack.readBigNumber(),
       jettonVaultAddress: result.stack.readAddress(),
       nativeVaultAddress: result.stack.readAddress(),
       tempUpgrade: result.stack.readCell(),
