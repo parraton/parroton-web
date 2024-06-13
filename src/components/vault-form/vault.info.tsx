@@ -47,10 +47,18 @@ export function VaultInfo() {
   const { sharesBalance, metadata, poolNumbers, lng } = useVaultInfo();
   const { t } = useTranslation({ ns: 'vault-card' });
 
+  const totalRewardPercent =
+    poolNumbers?.apy != null && poolNumbers?.extraApr != null
+      ? Number(poolNumbers.apy) + Number(poolNumbers.extraApr)
+      : undefined;
+
+  const tooltipApy = `${t('apy')}: `;
+  const tooltipExtraApr = `${t('extraApr')}: `;
+
   return (
     <div className={'g flex flex-col gap-4'}>
       <h1 className={'scroll-m-20 text-4xl font-medium tracking-tight'}>
-        {metadata?.name ?? '~~~~'}
+        <OrLoader value={metadata?.name} />
       </h1>
       <div className='custom-list'>
         <div className='custom-list-item custom-card rounded-lg border text-card-foreground shadow-sm'>
@@ -62,14 +70,34 @@ export function VaultInfo() {
           />
           <NanoInfoPlate
             title={t('apy')}
-            value={<OrLoader value={poolNumbers?.apy} modifier={(x) => formatPercentage(x, lng)} />}
-            tooltip={
-              <OrLoader value={poolNumbers?.daily} modifier={(x) => formatPercentage(x, lng)} />
+            value={
+              <OrLoader value={totalRewardPercent} modifier={(x) => formatPercentage(x, lng)} />
             }
-            tooltipTitle={`${t('extraApr')}: `}
+            tooltip={
+              totalRewardPercent ? (
+                <div>
+                  <div>
+                    {tooltipApy}
+                    <OrLoader value={poolNumbers!.apy} modifier={(x) => formatPercentage(x, lng)} />
+                  </div>
+                  <div>
+                    {tooltipExtraApr}
+                    <OrLoader
+                      value={poolNumbers!.extraApr}
+                      modifier={(x) => formatPercentage(x, lng)}
+                    />
+                  </div>
+                </div>
+              ) : undefined
+            }
           />
         </div>
-        <div className='custom-list-item custom-card rounded-lg border text-card-foreground shadow-sm'>
+        <div
+          style={{
+            zIndex: -1,
+          }}
+          className='custom-list-item custom-card rounded-lg border text-card-foreground shadow-sm'
+        >
           <NanoInfoPlate
             title={t('daily')}
             value={
