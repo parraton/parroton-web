@@ -47,13 +47,20 @@ function LinkedInfo({
 }) {
   return (
     <div className='custom-list-el custom-card-info'>
-      <div className={`custom-card-title ${tooltip && 'custom-list-header'}`}>
-        {title}
-        {tooltip && (
-          <span className='custom-tooltip'>
-            {tooltipTitle} {tooltip}
-          </span>
-        )}
+      <div className={`custom-card-title `}>
+        <div
+          className={`${tooltip && 'custom-list-header'}`}
+          style={{
+            width: 'fit-content',
+          }}
+        >
+          {title}
+          {tooltip && (
+            <span className='custom-tooltip custom-tooltip-xs'>
+              {tooltipTitle} {tooltip}
+            </span>
+          )}
+        </div>
       </div>
       <div className={` custom-card-link`}>{value}</div>
     </div>

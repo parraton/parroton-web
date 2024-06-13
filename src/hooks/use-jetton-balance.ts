@@ -10,14 +10,22 @@ export function useJettonBalance(vaultAddress: string) {
   useEffect(() => {
     const fetchBalance = async () => {
       if (!sender.address) return;
-      const { jettonMasterAddress } = await getStrategyInfoByVault(Address.parse(vaultAddress));
-      const wallet = await getWallet(sender.address, jettonMasterAddress);
+      try {
+        const { jettonMasterAddress } = await getStrategyInfoByVault(Address.parse(vaultAddress));
+        const wallet = await getWallet(sender.address, jettonMasterAddress);
 
-      const rawBalance = await wallet.getBalance();
+        const rawBalance = await wallet.getBalance();
 
-      const balance = fromNano(rawBalance);
+        const balance = fromNano(rawBalance);
 
-      setBalance(balance);
+        setBalance(balance);
+      } catch (error) {
+        if ((error as Error)?.message.includes('-256')) {
+          setBalance('0');
+        } else {
+          throw error;
+        }
+      }
     };
 
     void fetchBalance();

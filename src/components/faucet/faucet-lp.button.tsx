@@ -14,7 +14,7 @@ import { Address } from '@ton/core';
 const transactionSent = 'Transaction sent';
 const Faucet = 'Deposit Dex Lp';
 
-export function FaucetLpButton() {
+export function FaucetLpButton({ disabled }: { disabled: boolean }) {
   const { vault } = useParams(VaultPage);
   const { sender } = useConnection({ batch: true });
 
@@ -32,7 +32,7 @@ export function FaucetLpButton() {
   };
 
   return (
-    <Button onClick={handleFaucet} className='custom-secondary-btn'>
+    <Button disabled={disabled} onClick={handleFaucet} className='custom-secondary-btn'>
       {Faucet}
     </Button>
   );

@@ -35,8 +35,8 @@ const useFormData = () => {
     z.object({
       amount: z
         .number()
-        .min(0, t('validation.min_deposit', { minDeposit: 0 }))
-        .max(Number(balance), t('validation.max_deposit', { maxDeposit: formatNumber(balance) })),
+        .gt(0, t('validation.min_deposit', { minDeposit: 0 }))
+        .lte(Number(balance), t('validation.max_deposit', { maxDeposit: formatNumber(balance) })),
     }),
   );
 

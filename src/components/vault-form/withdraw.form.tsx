@@ -35,8 +35,8 @@ const useFormData = () => {
     z.object({
       amount: z
         .number()
-        .min(0, t('validation.min_withdraw', { minWithdraw: 0 }))
-        .max(Number(balance), t('validation.max_withdraw', { maxWithdraw: formatNumber(balance) })),
+        .gt(0, t('validation.min_withdraw', { minWithdraw: 0 }))
+        .lte(Number(balance), t('validation.max_withdraw', { maxWithdraw: formatNumber(balance) })),
     }),
   );
 

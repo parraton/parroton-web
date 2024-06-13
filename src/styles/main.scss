@@ -78,7 +78,7 @@ a {
 
 .custom-card-content {
   display: grid;
-  grid-template-rows: repeat(6, 1fr);
+  grid-template-rows: repeat(5, 1fr);
   align-items: center;
   padding-top: 1.5rem;
   gap: 10px;
@@ -550,6 +550,13 @@ a {
       color: #fff;
       border: 1px solid #fff;
     }
+  }
+}
+
+.custom-tooltip-xs {
+  @media (max-width: 767px) {
+    left: 100%;
+    width: fit-content;
   }
 }
 

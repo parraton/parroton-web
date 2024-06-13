@@ -10,7 +10,7 @@
   "validation": {
     "min_deposit": "Мінімальний депозит {{minDeposit}}",
     "max_deposit": "Максимальний депозит {{maxDeposit}}",
-    "min_withdraw": "Неможливо вивести менше {{minWithdraw}}",
+    "min_withdraw": "Неможливо вивести {{minWithdraw}} або менше",
     "max_withdraw": "Неможливо вивести більше {{maxWithdraw}}"
   }
 }

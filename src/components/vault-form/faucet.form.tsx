@@ -43,13 +43,13 @@ export function FaucetForm() {
         <span>
           {jettonBalance ? formatNumber(jettonBalance, lng) : '~~~~'} {jettonSymbol}
         </span>
-        <FaucetTokenButton />
+        <FaucetTokenButton disabled={false} />
       </div>
       <div className={'flex flex-col gap-2'}>
         <span>
           {lpBalance ? formatNumber(lpBalance, lng) : '~~~~'} {currency ?? '~~~~'}
         </span>
-        <FaucetLpButton />
+        <FaucetLpButton disabled={!Number(jettonBalance)} />
       </div>
     </div>
   );
