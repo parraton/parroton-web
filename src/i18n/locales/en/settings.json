@@ -1,6 +1,6 @@
 {
   "dialog_title": "Settings",
-  "dialog_description": "Here you can change the settings of the application.",
+  "dialog_description": "Here you can manage the settings of the application",
   "dialog_close": "Close",
   "mode_title": "Color mode",
   "language_title": "Language"
