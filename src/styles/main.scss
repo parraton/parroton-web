@@ -84,7 +84,7 @@ a {
   gap: 10px;
 
   @media (min-width: 768px) {
-    grid-template-columns: 1.5fr repeat(2, 0.5fr) repeat(3, 1fr) 0.5fr;
+    grid-template-columns: 5fr repeat(2, 2fr) repeat(2, 2fr) 2fr;
     grid-template-rows: auto;
     gap: 20px;
   }

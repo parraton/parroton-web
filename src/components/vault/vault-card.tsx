@@ -23,13 +23,11 @@ export type VaultCardProps = {
 
 type CardProps = React.ComponentProps<typeof Card> & { data: VaultCardProps; locale: Language };
 
-function NanoInfo({ title, value }: { title: string; value: string }) {
+function NanoInfo({ title, value }: { title: string; value: ReactNode }) {
   return (
     <div className='custom-card-info'>
       <span className='custom-card-title'>{title}</span>
-      <span className='custom-card-value' title={value}>
-        {value}
-      </span>
+      <span className='custom-card-value'>{value}</span>
     </div>
   );
 }
@@ -87,13 +85,11 @@ export function VaultCard({ data, locale, className, ...props }: CardProps) {
           <CardTitle className='custom-card-header'>{data.title}</CardTitle>
           <NanoInfo
             title={t('balance')}
-            value={data.balance ? `${formatNumber(data.balance, locale)} ${data.currency}` : '~~~~'}
+            value={<OrLoader value={data.balance} modifier={(x) => formatNumber(x, locale)} />}
           />
           <NanoInfo
             title={t('deposited')}
-            value={
-              data.deposited ? `${formatNumber(data.deposited, locale)} ${data.currency}` : '~~~~'
-            }
+            value={<OrLoader value={data.deposited} modifier={(x) => formatNumber(x, locale)} />}
           />
           <LinkedInfo
             title={t('apy')}

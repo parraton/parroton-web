@@ -23,7 +23,7 @@ export const formatNumber = (num: number | string | undefined | null, locale: La
 export const formatCurrency = (
   num: number | string,
   locale: Language = 'en',
-  currency: string = 'USD',
+  currency: string = 'usd',
 ) => {
   const argument = Number.parseFloat(num as string);
 
