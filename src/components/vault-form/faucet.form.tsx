@@ -8,6 +8,7 @@ import { FaucetLpButton } from '@components/faucet/faucet-lp.button';
 import { formatNumber } from '@lib/utils';
 import { useVaultMetadata } from '@hooks/use-vault-metadata';
 import { useJettonBalance } from '@hooks/use-jetton-balance';
+import { OrLoader } from '@components/loader/loader';
 
 const useFaucetFormData = () => {
   const { vault, lng } = useParams(VaultPage);
@@ -35,19 +36,21 @@ export function FaucetForm() {
         .replace('lp', '')
         .trim()
         .toUpperCase()
-    : '~~~~';
+    : undefined;
 
   return (
     <div className={'flex w-max flex-1 justify-between'}>
       <div className={'flex flex-col gap-2'}>
         <span>
-          {jettonBalance ? formatNumber(jettonBalance, lng) : '~~~~'} {jettonSymbol}
+          <OrLoader value={jettonBalance} modifier={(x) => formatNumber(x, lng)} />{' '}
+          <OrLoader value={jettonSymbol} />
         </span>
         <FaucetTokenButton disabled={false} />
       </div>
       <div className={'flex flex-col gap-2'}>
         <span>
-          {lpBalance ? formatNumber(lpBalance, lng) : '~~~~'} {currency ?? '~~~~'}
+          <OrLoader value={lpBalance} modifier={(x) => formatNumber(x, lng)} />{' '}
+          <OrLoader value={currency} />
         </span>
         <FaucetLpButton disabled={!Number(jettonBalance)} />
       </div>

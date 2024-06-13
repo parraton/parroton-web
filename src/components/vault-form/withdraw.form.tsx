@@ -23,6 +23,10 @@ import { multiplyIfPossible } from '@utils/multiply-if-possible';
 import { useVaultTvl } from '@hooks/use-vault-tvl';
 import { OrLoader } from '@components/loader/loader';
 import { TransactionSent } from '@components/transactions/sent';
+import { useDebouncedCallback } from 'use-debounce';
+import { useState } from 'react';
+import { getVault } from '@core';
+import { Address, fromNano, toNano } from '@ton/core';
 
 const useFormData = () => {
   const { t } = useTranslation({ ns: 'form' });
@@ -31,20 +35,35 @@ const useFormData = () => {
   const { metadata } = useVaultMetadata(vault);
   const { balance } = useSharesBalance(vault);
 
+  const [estimatedLp, setEstimatedLp] = useState<string>('');
+
+  const fetchLpEquivalent = useDebouncedCallback(async (value) => {
+    const v = await getVault(Address.parse(vault));
+    const x = await v.getEstimatedLpAmount(toNano(value));
+
+    setEstimatedLp(fromNano(x));
+  }, 500);
+
   const validate = toFormikValidate(
     z.object({
       amount: z
         .number()
         .gt(0, t('validation.min_withdraw', { minWithdraw: 0 }))
-        .lte(Number(balance), t('validation.max_withdraw', { maxWithdraw: formatNumber(balance) })),
+        .lte(
+          Number(balance?.lpBalance),
+          t('validation.max_withdraw', { maxWithdraw: formatNumber(balance?.lpBalance) }),
+        ),
     }),
   );
 
   return {
-    balance,
+    balance: balance?.lpBalance,
+    estimatedLp,
+    fetchSharesEquivalent: fetchLpEquivalent,
     validate,
-    currency: metadata?.symbol ?? '~~~~',
-    dollarEquivalent: multiplyIfPossible(tvlData?.priceForOne, balance),
+    currency: metadata?.symbol,
+    dollarEquivalent: multiplyIfPossible(tvlData?.priceForOne, balance?.lpBalance),
+    outputTitle: t('output'),
   };
 };
 
@@ -52,7 +71,15 @@ export function WithdrawForm() {
   const { t, lng } = useTranslation({ ns: 'common' });
   const { withdraw } = useWithdraw();
 
-  const { balance, validate, currency, dollarEquivalent } = useFormData();
+  const {
+    balance,
+    estimatedLp,
+    fetchSharesEquivalent,
+    validate,
+    currency,
+    dollarEquivalent,
+    outputTitle,
+  } = useFormData();
 
   return (
     <Formik
@@ -79,7 +106,9 @@ export function WithdrawForm() {
         }
       }}
     >
-      {({ isSubmitting, isValid }) => {
+      {({ isSubmitting, isValid, values }) => {
+        void fetchSharesEquivalent(values.amount);
+        console.log('values.amount', values.amount);
         return (
           <Form>
             <CardContent className='space-y-2'>
@@ -95,6 +124,15 @@ export function WithdrawForm() {
                   className={cn('text-sm text-red-500', 'mt-1')}
                   component='div'
                   name='amount'
+                />
+                <Label>{outputTitle}</Label>
+                <Field
+                  name='output'
+                  id='output'
+                  type='number'
+                  as={Input}
+                  readOnly
+                  value={estimatedLp}
                 />
               </div>
             </CardContent>

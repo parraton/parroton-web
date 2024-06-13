@@ -23,6 +23,10 @@ import { multiplyIfPossible } from '@utils/multiply-if-possible';
 import { OrLoader } from '@components/loader/loader';
 import { TransactionSent } from '@components/transactions/sent';
 import { TransactionCompleted } from '@components/transactions/completed';
+import { useState } from 'react';
+import { useDebouncedCallback } from 'use-debounce';
+import { getVault } from '@core';
+import { Address, fromNano, toNano } from '@ton/core';
 
 const useFormData = () => {
   const { t } = useTranslation({ ns: 'form' });
@@ -30,6 +34,15 @@ const useFormData = () => {
   const { tvlData } = useVaultTvl(vault);
   const { metadata } = useVaultMetadata(vault);
   const { balance } = useLpBalance(vault);
+
+  const [estimatedShares, setEstimatedShares] = useState<string>('');
+
+  const fetchSharesEquivalent = useDebouncedCallback(async (value) => {
+    const v = await getVault(Address.parse(vault));
+    const x = await v.getEstimatedLpAmount(toNano(value));
+
+    setEstimatedShares(fromNano(x));
+  }, 500);
 
   const validate = toFormikValidate(
     z.object({
@@ -42,16 +55,27 @@ const useFormData = () => {
 
   return {
     balance,
+    estimatedShares,
+    fetchSharesEquivalent,
     validate,
     currency: metadata?.symbol,
     dollarEquivalent: multiplyIfPossible(tvlData?.priceForOne, balance),
+    outputTitle: t('output'),
   };
 };
 
 export function DepositForm() {
   const { t, lng } = useTranslation({ ns: 'common' });
   const { deposit } = useDeposit();
-  const { balance, validate, currency, dollarEquivalent } = useFormData();
+  const {
+    balance,
+    estimatedShares,
+    fetchSharesEquivalent,
+    validate,
+    currency,
+    dollarEquivalent,
+    outputTitle,
+  } = useFormData();
 
   return (
     <Formik
@@ -79,30 +103,43 @@ export function DepositForm() {
         }
       }}
     >
-      {({ isSubmitting, isValid }) => (
-        <Form>
-          <CardContent className='space-y-2'>
-            <div className='space-y-1'>
-              <Label className={'flex items-center gap-1'} htmlFor='amount'>
-                {t('amount')}: {<OrLoader value={balance} modifier={(x) => formatNumber(x, lng)} />}{' '}
-                {<OrLoader value={currency} />} (
-                <OrLoader value={dollarEquivalent} modifier={(x) => formatCurrency(x, lng)} />)
-              </Label>
-              <Field name='amount' id='amount' type='number' as={Input} />
-              <ErrorMessage
-                className={cn('text-sm text-red-500', 'mt-1')}
-                component='div'
-                name='amount'
-              />
-            </div>
-          </CardContent>
-          <CardFooter>
-            <Button disabled={isSubmitting || !isValid} type='submit' className='custom-main-btn'>
-              {t('deposit')}
-            </Button>
-          </CardFooter>
-        </Form>
-      )}
+      {({ isSubmitting, isValid, values }) => {
+        void fetchSharesEquivalent(values.amount);
+        return (
+          <Form>
+            <CardContent className='space-y-2'>
+              <div className='space-y-1'>
+                <Label className={'flex items-center gap-1'} htmlFor='amount'>
+                  {t('amount')}:{' '}
+                  {<OrLoader value={balance} modifier={(x) => formatNumber(x, lng)} />}{' '}
+                  {<OrLoader value={currency} />} (
+                  <OrLoader value={dollarEquivalent} modifier={(x) => formatCurrency(x, lng)} />)
+                </Label>
+                <Field name='amount' id='amount' type='number' as={Input} />
+                <ErrorMessage
+                  className={cn('text-sm text-red-500', 'mt-1')}
+                  component='div'
+                  name='amount'
+                />
+                <Label>{outputTitle}</Label>
+                <Field
+                  name='output'
+                  id='output'
+                  type='number'
+                  as={Input}
+                  readOnly
+                  value={estimatedShares}
+                />
+              </div>
+            </CardContent>
+            <CardFooter>
+              <Button disabled={isSubmitting || !isValid} type='submit' className='custom-main-btn'>
+                {t('deposit')}
+              </Button>
+            </CardFooter>
+          </Form>
+        );
+      }}
     </Formik>
   );
 }

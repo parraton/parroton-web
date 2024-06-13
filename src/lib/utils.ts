@@ -12,7 +12,6 @@ const languageToIntlLocaleMap: Record<Language, Intl.LocalesArgument> = {
 };
 
 export const formatNumber = (num: number | string | undefined | null, locale: Language = 'en') => {
-  //TODO: Implement the function that will return '~~~~' if num is undefined or null
   if (num === undefined || num === null) return '~~~~';
 
   return new Intl.NumberFormat(languageToIntlLocaleMap[locale], {

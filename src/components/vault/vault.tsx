@@ -15,10 +15,10 @@ export function Vault({ address, lng }: { address: string; lng: Language }) {
   const { poolNumbers } = usePoolNumbers(address);
 
   const data: VaultCardProps = {
-    title: metadata?.name ?? '~~~~',
+    title: metadata?.name,
     balance: lpBalance,
-    currency: metadata?.symbol ?? '~~~~',
-    deposited: sharesBalance,
+    currency: metadata?.symbol,
+    deposited: sharesBalance?.lpBalance,
     apy: poolNumbers?.apy,
     daily: poolNumbers?.daily,
     extraApr: poolNumbers?.extraApr,

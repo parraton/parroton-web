@@ -4,6 +4,7 @@ import { FC, ReactNode, useLayoutEffect, useMemo, useRef } from 'react';
 
 import styles from './loader.module.scss';
 import { cn } from '@lib/utils';
+import { useConnection } from '@hooks/use-connection';
 
 export interface DashPlugProps {
   zoom?: number;
@@ -45,8 +46,10 @@ export const Loader: FC<DashPlugProps> = ({ zoom, animation, className, quantity
 
 //eslint-disable-next-line no-unused-vars
 export function OrLoader<T>(props: { value?: T | null; modifier?: (_: T) => ReactNode }) {
+  const { connected } = useConnection();
+
   return props.value == null ? (
-    <Loader animation />
+    <Loader animation={connected} />
   ) : props.modifier ? (
     props.modifier(props.value)
   ) : (

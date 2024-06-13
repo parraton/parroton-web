@@ -42,9 +42,6 @@ export const useVaultApy = (vaultAddress: string, tvlData?: { tvlInTon: string }
 
   useEffect(() => {
     if (!tvlData || !dedustRewards || !vaultRewards) return;
-    if (dedustRewards && vaultRewards) {
-      console.log({ dedustRewards, vaultRewards });
-    }
 
     const apr = (Number(dedustRewards) / Number(tvlData.tvlInTon)) * numberOfWeeks * percentage;
     const extraApr = (Number(vaultRewards) / Number(tvlData.tvlInTon)) * numberOfWeeks * percentage;

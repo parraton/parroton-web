@@ -7,9 +7,12 @@ const getSharesBalance = async (senderAddress: Address, vaultAddress: Address) =
   const vault = await getVault(vaultAddress);
   const sharesWallet = await getSharesWallet(vault, senderAddress);
   const data = await sharesWallet.getWalletData();
+  const sharesBalance = await vault.getEstimatedLpAmount(data.balance);
 
-  //TODO: fix decimals
-  return fromNano(data.balance);
+  return {
+    sharesBalance: fromNano(sharesBalance),
+    lpBalance: fromNano(data.balance),
+  };
 };
 
 export const useSharesBalance = (vaultAddress: string) => {
@@ -23,7 +26,10 @@ export const useSharesBalance = (vaultAddress: string) => {
         return await getSharesBalance(sender.address, Address.parse(vaultAddress));
       } catch (error) {
         if ((error as Error)?.message.includes('-256')) {
-          return '0';
+          return {
+            sharesBalance: '0',
+            lpBalance: '0',
+          };
         } else {
           throw error;
         }

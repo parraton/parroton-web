@@ -10,9 +10,9 @@ import { ReactNode } from 'react';
 import { OrLoader } from '@components/loader/loader';
 
 export type VaultCardProps = {
-  title: string;
+  title: Maybe<string>;
   balance: Maybe<string>;
-  currency: string;
+  currency: Maybe<string>;
   deposited: Maybe<string>;
   apy: Maybe<string>;
   daily: Maybe<string>;
@@ -111,8 +111,14 @@ export function VaultCard({ data, locale, className, ...props }: CardProps) {
               ) : undefined
             }
           />
-          <NanoInfo title={t('daily')} value={data.daily ? formatPercentage(data.daily) : '~~~~'} />
-          <NanoInfo title={t('tvl')} value={data.tvl ? formatCurrency(data.tvl, locale) : '~~~~'} />
+          <NanoInfo
+            title={t('daily')}
+            value={<OrLoader value={data.daily} modifier={(x) => formatPercentage(x, locale)} />}
+          />
+          <NanoInfo
+            title={t('tvl')}
+            value={<OrLoader value={data.tvl} modifier={(x) => formatCurrency(x, locale)} />}
+          />
         </CardContent>
       </Card>
     </Link>

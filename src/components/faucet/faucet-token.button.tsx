@@ -10,12 +10,12 @@ import { useParams } from '@routes/hooks';
 import { VaultPage } from '@routes';
 import { Address } from '@ton/core';
 import { TransactionCompleted } from '@components/transactions/completed';
-
-const FaucetToken = 'Mint Jettons';
+import { useTranslation } from '@i18n/client';
 
 export function FaucetTokenButton({ disabled }: { disabled: boolean }) {
   const { vault } = useParams(VaultPage);
   const { sender } = useConnection();
+  const { t } = useTranslation({ ns: 'form' });
 
   const handleFaucet = async () => {
     await faucetToken(sender, Address.parse(vault));
@@ -27,7 +27,7 @@ export function FaucetTokenButton({ disabled }: { disabled: boolean }) {
 
   return (
     <Button disabled={disabled} onClick={handleFaucet} className='custom-main-btn'>
-      {FaucetToken}
+      {t('mint.button')}
     </Button>
   );
 }

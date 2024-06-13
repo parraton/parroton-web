@@ -23,8 +23,16 @@ interface Resources {
       "max_withdraw": "Withdraw can not be more than {{maxWithdraw}}"
     },
     "claim": {
-      "text": "Your rewards balance: {{balance}} TON({{dollar}})"
-    }
+      "text": "Your rewards balance: {{balance}} TON({{dollar}})",
+      "button": "Claim"
+    },
+    "faucet": {
+      "button": "Deposit Dex Lp"
+    },
+    "mint": {
+      "button": "Mint Jettons"
+    },
+    "output": "You receive"
   },
   "language": {
     "en": "English",
