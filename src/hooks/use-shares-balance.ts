@@ -19,8 +19,15 @@ export const useSharesBalance = (vaultAddress: string) => {
     ['sharesBalance', sender.address?.toString(), vaultAddress],
     async () => {
       if (!sender.address) return null;
-
-      return await getSharesBalance(sender.address, Address.parse(vaultAddress));
+      try {
+        return await getSharesBalance(sender.address, Address.parse(vaultAddress));
+      } catch (error) {
+        if ((error as Error)?.message.includes('-256')) {
+          return '0';
+        } else {
+          throw error;
+        }
+      }
     },
     { refreshInterval: 5000 },
   );

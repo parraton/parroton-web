@@ -21,8 +21,15 @@ export const useLpBalance = (vaultAddress: string) => {
     ['lpBalance', sender.address?.toString(), vaultAddress, Boolean(pool)],
     async () => {
       if (!sender.address || !pool) return null;
-
-      return await getLpBalance(sender.address, pool);
+      try {
+        return await getLpBalance(sender.address, pool);
+      } catch (error) {
+        if ((error as Error)?.message.includes('-256')) {
+          return '0';
+        } else {
+          throw error;
+        }
+      }
     },
     { refreshInterval: 5000 },
   );

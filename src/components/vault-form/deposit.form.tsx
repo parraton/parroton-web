@@ -40,8 +40,6 @@ const useFormData = () => {
     }),
   );
 
-  console.log({ tvlData });
-
   return {
     balance,
     validate,

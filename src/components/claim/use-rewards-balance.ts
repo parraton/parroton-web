@@ -49,19 +49,31 @@ export function useRewardsBalance() {
     async () => {
       if (!sender.address || !distributionPool || !distributionAccount) return null;
 
-      let totalPaid = 0n;
       try {
-        const result = await distributionAccount.getAccountData();
-        totalPaid = result.totalPaid;
-      } catch {}
+        let totalPaid = 0n;
+        try {
+          const result = await distributionAccount.getAccountData();
+          totalPaid = result.totalPaid;
+        } catch {}
 
-      const rewardsDictionary = await getRewardsDictionary(distributionPool);
+        const rewardsDictionary = await getRewardsDictionary(distributionPool);
 
-      const value = rewardsDictionary.get(sender.address);
+        const value = rewardsDictionary.get(sender.address);
 
-      console.log({ totalPaid, value });
+        console.log({ totalPaid, value });
 
-      return value ? fromNano(value - totalPaid) : undefined;
+        return value ? fromNano(value - totalPaid) : undefined;
+      } catch (error) {
+        console.error(error);
+        if (
+          (error as Error)?.message.includes('-256') ||
+          (error as Error)?.message.includes('Data URI')
+        ) {
+          return '0';
+        } else {
+          throw error;
+        }
+      }
     },
     { refreshInterval: 5000 },
   );
