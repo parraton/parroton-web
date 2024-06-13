@@ -12,18 +12,18 @@ const toAddressesDict = <T extends Record<string, string>>(rawAddresses: T): Add
 };
 
 const usdtVault = toAddressesDict({
-  vault: 'EQDCTVjdnkcr5yIyBJBKLdGtiSuDYYhZCQD6ZwqSPWeMP4Mi',
-  extraDistributionPool: 'EQBDJhFGiwHf17N4KCDgDS8GkGDeNadWzg_Ek23DN7WNAuVN',
+  vault: 'EQBgdJIHy2z4YEo5ssqIOExlGDD61Tn2bIytXtNBj1pW9onM',
+  extraDistributionPool: 'EQDpeKN5EPj7sSAToZlLTYppRPNDk2EQghugRKLWlBAjCvOi',
 });
 
 const scaleVault = toAddressesDict({
-  vault: 'EQCx3v_v6OTg58BDMIBIREewZ1rfFjyzbgEivXbpZGN9J6_P',
-  extraDistributionPool: 'EQCG-vwexBCTFh17mU2ffwRusqkv2PbqQa1mhZt5NUtMhCZt',
+  vault: 'EQCQ1FiAoaZemtGd_5Nz3zJpzBqzG2RLipoBfIvOcioTLAB7',
+  extraDistributionPool: 'EQAE6WdY8_uybeL_8jN1nlV-4ixTbUVbAKx--pUjs2mUQL79',
 });
 
 const notVault = toAddressesDict({
-  vault: 'EQDzgLurE_klqVvHAdyZ1hBGQpgHCiDFpRg4bnu_-DUyxX4g',
-  extraDistributionPool: 'EQA-Nx5mMcP8_BXlh6qJ_oLsFPguCsoa0Pn4Nbg6cI3SNE-8',
+  vault: 'EQDRdHx-8fC6aW6lSlqAYwOlYo5L5nM8PNChwjxWaQHOdDVx',
+  extraDistributionPool: 'EQDpkTnKu_fX_ZRotAVsA9yZTfFd35LBtLWfhO6f1Kp2-b1Z',
 });
 
 const commonAddresses = toAddressesDict({
