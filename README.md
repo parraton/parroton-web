@@ -1,15 +1,22 @@
-# Parroton
+# Parroton Webapp
 
-**Parroton** is a simple reinvestment platform built on top of DeDust. This project leverages modern web technologies
-including Next.js, TypeScript, TailwindCSS, and more to provide a seamless experience for reinvesting in DeDust.
+Parroton is a decentralized, permission-less, open-source yield optimization protocol on TON blockchain. Visit [parroton.org](https://parroton.org) for more information.
+
+Parroton consists of these components:
+
+**[Contract](https://github.com/KStasi/parroton-core)**: The smart contract code that is running on-chain.
+
+**Webapp**: The web application that helps users with deposits and withdrawals. The code is available here on this repository.
+
+**[Restaker](https://github.com/Digberi/parroton-bot)**: The off-chain bot that restakes rewards to generate more yield for depositors.
 
 ## Table of Contents
 
 - [Overview](#overview)
 - [Getting Started](#getting-started)
-    - [Prerequisites](#prerequisites)
-    - [Installation](#installation)
-    - [Running the Development Server](#running-the-development-server)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+  - [Running the Development Server](#running-the-development-server)
 - [Scripts](#scripts)
 - [Main Dependencies](#main-dependencies)
 - [Project Structure](#project-structure)
@@ -33,19 +40,21 @@ Ensure you have the following installed on your local development machine:
 ### Installation
 
 1. Clone the repository:
-    ```sh
-    git clone https://github.com/digberi/parroton.git
-    ```
+
+   ```sh
+   git clone https://github.com/digberi/parroton.git
+   ```
 
 2. Navigate to the project directory:
-    ```sh
-    cd parroton
-    ```
+
+   ```sh
+   cd parroton
+   ```
 
 3. Install the dependencies:
-    ```sh
-    pnpm install
-    ```
+   ```sh
+   pnpm install
+   ```
 
 ### Running the Development Server
 
@@ -96,14 +105,14 @@ The application will be available at `http://localhost:3000`.
 
 - **`/public`**: Static assets.
 - **`/src`**: Source code.
-    - **`/components`**: React components.
-    - **`/app`**: Next.ja app routing and configuration.
-    - **`/core`**: Core application logic.
-    - **`/hooks`**: Custom React hooks.
-    - **`/i18n`**: Internationalization resources.
-    - **`/routes`**: Declarative routing configuration.
-    - **`/styles`**: Styling files.
-    - **`/utils`**: Utility functions.
+  - **`/components`**: React components.
+  - **`/app`**: Next.ja app routing and configuration.
+  - **`/core`**: Core application logic.
+  - **`/hooks`**: Custom React hooks.
+  - **`/i18n`**: Internationalization resources.
+  - **`/routes`**: Declarative routing configuration.
+  - **`/styles`**: Styling files.
+  - **`/utils`**: Utility functions.
 
 ## Contributing
 
@@ -112,4 +121,11 @@ first to discuss what you would like to change.
 
 ## License
 
-This project is licensed under the MIT License. See the LICENSE file for more information.
+This project is licensed under the MIT license.
+
+See [LICENSE](LICENSE) for more information.
+
+<p align="center"> Made with 💙💛 by <a href=https://mad.fish/>mad.fish</a>
+<br />
+<img src="docs/images/logo_big.svg" alt="Logo" height="200">
+</p>
