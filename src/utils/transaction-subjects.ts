@@ -41,8 +41,6 @@ export const hashTransaction = transactionSubject.pipe(
 );
 
 pendingTransaction.subscribe(async (boc) => {
-  console.log('Pending transaction', { boc });
-
   const hash = await bocToHash(boc);
 
   transactionSubject.next({
@@ -57,8 +55,6 @@ pendingTransaction.subscribe(async (boc) => {
       map(async () => {
         const { in_progress } = await tonApiHttpClient.events.getEvent(hash);
 
-        console.log({ in_progress });
-
         return in_progress != undefined && !in_progress;
       }),
     )
@@ -68,9 +64,6 @@ pendingTransaction.subscribe(async (boc) => {
           status: TransactionStatus.Success,
           data: hash,
         });
-        console.log('Transaction mined');
-      } else {
-        console.log('Transaction not mined');
       }
     });
 });

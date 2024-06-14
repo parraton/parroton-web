@@ -16,12 +16,9 @@ export const usePoolMetadata = (vaultAddress: string) => {
       const response = await fetch(new URL(newLink, domain));
       return (await response.json()) as JettonMetadata;
     } catch (error) {
-      console.error(error);
       throw error;
     }
   });
-
-  console.log({ data, error });
 
   return { metadata: data, error };
 };

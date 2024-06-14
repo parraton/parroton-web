@@ -60,11 +60,8 @@ export function useRewardsBalance() {
 
         const value = rewardsDictionary.get(sender.address);
 
-        console.log({ totalPaid, value });
-
         return value ? fromNano(value - totalPaid) : undefined;
       } catch (error) {
-        console.error(error);
         if (
           (error as Error)?.message.includes('-256') ||
           (error as Error)?.message.includes('Data URI')

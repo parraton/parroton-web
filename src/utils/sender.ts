@@ -67,8 +67,6 @@ export class Sender implements ISender {
 
   async sendBatch(): Promise<void> {
     if (this.batch) {
-      console.log('Sending batch', this.messages);
-
       const { boc } = await this.ton.sendTransaction({
         validUntil: Date.now() + this.ttl,
         messages: this.messages.toReversed(),
