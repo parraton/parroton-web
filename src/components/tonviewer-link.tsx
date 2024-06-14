@@ -11,7 +11,7 @@ export function TonviewerLink({ hash }: TonviewerLinkProps) {
   const { t } = useTranslation({ ns: 'transaction' });
 
   return (
-    <Link href={`${process.env.NEXT_PUBLIC_TONVIEWER_URL}/transaction/${hash}`}>
+    <Link target='_blank' href={`${process.env.NEXT_PUBLIC_TONVIEWER_URL}/transaction/${hash}`}>
       {t('view_explorer')}
     </Link>
   );
