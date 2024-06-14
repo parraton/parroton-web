@@ -11,7 +11,7 @@
     "min_deposit": "Мінімальний депозит {{minDeposit}}",
     "max_deposit": "Максимальний депозит {{maxDeposit}}",
     "min_withdraw": "Неможливо вивести {{minWithdraw}} або менше",
-    "max_withdraw": "Неможливо вивести більше ніж{{maxWithdraw}}"
+    "max_withdraw": "Неможливо вивести більше ніж {{maxWithdraw}}"
   },
   "claim": {
     "text": "Доступні нагороди: {{balance}} TON({{dollar}})",
@@ -23,5 +23,6 @@
   "mint": {
     "button": "Випустити тестові токени"
   },
-  "output": "Ви отримаєте"
+  "lp_output": "Кількість LP, яку ви отримаєте",
+  "plp_output": "Кількість PLP, яку ви отримаєте"
 }

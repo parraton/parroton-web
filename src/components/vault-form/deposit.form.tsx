@@ -60,7 +60,7 @@ const useFormData = () => {
     validate,
     currency: metadata?.symbol,
     dollarEquivalent: multiplyIfPossible(tvlData?.priceForOne, balance),
-    outputTitle: t('output'),
+    outputTitle: t('plp_output'),
   };
 };
 

@@ -33,7 +33,7 @@ export function FaucetForm() {
         .replace('dedust', '')
         .replace('ton', '')
         .replace('/', '')
-        .replace('lp', '')
+        .replace('plp', '')
         .trim()
         .toUpperCase()
     : undefined;

@@ -1,12 +1,12 @@
 {
   "deposit_title": "Deposit",
-  "deposit_description": "Deposit your lp and get rewards",
+  "deposit_description": "Deposit your lp to automate rewards reinvestment",
   "withdraw_title": "Withdraw",
-  "withdraw_description": "Withdraw your lp and rewards",
+  "withdraw_description": "Burn your PLPs to get underlying LPs",
   "faucet_title": "Faucet",
-  "faucet_description": "Get some free tokens",
+  "faucet_description": "Get some free tokens to test our platform",
   "claim_title": "Claim",
-  "claim_description": "Claim your rewards",
+  "claim_description": "Get extra rewards from our platform",
   "validation": {
     "min_deposit": "Deposit can not be less or equal {{minDeposit}}",
     "max_deposit": "Deposit can not be more than {{maxDeposit}}",
@@ -18,10 +18,11 @@
     "button": "Claim"
   },
   "faucet": {
-    "button": "Deposit Dex Lp"
+    "button": "Get DeDust LP"
   },
   "mint": {
     "button": "Mint Jettons"
   },
-  "output": "You receive"
+  "lp_output": "LPs to receive",
+  "plp_output": "PLPs to receive"
 }

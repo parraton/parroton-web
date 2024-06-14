@@ -68,7 +68,7 @@ const useFormData = () => {
       tvlData?.priceForOne,
       balance?.lpBalance
     ),
-    outputTitle: t("output"),
+    outputTitle: t("lp_output"),
   };
 };
 
