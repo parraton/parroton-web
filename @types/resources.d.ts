@@ -32,7 +32,8 @@ interface Resources {
     "mint": {
       "button": "Mint Jettons"
     },
-    "output": "You receive"
+    "lp_output": "LPs to receive",
+    "plp_output": "PLPs to receive"
   },
   "language": {
     "en": "English",

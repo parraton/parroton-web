@@ -1,9 +1,9 @@
 {
-  "balance": "У гамаці",
-  "deposited": "Внесок",
+  "balance": "Доступно",
+  "deposited": "Вкладено",
   "currency": "Валюта",
   "apy": "APY",
   "daily": "Денний",
   "extraApr": "Додатковий APR",
-  "tvl": "TVL"
+  "tvl": "Ліквідність"
 }

@@ -51,7 +51,9 @@ const useFormData = () => {
         .gt(0, t('validation.min_withdraw', { minWithdraw: 0 }))
         .lte(
           Number(balance?.lpBalance),
-          t('validation.max_withdraw', { maxWithdraw: formatNumber(balance?.lpBalance) }),
+          t('validation.max_withdraw', {
+            maxWithdraw: formatNumber(balance?.lpBalance),
+          }),
         ),
     }),
   );
@@ -63,7 +65,7 @@ const useFormData = () => {
     validate,
     currency: metadata?.symbol,
     dollarEquivalent: multiplyIfPossible(tvlData?.priceForOne, balance?.lpBalance),
-    outputTitle: t('output'),
+    outputTitle: t('lp_output'),
   };
 };
 

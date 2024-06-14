@@ -1,8 +1,8 @@
 {
   "app_title": "Parroton",
   "app_description": "Опис для Parroton",
-  "amount": "На рахунку",
-  "deposit": "Депозит",
+  "amount": "Баланс",
+  "deposit": "Вкласти",
   "withdraw": "Вивести",
   "rewards": "Забрати нагороди"
 }

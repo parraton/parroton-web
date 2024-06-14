@@ -1,16 +1,28 @@
 {
-  "deposit_title": "Депозит",
-  "deposit_description": "Депозитуйте свій lp-jetton та отримайте нагороди",
+  "deposit_title": "Вкласти",
+  "deposit_description": "Вкладіть свої токени ліквідності DeDust та автоматизуйте реінвестування нагород",
   "withdraw_title": "Вивести",
-  "withdraw_description": "Виведіть свій lp-jetton та нагороди",
+  "withdraw_description": "Обміняйте свою долю у волті назад у токени ліквідності DeDust",
   "faucet_title": "Кран",
-  "faucet_description": "Отримайте безкоштовні токени",
-  "claim_title": "Нагороди",
-  "claim_description": "Отримайте свої нагороди",
+  "faucet_description": "Отримайте безкоштовні токени для тестування платформи",
+  "claim_title": "Бонуси",
+  "claim_description": "Отримайте додаткові нагороди за вклад через нашу платформу",
   "validation": {
     "min_deposit": "Мінімальний депозит {{minDeposit}}",
     "max_deposit": "Максимальний депозит {{maxDeposit}}",
     "min_withdraw": "Неможливо вивести {{minWithdraw}} або менше",
-    "max_withdraw": "Неможливо вивести більше {{maxWithdraw}}"
-  }
+    "max_withdraw": "Неможливо вивести більше ніж {{maxWithdraw}}"
+  },
+  "claim": {
+    "text": "Доступні нагороди: {{balance}} TON({{dollar}})",
+    "button": "Отримати"
+  },
+  "faucet": {
+    "button": "Отрримати Dedust Lp"
+  },
+  "mint": {
+    "button": "Випустити тестові токени"
+  },
+  "lp_output": "Кількість LP, яку ви отримаєте",
+  "plp_output": "Кількість PLP, яку ви отримаєте"
 }
