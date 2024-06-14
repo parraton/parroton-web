@@ -53,9 +53,9 @@ const useFormData = () => {
           Number(balance?.lpBalance),
           t('validation.max_withdraw', {
             maxWithdraw: formatNumber(balance?.lpBalance),
-          })
+          }),
         ),
-    })
+    }),
   );
 
   return {
@@ -64,10 +64,7 @@ const useFormData = () => {
     fetchSharesEquivalent: fetchLpEquivalent,
     validate,
     currency: metadata?.symbol,
-    dollarEquivalent: multiplyIfPossible(
-      tvlData?.priceForOne,
-      balance?.lpBalance
-    ),
+    dollarEquivalent: multiplyIfPossible(tvlData?.priceForOne, balance?.lpBalance),
     outputTitle: t('lp_output'),
   };
 };
@@ -120,18 +117,9 @@ export function WithdrawForm() {
               <div className='space-y-1'>
                 <Label className={'flex items-center gap-1'} htmlFor='amount'>
                   {t('amount')}:{' '}
-                  {
-                    <OrLoader
-                      value={balance}
-                      modifier={(x) => formatNumber(x, lng)}
-                    />
-                  }{' '}
+                  {<OrLoader value={balance} modifier={(x) => formatNumber(x, lng)} />}{' '}
                   {<OrLoader value={currency} />} (
-                  <OrLoader
-                    value={dollarEquivalent}
-                    modifier={(x) => formatCurrency(x, lng)}
-                  />
-                  )
+                  <OrLoader value={dollarEquivalent} modifier={(x) => formatCurrency(x, lng)} />)
                 </Label>
                 <Field name='amount' id='current' type='number' as={Input} />
                 <ErrorMessage
@@ -151,11 +139,7 @@ export function WithdrawForm() {
               </div>
             </CardContent>
             <CardFooter>
-              <Button
-                type='submit'
-                disabled={isSubmitting || !isValid}
-                className='custom-main-btn'
-              >
+              <Button type='submit' disabled={isSubmitting || !isValid} className='custom-main-btn'>
                 {t('withdraw')}
               </Button>
             </CardFooter>
