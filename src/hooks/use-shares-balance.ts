@@ -7,11 +7,11 @@ const getSharesBalance = async (senderAddress: Address, vaultAddress: Address) =
   const vault = await getVault(vaultAddress);
   const sharesWallet = await getSharesWallet(vault, senderAddress);
   const data = await sharesWallet.getWalletData();
-  const sharesBalance = await vault.getEstimatedLpAmount(data.balance);
+  const lpBalance = await vault.getEstimatedLpAmount(data.balance);
 
   return {
     sharesBalance: fromNano(data.balance),
-    lpBalance: fromNano(sharesBalance),
+    lpBalance: fromNano(lpBalance),
   };
 };
 

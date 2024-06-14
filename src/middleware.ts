@@ -14,7 +14,8 @@ export function middleware(req: NextRequest) {
     req.nextUrl.pathname.includes('icon') ||
     req.nextUrl.pathname.includes('chrome') ||
     req.nextUrl.pathname.includes('.json') ||
-    req.nextUrl.pathname.includes('.png')
+    req.nextUrl.pathname.includes('.png') ||
+    req.nextUrl.pathname.includes('.svg')
   )
     return NextResponse.next();
   let lng: string | undefined | null;

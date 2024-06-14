@@ -16,7 +16,7 @@ const useVaultInfo = () => {
   const { metadata } = usePoolMetadata(vault);
   const { poolNumbers } = usePoolNumbers(vault);
 
-  return { sharesBalance: sharesBalance?.sharesBalance, metadata, poolNumbers, lng };
+  return { sharesBalance: sharesBalance?.lpBalance, metadata, poolNumbers, lng };
 };
 
 const NanoInfoPlate = ({
