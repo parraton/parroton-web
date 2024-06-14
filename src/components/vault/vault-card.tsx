@@ -60,7 +60,7 @@ function LinkedInfo({
           )}
         </div>
       </div>
-      <div className={` custom-card-link`}>{value}</div>
+      <div className={`custom-card-link custom-card-value`}>{value}</div>
     </div>
   );
 }
@@ -94,18 +94,30 @@ export function VaultCard({ data, locale, className, ...props }: CardProps) {
           <LinkedInfo
             title={t('apy')}
             value={
-              <OrLoader value={totalRewardPercent} modifier={(x) => formatPercentage(x, locale)} />
+              <OrLoader
+                animation
+                value={totalRewardPercent}
+                modifier={(x) => formatPercentage(x, locale)}
+              />
             }
             tooltip={
               totalRewardPercent ? (
                 <div>
                   <div>
                     {tooltipApy}
-                    <OrLoader value={data.apy} modifier={(x) => formatPercentage(x, locale)} />
+                    <OrLoader
+                      animation
+                      value={data.apy}
+                      modifier={(x) => formatPercentage(x, locale)}
+                    />
                   </div>
                   <div>
                     {tooltipExtraApr}
-                    <OrLoader value={data.extraApr} modifier={(x) => formatPercentage(x, locale)} />
+                    <OrLoader
+                      animation
+                      value={data.extraApr}
+                      modifier={(x) => formatPercentage(x, locale)}
+                    />
                   </div>
                 </div>
               ) : undefined
@@ -113,11 +125,19 @@ export function VaultCard({ data, locale, className, ...props }: CardProps) {
           />
           <NanoInfo
             title={t('daily')}
-            value={<OrLoader value={data.daily} modifier={(x) => formatPercentage(x, locale)} />}
+            value={
+              <OrLoader
+                animation
+                value={data.daily}
+                modifier={(x) => formatPercentage(x, locale)}
+              />
+            }
           />
           <NanoInfo
             title={t('tvl')}
-            value={<OrLoader value={data.tvl} modifier={(x) => formatCurrency(x, locale)} />}
+            value={
+              <OrLoader animation value={data.tvl} modifier={(x) => formatCurrency(x, locale)} />
+            }
           />
         </CardContent>
       </Card>

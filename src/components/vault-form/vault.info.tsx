@@ -58,31 +58,44 @@ export function VaultInfo() {
   return (
     <div className={'g flex flex-col gap-4'}>
       <h1 className={'scroll-m-20 text-4xl font-medium tracking-tight'}>
-        <OrLoader value={metadata?.name} />
+        <OrLoader animation value={metadata?.name} />
       </h1>
       <div className='custom-list'>
         <div className='custom-list-item custom-card rounded-lg border text-card-foreground shadow-sm'>
           <NanoInfoPlate
             title={t('tvl')}
             value={
-              <OrLoader value={poolNumbers?.tvlInUsd} modifier={(x) => formatCurrency(x, lng)} />
+              <OrLoader
+                animation
+                value={poolNumbers?.tvlInUsd}
+                modifier={(x) => formatCurrency(x, lng)}
+              />
             }
           />
           <NanoInfoPlate
             title={t('apy')}
             value={
-              <OrLoader value={totalRewardPercent} modifier={(x) => formatPercentage(x, lng)} />
+              <OrLoader
+                animation
+                value={totalRewardPercent}
+                modifier={(x) => formatPercentage(x, lng)}
+              />
             }
             tooltip={
               totalRewardPercent ? (
                 <div>
                   <div>
                     {tooltipApy}
-                    <OrLoader value={poolNumbers!.apy} modifier={(x) => formatPercentage(x, lng)} />
+                    <OrLoader
+                      animation
+                      value={poolNumbers!.apy}
+                      modifier={(x) => formatPercentage(x, lng)}
+                    />
                   </div>
                   <div>
                     {tooltipExtraApr}
                     <OrLoader
+                      animation
                       value={poolNumbers!.extraApr}
                       modifier={(x) => formatPercentage(x, lng)}
                     />
@@ -101,7 +114,11 @@ export function VaultInfo() {
           <NanoInfoPlate
             title={t('daily')}
             value={
-              <OrLoader value={poolNumbers?.daily} modifier={(x) => formatPercentage(x, lng)} />
+              <OrLoader
+                animation
+                value={poolNumbers?.daily}
+                modifier={(x) => formatPercentage(x, lng)}
+              />
             }
           />
           <NanoInfoPlate

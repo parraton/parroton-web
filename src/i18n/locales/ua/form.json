@@ -14,11 +14,11 @@
     "max_withdraw": "Неможливо вивести більше ніж {{maxWithdraw}}"
   },
   "claim": {
-    "text": "Доступні нагороди: {{balance}} TON({{dollar}})",
+    "balance": "Доступні нагороди",
     "button": "Отримати"
   },
   "faucet": {
-    "button": "Отрримати Dedust Lp"
+    "button": "Отримати Dedust Lp"
   },
   "mint": {
     "button": "Випустити тестові токени"

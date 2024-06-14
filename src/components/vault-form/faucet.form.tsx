@@ -19,39 +19,33 @@ const useFaucetFormData = () => {
   return {
     jettonBalance,
     lpBalance,
+    name: metadata?.name,
     currency: metadata?.symbol,
     lng,
   };
 };
 
 export function FaucetForm() {
-  const { jettonBalance, lpBalance, currency, lng } = useFaucetFormData();
+  const { jettonBalance, lpBalance, name, currency, lng } = useFaucetFormData();
 
-  const jettonSymbol = currency
-    ? currency
-        .toLowerCase()
-        .replace('dedust', '')
-        .replace('ton', '')
-        .replace('/', '')
-        .replace('plp', '')
-        .trim()
-        .toUpperCase()
+  const jettonSymbol = name
+    ? name.toLowerCase().replace('dedust pool: ton/', '').trim().toUpperCase()
     : undefined;
 
   return (
     <div className={'flex w-max flex-1 justify-between'}>
       <div className={'flex flex-col gap-2'}>
-        <span>
+        <div className={'flex gap-2'}>
           <OrLoader value={jettonBalance} modifier={(x) => formatNumber(x, lng)} />{' '}
-          <OrLoader value={jettonSymbol} />
-        </span>
+          <OrLoader animation value={jettonSymbol} />
+        </div>
         <FaucetTokenButton disabled={false} />
       </div>
       <div className={'flex flex-col gap-2'}>
-        <span>
+        <div className={'flex gap-2'}>
           <OrLoader value={lpBalance} modifier={(x) => formatNumber(x, lng)} />{' '}
-          <OrLoader value={currency} />
-        </span>
+          <OrLoader animation value={currency} />
+        </div>
         <FaucetLpButton disabled={!Number(jettonBalance)} />
       </div>
     </div>

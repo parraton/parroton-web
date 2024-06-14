@@ -112,7 +112,7 @@ export function DepositForm() {
                 <Label className={'flex items-center gap-1'} htmlFor='amount'>
                   {t('amount')}:{' '}
                   {<OrLoader value={balance} modifier={(x) => formatNumber(x, lng)} />}{' '}
-                  {<OrLoader value={currency} />} (
+                  {<OrLoader animation value={currency} />} (
                   <OrLoader value={dollarEquivalent} modifier={(x) => formatCurrency(x, lng)} />)
                 </Label>
                 <Field name='amount' id='amount' type='number' as={Input} />

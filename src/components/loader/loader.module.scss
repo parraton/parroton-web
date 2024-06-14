@@ -22,8 +22,8 @@ $dash-quantity: 4;
 }
 
 .inline-loading {
-  --main-color: hsl(var(--primary-foreground));
-  --secondary-color: hsl(var(--secondary-foreground));
+  --main-color: hsl(var(--primary));
+  --secondary-color: hsl(var(--primary-foreground));
   min-height: 1em;
 
   display: flex;

@@ -116,13 +116,14 @@ a {
 }
 
 .custom-card-value {
-  display: block;
+  display: flex;
   font-size: 16px;
   font-weight: normal;
   max-width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
   text-align: right;
+  justify-content: end;
 
   @media (min-width: 768px) {
     text-align: left;
@@ -130,7 +131,7 @@ a {
 }
 
 .custom-card-link {
-  display: block;
+  display: flex;
   font-size: 16px;
   font-weight: bold;
   max-width: 100%;
@@ -138,6 +139,7 @@ a {
   text-overflow: ellipsis;
   color: #2cb774;
   text-align: right;
+  justify-content: end;
 
   @media (min-width: 768px) {
     text-align: left;

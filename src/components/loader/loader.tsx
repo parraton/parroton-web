@@ -44,12 +44,17 @@ export const Loader: FC<DashPlugProps> = ({ zoom, animation, className, quantity
   );
 };
 
-//eslint-disable-next-line no-unused-vars
-export function OrLoader<T>(props: { value?: T | null; modifier?: (_: T) => ReactNode }) {
+export function OrLoader<T>(props: {
+  animation?: boolean;
+  value?: T | null;
+  //eslint-disable-next-line no-unused-vars
+  modifier?: (_: T) => ReactNode;
+}) {
   const { connected } = useConnection();
 
+  const affected = connected || props.animation;
   return props.value == null ? (
-    <Loader animation={connected} />
+    <Loader animation={Boolean(affected)} />
   ) : props.modifier ? (
     props.modifier(props.value)
   ) : (

@@ -23,7 +23,7 @@ interface Resources {
       "max_withdraw": "Withdraw can not be more than {{maxWithdraw}}"
     },
     "claim": {
-      "text": "Your rewards: {{balance}} TON",
+      "balance": "Your rewards:",
       "button": "Claim"
     },
     "faucet": {
