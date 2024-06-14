@@ -64,7 +64,7 @@ const useFormData = () => {
     fetchSharesEquivalent: fetchLpEquivalent,
     validate,
     currency: metadata?.symbol,
-    dollarEquivalent: multiplyIfPossible(tvlData?.priceForOne, balance?.lpBalance),
+    lpPrice: tvlData?.priceForOne,
     outputTitle: t('lp_output'),
   };
 };
@@ -73,15 +73,8 @@ export function WithdrawForm() {
   const { t, lng } = useTranslation({ ns: 'common' });
   const { withdraw } = useWithdraw();
 
-  const {
-    balance,
-    estimatedLp,
-    fetchSharesEquivalent,
-    validate,
-    currency,
-    dollarEquivalent,
-    outputTitle,
-  } = useFormData();
+  const { balance, estimatedLp, fetchSharesEquivalent, validate, currency, lpPrice, outputTitle } =
+    useFormData();
 
   return (
     <Formik
@@ -110,7 +103,7 @@ export function WithdrawForm() {
     >
       {({ isSubmitting, isValid, values }) => {
         void fetchSharesEquivalent(values.amount);
-        console.log('values.amount', values.amount);
+        const dollarEquivalent = multiplyIfPossible(lpPrice, estimatedLp);
         return (
           <Form>
             <CardContent className='space-y-2'>

@@ -32,7 +32,7 @@ const SetTonConnectLanguage = () => {
 };
 
 //import tonconnect manifest as url
-const manifestUrl = `https://softstack.github.io/telegram-mini-app/tonconnect-manifest.json`;
+const manifestUrl = `https://parroton.org/tonconnect-manifest.json`;
 
 export function SandwichProvider({ children }: React.PropsWithChildren) {
   return (
