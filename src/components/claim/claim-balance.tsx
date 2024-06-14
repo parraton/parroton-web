@@ -17,5 +17,12 @@ export function ClaimBalance() {
   const dollarBalance = multiplyIfPossible(tonPrice, balance);
   const dollar = <OrLoader value={dollarBalance} modifier={(x) => formatCurrency(x, lng)} />;
 
-  return <div>{t('claim.text', { balance: formatNumber(balance, lng), dollar })}</div>;
+  // eslint-disable-next-line react/jsx-no-literals
+  const dollarFormat = <div>(${dollar})</div>;
+
+  return (
+    <div>
+      {t('claim.text', { balance: formatNumber(balance, lng) })} {dollarFormat}
+    </div>
+  );
 }

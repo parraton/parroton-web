@@ -6,15 +6,15 @@ import { VaultPage } from '@routes';
 import { FaucetTokenButton } from '@components/faucet/faucet-token.button';
 import { FaucetLpButton } from '@components/faucet/faucet-lp.button';
 import { formatNumber } from '@lib/utils';
-import { useVaultMetadata } from '@hooks/use-vault-metadata';
 import { useJettonBalance } from '@hooks/use-jetton-balance';
 import { OrLoader } from '@components/loader/loader';
+import { usePoolMetadata } from '@hooks/use-pool-metadata';
 
 const useFaucetFormData = () => {
   const { vault, lng } = useParams(VaultPage);
   const { balance: lpBalance } = useLpBalance(vault);
   const { balance: jettonBalance } = useJettonBalance(vault);
-  const { metadata } = useVaultMetadata(vault);
+  const { metadata } = usePoolMetadata(vault);
 
   return {
     jettonBalance,

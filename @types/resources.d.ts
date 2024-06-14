@@ -9,13 +9,13 @@ interface Resources {
   },
   "form": {
     "deposit_title": "Deposit",
-    "deposit_description": "Deposit your lp and get rewards",
+    "deposit_description": "Deposit your lp to automate rewards reinvestment",
     "withdraw_title": "Withdraw",
-    "withdraw_description": "Withdraw your lp and rewards",
+    "withdraw_description": "Burn your PLPs to get underlying LPs",
     "faucet_title": "Faucet",
-    "faucet_description": "Get some free tokens",
+    "faucet_description": "Get some free tokens to test our platform",
     "claim_title": "Claim",
-    "claim_description": "Claim your rewards",
+    "claim_description": "Get extra rewards from our platform",
     "validation": {
       "min_deposit": "Deposit can not be less or equal {{minDeposit}}",
       "max_deposit": "Deposit can not be more than {{maxDeposit}}",
@@ -23,11 +23,11 @@ interface Resources {
       "max_withdraw": "Withdraw can not be more than {{maxWithdraw}}"
     },
     "claim": {
-      "text": "Your rewards balance: {{balance}} TON({{dollar}})",
+      "text": "Your rewards: {{balance}} TON",
       "button": "Claim"
     },
     "faucet": {
-      "button": "Deposit Dex Lp"
+      "button": "Get DeDust LP"
     },
     "mint": {
       "button": "Mint Jettons"
@@ -50,7 +50,7 @@ interface Resources {
   },
   "settings": {
     "dialog_title": "Settings",
-    "dialog_description": "Here you can change the settings of the application.",
+    "dialog_description": "Here you can manage the settings of the application",
     "dialog_close": "Close",
     "mode_title": "Color mode",
     "language_title": "Language"
@@ -62,7 +62,7 @@ interface Resources {
   },
   "vault-card": {
     "balance": "Wallet",
-    "deposited": "Deposited",
+    "deposited": "Your Deposit",
     "currency": "Currency",
     "apy": "APY",
     "daily": "Daily",

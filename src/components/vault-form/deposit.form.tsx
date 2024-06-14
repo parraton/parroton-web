@@ -17,7 +17,6 @@ import { toast } from 'sonner';
 import { successTransaction } from '@utils/transaction-subjects';
 import { useParams } from '@routes/hooks';
 import { VaultPage } from '@routes';
-import { useVaultMetadata } from '@hooks/use-vault-metadata';
 import { useVaultTvl } from '@hooks/use-vault-tvl';
 import { multiplyIfPossible } from '@utils/multiply-if-possible';
 import { OrLoader } from '@components/loader/loader';
@@ -27,12 +26,13 @@ import { useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 import { getVault } from '@core';
 import { Address, fromNano, toNano } from '@ton/core';
+import { usePoolMetadata } from '@hooks/use-pool-metadata';
 
 const useFormData = () => {
   const { t } = useTranslation({ ns: 'form' });
   const { vault } = useParams(VaultPage);
   const { tvlData } = useVaultTvl(vault);
-  const { metadata } = useVaultMetadata(vault);
+  const { metadata } = usePoolMetadata(vault);
   const { balance } = useLpBalance(vault);
 
   const [estimatedShares, setEstimatedShares] = useState<string>('');

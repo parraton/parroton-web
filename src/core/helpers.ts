@@ -54,8 +54,8 @@ export const getStrategyInfoByVault = async (vaultAddress: Address) => {
   return await strategy.getStrategyData();
 };
 
-export const getMetadataLink = async (vaultAddress: string) => {
-  const rawPoolJetton = JettonRoot.createFromAddress(Address.parse(vaultAddress));
+export const getMetadataLink = async (address: string) => {
+  const rawPoolJetton = JettonRoot.createFromAddress(Address.parse(address));
   const poolJetton = tonClient.open(rawPoolJetton);
   const { content } = await poolJetton.getJettonData();
 

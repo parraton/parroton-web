@@ -3,17 +3,17 @@
 import { VaultPage } from '@routes';
 import { useParams } from '@routes/hooks';
 import { useSharesBalance } from '@hooks/use-shares-balance';
-import { useVaultMetadata } from '@hooks/use-vault-metadata';
 import { usePoolNumbers } from '@hooks/use-pool-numbers';
 import { OrLoader } from '@components/loader/loader';
 import { ReactNode } from 'react';
 import { useTranslation } from '@i18n/client';
 import { formatCurrency, formatNumber, formatPercentage } from '@lib/utils';
+import { usePoolMetadata } from '@hooks/use-pool-metadata';
 
 const useVaultInfo = () => {
   const { vault, lng } = useParams(VaultPage);
   const { balance: sharesBalance } = useSharesBalance(vault);
-  const { metadata } = useVaultMetadata(vault);
+  const { metadata } = usePoolMetadata(vault);
   const { poolNumbers } = usePoolNumbers(vault);
 
   return { sharesBalance: sharesBalance?.sharesBalance, metadata, poolNumbers, lng };
