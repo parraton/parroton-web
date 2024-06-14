@@ -39,7 +39,7 @@ const useFormData = () => {
 
   const fetchSharesEquivalent = useDebouncedCallback(async (value) => {
     const v = await getVault(Address.parse(vault));
-    const x = await v.getEstimatedLpAmount(toNano(value));
+    const x = await v.getEstimatedSharesAmount(toNano(value));
 
     setEstimatedShares(fromNano(x));
   }, 500);
@@ -80,7 +80,7 @@ export function DepositForm() {
   return (
     <Formik
       initialValues={{
-        amount: 0,
+        amount: balance ? Number(balance) : 0,
       }}
       validate={validate}
       onSubmit={async (values, actions) => {

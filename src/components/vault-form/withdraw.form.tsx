@@ -59,9 +59,10 @@ const useFormData = () => {
   );
 
   return {
-    balance: balance?.lpBalance,
+    lpBalance: balance?.lpBalance,
+    sharesBalance: balance?.sharesBalance,
     estimatedLp,
-    fetchSharesEquivalent: fetchLpEquivalent,
+    fetchLpEquivalent,
     validate,
     currency: metadata?.symbol,
     lpPrice: tvlData?.priceForOne,
@@ -73,8 +74,16 @@ export function WithdrawForm() {
   const { t, lng } = useTranslation({ ns: 'common' });
   const { withdraw } = useWithdraw();
 
-  const { balance, estimatedLp, fetchSharesEquivalent, validate, currency, lpPrice, outputTitle } =
-    useFormData();
+  const {
+    lpBalance,
+    sharesBalance,
+    estimatedLp,
+    fetchLpEquivalent,
+    validate,
+    currency,
+    lpPrice,
+    outputTitle,
+  } = useFormData();
 
   return (
     <Formik
@@ -102,19 +111,20 @@ export function WithdrawForm() {
       }}
     >
       {({ isSubmitting, isValid, values }) => {
-        void fetchSharesEquivalent(values.amount);
-        const dollarEquivalent = multiplyIfPossible(lpPrice, estimatedLp);
+        void fetchLpEquivalent(values.amount);
+        const dollarEquivalent = multiplyIfPossible(lpPrice, lpBalance);
+
         return (
           <Form>
             <CardContent className='space-y-2'>
               <div className='space-y-1'>
                 <Label className={'flex items-center gap-1'} htmlFor='amount'>
                   {t('amount')}:{' '}
-                  {<OrLoader value={balance} modifier={(x) => formatNumber(x, lng)} />}{' '}
+                  {<OrLoader value={sharesBalance} modifier={(x) => formatNumber(x, lng)} />}{' '}
                   {<OrLoader animation value={currency} />} (
                   <OrLoader value={dollarEquivalent} modifier={(x) => formatCurrency(x, lng)} />)
                 </Label>
-                <Field name='amount' id='current' type='number' as={Input} />
+                <Field name='amount' id='current' type='number' as={Input} placeholder={0} />
                 <ErrorMessage
                   className={cn('text-sm text-red-500', 'mt-1')}
                   component='div'

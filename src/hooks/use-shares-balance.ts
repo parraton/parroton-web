@@ -10,8 +10,8 @@ const getSharesBalance = async (senderAddress: Address, vaultAddress: Address) =
   const sharesBalance = await vault.getEstimatedLpAmount(data.balance);
 
   return {
-    sharesBalance: fromNano(sharesBalance),
-    lpBalance: fromNano(data.balance),
+    sharesBalance: fromNano(data.balance),
+    lpBalance: fromNano(sharesBalance),
   };
 };
 
