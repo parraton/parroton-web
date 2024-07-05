@@ -7,6 +7,9 @@ import { ConnectWallet } from '@components/connect-wallet';
 import Image from 'next/image';
 
 import Logo from '../images/logo.svg';
+import { guideLink } from '@config/guide.config';
+import Link from 'next/link';
+import { QuestionMarkCircledIcon } from '@radix-ui/react-icons';
 
 export async function Navbar({ lng }: { lng: Language }) {
   const { t } = await serverTranslation(lng, 'common');
@@ -20,6 +23,9 @@ export async function Navbar({ lng }: { lng: Language }) {
 
       <div className={cn('flex items-center gap-4')}>
         <ConnectWallet />
+        <Link href={guideLink} target='_blank'>
+          <QuestionMarkCircledIcon color='#0098ea' width={32} height={32} />
+        </Link>
         <Settings lng={lng} />
       </div>
     </div>

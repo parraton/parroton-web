@@ -4,8 +4,8 @@ import { JettonMetadata } from '@types';
 
 const wrongDomain = 'https://parrot-joe.com/';
 
-const domain =
-  process.env.NODE_ENV === 'development' ? 'http://localhost:3000/' : 'https://parroton.org/';
+const domain = 'https://parroton.org/';
+// process.env.NODE_ENV === 'development' ? 'http://localhost:3000/' : 'https://parroton.org/';
 
 export const useVaultMetadata = (vaultAddress: string) => {
   const { data, error } = useSWR([vaultAddress], async () => {
