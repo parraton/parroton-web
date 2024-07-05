@@ -8,6 +8,7 @@ import { Locales, THEME, TonConnectUIProvider, useTonConnectUI } from '@tonconne
 import { useParams } from '@routes/hooks';
 import { Home } from '@routes';
 import { useTheme } from 'next-themes';
+import { WebAppProvider } from '@vkruglikov/react-telegram-web-app';
 
 const themeMap = {
   light: THEME.LIGHT,
@@ -28,6 +29,13 @@ const SetTonConnectLanguage = () => {
       },
     });
   }, [setOptions, theme, params.lng]);
+
+  useEffect(() => {
+    if (process.env.NODE_ENV === 'development') {
+      import('eruda').then((lib) => lib.default.init());
+    }
+  }, []);
+
   return <></>;
 };
 
@@ -36,12 +44,18 @@ const manifestUrl = `https://parroton.org/tonconnect-manifest.json`;
 
 export function SandwichProvider({ children }: React.PropsWithChildren) {
   return (
-    <ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
-      <TonConnectUIProvider manifestUrl={manifestUrl}>
-        <SetTonConnectLanguage />
-        {children}
-      </TonConnectUIProvider>
-      <Toaster />
-    </ThemeProvider>
+    <WebAppProvider
+      options={{
+        smoothButtonsTransition: true,
+      }}
+    >
+      <ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
+        <TonConnectUIProvider manifestUrl={manifestUrl}>
+          <SetTonConnectLanguage />
+          {children}
+        </TonConnectUIProvider>
+        <Toaster />
+      </ThemeProvider>
+    </WebAppProvider>
   );
 }

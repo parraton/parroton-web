@@ -114,7 +114,8 @@
     "no-empty": "off",
     "lodash/prefer-lodash-typecheck": "off",
     "unicorn/no-negated-condition": "off",
-    "unicorn/no-new-array": "off"
+    "unicorn/no-new-array": "off",
+    "unicorn/no-array-reduce": "off"
   },
   "overrides": [
     {

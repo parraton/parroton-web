@@ -23,7 +23,7 @@ interface Resources {
       "max_withdraw": "Withdraw can not be more than {{maxWithdraw}}"
     },
     "claim": {
-      "balance": "Your rewards:",
+      "balance": "Your rewards",
       "button": "Claim"
     },
     "faucet": {
@@ -68,6 +68,12 @@ interface Resources {
     "daily": "Daily",
     "extraApr": "Extra APR",
     "tvl": "TVL"
+  },
+  "welcome": {
+    "main": "We are on Testnet!",
+    "description": "Ahoy, stranger! First time here? Learn how to use our platform in our short video guilde 🏴‍☠️",
+    "watch": "Watch",
+    "skip": "Skip"
   }
 }
 

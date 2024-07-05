@@ -15,7 +15,8 @@ export function middleware(req: NextRequest) {
     req.nextUrl.pathname.includes('chrome') ||
     req.nextUrl.pathname.includes('.json') ||
     req.nextUrl.pathname.includes('.png') ||
-    req.nextUrl.pathname.includes('.svg')
+    req.nextUrl.pathname.includes('.svg') ||
+    req.nextUrl.pathname.includes('.gif')
   )
     return NextResponse.next();
   let lng: string | undefined | null;

@@ -9,6 +9,7 @@ const defaultInfo = {
 
 import * as HomeRoute from "@/app/[lng]/page.info";
 import * as VaultPageRoute from "@/app/[lng]/[vault]/page.info";
+import * as WelcomeRoute from "@/app/[lng]/welcome/page.info";
 
 export const Home = makeRoute(
   "/[lng]",
@@ -22,6 +23,13 @@ export const VaultPage = makeRoute(
   {
     ...defaultInfo,
     ...VaultPageRoute.Route
+  }
+);
+export const Welcome = makeRoute(
+  "/[lng]/welcome",
+  {
+    ...defaultInfo,
+    ...WelcomeRoute.Route
   }
 );
 
