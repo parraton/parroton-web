@@ -22,8 +22,8 @@ export async function Settings({ lng }: { lng: Language }) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant='outline'>
-          <SlidersHorizontal className='size-4' />
+        <Button variant='outline' className='border-[#19A7E7] px-3'>
+          <SlidersHorizontal color='#19A7E7' className='size-4' />
         </Button>
       </DialogTrigger>
       <DialogContent className='custom-dialog sm:max-w-md'>

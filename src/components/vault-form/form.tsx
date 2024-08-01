@@ -12,16 +12,66 @@ import { ClaimBalance } from '@components/claim/claim-balance';
 import { ClaimButton } from '@components/claim/claim.button';
 import { FaucetForm } from '@components/vault-form/faucet.form';
 
+const isMainnet = process.env.NETWORK === 'mainnet';
+
+type TabsListItem<Action extends Actions = Actions> = {
+  [key in Actions]: {
+    title: `${key}_title`;
+    action: key;
+    hideForMainnet?: boolean;
+  };
+}[Action];
+
+const tabs: ReadonlyArray<TabsListItem> = [
+  {
+    title: 'deposit_title',
+    action: Actions.deposit,
+  },
+  {
+    title: 'withdraw_title',
+    action: Actions.withdraw,
+  },
+  {
+    title: 'faucet_title',
+    action: Actions.faucet,
+    hideForMainnet: true,
+  },
+  {
+    title: 'claim_title',
+    action: Actions.claim,
+    hideForMainnet: true,
+  },
+] as const;
+
+const tabsToRender = tabs.filter((tab) => {
+  if (tab.hideForMainnet) {
+    return !isMainnet;
+  }
+  return true;
+});
+
 export async function Form({ lng }: { lng: Language }) {
   const { t } = await serverTranslation(lng, 'form');
 
   return (
     <Tabs defaultValue={Actions.deposit} className='custom-wrapper w-full'>
-      <TabsList className={cn('grid w-full', `grid-cols-4`)}>
-        <TabsTrigger value={Actions.deposit}>{t('deposit_title')}</TabsTrigger>
-        <TabsTrigger value={Actions.withdraw}>{t('withdraw_title')}</TabsTrigger>
-        <TabsTrigger value={Actions.faucet}>{t('faucet_title')}</TabsTrigger>
-        <TabsTrigger value={Actions.claim}>{t('claim_title')}</TabsTrigger>
+      <TabsList
+        style={{
+          gridTemplateColumns: `repeat(${tabsToRender.length}, minmax(0, 1fr))`,
+        }}
+        className={cn(
+          'border-[rgba(255, 255, 255, 0.12)] grid h-auto w-full rounded-[8px] border-[1px] bg-[#151618] p-0',
+        )}
+      >
+        {tabsToRender.map((tab) => (
+          <TabsTrigger
+            className='m-px  rounded-[7px] data-[state="active"]:!bg-[#FFFFFF1A] data-[state="active"]:!text-[#FFFFFF]'
+            key={tab.action}
+            value={tab.action}
+          >
+            {t(tab.title)}
+          </TabsTrigger>
+        ))}
       </TabsList>
       <TabsContent value={Actions.deposit}>
         <FormCard action={Actions.deposit} lng={lng}>
@@ -42,7 +92,7 @@ export async function Form({ lng }: { lng: Language }) {
       </TabsContent>
       <TabsContent value={Actions.claim}>
         <FormCard action={Actions.claim} lng={lng}>
-          <CardContent className='space-y-2 '>
+          <CardContent className='space-y-2'>
             <ClaimBalance />
             <ClaimButton />
           </CardContent>

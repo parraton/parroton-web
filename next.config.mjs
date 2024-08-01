@@ -8,6 +8,9 @@ const nextConfig = {
       },
     ]
   },
+  env: {
+    NETWORK: process.env.NEXT_PUBLIC_TON_CLIENT_URL.includes('mainnet') ? 'mainnet' : 'testnet',
+  }
 };
 
 export default nextConfig;

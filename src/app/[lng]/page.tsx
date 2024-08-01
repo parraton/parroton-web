@@ -4,6 +4,8 @@ import { RouteInfoToLayout } from '@routes/makeRoute';
 import { Route } from './page.info';
 import { Vault } from '@components/vault/vault';
 import { addresses } from '@config/contracts-config';
+import { redirect } from 'next/navigation';
+import { RedirectType } from 'next/dist/client/components/redirect';
 
 export async function generateMetadata({
   params,
@@ -16,7 +18,14 @@ export async function generateMetadata({
   };
 }
 
+//need to remove typescript unintentional warning
+const isRedirectNeeded = (vaultsQuantity: number) => vaultsQuantity === 1;
+
 export default function Home({ params }: RouteInfoToLayout<typeof Route>) {
+  if (isRedirectNeeded(addresses.vaults.length)) {
+    redirect(`/${params.lng}/${addresses.vaults[0].vault.toString()}`, RedirectType.replace);
+  }
+
   return (
     <>
       {addresses.vaults.map(({ vault }, index) => (

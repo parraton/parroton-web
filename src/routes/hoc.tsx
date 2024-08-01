@@ -10,7 +10,7 @@ export function RouteHoc<
   return function (WrappedComponent: React.ComponentType<RouteInfoToLayout<T>>) {
     const displayName = WrappedComponent.displayName || WrappedComponent.name || 'Component';
 
-    const ComponentWithTheme = (props: RouteInfoToLayout<T>) => {
+    const ComponentWithParams = (props: RouteInfoToLayout<T>) => {
       const { params, searchParams } = props;
 
       const fixedParams = routeInfo.params.safeParse(params);
@@ -29,8 +29,8 @@ export function RouteHoc<
       );
     };
 
-    ComponentWithTheme.displayName = `RouteHoc(${displayName})`;
+    ComponentWithParams.displayName = `RouteHoc(${displayName})`;
 
-    return ComponentWithTheme;
+    return ComponentWithParams;
   };
 }
