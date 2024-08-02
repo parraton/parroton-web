@@ -34,6 +34,6 @@ const commonAddresses = toAddressesDict({
 });
 
 export const addresses = {
-  vaults: [usdtVault], //, scaleVault, notVault],
+  vaults: [usdtVault, scaleVault, notVault],
   ...commonAddresses,
 } as const;

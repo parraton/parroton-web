@@ -8,7 +8,7 @@ const domain =
 export const usePoolMetadata = (vaultAddress: string) => {
   const { pool } = usePool(vaultAddress);
 
-  const { data, error } = useSWR([vaultAddress, Boolean(pool)], async () => {
+  const { data, error } = useSWR(['usePoolMetadata', vaultAddress, Boolean(pool)], async () => {
     if (!pool) return null;
     const newLink = `${pool.toRawString()}.json`;
 

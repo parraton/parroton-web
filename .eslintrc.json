@@ -115,7 +115,8 @@
     "lodash/prefer-lodash-typecheck": "off",
     "unicorn/no-negated-condition": "off",
     "unicorn/no-new-array": "off",
-    "unicorn/no-array-reduce": "off"
+    "unicorn/no-array-reduce": "off",
+    "@typescript-eslint/no-non-null-asserted-optional-chain": "off"
   },
   "overrides": [
     {

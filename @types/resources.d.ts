@@ -35,6 +35,16 @@ interface Resources {
     "lp_output": "LPs to receive",
     "plp_output": "PLPs to receive"
   },
+  "kpi": {
+    "wanna_know_our_goals": "Wanna know our goals?",
+    "our_kpi": "Our KPI",
+    "reach_together": "Let’s reach them together",
+    "goals": {
+      "revenue": "${{revenue_goal}} Revenue",
+      "tvl": "{{tvl_goal}} TVL",
+      "shares": "{{share_goal}}% of Dedust Lp"
+    }
+  },
   "language": {
     "en": "English",
     "ua": "Українська",
@@ -71,7 +81,7 @@ interface Resources {
   },
   "welcome": {
     "main": "We are on Testnet!",
-    "description": "Ahoy, stranger! First time here? Learn how to use our platform in our short video guilde 🏴‍☠️",
+    "description": "Ahoy, stranger! First time here? Learn how to use our platform in our short video guide 🏴‍☠️",
     "watch": "Watch",
     "skip": "Skip"
   }

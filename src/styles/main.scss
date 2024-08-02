@@ -92,7 +92,7 @@ a {
 }
 
 .custom-wrapper {
-  z-index: 2;
+  z-index: 1;
 
   @media (min-width: 768px) {
     transition: transform 0.1s ease-in-out;
@@ -370,6 +370,37 @@ a {
   }
 }
 
+.cloud-container {
+  z-index: 0;
+}
+
+.cloud {
+  position: absolute;
+
+  height: 140px;
+  width: 184px;
+  background-image: url("../images/cloud.png");
+}
+
+.cloud:nth-child(1) {
+  top: 10%;
+  left: -5%;
+
+  @media (min-width: 768px) {
+    left: 10%;
+  }
+}
+
+.cloud:nth-child(2) {
+  top: 20%;
+  right: 5%;
+
+  @media (min-width: 768px) {
+    right: 20%;
+  }
+}
+
+
 .island {
   display: flex;
   align-items: center;
@@ -382,9 +413,9 @@ a {
   background-position: center;
   background-size: contain;
   position: absolute;
-  bottom: 50vh;
-  right: 0;
-  animation: bobble 2s infinite !important;
+  bottom: 0;
+  right: 50vw;
+  transform: translateX(50%);
 
   @media (min-width: 768px) {
     height: 80vh;
@@ -394,19 +425,6 @@ a {
   }
 }
 
-@keyframes bobble {
-  0% {
-    transform: translate3d(0px, -1vw, 0px);
-    animation-timing-function: ease-in;
-  }
-  50% {
-    transform: translate3d(0px, -3vw, 0px);
-    animation-timing-function: ease-out;
-  }
-  100% {
-    transform: translate3d(0px, -1vw, 0px);
-  }
-}
 
 .custom-toggler-list {
   display: grid;
@@ -576,3 +594,15 @@ a {
     }
   }
 }
+
+.ton-connect {
+  & button {
+    background: linear-gradient(92.69deg, #648BF4 0%, #D2597A 100%);
+    border-radius: 8px;
+  }
+}
+
+.vault-info-title {
+  
+}
+

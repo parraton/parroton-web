@@ -6,6 +6,14 @@ import { Address, fromNano } from '@ton/core';
 import { JettonRoot } from '@dedust/sdk';
 import { usePool } from '@hooks/use-pool';
 
+export const getSupply = async (pool: Address) => {
+  const rawJetton = JettonRoot.createFromAddress(pool);
+  const jetton = tonClient.open(rawJetton);
+  const { totalSupply } = await jetton.getJettonData();
+
+  return totalSupply;
+};
+
 export const useVaultTvl = (vaultAddress: string) => {
   const { tonPrice } = useTonPrice();
   const { distributionPool } = useDedustDistributionPool(vaultAddress);
@@ -28,11 +36,7 @@ export const useVaultTvl = (vaultAddress: string) => {
 
       const poolTvl = tvl * Number(tonPrice);
 
-      const rawJetton = JettonRoot.createFromAddress(pool);
-      const jetton = tonClient.open(rawJetton);
-      const { totalSupply } = await jetton.getJettonData();
-
-      const supply = fromNano(totalSupply);
+      const supply = fromNano(await getSupply(pool));
 
       return {
         tvlInTon: `${tvl}`,

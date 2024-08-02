@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-literals */
 'use client';
 
 import { VaultPage } from '@routes';
@@ -11,14 +12,18 @@ import { cn, formatCurrency, formatNumber, formatPercentage } from '@lib/utils';
 import { usePoolMetadata } from '@hooks/use-pool-metadata';
 import { KpiDialog } from '@components/kpi/kpi-dialog';
 import { GlassCard } from '@components/glass-card';
+import { useRevenue } from '@hooks/use-revenue';
+import { useShare } from '@hooks/use-share';
 
 const useVaultInfo = () => {
   const { vault, lng } = useParams(VaultPage);
   const { balance: sharesBalance } = useSharesBalance(vault);
   const { metadata } = usePoolMetadata(vault);
   const { poolNumbers } = usePoolNumbers(vault);
+  const { revenue } = useRevenue(vault);
+  const { share } = useShare(vault);
 
-  return { sharesBalance: sharesBalance?.lpBalance, metadata, poolNumbers, lng };
+  return { sharesBalance: sharesBalance?.lpBalance, metadata, poolNumbers, lng, revenue, share };
 };
 
 const NanoInfoPlate = ({
@@ -55,7 +60,7 @@ const NanoInfoPlate = ({
 );
 
 export function VaultInfo() {
-  const { sharesBalance, metadata, poolNumbers, lng } = useVaultInfo();
+  const { sharesBalance, metadata, poolNumbers, revenue, share, lng } = useVaultInfo();
   const { t } = useTranslation({ ns: 'vault-card' });
 
   const totalRewardPercent =
@@ -68,10 +73,25 @@ export function VaultInfo() {
 
   return (
     <div className={'g flex flex-col gap-4'}>
-      <h1 className={'scroll-m-20 text-4xl font-medium tracking-tight'}>
-        <OrLoader animation value={metadata?.name} />
+      <h1
+        className={
+          'grid scroll-m-20 place-items-center gap-x-1 text-4xl font-medium tracking-tight md:flex'
+        }
+      >
+        <OrLoader
+          animation
+          value={
+            metadata?.name && (
+              <>
+                <span className='text-sm md:text-4xl'>{`${metadata?.name.split(':')[0]}:`}</span>
+                <span className='text-xl md:text-4xl'>{metadata?.name.split(':')[1]}</span>
+              </>
+            )
+          }
+        />
       </h1>
-      <KpiDialog />
+      {/**/}
+      <KpiDialog tvl={poolNumbers?.tvlInUsd!} share={share!} revenue={revenue?.toString()!} />
       <div className='custom-list'>
         <NanoInfoPlate
           title={t('tvl')}

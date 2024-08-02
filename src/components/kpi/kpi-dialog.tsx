@@ -1,3 +1,5 @@
+'use client';
+
 import {
   Dialog,
   DialogContent,
@@ -7,24 +9,50 @@ import {
   DialogTrigger,
 } from '@UI/dialog';
 
-import { KPIProgress } from '@components/kpi/kpi-progress';
+import { KPIProgress, KpiType } from '@components/kpi/kpi-progress';
+import { formatCurrency } from '@lib/utils';
+import { useTranslation } from '@i18n/client';
+import { goals } from '@config/goals.config';
 
-export function KpiDialog() {
+type KpiDialogProps = {
+  tvl: string;
+  share: string;
+  revenue: string;
+};
+
+export function KpiDialog({ tvl, share, revenue }: KpiDialogProps) {
+  const { t } = useTranslation({ ns: 'kpi' });
+
   return (
     <Dialog>
-      <DialogTrigger>
-        <p className='bg-none font-semibold text-[#19A7E7]'>Wanna know our goals?</p>
+      <DialogTrigger className='z-10'>
+        <p className='bg-none font-semibold text-[#19A7E7]'>{t('wanna_know_our_goals')}</p>
       </DialogTrigger>
       <DialogContent className='custom-dialog glass-card sm:max-w-md'>
         <div className='p-6'>
           <DialogHeader>
-            <DialogTitle className='uppercase'>Our KPI</DialogTitle>
-            <DialogDescription>Let’s reach them together</DialogDescription>
+            <DialogTitle className='uppercase'>{t('our_kpi')}</DialogTitle>
+            <DialogDescription>{t('reach_together')}</DialogDescription>
           </DialogHeader>
           <div className='mt-4 flex flex-col gap-6'>
-            <KPIProgress title='1M TVL' value={123_456} total={1_000_000} />
-            <KPIProgress title='X% of Dedust Lp' value={7} total={30} />
-            <KPIProgress title='$ Revenue' value={12_345} total={500_000} />
+            <KPIProgress
+              title={t('goals.tvl', { tvl_goal: formatCurrency(goals.tvl) })}
+              value={Number(tvl)}
+              total={goals.tvl}
+              type={KpiType.Dollar}
+            />
+            <KPIProgress
+              title={t('goals.shares', { share_goal: goals.share })}
+              value={Number(share) * 100}
+              total={goals.share}
+              type={KpiType.Percent}
+            />
+            <KPIProgress
+              title={t('goals.revenue', { revenue_goal: formatCurrency(goals.revenue) })}
+              value={Number(revenue)}
+              total={goals.revenue}
+              type={KpiType.Dollar}
+            />
           </div>
         </div>
       </DialogContent>
