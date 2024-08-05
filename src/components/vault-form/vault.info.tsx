@@ -96,11 +96,7 @@ export function VaultInfo() {
         <NanoInfoPlate
           title={t('tvl')}
           value={
-            <OrLoader
-              animation
-              value={poolNumbers?.tvlInUsd}
-              modifier={(x) => formatCurrency(x, lng)}
-            />
+            <OrLoader animation value={poolNumbers?.tvlInUsd} modifier={(x) => formatCurrency(x)} />
           }
         />
         <NanoInfoPlate

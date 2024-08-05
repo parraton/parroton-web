@@ -9,6 +9,7 @@ import { useParams } from '@routes/hooks';
 import { Home } from '@routes';
 import { useTheme } from 'next-themes';
 import { WebAppProvider } from '@vkruglikov/react-telegram-web-app';
+// import { TxNotification } from '@components/tx-notification';
 
 const themeMap = {
   light: THEME.LIGHT,
@@ -16,7 +17,7 @@ const themeMap = {
   system: undefined,
 };
 
-const SetTonConnectLanguage = () => {
+const SetTonConnectSettings = () => {
   const [, setOptions] = useTonConnectUI();
 
   const params = useParams(Home);
@@ -50,8 +51,9 @@ export function SandwichProvider({ children }: React.PropsWithChildren) {
       }}
     >
       <ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
+        {/*<TxNotification />*/}
         <TonConnectUIProvider manifestUrl={manifestUrl}>
-          <SetTonConnectLanguage />
+          <SetTonConnectSettings />
           {children}
         </TonConnectUIProvider>
         <Toaster />

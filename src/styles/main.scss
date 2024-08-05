@@ -45,6 +45,7 @@ a {
   position: relative;
   max-width: 100vw;
   overflow: hidden;
+  height: max-content;
 
   @media (min-width: 768px) {
     padding: 50px 6vw 20px 6vw;
@@ -352,7 +353,7 @@ a {
 .custom-form {
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 1fr 1fr;
+  grid-template-rows: 1fr;
   gap: 20px;
 
   @media (min-width: 768px) {
@@ -603,6 +604,6 @@ a {
 }
 
 .vault-info-title {
-  
+
 }
 
