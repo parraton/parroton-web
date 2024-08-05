@@ -3,5 +3,5 @@
 import { TonConnectButton } from '@tonconnect/ui-react';
 
 export function ConnectWallet() {
-  return <TonConnectButton />;
+  return <TonConnectButton className='ton-connect' />;
 }

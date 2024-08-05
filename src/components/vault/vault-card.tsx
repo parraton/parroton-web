@@ -8,6 +8,7 @@ import { useTranslation } from '@i18n/client';
 import Link from 'next/link';
 import { ReactNode } from 'react';
 import { OrLoader } from '@components/loader/loader';
+import { GlassCard } from '@components/glass-card';
 
 export type VaultCardProps = {
   title: Maybe<string>;
@@ -80,7 +81,7 @@ export function VaultCard({ data, locale, className, ...props }: CardProps) {
 
   return (
     <Link href={data.address} className='custom-wrapper'>
-      <Card className={cn('custom-card', className)} {...props}>
+      <GlassCard className={cn(className)} {...props}>
         <CardContent className='custom-card-content'>
           <CardTitle className='custom-card-header'>{data.title}</CardTitle>
           <NanoInfo
@@ -140,7 +141,7 @@ export function VaultCard({ data, locale, className, ...props }: CardProps) {
             }
           />
         </CardContent>
-      </Card>
+      </GlassCard>
     </Link>
   );
 }

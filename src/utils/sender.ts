@@ -1,12 +1,34 @@
 /* eslint-disable no-unused-vars */
 
-import { Address, beginCell, Sender as ISender, SenderArguments, storeStateInit } from '@ton/core';
-import { ITonConnect } from '@tonconnect/ui';
+import {
+  Address,
+  beginCell,
+  Sender as ISender,
+  SenderArguments,
+  StateInit,
+  storeStateInit,
+} from '@ton/core';
+import { ITonConnect, SendTransactionResponse } from '@tonconnect/ui';
 import { SendTransactionRequest } from '@tonconnect/sdk';
 import { transactionSubject } from '@utils/transaction-subjects';
-import { TransactionStatus } from '@types';
+import { Maybe, TransactionStatus } from '@types';
+import { Subject } from 'rxjs';
 
 const DEFAULT_TTL = 5 * 60 * 1000;
+
+export const transactionModalSubject = new Subject<void>();
+
+const argsInitToMessageStateInit = (init: Maybe<StateInit>) =>
+  init
+    ? beginCell().storeWritable(storeStateInit(init)).endCell().toBoc().toString('base64')
+    : undefined;
+
+const argsToMessage = (args: SenderArguments) => ({
+  address: args.to.toString(),
+  amount: args.value.toString(10),
+  stateInit: argsInitToMessageStateInit(args.init),
+  payload: args.body?.toBoc().toString('base64'),
+});
 
 export class Sender implements ISender {
   private messages: SendTransactionRequest['messages'] = [];
@@ -21,23 +43,17 @@ export class Sender implements ISender {
     private readonly ttl: number = DEFAULT_TTL,
   ) {}
 
+  private async sendTonTransaction(args: SendTransactionRequest): Promise<SendTransactionResponse> {
+    transactionModalSubject.next();
+    const { boc } = await this.ton.sendTransaction(args);
+
+    return { boc };
+  }
+
   private async sendTransaction(args: SenderArguments) {
-    const { boc } = await this.ton.sendTransaction({
+    const { boc } = await this.sendTonTransaction({
       validUntil: Date.now() + this.ttl,
-      messages: [
-        {
-          address: args.to.toString(),
-          amount: args.value.toString(10),
-          stateInit: args.init
-            ? beginCell()
-                .storeWritable(storeStateInit(args.init))
-                .endCell()
-                .toBoc()
-                .toString('base64')
-            : undefined,
-          payload: args.body?.toBoc().toString('base64'),
-        },
-      ],
+      messages: [argsToMessage(args)],
     });
 
     transactionSubject.next({
@@ -47,14 +63,7 @@ export class Sender implements ISender {
   }
 
   private saveTransactionMessage(args: SenderArguments) {
-    this.messages.push({
-      address: args.to.toString(),
-      amount: args.value.toString(10),
-      stateInit: args.init
-        ? beginCell().storeWritable(storeStateInit(args.init)).endCell().toBoc().toString('base64')
-        : undefined,
-      payload: args.body?.toBoc().toString('base64'),
-    });
+    this.messages.push(argsToMessage(args));
   }
 
   async send(args: SenderArguments): Promise<void> {
@@ -67,7 +76,7 @@ export class Sender implements ISender {
 
   async sendBatch(): Promise<void> {
     if (this.batch) {
-      const { boc } = await this.ton.sendTransaction({
+      const { boc } = await this.sendTonTransaction({
         validUntil: Date.now() + this.ttl,
         messages: this.messages.toReversed(),
       });
