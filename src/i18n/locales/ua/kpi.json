@@ -1,0 +1,10 @@
+{
+  "wanna_know_our_goals": "Хочеш дізнатися наші цілі?",
+  "our_kpi": "Наші KPI",
+  "reach_together": "Давай досягати їх разом",
+  "goals": {
+    "revenue": "{{revenue_goal}} Дохіду",
+    "tvl": "{{tvl_goal}} TVL",
+    "shares": "{{share_goal}}% від Dedust Lp"
+  }
+}

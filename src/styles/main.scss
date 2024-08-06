@@ -12,6 +12,10 @@
   outline: none;
 }
 
+:root {
+  --header-hieght: 80px;
+}
+
 html,
 body {
   min-height: 100%;
@@ -45,7 +49,7 @@ a {
   position: relative;
   max-width: 100vw;
   overflow: hidden;
-  height: max-content;
+  min-height: calc(100vh - var(--header-hieght));
 
   @media (min-width: 768px) {
     padding: 50px 6vw 20px 6vw;
@@ -120,6 +124,7 @@ a {
 }
 
 .custom-card-header {
+  height: var(--header-hieght);
   @media (min-width: 768px) {
     padding-right: 20px;
   }
@@ -373,6 +378,7 @@ a {
 
 .cloud-container {
   z-index: 0;
+  flex: 1;
 }
 
 .cloud {
@@ -411,7 +417,7 @@ a {
   min-width: 48vh;
   background-image: url("../images/island.png");
   background-repeat: no-repeat;
-  background-position: center;
+  background-position: bottom;
   background-size: contain;
   position: absolute;
   bottom: 0;
