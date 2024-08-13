@@ -14,6 +14,8 @@
 
 :root {
   --header-hieght: 80px;
+  --light-grey: #ebebeb;
+  --dark-grey: #282828;
 }
 
 html,
@@ -209,14 +211,19 @@ a {
 }
 
 .custom-header {
+  background: var(--light-grey);
   width: 100%;
   min-width: 100vw;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 20px 30px;
-  border-bottom: 1px solid #ebebeb;
   z-index: 2;
+
+
+  .dark & {
+    background: var(--dark-grey);
+  }
 }
 
 .custom-header-title {
@@ -391,20 +398,24 @@ a {
 
 .cloud:nth-child(1) {
   top: 10%;
-  left: -5%;
+  left: -50%;
 
-  @media (min-width: 768px) {
-    left: 10%;
-  }
+  animation: cloudFloat 18s linear infinite;
+
 }
 
 .cloud:nth-child(2) {
   top: 20%;
-  right: 5%;
+  left: -40%;
 
-  @media (min-width: 768px) {
-    right: 20%;
-  }
+  animation: cloudFloat 24s linear infinite;
+}
+
+.cloud:nth-child(3) {
+  top: 30%;
+  left: -30%;
+
+  animation: cloudFloat 30s linear infinite;
 }
 
 
@@ -606,6 +617,16 @@ a {
   & button {
     background: linear-gradient(92.69deg, #648BF4 0%, #D2597A 100%);
     border-radius: 8px;
+
+    & svg path {
+      fill: var(--light-grey);
+      color: var(--light-grey);
+
+      .dark & {
+        fill: var(--dark-grey);
+        color: var(--dark-grey);
+      }
+    }
   }
 }
 
