@@ -23,6 +23,13 @@ export type StrategyConfig = {
   tempUpgrade: Cell;
 };
 
+export interface TonJettonTonStrategyFees {
+  transferFee: bigint;
+  excessFee: bigint;
+  transferNotificationFee: bigint;
+  reinvestFee: bigint;
+}
+
 export function tonJettonTonStrategyConfigToCell(config: StrategyConfig): Cell {
   return beginCell()
     .storeAddress(config.vaultAddress)
@@ -46,17 +53,19 @@ export function tonJettonTonStrategyConfigToCell(config: StrategyConfig): Cell {
     .endCell();
 }
 
-export const Opcodes = {
-  transfer_notification: 0x73_62_d0_9c,
-  internal_transfer: 0x17_8d_45_19,
-  excesses: 0xd5_32_76_db,
-  transfer: 0xf_8a_7e_a5,
-  set_deposit_lp_wallet_address: 0x77_19_b8_4f,
-  set_jetton_wallet_address: 0x28_8b_52_23,
-  reinvest: 0x8_12_d4_e3,
-};
-
 export class Strategy implements Contract {
+  static readonly OPS = {
+    transfer_notification: 0x73_62_d0_9c,
+    internal_transfer: 0x17_8d_45_19,
+    reinvest: 0x8_12_d4_e3,
+    deposit_liquidity: 0xd5_5e_46_86,
+    cb_fail_swap_or_invest: 0x47_4f_86_cf,
+    stop_deposit_to_pool: 0x53_cd_6d_4b,
+    cb_success_swap: 0x32_d0_ad_4a,
+    complete_reinvest: 0x97_32_80_f5,
+    continue_deposit_to_pool: 0xbb_e8_2b_d8,
+  };
+
   constructor(
     readonly address: Address,
     readonly init?: { code: Cell; data: Cell },
@@ -99,57 +108,13 @@ export class Strategy implements Contract {
       sendMode: SendMode.PAY_GAS_SEPARATELY,
       body: beginCell()
         .storeCoins(opts.totalReward)
-        .storeRef(
-          beginCell()
-            .storeUint(Opcodes.reinvest, 32)
-            .storeUint(opts.queryId ?? 0, 64)
-            .storeCoins(opts.amountToSwap)
-            .storeCoins(opts.limit)
-            .storeUint(opts.deadline, 32)
-            .storeCoins(opts.tonTargetBalance)
-            .storeCoins(opts.jettonTargetBalance)
-            .endCell(),
-        )
-        .endCell(),
-    });
-  }
-
-  async sendSetJettonWalletAddress(
-    provider: ContractProvider,
-    via: Sender,
-    opts: {
-      value: bigint;
-      walletAddress: Address;
-      queryId?: number;
-    },
-  ) {
-    return provider.internal(via, {
-      value: opts.value,
-      sendMode: SendMode.PAY_GAS_SEPARATELY,
-      body: beginCell()
-        .storeUint(Opcodes.set_jetton_wallet_address, 32)
+        .storeUint(Strategy.OPS.reinvest, 32)
         .storeUint(opts.queryId ?? 0, 64)
-        .storeAddress(opts.walletAddress)
-        .endCell(),
-    });
-  }
-
-  async sendSetDepositLpWalletAddress(
-    provider: ContractProvider,
-    via: Sender,
-    opts: {
-      value: bigint;
-      walletAddress: Address;
-      queryId?: number;
-    },
-  ) {
-    return provider.internal(via, {
-      value: opts.value,
-      sendMode: SendMode.PAY_GAS_SEPARATELY,
-      body: beginCell()
-        .storeUint(Opcodes.set_deposit_lp_wallet_address, 32)
-        .storeUint(opts.queryId ?? 0, 64)
-        .storeAddress(opts.walletAddress)
+        .storeCoins(opts.amountToSwap)
+        .storeCoins(opts.limit)
+        .storeUint(opts.deadline, 32)
+        .storeCoins(opts.tonTargetBalance)
+        .storeCoins(opts.jettonTargetBalance)
         .endCell(),
     });
   }

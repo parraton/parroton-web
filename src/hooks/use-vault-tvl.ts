@@ -36,12 +36,12 @@ export const useVaultTvl = (vaultAddress: string) => {
 
       const poolTvl = tvl * Number(tonPrice);
 
-      const supply = fromNano(await getSupply(pool));
+      const supply = Number(fromNano(await getSupply(pool)));
 
       return {
         tvlInTon: `${tvl}`,
         tvlInUsd: `${poolTvl}`,
-        priceForOne: `${poolTvl / Number(supply)}`,
+        priceForOne: supply ? `${poolTvl / supply}` : 0,
       };
     },
     {

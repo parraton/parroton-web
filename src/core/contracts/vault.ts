@@ -9,6 +9,7 @@ import {
   Sender,
   SendMode,
 } from '@ton/core';
+import { HOLE_ADDRESS } from '@core/config';
 
 export type VaultConfig = {
   distributionPoolAddress: Address;
@@ -24,6 +25,12 @@ export type VaultConfig = {
   sharesWalletCode: Cell;
   tempUpgrade: Cell;
 };
+
+export interface VaultFees {
+  depositFee: bigint;
+  withdrawalFee: bigint;
+  reinvestFee: bigint;
+}
 
 export function vaultConfigToCell(config: VaultConfig): Cell {
   return beginCell()
@@ -42,7 +49,7 @@ export function vaultConfigToCell(config: VaultConfig): Cell {
         .endCell(),
     )
     .storeRef(config.sharesWalletCode)
-    .storeRef(config.tempUpgrade)
+    .storeRef(Vault.packInitTempUpgrade())
     .endCell();
 }
 
@@ -64,6 +71,10 @@ export class Vault implements Contract {
     excesses: 0xd5_32_76_db,
     transfer_bounce_invalid_request: 0x19_72_7e_a8,
     transfer: 0xf_8a_7e_a5,
+    refund_rewards: 0xb7_95_94_73,
+    init_code_upgrade: 0xdf_1e_23_3d,
+    init_admin_upgrade: 0x2f_b9_43_84,
+    finalize_upgrades: 0x63_78_50_9f,
   };
   static readonly EXIT_CODES = {
     WRONG_OP: 80,
@@ -72,7 +83,7 @@ export class Vault implements Contract {
     INVALID_DEPOSIT_TOKEN: 83,
     INSUFFICIENT_GAS: 84,
     INVALID_CALLER: 85,
-    ZERO_OUTPUT: 86,
+    ZERO_SHARES_BURNT: 86,
     INSUFFICIENT_LP_BALANCE: 87,
     INSUFFICIENT_LP_AMOUNT: 88,
     INSUFFICIENT_REWARDS_BALANCE: 89,
@@ -81,6 +92,10 @@ export class Vault implements Contract {
     INSUFFICIENT_MANAGEMENT_FEE: 92,
     INSUFFICIENT_SHARES_BALANCE: 93,
     MANAGEMENT_FEE_RATE_OUT_OF_BOUNDS: 94,
+    INSUFFICIENT_REINVEST_GAS: 95,
+    INSUFFICIENT_CANCEL_DEPOSIT_GAS: 96,
+    INVALID_DEPOSIT_ADDRESS: 97,
+    WRONG_ADMIN_OP: 801,
   };
 
   constructor(
@@ -106,8 +121,13 @@ export class Vault implements Contract {
     });
   }
 
-  prepareDepositPayload() {
-    return beginCell().storeUint(Vault.OPS.deposit, 32).endCell();
+  prepareDepositPayload(fulfillAddress?: Address, fulfillPayload?: Cell) {
+    let depositPayload = beginCell().storeUint(Vault.OPS.deposit, 32);
+    if (fulfillAddress && fulfillPayload) {
+      depositPayload = depositPayload.storeAddress(fulfillAddress);
+      depositPayload = depositPayload.storeRef(fulfillPayload);
+    }
+    return depositPayload.endCell();
   }
 
   async sendDepositNotification(
@@ -136,6 +156,28 @@ export class Vault implements Contract {
     });
   }
 
+  async sendBurnNotification(
+    provider: ContractProvider,
+    via: Sender,
+    opts: {
+      queryId?: number | bigint;
+      amount: bigint;
+      responseAddress: Address;
+      value: bigint;
+    },
+  ) {
+    return provider.internal(via, {
+      value: opts.value,
+      sendMode: SendMode.PAY_GAS_SEPARATELY,
+      body: beginCell()
+        .storeUint(Vault.OPS.burn_notification, 32)
+        .storeUint(opts.queryId ?? 0, 64)
+        .storeCoins(opts.amount)
+        .storeAddress(opts.responseAddress)
+        .endCell(),
+    });
+  }
+
   async sendReinvest(
     provider: ContractProvider,
     via: Sender,
@@ -143,7 +185,8 @@ export class Vault implements Contract {
       value: bigint;
       totalReward: bigint;
       amountToSwap: bigint;
-      limit: bigint;
+      swapLimit: bigint;
+      depositLimit: bigint;
       tonTargetBalance: bigint;
       depositFee: bigint;
       depositFwdFee: bigint;
@@ -153,27 +196,78 @@ export class Vault implements Contract {
       queryId?: number;
     },
   ) {
-    return provider.internal(via, {
-      value: opts.value,
-      sendMode: SendMode.PAY_GAS_SEPARATELY,
-      body: beginCell()
-        .storeUint(Vault.OPS.reinvest, 32)
-        .storeUint(opts.queryId ?? 0, 64)
-        .storeCoins(opts.totalReward)
-        .storeRef(
-          beginCell()
+    return opts.amountToSwap > 0
+      ? provider.internal(via, {
+          value: opts.value,
+          sendMode: SendMode.PAY_GAS_SEPARATELY,
+          body: beginCell()
+            .storeUint(Vault.OPS.reinvest, 32)
+            .storeUint(opts.queryId ?? 0, 64)
+            .storeCoins(opts.totalReward)
             .storeCoins(opts.amountToSwap)
-            .storeCoins(opts.limit)
+            .storeCoins(opts.swapLimit)
             .storeUint(opts.deadline, 32)
             .storeCoins(opts.tonTargetBalance)
             .storeCoins(opts.jettonTargetBalance)
             .storeCoins(opts.depositFee)
             .storeCoins(opts.depositFwdFee)
             .storeCoins(opts.transferFee)
+            .storeRef(beginCell().storeCoins(opts.depositLimit).endCell())
             .endCell(),
-        )
+        })
+      : provider.internal(via, {
+          value: opts.value,
+          sendMode: SendMode.PAY_GAS_SEPARATELY,
+          body: beginCell()
+            .storeUint(Vault.OPS.reinvest, 32)
+            .storeUint(opts.queryId ?? 0, 64)
+            .storeCoins(opts.totalReward)
+            .storeCoins(opts.amountToSwap)
+            .storeCoins(opts.tonTargetBalance)
+            .storeCoins(opts.jettonTargetBalance)
+            .storeCoins(opts.depositFee)
+            .storeCoins(opts.depositFwdFee)
+            .storeCoins(opts.transferFee)
+            .storeRef(beginCell().storeCoins(opts.depositLimit).endCell())
+            .endCell(),
+        });
+  }
+
+  async sendRefundRewards(
+    provider: ContractProvider,
+    via: Sender,
+    opts: {
+      value: bigint;
+      queryId?: number;
+    },
+  ) {
+    return provider.internal(via, {
+      value: opts.value,
+      sendMode: SendMode.PAY_GAS_SEPARATELY,
+      body: beginCell()
+        .storeUint(Vault.OPS.refund_rewards, 32)
+        .storeUint(opts.queryId ?? 0, 64)
         .endCell(),
     });
+  }
+
+  static packInitTempUpgrade() {
+    return beginCell()
+      .storeUint(0, 64)
+      .storeUint(0, 64)
+      .storeAddress(HOLE_ADDRESS)
+      .storeRef(Cell.EMPTY)
+      .endCell();
+  }
+
+  static unpackTempUpgrade(cell: Cell) {
+    const slice = cell.beginParse();
+    return {
+      endCode: slice.loadUint(64),
+      endAdmin: slice.loadUint(64),
+      admin: slice.loadAddress(),
+      code: slice.loadRef(),
+    };
   }
 
   async sendSetStrategyAddress(
@@ -234,6 +328,64 @@ export class Vault implements Contract {
         .storeUint(Vault.OPS.set_is_locked, 32)
         .storeUint(opts.queryId ?? 0, 64)
         .storeUint(opts.isLocked, 1)
+        .endCell(),
+    });
+  }
+
+  async sendFinalizeUpgrades(
+    provider: ContractProvider,
+    via: Sender,
+    opts: {
+      value: bigint;
+      queryId?: number;
+    },
+  ) {
+    return provider.internal(via, {
+      value: opts.value,
+      sendMode: SendMode.PAY_GAS_SEPARATELY,
+      body: beginCell()
+        .storeUint(Vault.OPS.finalize_upgrades, 32)
+        .storeUint(opts.queryId ?? 0, 64)
+        .endCell(),
+    });
+  }
+
+  async sendInitCodeUpgrade(
+    provider: ContractProvider,
+    via: Sender,
+    opts: {
+      value: bigint;
+      code: Cell;
+      queryId?: number;
+    },
+  ) {
+    return provider.internal(via, {
+      value: opts.value,
+      sendMode: SendMode.PAY_GAS_SEPARATELY,
+      body: beginCell()
+        .storeUint(Vault.OPS.init_code_upgrade, 32)
+        .storeUint(opts.queryId ?? 0, 64)
+        .storeRef(opts.code)
+        .endCell(),
+    });
+  }
+
+  async sendInitAdminUpgrade(
+    provider: ContractProvider,
+    via: Sender,
+    opts: {
+      value: bigint;
+      admin: Address;
+      queryId?: number;
+    },
+  ) {
+    return provider.internal(via, {
+      value: opts.value,
+      sendMode: SendMode.PAY_GAS_SEPARATELY,
+      body: beginCell()
+        .storeUint(Vault.OPS.init_admin_upgrade, 32)
+        .storeUint(opts.queryId ?? 0, 64)
+        .storeAddress(opts.admin)
         .endCell(),
     });
   }
@@ -304,5 +456,20 @@ export class Vault implements Contract {
       },
     ]);
     return result.stack.readAddress();
+  }
+
+  async getDepositFee(provider: ContractProvider): Promise<bigint> {
+    const result = await provider.get('get_deposit_fee', []);
+    return result.stack.readBigNumber();
+  }
+
+  async getReinvestFee(provider: ContractProvider): Promise<bigint> {
+    const result = await provider.get('get_reinvest_fee', []);
+    return result.stack.readBigNumber();
+  }
+
+  async getVaultStorageFee(provider: ContractProvider): Promise<bigint> {
+    const result = await provider.get('get_vault_storage_fee', []);
+    return result.stack.readBigNumber();
   }
 }

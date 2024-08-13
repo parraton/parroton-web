@@ -112,6 +112,7 @@ export function WithdrawForm() {
     >
       {({ isSubmitting, isValid, values }) => {
         void fetchLpEquivalent(values.amount);
+
         const dollarEquivalent = multiplyIfPossible(lpPrice, lpBalance);
 
         return (
@@ -122,7 +123,7 @@ export function WithdrawForm() {
                   {t('amount')}:{' '}
                   {<OrLoader value={sharesBalance} modifier={(x) => formatNumber(x, lng)} />}{' '}
                   {<OrLoader animation value={currency} />} (
-                  <OrLoader value={dollarEquivalent} modifier={(x) => formatCurrency(x, lng)} />)
+                  <OrLoader value={dollarEquivalent} modifier={(x) => formatCurrency(x)} />)
                 </Label>
                 <Field name='amount' id='current' type='number' as={Input} placeholder={0} />
                 <ErrorMessage
