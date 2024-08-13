@@ -41,7 +41,7 @@ const SetTonConnectSettings = () => {
 };
 
 //import tonconnect manifest as url
-const manifestUrl = `https://parroton.org/tonconnect-manifest.json`;
+const manifestUrl = `https://parraton.com/tonconnect-manifest.json`;
 
 export function SandwichProvider({ children }: React.PropsWithChildren) {
   return (

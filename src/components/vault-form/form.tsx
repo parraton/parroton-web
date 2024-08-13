@@ -60,12 +60,12 @@ export async function Form({ lng }: { lng: Language }) {
           gridTemplateColumns: `repeat(${tabsToRender.length}, minmax(0, 1fr))`,
         }}
         className={cn(
-          'border-[rgba(255, 255, 255, 0.12)] grid h-auto w-full rounded-[8px] border-[1px] bg-[#151618] p-0',
+          'dark:border-[rgba(255, 255, 255, 0.12)] grid h-auto w-full rounded-[8px] border-[1px] p-0 dark:bg-[#151618]',
         )}
       >
         {tabsToRender.map((tab) => (
           <TabsTrigger
-            className='m-px  rounded-[7px] data-[state="active"]:!bg-[#FFFFFF1A] data-[state="active"]:!text-[#FFFFFF]'
+            className='m-px rounded-[7px] dark:data-[state="active"]:!bg-[#FFFFFF1A] dark:data-[state="active"]:!text-[#FFFFFF]'
             key={tab.action}
             value={tab.action}
           >

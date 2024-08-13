@@ -92,7 +92,7 @@ export function VaultInfo() {
       </h1>
       {/**/}
       <KpiDialog tvl={poolNumbers?.tvlInUsd!} share={share!} revenue={revenue?.toString()!} />
-      <div className='custom-list'>
+      <div className='custom-list !gap-2'>
         <NanoInfoPlate
           title={t('tvl')}
           value={
