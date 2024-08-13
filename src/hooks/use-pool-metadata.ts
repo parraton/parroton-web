@@ -3,7 +3,7 @@ import { JettonMetadata } from '@types';
 import { usePool } from '@hooks/use-pool';
 
 const domain =
-  process.env.NODE_ENV === 'development' ? 'http://localhost:3000/' : 'https://parroton.org/';
+  process.env.NODE_ENV === 'development' ? 'http://localhost:3000/' : 'https://parraton.com/';
 
 export const usePoolMetadata = (vaultAddress: string) => {
   const { pool } = usePool(vaultAddress);
