@@ -1,11 +1,11 @@
 import { Address, fromNano, OpenedContract } from '@ton/core';
-import { SharesWallet, Vault } from '@core/contracts';
+import { SharesWallet, Vault } from '@parraton/sdk';
 import { tonClient } from '@core/config';
 import { JettonRoot, JettonWallet } from '@dedust/sdk';
-import { Strategy } from '@core/contracts/strategy';
 import { DistributionPool } from '@dedust/apiary-v1';
 import { tonApiHttpClient } from '@core/tonapi';
 import { Action } from 'tonapi-sdk-js';
+import { TonJettonTonStrategy } from '@parraton/sdk';
 
 export function exists<T>(value: T | null | undefined | unknown): T {
   if (value == undefined) {
@@ -48,7 +48,7 @@ export const getVaultData = async (vaultAddress: Address) => {
 
 export const getStrategyInfoByVault = async (vaultAddress: Address) => {
   const { strategyAddress } = await getVaultData(vaultAddress);
-  const rawStrategy = Strategy.createFromAddress(strategyAddress);
+  const rawStrategy = TonJettonTonStrategy.createFromAddress(strategyAddress);
   const strategy = tonClient.open(rawStrategy);
 
   return await strategy.getStrategyData();

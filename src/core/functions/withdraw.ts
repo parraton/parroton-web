@@ -1,6 +1,6 @@
 import { OpenedContract, toNano } from '@ton/core';
-import { SharesWallet } from '@core/contracts/shares-wallet';
 import { Sender } from '@utils/sender';
+import { SharesWallet } from '@parraton/sdk';
 
 export async function withdraw(
   sharesWallet: OpenedContract<SharesWallet>,
