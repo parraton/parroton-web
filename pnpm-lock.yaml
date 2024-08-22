@@ -18,8 +18,8 @@ importers:
         specifier: ^2.3.3
         version: 2.3.3
       '@parraton/sdk':
-        specifier: ^1.0.4
-        version: 1.0.4(@ton/crypto@3.2.0)(@tonconnect/sdk@3.0.3)(axios@1.7.2)
+        specifier: ^1.0.6
+        version: 1.0.6(@ton/core@0.57.0(@ton/crypto@3.2.0))
       '@radix-ui/react-avatar':
         specifier: ^1.0.4
         version: 1.0.4(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -1338,8 +1338,10 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@parraton/sdk@1.0.4':
-    resolution: {integrity: sha512-7AeAYf5b6I/iFf4nlYqJFhlEORqKyoJTkSDeXnRk04mzNMhkwzozJShfWuTZaEFLrDrLO/gaqtk1MqWZeoXPtw==}
+  '@parraton/sdk@1.0.6':
+    resolution: {integrity: sha512-GENFl7+QFNA1wjEi13pT68/U2fMQENou/uYn3fYPKWLKapUL2BBahFyaiEKTJAFZBvDyM+eMGHRG2mYOXsbtGQ==}
+    peerDependencies:
+      '@ton/core': ^0.57.0
 
   '@peculiar/asn1-schema@2.3.8':
     resolution: {integrity: sha512-ULB1XqHKx1WBU/tTFIA+uARuRoBVZ4pNdOA878RDrRbBfBGcSzi5HBkdScC6ZbHn8z7L8gmKCgPC1LHRrP46tA==}
@@ -7849,14 +7851,9 @@ snapshots:
   '@oxlint/win32-x64@0.3.5':
     optional: true
 
-  '@parraton/sdk@1.0.4(@ton/crypto@3.2.0)(@tonconnect/sdk@3.0.3)(axios@1.7.2)':
+  '@parraton/sdk@1.0.6(@ton/core@0.57.0(@ton/crypto@3.2.0))':
     dependencies:
-      '@dedust/sdk': 0.8.7(@ton/core@0.57.0(@ton/crypto@3.2.0))(@tonconnect/sdk@3.0.3)(axios@1.7.2)
       '@ton/core': 0.57.0(@ton/crypto@3.2.0)
-    transitivePeerDependencies:
-      - '@ton/crypto'
-      - '@tonconnect/sdk'
-      - axios
 
   '@peculiar/asn1-schema@2.3.8':
     dependencies:
