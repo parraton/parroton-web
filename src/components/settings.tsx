@@ -45,7 +45,6 @@ export async function Settings({ lng }: { lng: Language }) {
             <LanguageToggle />
           </div>
         </div>
-
         <ReferralSection />
       </DialogContent>
     </Dialog>

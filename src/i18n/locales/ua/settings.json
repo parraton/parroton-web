@@ -3,5 +3,7 @@
   "dialog_description": "Тут ви можете змінити налаштування додатку",
   "dialog_close": "Закрити",
   "mode_title": "Кольорова схема",
-  "language_title": "Мова"
+  "language_title": "Мова",
+  "referral_title": "Реферальне посилання",
+  "copy_referral": "Копіювати"
 }

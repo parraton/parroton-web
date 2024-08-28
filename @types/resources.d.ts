@@ -67,6 +67,11 @@ interface Resources {
     "referral_title": "Referral link",
     "copy_referral": "Copy"
   },
+  "terms": {
+    "header": "Accept Terms",
+    "description": "By using this platform, you agree to our Terms of Use and Privacy Policy. The platform is not responsible for any losses incurred. Use at your own risk.",
+    "accept": "I agree"
+  },
   "transaction": {
     "sent": "Transaction Sent",
     "view_explorer": "View Explorer",
