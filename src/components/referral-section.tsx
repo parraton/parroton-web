@@ -17,7 +17,7 @@ export function ReferralSection() {
     <div className={cn('flex flex-col gap-2')}>
       <Separator />
       <div className={cn('flex flex-row items-center justify-between')}>
-        <span className={cn('text-xs')}>{t('referral_title')}</span>
+        <span className={cn('text-[14px]')}>{t('referral_title')}</span>
         <CopyButton />
       </div>
     </div>

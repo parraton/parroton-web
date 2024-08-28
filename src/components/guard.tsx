@@ -23,8 +23,8 @@ export function Guard() {
       <DialogContent>
         <DialogHeader>{t('header')}</DialogHeader>
         <DialogDescription>{t('description')}</DialogDescription>
-        <DialogFooter>
-          <Button onClick={close} className='w-100'>
+        <DialogFooter className='w-full'>
+          <Button onClick={close} className='w-full bg-[#19A7E7]'>
             {t('accept')}
           </Button>
         </DialogFooter>
