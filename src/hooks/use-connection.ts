@@ -18,13 +18,14 @@ export function useConnection({ batch }: ConnectionOptions = {}): {
   const [connected, setConnected] = useState(false);
 
   useEffect(() => {
+    setConnected(Boolean(TonConnectUI?.connector.wallet?.provider));
+
     TonConnectUI.connectionRestored.then((value) => {
       setConnected(value);
     });
 
-    return TonConnectUI.onStatusChange((wallet) => {
+    TonConnectUI.onStatusChange((wallet) => {
       const isConnected = wallet?.provider;
-
       setConnected(Boolean(isConnected));
     });
   }, [TonConnectUI]);

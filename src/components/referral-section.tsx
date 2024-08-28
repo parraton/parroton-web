@@ -7,9 +7,9 @@ import { useConnection } from '@hooks/use-connection';
 import { useTranslation } from '@i18n/client';
 
 export function ReferralSection() {
-  const { connected } = useConnection();
+  const { address } = useConnection();
   const { t } = useTranslation({ ns: 'settings' });
-  if (!connected) {
+  if (!address) {
     return null;
   }
 

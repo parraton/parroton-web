@@ -24,7 +24,9 @@ export function Guard() {
         <DialogHeader>{t('header')}</DialogHeader>
         <DialogDescription>{t('description')}</DialogDescription>
         <DialogFooter>
-          <Button className='w-100'>{t('accept')}</Button>
+          <Button onClick={close} className='w-100'>
+            {t('accept')}
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
