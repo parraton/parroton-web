@@ -41,10 +41,7 @@ const SetTonConnectSettings = () => {
   return <></>;
 };
 
-//import tonconnect manifest as url
-const manifestUrl = `${domain}/tonconnect-manifest.json`;
-
-export function SandwichProvider({ children }: React.PropsWithChildren) {
+const SetReferral = () => {
   const { ref } = useSearchParams(Home);
   useEffect(() => {
     const existingRef = localStorage.getItem('ref');
@@ -53,12 +50,20 @@ export function SandwichProvider({ children }: React.PropsWithChildren) {
     }
   }, [ref]);
 
+  return <></>;
+};
+
+//import tonconnect manifest as url
+const manifestUrl = `${domain}/tonconnect-manifest.json`;
+
+export function SandwichProvider({ children }: React.PropsWithChildren) {
   return (
     <WebAppProvider
       options={{
         smoothButtonsTransition: true,
       }}
     >
+      <SetReferral />
       <ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
         {/*<TxNotification />*/}
         <TonConnectUIProvider manifestUrl={manifestUrl}>
