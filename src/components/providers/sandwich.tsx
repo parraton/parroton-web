@@ -5,10 +5,11 @@ import { useEffect } from 'react';
 import { ThemeProvider } from './theme-provider';
 import { Toaster } from '@UI/sonner';
 import { Locales, THEME, TonConnectUIProvider, useTonConnectUI } from '@tonconnect/ui-react';
-import { useParams } from '@routes/hooks';
+import { useParams, useSearchParams } from '@routes/hooks';
 import { Home } from '@routes';
 import { useTheme } from 'next-themes';
 import { WebAppProvider } from '@vkruglikov/react-telegram-web-app';
+import { domain } from '@config/links';
 // import { TxNotification } from '@components/tx-notification';
 
 const themeMap = {
@@ -41,9 +42,17 @@ const SetTonConnectSettings = () => {
 };
 
 //import tonconnect manifest as url
-const manifestUrl = `https://parraton.com/tonconnect-manifest.json`;
+const manifestUrl = `${domain}/tonconnect-manifest.json`;
 
 export function SandwichProvider({ children }: React.PropsWithChildren) {
+  const { ref } = useSearchParams(Home);
+  useEffect(() => {
+    const existingRef = localStorage.getItem('ref');
+    if (ref && ref !== existingRef) {
+      localStorage.setItem('ref', ref);
+    }
+  }, [ref]);
+
   return (
     <WebAppProvider
       options={{

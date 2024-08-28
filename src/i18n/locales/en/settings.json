@@ -3,5 +3,7 @@
   "dialog_description": "Here you can manage the settings of the application",
   "dialog_close": "Close",
   "mode_title": "Color mode",
-  "language_title": "Language"
+  "language_title": "Language",
+  "referral_title": "Referral link",
+  "copy_referral": "Copy"
 }

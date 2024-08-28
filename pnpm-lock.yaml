@@ -18,8 +18,8 @@ importers:
         specifier: ^2.3.3
         version: 2.3.3
       '@parraton/sdk':
-        specifier: ^1.0.6
-        version: 1.0.6(@ton/core@0.57.0(@ton/crypto@3.2.0))
+        specifier: ^1.1.0
+        version: 1.1.0(@ton/core@0.57.0(@ton/crypto@3.2.0))
       '@radix-ui/react-avatar':
         specifier: ^1.0.4
         version: 1.0.4(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -36,6 +36,9 @@ importers:
         specifier: ^2.0.2
         version: 2.0.2(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-progress':
+        specifier: ^1.1.0
+        version: 1.1.0(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@radix-ui/react-separator':
         specifier: ^1.1.0
         version: 1.1.0(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-slot':
@@ -1338,8 +1341,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@parraton/sdk@1.0.6':
-    resolution: {integrity: sha512-GENFl7+QFNA1wjEi13pT68/U2fMQENou/uYn3fYPKWLKapUL2BBahFyaiEKTJAFZBvDyM+eMGHRG2mYOXsbtGQ==}
+  '@parraton/sdk@1.1.0':
+    resolution: {integrity: sha512-jfCmVWEdRtPD1rGobX+0JvXJ/hbJ+GYfWddi4/dM4DUWYpeVNfKg/OH0mPAUqCGXwBlLaMY1MIPOOeS5xmWtHg==}
     peerDependencies:
       '@ton/core': ^0.57.0
 
@@ -1635,6 +1638,19 @@ packages:
       '@types/react-dom': '*'
       react: ^16.8 || ^17.0 || ^18.0
       react-dom: ^16.8 || ^17.0 || ^18.0
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      '@types/react-dom':
+        optional: true
+
+  '@radix-ui/react-separator@1.1.0':
+    resolution: {integrity: sha512-3uBAs+egzvJBDZAzvb/n4NxxOYpnspmWxO2u5NbZ8Y6FM/NdrGSF9bop3Cf6F6C71z1rTSn8KV0Fo2ZVd79lGA==}
+    peerDependencies:
+      '@types/react': '*'
+      '@types/react-dom': '*'
+      react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+      react-dom: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
     peerDependenciesMeta:
       '@types/react':
         optional: true
@@ -7851,7 +7867,7 @@ snapshots:
   '@oxlint/win32-x64@0.3.5':
     optional: true
 
-  '@parraton/sdk@1.0.6(@ton/core@0.57.0(@ton/crypto@3.2.0))':
+  '@parraton/sdk@1.1.0(@ton/core@0.57.0(@ton/crypto@3.2.0))':
     dependencies:
       '@ton/core': 0.57.0(@ton/crypto@3.2.0)
 
@@ -8153,6 +8169,15 @@ snapshots:
       '@radix-ui/react-primitive': 1.0.3(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-use-callback-ref': 1.0.1(@types/react@18.3.3)(react@18.3.1)
       '@radix-ui/react-use-controllable-state': 1.0.1(@types/react@18.3.3)(react@18.3.1)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+    optionalDependencies:
+      '@types/react': 18.3.3
+      '@types/react-dom': 18.3.0
+
+  '@radix-ui/react-separator@1.1.0(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+    dependencies:
+      '@radix-ui/react-primitive': 2.0.0(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
     optionalDependencies:

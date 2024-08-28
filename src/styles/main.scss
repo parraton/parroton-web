@@ -16,6 +16,7 @@
   --header-hieght: 80px;
   --light-grey: #ebebeb;
   --dark-grey: #282828;
+  --white: #fff;
 }
 
 html,
@@ -622,8 +623,8 @@ a {
       color: var(--light-grey);
 
       .dark & {
-        fill: var(--dark-grey);
-        color: var(--dark-grey);
+        fill: var(--white);
+        color: var(--white);
       }
     }
   }

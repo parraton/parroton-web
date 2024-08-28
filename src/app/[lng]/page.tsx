@@ -20,10 +20,11 @@ export async function generateMetadata({
 
 //need to remove typescript unintentional warning
 const isRedirectNeeded = (vaultsQuantity: number) => vaultsQuantity === 1;
-
 export default function Home({ params }: RouteInfoToLayout<typeof Route>) {
   if (isRedirectNeeded(addresses.vaults.length)) {
-    redirect(`/${params.lng}/${addresses.vaults[0].vault.toString()}`, RedirectType.replace);
+    const url = `/${params.lng}/${addresses.vaults[0].vault.toString()}`;
+
+    redirect(url, RedirectType.replace);
   }
 
   return (

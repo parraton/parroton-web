@@ -40,7 +40,7 @@ interface Resources {
     "our_kpi": "Our KPI",
     "reach_together": "Let’s reach them together",
     "goals": {
-      "revenue": "${{revenue_goal}} Revenue",
+      "revenue": "{{revenue_goal}} Revenue",
       "tvl": "{{tvl_goal}} TVL",
       "shares": "{{share_goal}}% of Dedust Lp"
     }
@@ -63,7 +63,9 @@ interface Resources {
     "dialog_description": "Here you can manage the settings of the application",
     "dialog_close": "Close",
     "mode_title": "Color mode",
-    "language_title": "Language"
+    "language_title": "Language",
+    "referral_title": "Referral link",
+    "copy_referral": "Copy"
   },
   "transaction": {
     "sent": "Transaction Sent",

@@ -3,6 +3,7 @@
 import { useTonConnectUI } from '@tonconnect/ui-react';
 import { useEffect, useState } from 'react';
 import { Sender } from '@utils/sender';
+import { Address } from '@ton/core';
 
 export interface ConnectionOptions {
   batch?: boolean;
@@ -11,6 +12,7 @@ export interface ConnectionOptions {
 export function useConnection({ batch }: ConnectionOptions = {}): {
   sender: Sender;
   connected: boolean;
+  address?: Address;
 } {
   const [TonConnectUI] = useTonConnectUI();
   const [connected, setConnected] = useState(false);
@@ -30,5 +32,8 @@ export function useConnection({ batch }: ConnectionOptions = {}): {
   return {
     sender: new Sender(TonConnectUI?.connector, batch),
     connected,
+    address: TonConnectUI?.connector.wallet?.account.address
+      ? Address.parse(TonConnectUI?.connector.wallet?.account.address)
+      : undefined,
   };
 }
