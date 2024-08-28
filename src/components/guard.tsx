@@ -2,11 +2,16 @@
 
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader } from '@UI/dialog';
 import { Button } from '@UI/button';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from '@i18n/client';
 
 export function Guard() {
-  const [open, setOpen] = useState(!localStorage.getItem('terms'));
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    setOpen(!localStorage.getItem('terms'));
+  }, []);
+
   const { t } = useTranslation({ ns: 'terms' });
   const close = () => {
     setOpen(false);
