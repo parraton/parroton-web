@@ -10,7 +10,6 @@ import { Route } from '@app/[lng]/page.info';
 import { RouteInfoToLayout } from '@routes/makeRoute';
 
 import '../../styles/main.scss';
-import { LayoutProvider } from '@components/providers/layout-provider';
 import Script from 'next/script';
 
 const fontSans = FontSans({
