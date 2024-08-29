@@ -7,7 +7,7 @@ export async function claimDeDustDistributionRewards(
   distributionPool: OpenedContract<DistributionPool>,
   userAddress: Address,
 ) {
-  const proof = rewardsDictionary.generateMerkleProof(userAddress);
+  const proof = rewardsDictionary.generateMerkleProof([userAddress]);
   return await distributionPool.sendClaim(sender, {
     userAddress,
     proof,

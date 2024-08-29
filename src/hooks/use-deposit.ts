@@ -21,7 +21,9 @@ export const useDeposit = () => {
 
     const atomicAmount = toNano(amount);
 
-    return await depositApi(investorLpWallet, vault, sender, atomicAmount);
+    const referral = localStorage.getItem('ref');
+
+    return await depositApi(investorLpWallet, vault, sender, atomicAmount, referral);
   };
 
   return { deposit };

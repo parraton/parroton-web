@@ -12,8 +12,8 @@ const toAddressesDict = <T extends Record<string, string>>(rawAddresses: T): Add
 };
 
 const usdtVault = toAddressesDict({
-  vault: 'EQA7Xhpa6ees-6ojaJyVleW_4SCPd6a28AzzTpGxdAyH2DjY',
-  extraDistributionPool: 'EQA3J1fOT97Shq86vaSAd8k3QMphnsUelFkAE38CVxfTp1RJ',
+  vault: 'EQDbGNtwXVAivNrCHTOqxOjgrvn13y0f9Clv7Xv-33Yr3LAV',
+  extraDistributionPool: 'EQBuZqt2xJ-n9d5D8mpRdnVL2tAR496_GcTC9DIMo3FwpnCD',
 });
 
 // const scaleVault = toAddressesDict({
@@ -30,7 +30,7 @@ const commonAddresses = toAddressesDict({
   dedustFactory: 'EQDHcPxlCOSN_s-Vlw53bFpibNyKpZHV6xHhxGAAT_21nCFU',
   dedustDistributionFactory: 'EQC0WJSeustdSo4fI5eRXmxdu8rqyWz9tBwLmX9E94dQlUCv',
   extraRewardsDistributionFactory: 'EQDmtWKElPJLGJfjlN060ztD6-CwM_8HFNIFH507qiza-x6H',
-  vaultFactory: 'EQBilFt7vW_l_6zMv7ABE6iW8v78bLZcJlfxgZ1-RnpI6B7X',
+  vaultFactory: 'EQDsquJpxTmDIrcf79ZkTjFeZswPlEdoytnr8l3Qt56WKI9E',
 });
 
 export const addresses = {

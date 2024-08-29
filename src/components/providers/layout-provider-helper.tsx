@@ -7,6 +7,8 @@ import { welcomeKey, welcomeValue } from '@config/guide.config';
 import { Welcome } from '@routes';
 import { useParams } from '@routes/hooks';
 
+const isMainnet = process.env.NETWORK === 'mainnet';
+
 export function LayoutProviderHelper({ welcome, other }: { welcome: ReactNode; other: ReactNode }) {
   const pathname = usePathname();
   const { lng } = useParams(Welcome);
@@ -20,6 +22,10 @@ export function LayoutProviderHelper({ welcome, other }: { welcome: ReactNode; o
     (async () => {
       if (isWelcomePage) return;
       const passWelcomePage = await getItem(welcomeKey);
+      if (isMainnet) {
+        return;
+      }
+
       if (passWelcomePage !== welcomeValue) {
         router.push(`/${lng}/welcome?redirectUrl=${pathname}`);
       }

@@ -10,13 +10,16 @@ importers:
     dependencies:
       '@dedust/apiary-v1':
         specifier: ^0.0.1
-        version: 0.0.1(@ton/core@0.56.3(@ton/crypto@3.2.0))
+        version: 0.0.1(@ton/core@0.57.0(@ton/crypto@3.2.0))
       '@dedust/sdk':
         specifier: ^0.8.7
-        version: 0.8.7(@ton/core@0.56.3(@ton/crypto@3.2.0))(@tonconnect/sdk@3.0.3)(axios@1.7.2)
+        version: 0.8.7(@ton/core@0.57.0(@ton/crypto@3.2.0))(@tonconnect/sdk@3.0.3)(axios@1.7.2)
       '@orbs-network/ton-access':
         specifier: ^2.3.3
         version: 2.3.3
+      '@parraton/sdk':
+        specifier: ^1.1.0
+        version: 1.1.0(@ton/core@0.57.0(@ton/crypto@3.2.0))
       '@radix-ui/react-avatar':
         specifier: ^1.0.4
         version: 1.0.4(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -35,6 +38,9 @@ importers:
       '@radix-ui/react-progress':
         specifier: ^1.1.0
         version: 1.1.0(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@radix-ui/react-separator':
+        specifier: ^1.1.0
+        version: 1.1.0(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-slot':
         specifier: ^1.0.2
         version: 1.0.2(@types/react@18.3.3)(react@18.3.1)
@@ -42,11 +48,11 @@ importers:
         specifier: ^1.0.4
         version: 1.0.4(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@ton/core':
-        specifier: ^0.56.3
-        version: 0.56.3(@ton/crypto@3.2.0)
+        specifier: ^0.57.0
+        version: 0.57.0(@ton/crypto@3.2.0)
       '@ton/ton':
         specifier: ^13.11.1
-        version: 13.11.2(@ton/core@0.56.3(@ton/crypto@3.2.0))(@ton/crypto@3.2.0)
+        version: 13.11.2(@ton/core@0.57.0(@ton/crypto@3.2.0))(@ton/crypto@3.2.0)
       '@tonconnect/sdk':
         specifier: ^3.0.3
         version: 3.0.3
@@ -1335,6 +1341,11 @@ packages:
     cpu: [x64]
     os: [win32]
 
+  '@parraton/sdk@1.1.0':
+    resolution: {integrity: sha512-jfCmVWEdRtPD1rGobX+0JvXJ/hbJ+GYfWddi4/dM4DUWYpeVNfKg/OH0mPAUqCGXwBlLaMY1MIPOOeS5xmWtHg==}
+    peerDependencies:
+      '@ton/core': ^0.57.0
+
   '@peculiar/asn1-schema@2.3.8':
     resolution: {integrity: sha512-ULB1XqHKx1WBU/tTFIA+uARuRoBVZ4pNdOA878RDrRbBfBGcSzi5HBkdScC6ZbHn8z7L8gmKCgPC1LHRrP46tA==}
 
@@ -1633,6 +1644,19 @@ packages:
       '@types/react-dom':
         optional: true
 
+  '@radix-ui/react-separator@1.1.0':
+    resolution: {integrity: sha512-3uBAs+egzvJBDZAzvb/n4NxxOYpnspmWxO2u5NbZ8Y6FM/NdrGSF9bop3Cf6F6C71z1rTSn8KV0Fo2ZVd79lGA==}
+    peerDependencies:
+      '@types/react': '*'
+      '@types/react-dom': '*'
+      react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+      react-dom: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      '@types/react-dom':
+        optional: true
+
   '@radix-ui/react-slot@1.0.2':
     resolution: {integrity: sha512-YeTpuq4deV+6DusvVUW4ivBgnkHwECUu0BiN43L5UCDFgdhsRUWAghhTF5MbvNTPzmiFOx90asDSUjWuCNapwg==}
     peerDependencies:
@@ -1853,8 +1877,8 @@ packages:
   '@swc/helpers@0.5.5':
     resolution: {integrity: sha512-KGYxvIOXcceOAbEk4bi/dVLEK9z8sZ0uBB3Il5b1rhfClSpcX0yfRO0KmTkqR2cnQDymwLB+25ZyMzICg/cm/A==}
 
-  '@ton/core@0.56.3':
-    resolution: {integrity: sha512-HVkalfqw8zqLLPehtq0CNhu5KjVzc7IrbDwDHPjGoOSXmnqSobiWj8a5F+YuWnZnEbQKtrnMGNOOjVw4LG37rg==}
+  '@ton/core@0.57.0':
+    resolution: {integrity: sha512-UOehEXEV5yqi+17qmmWdD01YfVgQlYtitSm5OfN/WMg6PAMkt+Uf91JRC4mdPNtkKDhyKuujJuhYs6QiOsHPfw==}
     peerDependencies:
       '@ton/crypto': '>=3.2.0'
 
@@ -7265,13 +7289,13 @@ snapshots:
       '@babel/helper-validator-identifier': 7.24.7
       to-fast-properties: 2.0.0
 
-  '@dedust/apiary-v1@0.0.1(@ton/core@0.56.3(@ton/crypto@3.2.0))':
+  '@dedust/apiary-v1@0.0.1(@ton/core@0.57.0(@ton/crypto@3.2.0))':
     dependencies:
-      '@ton/core': 0.56.3(@ton/crypto@3.2.0)
+      '@ton/core': 0.57.0(@ton/crypto@3.2.0)
 
-  '@dedust/sdk@0.8.7(@ton/core@0.56.3(@ton/crypto@3.2.0))(@tonconnect/sdk@3.0.3)(axios@1.7.2)':
+  '@dedust/sdk@0.8.7(@ton/core@0.57.0(@ton/crypto@3.2.0))(@tonconnect/sdk@3.0.3)(axios@1.7.2)':
     dependencies:
-      '@ton/core': 0.56.3(@ton/crypto@3.2.0)
+      '@ton/core': 0.57.0(@ton/crypto@3.2.0)
       '@tonconnect/sdk': 3.0.3
       axios: 1.7.2
 
@@ -7843,6 +7867,10 @@ snapshots:
   '@oxlint/win32-x64@0.3.5':
     optional: true
 
+  '@parraton/sdk@1.1.0(@ton/core@0.57.0(@ton/crypto@3.2.0))':
+    dependencies:
+      '@ton/core': 0.57.0(@ton/crypto@3.2.0)
+
   '@peculiar/asn1-schema@2.3.8':
     dependencies:
       asn1js: 3.0.5
@@ -8141,6 +8169,15 @@ snapshots:
       '@radix-ui/react-primitive': 1.0.3(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-use-callback-ref': 1.0.1(@types/react@18.3.3)(react@18.3.1)
       '@radix-ui/react-use-controllable-state': 1.0.1(@types/react@18.3.3)(react@18.3.1)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+    optionalDependencies:
+      '@types/react': 18.3.3
+      '@types/react-dom': 18.3.0
+
+  '@radix-ui/react-separator@1.1.0(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+    dependencies:
+      '@radix-ui/react-primitive': 2.0.0(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
     optionalDependencies:
@@ -8592,7 +8629,7 @@ snapshots:
       '@swc/counter': 0.1.3
       tslib: 2.6.3
 
-  '@ton/core@0.56.3(@ton/crypto@3.2.0)':
+  '@ton/core@0.57.0(@ton/crypto@3.2.0)':
     dependencies:
       '@ton/crypto': 3.2.0
       symbol.inspect: 1.0.1
@@ -8607,9 +8644,9 @@ snapshots:
       jssha: 3.2.0
       tweetnacl: 1.0.3
 
-  '@ton/ton@13.11.2(@ton/core@0.56.3(@ton/crypto@3.2.0))(@ton/crypto@3.2.0)':
+  '@ton/ton@13.11.2(@ton/core@0.57.0(@ton/crypto@3.2.0))(@ton/crypto@3.2.0)':
     dependencies:
-      '@ton/core': 0.56.3(@ton/crypto@3.2.0)
+      '@ton/core': 0.57.0(@ton/crypto@3.2.0)
       '@ton/crypto': 3.2.0
       axios: 1.7.2
       dataloader: 2.2.2

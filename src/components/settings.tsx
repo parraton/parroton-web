@@ -5,7 +5,6 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -15,6 +14,7 @@ import { LanguageToggle } from '@components/toggle-language';
 import { cn } from '@lib/utils';
 import { serverTranslation } from '@i18n';
 import { Language } from '@i18n/settings';
+import { ReferralSection } from '@components/referral-section';
 
 export async function Settings({ lng }: { lng: Language }) {
   const { t } = await serverTranslation(lng, 'settings');
@@ -22,7 +22,11 @@ export async function Settings({ lng }: { lng: Language }) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant='outline' className='border-[#19A7E7] px-3'>
+        <Button
+          variant='outline'
+          className='border-[#19A7E7] bg-accent px-3 hover:scale-95'
+          // text-accent-foreground hover:text-accent'
+        >
           <SlidersHorizontal color='#19A7E7' className='size-4' />
         </Button>
       </DialogTrigger>
@@ -41,7 +45,7 @@ export async function Settings({ lng }: { lng: Language }) {
             <LanguageToggle />
           </div>
         </div>
-        <DialogFooter className='sm:justify-end'></DialogFooter>
+        <ReferralSection />
       </DialogContent>
     </Dialog>
   );
