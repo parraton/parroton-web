@@ -20,6 +20,10 @@ export function ReferralSection() {
         <span className={cn('text-[14px]')}>{t('referral_title')}</span>
         <CopyButton />
       </div>
+      <div className={cn('flex flex-row items-center justify-between')}>
+        <span className={cn('text-[14px]')}>{t('referral_mini_app')}</span>
+        <CopyButton />
+      </div>
     </div>
   );
 }

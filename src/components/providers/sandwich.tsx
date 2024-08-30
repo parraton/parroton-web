@@ -8,7 +8,7 @@ import { Locales, THEME, TonConnectUIProvider, useTonConnectUI } from '@tonconne
 import { useParams, useSearchParams } from '@routes/hooks';
 import { Home } from '@routes';
 import { useTheme } from 'next-themes';
-import { WebAppProvider } from '@vkruglikov/react-telegram-web-app';
+import { useCloudStorage, useInitData, WebAppProvider } from '@vkruglikov/react-telegram-web-app';
 import { domain } from '@config/links';
 import { Guard } from '@components/guard';
 // import { TxNotification } from '@components/tx-notification';
@@ -44,6 +44,9 @@ const SetTonConnectSettings = () => {
 
 const SetReferral = () => {
   const { ref } = useSearchParams(Home);
+  const [unsafe] = useInitData();
+  const { setItem, getItem } = useCloudStorage();
+
   useEffect(() => {
     const existingRef = localStorage.getItem('ref');
     console.log('ref', ref, existingRef);
@@ -51,6 +54,19 @@ const SetReferral = () => {
       localStorage.setItem('ref', ref);
     }
   }, [ref]);
+
+  useEffect(() => {
+    if (unsafe?.start_param) {
+      (async () => {
+        const { start_param } = unsafe;
+
+        const existingRef = await getItem('ref');
+        if (start_param && start_param !== existingRef) {
+          await setItem('ref', start_param);
+        }
+      })();
+    }
+  }, [getItem, setItem, unsafe, unsafe?.start_param]);
 
   return <></>;
 };

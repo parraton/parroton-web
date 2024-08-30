@@ -6,13 +6,17 @@ import { useTranslation } from '@i18n/client';
 import { useConnection } from '@hooks/use-connection';
 import { useState } from 'react';
 import { cn } from '@lib/utils';
-import { domain } from '@config/links';
+import { domain, miniAppLink } from '@config/links';
 
 const copyToClipboard = async (data: string) => {
   await navigator.clipboard.writeText(data);
 };
 
-export function CopyButton() {
+export type CopyButtonProps = {
+  miniApp?: boolean;
+};
+
+export function CopyButton({ miniApp }: CopyButtonProps) {
   const [isCopied, setIsCopied] = useState(false);
   const { t } = useTranslation({ ns: 'settings' });
 
@@ -26,7 +30,7 @@ export function CopyButton() {
   };
 
   const copy = async () => {
-    const link = `${domain}?ref=${referral}`;
+    const link = miniApp ? `${miniAppLink}?startapp=${referral}` : `${domain}?ref=${referral}`;
 
     await copyToClipboard(link);
 

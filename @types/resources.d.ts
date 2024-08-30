@@ -64,7 +64,8 @@ interface Resources {
     "dialog_close": "Close",
     "mode_title": "Color mode",
     "language_title": "Language",
-    "referral_title": "Referral link",
+    "referral_title": "Referral link for web",
+    "referral_mini_app": "Referral link to miniapp",
     "copy_referral": "Copy"
   },
   "terms": {

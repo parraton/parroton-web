@@ -23,6 +23,12 @@ type KpiDialogProps = {
 export function KpiDialog({ tvl, share, revenue }: KpiDialogProps) {
   const { t } = useTranslation({ ns: 'kpi' });
 
+  console.log({ tvl, share, revenue });
+
+  const localTvl = tvl ? Number(tvl) : 0;
+  const localShare = share ? Number(share) : 0;
+  const localRevenue = revenue ? Number(revenue) : 0;
+
   return (
     <Dialog>
       <DialogTrigger className='z-10'>
@@ -37,19 +43,19 @@ export function KpiDialog({ tvl, share, revenue }: KpiDialogProps) {
           <div className='mt-4 flex flex-col gap-6'>
             <KPIProgress
               title={t('goals.tvl', { tvl_goal: formatCurrency(goals.tvl) })}
-              value={Number(tvl)}
+              value={localTvl}
               total={goals.tvl}
               type={KpiType.Dollar}
             />
             <KPIProgress
               title={t('goals.shares', { share_goal: goals.share })}
-              value={Number(share) * 100}
+              value={localShare * 100}
               total={goals.share}
               type={KpiType.Percent}
             />
             <KPIProgress
               title={t('goals.revenue', { revenue_goal: formatCurrency(goals.revenue) })}
-              value={Number(revenue)}
+              value={localRevenue}
               total={goals.revenue}
               type={KpiType.Dollar}
             />
