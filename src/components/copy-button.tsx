@@ -42,7 +42,7 @@ export function CopyButton({ miniApp }: CopyButtonProps) {
       onClick={copy}
       variant='outline'
       size='sm'
-      className={cn('flex h-7 w-fit transform gap-1 bg-[#19A7E7] px-3', {
+      className={cn('copy-button flex h-7 w-fit transform gap-1 bg-[#19A7E7] px-3', {
         'animate-pulse bg-[#5ACD30] hover:bg-[none]': isCopied,
       })}
     >

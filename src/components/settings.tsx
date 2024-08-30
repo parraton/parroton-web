@@ -30,7 +30,7 @@ export async function Settings({ lng }: { lng: Language }) {
           <SlidersHorizontal color='#19A7E7' className='size-4' />
         </Button>
       </DialogTrigger>
-      <DialogContent className={`custom-dialog glass-card sm:max-w-md`}>
+      <DialogContent className={`custom-dialog glass-card text-white sm:max-w-md`}>
         <DialogHeader>
           <DialogTitle>{t('dialog_title')}</DialogTitle>
           <DialogDescription>{t('dialog_description')}</DialogDescription>

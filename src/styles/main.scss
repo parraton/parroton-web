@@ -84,13 +84,6 @@ a {
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
   border: 1px solid rgba(255, 255, 255, 0.12);
-
-  .light & {
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-
-    color: #FFFFFF;
-  }
 }
 
 .custom-card {
@@ -643,6 +636,14 @@ a {
 
 .vault-info-title {
 
+}
+
+.copy-button {
+  &:hover {
+    svg {
+      stroke: hsl(var(--foreground));
+    }
+  }
 }
 
 /* Chrome, Safari, Edge, Opera */
