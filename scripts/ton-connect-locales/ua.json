@@ -13,7 +13,7 @@
     "desktop": "Робочий стіл"
   },
   "button": {
-    "connectWallet": "Підключити гаманець",
+    "connectWallet": "Підключити",
     "dropdown": {
       "copy": "Скопіювати адресу",
       "copied": "Адреса скопійована!",

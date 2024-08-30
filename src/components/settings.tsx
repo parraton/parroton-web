@@ -30,18 +30,18 @@ export async function Settings({ lng }: { lng: Language }) {
           <SlidersHorizontal color='#19A7E7' className='size-4' />
         </Button>
       </DialogTrigger>
-      <DialogContent className='custom-dialog sm:max-w-md'>
+      <DialogContent className={`custom-dialog glass-card sm:max-w-md`}>
         <DialogHeader>
           <DialogTitle>{t('dialog_title')}</DialogTitle>
           <DialogDescription>{t('dialog_description')}</DialogDescription>
         </DialogHeader>
         <div className='custom-toggler-list'>
           <div className={cn('custom-toggler')}>
-            <span className={cn('text-xs')}>{t('mode_title')}</span>
+            <span className={cn('text-xs font-semibold')}>{t('mode_title')}</span>
             <ModeToggle />
           </div>
           <div className={cn('custom-toggler')}>
-            <span className={cn('text-xs')}>{t('language_title')}</span>
+            <span className={cn('text-xs font-semibold')}>{t('language_title')}</span>
             <LanguageToggle />
           </div>
         </div>

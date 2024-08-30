@@ -4,7 +4,7 @@
   "dialog_close": "Close",
   "mode_title": "Color mode",
   "language_title": "Language",
-  "referral_title": "Referral link for web",
-  "referral_mini_app": "Referral link to miniapp",
+  "referral_title": "Reflink for web",
+  "referral_mini_app": "Reflink to miniapp",
   "copy_referral": "Copy"
 }

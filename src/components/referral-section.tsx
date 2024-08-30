@@ -17,11 +17,11 @@ export function ReferralSection() {
     <div className={cn('flex flex-col gap-2')}>
       <Separator />
       <div className={cn('flex flex-row items-center justify-between')}>
-        <span className={cn('text-[14px]')}>{t('referral_title')}</span>
+        <span className={cn('text-[14px] font-semibold')}>{t('referral_title')}</span>
         <CopyButton />
       </div>
       <div className={cn('flex flex-row items-center justify-between')}>
-        <span className={cn('text-[14px]')}>{t('referral_mini_app')}</span>
+        <span className={cn('text-[14px] font-semibold')}>{t('referral_mini_app')}</span>
         <CopyButton />
       </div>
     </div>
