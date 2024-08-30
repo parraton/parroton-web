@@ -344,22 +344,22 @@ a {
     width: 500px;
   }
 
-  &::after {
-    content: "";
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 50px;
-    height: 50px;
-    min-width: 50px;
-    background-image: url("../images/parrot.png");
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: contain;
-    position: absolute;
-    top: -40px;
-    left: 10px;
-  }
+  //&::after {
+  //  content: "";
+  //  display: flex;
+  //  align-items: center;
+  //  justify-content: center;
+  //  width: 50px;
+  //  height: 50px;
+  //  min-width: 50px;
+  //  background-image: url("../images/parrot.png");
+  //  background-repeat: no-repeat;
+  //  background-position: center;
+  //  background-size: contain;
+  //  position: absolute;
+  //  top: -40px;
+  //  left: 10px;
+  //}
 }
 
 .custom-form {
@@ -618,6 +618,10 @@ a {
     background: linear-gradient(92.69deg, #648BF4 0%, #D2597A 100%);
     border-radius: 8px;
 
+    div {
+      color: #FFFFFF;
+    }
+
     & svg path {
       fill: var(--light-grey);
       color: var(--light-grey);
@@ -634,3 +638,22 @@ a {
 
 }
 
+.copy-button {
+  &:hover {
+    svg {
+      stroke: hsl(var(--foreground));
+    }
+  }
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
