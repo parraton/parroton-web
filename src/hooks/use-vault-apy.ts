@@ -41,16 +41,14 @@ export const useVaultApy = (vaultAddress: string, tvlData?: { tvlInTon: string }
   );
 
   useEffect(() => {
-    if (!tvlData || !dedustRewards || !vaultRewards) return;
+    if (!tvlData || !(dedustRewards || vaultRewards)) return;
 
-    const apr = (Number(dedustRewards) / Number(tvlData.tvlInTon)) * numberOfWeeks * percentage;
-    const extraApr = (Number(vaultRewards) / Number(tvlData.tvlInTon)) * numberOfWeeks * percentage;
+    const apr =
+      (Number(dedustRewards || '0') / Number(tvlData.tvlInTon)) * numberOfWeeks * percentage;
+    const extraApr =
+      (Number(vaultRewards || '0') / Number(tvlData.tvlInTon)) * numberOfWeeks * percentage;
 
-    const vaultAddressToApr = Buffer.from(vaultAddress).reduce((acc, byte) => acc + byte, 0);
-
-    const aprForDemo = Math.min(apr, vaultAddressToApr % 500);
-
-    setApy(calculateApy(aprForDemo, countOfReinvests).toFixed(2));
+    setApy(calculateApy(apr, countOfReinvests).toFixed(2));
     setExtraApr(extraApr.toFixed(2));
   }, [dedustRewards, vaultRewards, tvlData, vaultAddress]);
 
