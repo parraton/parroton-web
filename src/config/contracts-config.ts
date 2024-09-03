@@ -1,4 +1,5 @@
 import { Address } from '@ton/core';
+import { isMainnet } from '@lib/utils';
 
 type AddressDict<T extends Record<string, string>> = {
   // eslint-disable-next-line no-unused-vars
@@ -25,4 +26,18 @@ const testnetAddresses = {
   ...commonAddressesTestnet,
 } as const;
 
-export const addresses = testnetAddresses;
+const usdtVaultMainnet = toAddressesDict({
+  vault: 'EQC7MJVHpoi46zKJOKV2XLmYM00s6ittxRFAb4J0-20iIEMX',
+  extraDistributionPool: 'EQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAM9c',
+});
+
+const commonAddressesMainnet = toAddressesDict({
+  dedustFactory: 'EQBfBWT7X2BHg9tXAxzhz2aKiNTU1tpt5NsiK0uSDW_YAJ67',
+});
+
+const mainnetAddresses = {
+  vaults: [usdtVaultMainnet], //, scaleVault, notVault],
+  ...commonAddressesMainnet,
+} as const;
+
+export const addresses = isMainnet ? mainnetAddresses : testnetAddresses;
