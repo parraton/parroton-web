@@ -42,3 +42,5 @@ export const formatPercentage = (num: number | string, locale: Language = 'en') 
     maximumFractionDigits: 2,
   }).format(argument);
 };
+
+export const isMainnet = process.env.NETWORK === 'mainnet';

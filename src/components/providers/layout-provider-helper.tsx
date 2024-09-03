@@ -6,8 +6,7 @@ import { useStorage } from '@hooks/use-storage';
 import { welcomeKey, welcomeValue } from '@config/guide.config';
 import { Welcome } from '@routes';
 import { useParams } from '@routes/hooks';
-
-const isMainnet = process.env.NETWORK === 'mainnet';
+import { isMainnet } from '@lib/utils';
 
 export function LayoutProviderHelper({ welcome, other }: { welcome: ReactNode; other: ReactNode }) {
   const pathname = usePathname();

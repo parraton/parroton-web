@@ -1,7 +1,8 @@
 import { DictionaryUtils } from '@components/claim/dictionary';
+import { IPFS_GATEWAY } from '@config/api.config';
 
 export const fetchDictionaryFromIpfs = async (dataUri: string) => {
-  const url = `${process.env.NEXT_PUBLIC_IPFS_GATEWAY}/${dataUri.replace('ipfs://', '')}`;
+  const url = `${IPFS_GATEWAY}/${dataUri.replace('ipfs://', '')}`;
 
   const response = await fetch(url);
 
