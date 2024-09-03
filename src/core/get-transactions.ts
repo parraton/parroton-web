@@ -1,7 +1,8 @@
 import TonWeb from 'tonweb';
+import { TONCENTER_URL } from '@config/api.config';
 
 const tonweb = new TonWeb(
-  new TonWeb.HttpProvider(process.env.NEXT_PUBLIC_TONCENTER_URL, {
+  new TonWeb.HttpProvider(TONCENTER_URL, {
     apiKey: process.env.NEXT_PUBLIC_TONCENTER_API_KEY,
   }),
 );
