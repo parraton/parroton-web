@@ -11,8 +11,7 @@ import { CardContent, CardFooter } from '@UI/card';
 import { ClaimBalance } from '@components/claim/claim-balance';
 import { ClaimButton } from '@components/claim/claim.button';
 import { FaucetForm } from '@components/vault-form/faucet.form';
-
-const isMainnet = process.env.NETWORK === 'mainnet';
+import { isMainnet } from '@lib/utils';
 
 type TabsListItem<Action extends Actions = Actions> = {
   [key in Actions]: {
