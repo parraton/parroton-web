@@ -1,6 +1,6 @@
 {
   "decimals": "9",
-  "description": "Reinvestment pool for USDT/TON => TON farm on Dedust",
+  "description": "Autocompound pool for USDT/TON => TON farm on Dedust",
   "image": "https://static.storm.tg/usdt-slp-logo.png",
   "name": "Parraton: Dedust USDT/TON",
   "social": [
