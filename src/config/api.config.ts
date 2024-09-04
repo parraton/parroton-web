@@ -14,4 +14,4 @@ export const IPFS_GATEWAY = 'https://gateway.pinata.cloud/ipfs';
 export const TON_CLIENT_URL = isMainnet ? mainnetTonClientUrl : testnetTonClientUrl;
 export const TONVIEWER_URL = isMainnet ? mainnetTonViewerUrl : testnetTonViewerUrl;
 export const TONAPI_URL = isMainnet ? mainnetTonApiUrl : testnetTonApiUrl;
-export const TONCENTER_URL = isMainnet ? testnetTonCenterUrl : mainnetTonCenterUrl;
+export const TONCENTER_URL = isMainnet ? mainnetTonCenterUrl : testnetTonCenterUrl;
