@@ -34,10 +34,10 @@ export function KpiDialog({ tvl, share, revenue }: KpiDialogProps) {
       <DialogTrigger className='z-10'>
         <p className='bg-none font-semibold text-[#19A7E7]'>{t('wanna_know_our_goals')}</p>
       </DialogTrigger>
-      <DialogContent className='custom-dialog glass-card sm:max-w-md'>
+      <DialogContent className='custom-dialog glass-card modal-card sm:max-w-md'>
         <div className='p-6'>
           <DialogHeader>
-            <DialogTitle className='uppercase'>{t('our_kpi')}</DialogTitle>
+            <DialogTitle className='text-2xl'>{t('our_kpi')}</DialogTitle>
             <DialogDescription>{t('reach_together')}</DialogDescription>
           </DialogHeader>
           <div className='mt-4 flex flex-col gap-6'>
