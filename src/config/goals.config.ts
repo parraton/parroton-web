@@ -1,5 +1,5 @@
 export const goals = {
-  tvl: 300,
-  share: 70,
-  revenue: 200,
+  tvl: 100_000,
+  share: 0.1,
+  revenue: 1000,
 };

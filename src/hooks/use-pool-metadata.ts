@@ -10,7 +10,7 @@ export const usePoolMetadata = (vaultAddress: string) => {
 
   const { data, error } = useSWR(['usePoolMetadata', vaultAddress, Boolean(pool)], async () => {
     if (!pool) return null;
-    const newLink = `${pool.toRawString()}.json`;
+    const newLink = `${pool.toRawString().toUpperCase()}.json`;
 
     const response = await fetch(new URL(newLink, linkDomain));
     return (await response.json()) as JettonMetadata;
