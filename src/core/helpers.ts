@@ -1,17 +1,17 @@
-import mem from "mem";
+import mem from 'mem';
 
-import { Address, fromNano, OpenedContract } from "@ton/core";
-import { SharesWallet, Vault } from "@parraton/sdk";
-import { tonClient } from "@core/config";
-import { JettonRoot, JettonWallet } from "@dedust/sdk";
-import { DistributionPool } from "@dedust/apiary-v1";
-import { tonApiHttpClient } from "@core/tonapi";
-import { Action } from "tonapi-sdk-js";
-import { TonJettonTonStrategy } from "@parraton/sdk";
+import { Address, fromNano, OpenedContract } from '@ton/core';
+import { SharesWallet, Vault } from '@parraton/sdk';
+import { tonClient } from '@core/config';
+import { JettonRoot, JettonWallet } from '@dedust/sdk';
+import { DistributionPool } from '@dedust/apiary-v1';
+import { tonApiHttpClient } from '@core/tonapi';
+import { Action } from 'tonapi-sdk-js';
+import { TonJettonTonStrategy } from '@parraton/sdk';
 
 export function exists<T>(value: T | null | undefined | unknown): T {
   if (value == undefined) {
-    throw new Error("Value does not exist");
+    throw new Error('Value does not exist');
   }
   return value as T;
 }
@@ -28,7 +28,7 @@ export const getSharesWallet = mem(
     maxAge: 10_000,
     cacheKey: ([vault, sender]) =>
       `getSharesWallet_${vault.address.toString()}_${sender.toString()}`,
-  }
+  },
 );
 
 export const getVault = async (vaultAddress: Address) => {
@@ -38,7 +38,7 @@ export const getVault = async (vaultAddress: Address) => {
 
 export const getWallet = async (
   senderAddress: Address,
-  poolAddress: Address
+  poolAddress: Address,
 ): Promise<OpenedContract<JettonWallet>> => {
   const rawPool = JettonRoot.createFromAddress(poolAddress);
 
@@ -58,7 +58,7 @@ export const getVaultData = mem(
   {
     maxAge: 60_000,
     cacheKey: ([vaultAddress]) => `getVaultData_${vaultAddress.toString()}`,
-  }
+  },
 );
 
 export const getStrategyInfoByVault = mem(
@@ -71,9 +71,8 @@ export const getStrategyInfoByVault = mem(
   },
   {
     maxAge: 60_000,
-    cacheKey: ([vaultAddress]) =>
-      `getStrategyInfoByVault_${vaultAddress.toString()}`,
-  }
+    cacheKey: ([vaultAddress]) => `getStrategyInfoByVault_${vaultAddress.toString()}`,
+  },
 );
 
 export const getMetadataLink = mem(
@@ -89,9 +88,9 @@ export const getMetadataLink = mem(
     return slice.loadStringTail();
   },
   {
-    maxAge: 5_000,
+    maxAge: 5000,
     cacheKey: ([address]) => `getMetadataLink_${address}`,
-  }
+  },
 );
 
 const getEventsForLastWeek = async (address: string) => {
@@ -108,12 +107,9 @@ const getEventsForLastWeek = async (address: string) => {
   return events;
 };
 
-const isAddressEqual = (
-  address1: string | Address,
-  address2: string | Address
-) => {
-  const isAddress1String = typeof address1 === "string";
-  const isAddress2String = typeof address2 === "string";
+const isAddressEqual = (address1: string | Address, address2: string | Address) => {
+  const isAddress1String = typeof address1 === 'string';
+  const isAddress2String = typeof address2 === 'string';
 
   const address1Address = isAddress1String ? Address.parse(address1) : address1;
   const address2Address = isAddress2String ? Address.parse(address2) : address2;
@@ -139,7 +135,7 @@ export const getVaultRewards = mem(
       const { actions } = event;
       for (const action of actions) {
         const { type } = action;
-        if (type !== "TonTransfer" || !("TonTransfer" in action)) {
+        if (type !== 'TonTransfer' || !('TonTransfer' in action)) {
           continue;
         }
 
@@ -157,16 +153,12 @@ export const getVaultRewards = mem(
   },
   {
     maxAge: 60_000 * 60,
-    cacheKey: ([distributionPool]) =>
-      `getVaultRewards_${distributionPool.address.toString()}`,
-  }
+    cacheKey: ([distributionPool]) => `getVaultRewards_${distributionPool.address.toString()}`,
+  },
 );
 
 export const getDedustRewards = mem(
-  async (
-    vaultAddress: string,
-    distributionPool: OpenedContract<DistributionPool>
-  ) => {
+  async (vaultAddress: string, distributionPool: OpenedContract<DistributionPool>) => {
     const { tokenWalletAddress } = await distributionPool.getPoolExtraData();
 
     const events = await getEventsForLastWeek(tokenWalletAddress.toString());
@@ -177,21 +169,15 @@ export const getDedustRewards = mem(
       const { actions } = event;
       for (const action of actions) {
         const { type } = action;
-        if (type !== "TonTransfer" || !("TonTransfer" in action)) {
+        if (type !== 'TonTransfer' || !('TonTransfer' in action)) {
           continue;
         }
 
         const { TonTransfer } = action;
         const { sender, recipient } = TonTransfer!;
 
-        const isWalletSender = isAddressEqual(
-          sender.address,
-          tokenWalletAddress
-        );
-        const isVaultRecipient = isAddressEqual(
-          recipient.address,
-          vaultAddress
-        );
+        const isWalletSender = isAddressEqual(sender.address, tokenWalletAddress);
+        const isVaultRecipient = isAddressEqual(recipient.address, vaultAddress);
         if (isWalletSender && isVaultRecipient) {
           filteredActions.push(action);
           break;
@@ -205,5 +191,5 @@ export const getDedustRewards = mem(
     maxAge: 60_000 * 60,
     cacheKey: ([vaultAddress, distributionPool]) =>
       `getDedustRewards_${vaultAddress}_${distributionPool.address.toString()}`,
-  }
+  },
 );

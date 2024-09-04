@@ -1,6 +1,6 @@
-import mem from "mem";
-import axios, { getAdapter } from "axios";
-import { TonClient4 } from "@ton/ton";
+import mem from 'mem';
+import axios, { getAdapter } from 'axios';
+import { TonClient4 } from '@ton/ton';
 
 const adapter = getAdapter(axios.defaults.adapter);
 const memoizedAdapter = mem(adapter, {
@@ -9,8 +9,8 @@ const memoizedAdapter = mem(adapter, {
 });
 
 export const tonClient = new TonClient4({
-  endpoint: "/api/ton-client",
-  timeout: 30000,
+  endpoint: '/api/ton-client',
+  timeout: 30_000,
 
   httpAdapter: memoizedAdapter,
 });

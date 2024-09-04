@@ -1,17 +1,15 @@
-import { useVaultDistributionPool } from "@hooks/use-vault-distribution-pool";
-import { VaultPage } from "@routes";
-import { useParams } from "@routes/hooks";
-import useSWR from "swr";
-import { useConnection } from "@hooks/use-connection";
-import { getRewardsDictionary } from "@components/claim/claim";
-import { fromNano, OpenedContract } from "@ton/core";
-import { tonClient } from "@core/config";
-import { DistributionAccount, DistributionPool } from "@dedust/apiary-v1";
-import { useEffect, useState } from "react";
+import { useVaultDistributionPool } from '@hooks/use-vault-distribution-pool';
+import { VaultPage } from '@routes';
+import { useParams } from '@routes/hooks';
+import useSWR from 'swr';
+import { useConnection } from '@hooks/use-connection';
+import { getRewardsDictionary } from '@components/claim/claim';
+import { fromNano, OpenedContract } from '@ton/core';
+import { tonClient } from '@core/config';
+import { DistributionAccount, DistributionPool } from '@dedust/apiary-v1';
+import { useEffect, useState } from 'react';
 
-function useDistributionAccount(
-  distributionPool: OpenedContract<DistributionPool> | null
-) {
+function useDistributionAccount(distributionPool: OpenedContract<DistributionPool> | null) {
   const {
     sender: { address },
   } = useConnection();
@@ -23,7 +21,7 @@ function useDistributionAccount(
       if (!distributionPool || !address) return;
       const accountAddress = await distributionPool.getAccountAddress(address);
       const distributionAccount = tonClient.open(
-        DistributionAccount.createFromAddress(accountAddress)
+        DistributionAccount.createFromAddress(accountAddress),
       );
       setDistributionAccount(distributionAccount);
     })();
@@ -43,14 +41,13 @@ export function useRewardsBalance() {
 
   const { data, error } = useSWR(
     [
-      "rewards-balance",
+      'rewards-balance',
       Boolean(distributionAccount),
       Boolean(distributionPool),
       sender.address?.toString(),
     ],
     async () => {
-      if (!sender.address || !distributionPool || !distributionAccount)
-        return null;
+      if (!sender.address || !distributionPool || !distributionAccount) return null;
 
       try {
         let totalPaid = 0n;
@@ -66,16 +63,16 @@ export function useRewardsBalance() {
         return value ? fromNano(value - totalPaid) : undefined;
       } catch (error) {
         if (
-          (error as Error)?.message.includes("-256") ||
-          (error as Error)?.message.includes("Data URI")
+          (error as Error)?.message.includes('-256') ||
+          (error as Error)?.message.includes('Data URI')
         ) {
-          return "0";
+          return '0';
         } else {
           throw error;
         }
       }
     },
-    { refreshInterval: 10000 }
+    { refreshInterval: 10_000 },
   );
 
   return {
