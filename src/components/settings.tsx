@@ -32,16 +32,16 @@ export async function Settings({ lng }: { lng: Language }) {
       </DialogTrigger>
       <DialogContent className={`custom-dialog glass-card text-white sm:max-w-md`}>
         <DialogHeader>
-          <DialogTitle>{t('dialog_title')}</DialogTitle>
-          <DialogDescription>{t('dialog_description')}</DialogDescription>
+          <DialogTitle className='text-2xl'>{t('dialog_title')}</DialogTitle>
+          <DialogDescription className='text-[14px]'>{t('dialog_description')}</DialogDescription>
         </DialogHeader>
         <div className='custom-toggler-list'>
           <div className={cn('custom-toggler')}>
-            <span className={cn('text-xs font-semibold')}>{t('mode_title')}</span>
+            <span className={cn('text-[1rem] font-semibold')}>{t('mode_title')}</span>
             <ModeToggle />
           </div>
           <div className={cn('custom-toggler')}>
-            <span className={cn('text-xs font-semibold')}>{t('language_title')}</span>
+            <span className={cn('text-[1rem] font-semibold')}>{t('language_title')}</span>
             <LanguageToggle />
           </div>
         </div>
