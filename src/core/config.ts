@@ -1,9 +1,16 @@
-import { Address } from '@ton/core';
-import { TonClient4 } from '@ton/ton';
-import { exists } from '@core/helpers';
+import mem from "mem";
+import axios, { getAdapter } from "axios";
+import { TonClient4 } from "@ton/ton";
 
-export const HOLE_ADDRESS = Address.parse('EQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAM9c');
+const adapter = getAdapter(axios.defaults.adapter);
+const memoizedAdapter = mem(adapter, {
+  maxAge: 5000, // blocktime is 5 seconds
+  cacheKey: JSON.stringify,
+});
 
 export const tonClient = new TonClient4({
-  endpoint: exists<string>('/api/ton-client'),
+  endpoint: "/api/ton-client",
+  timeout: 30000,
+
+  httpAdapter: memoizedAdapter,
 });
