@@ -1,10 +1,10 @@
 {
-  "wanna_know_our_goals": "Wanna know our goals?",
+  "wanna_know_our_goals": "✨ Wanna know our goals? ✨",
   "our_kpi": "Our KPI",
   "reach_together": "Let’s reach them together",
   "goals": {
-    "revenue": "{{revenue_goal}} Revenue",
+    "revenue": "{{revenue_goal}} in revenue",
     "tvl": "{{tvl_goal}} TVL",
-    "shares": "{{share_goal}}% of Dedust Lp"
+    "shares": "{{share_goal}}% of Dedust LP"
   }
 }
