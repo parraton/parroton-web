@@ -1,7 +1,7 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 export const Route = {
-  name: "VaultsGet",
+  name: 'VaultsGet',
   params: z.object({}),
   search: z.object({}),
 };
@@ -32,6 +32,6 @@ export const GET = {
       apr: z.string(),
       apy: z.string(),
       dailyUsdRewards: z.string(),
-    })
+    }),
   ),
 };

@@ -1,30 +1,29 @@
-import memoizee from "memoizee";
-import asyncRetry from "async-retry";
+import memoizee from 'memoizee';
+import asyncRetry from 'async-retry';
 
-import { NextRequest, NextResponse } from "next/server";
-import { Address, fromNano } from "@ton/core";
-import { TonClient4 } from "@ton/ton";
-import { TonJettonTonStrategy, Vault } from "@parraton/sdk";
+import { NextResponse } from 'next/server';
+import { Address, fromNano } from '@ton/core';
+import { TonClient4 } from '@ton/ton';
+import { TonJettonTonStrategy, Vault } from '@parraton/sdk';
 
-import { tonApiHttpClient } from "../../../core/tonapi";
+import { tonApiHttpClient } from '../../../core/tonapi';
 
-export const dynamic = "force-dynamic";
+export const dynamic = 'force-dynamic';
 
 const TON_CLIENT = new TonClient4({
   endpoint: process.env.NEXT_PUBLIC_TON_CLIENT_URL!,
-  timeout: 60000,
+  timeout: 60_000,
 });
-const VAULT_NAME = "USDT/TON Vault";
-const VAULT_ADDRESS =
-  "0:bb309547a688b8eb328938a5765cb998334d2cea2b6dc511406f8274fb6d2220";
+const VAULT_NAME = 'USDT/TON Vault';
+const VAULT_ADDRESS = '0:bb309547a688b8eb328938a5765cb998334d2cea2b6dc511406f8274fb6d2220';
 
 const RETRY_CONFIG = {
   retries: 5,
   minTimeout: 2000,
-  maxTimeout: 20000,
+  maxTimeout: 20_000,
 };
 
-export async function GET(_: NextRequest) {
+export async function GET() {
   const vaults = await getVaults();
 
   return NextResponse.json(vaults);
@@ -35,10 +34,7 @@ const getVaults = memoizee(
     const lpAddress = await getLPAddress(VAULT_ADDRESS);
     const { lpPrice, poolTvlUsd } = await getDedustLPInfo(lpAddress.toString());
     const tvlUsd = await getVaultTVLUSD(VAULT_ADDRESS, lpPrice);
-    const rewardsStats = await getRewardsStats(
-      lpAddress.toString(),
-      poolTvlUsd
-    );
+    const rewardsStats = await getRewardsStats(lpAddress.toString(), poolTvlUsd);
 
     return [
       {
@@ -47,9 +43,7 @@ const getVaults = memoizee(
         plpMetadata: (await getPLPMetadata(VAULT_ADDRESS)).metadata,
         lpMetadata: (await getLPMetadata(VAULT_ADDRESS)).metadata,
         lpPriceUsd: lpPrice.toFixed(2),
-        plpPriceUsd: (await getVaultLPPriceUSD(lpPrice, VAULT_ADDRESS)).toFixed(
-          2
-        ),
+        plpPriceUsd: (await getVaultLPPriceUSD(lpPrice, VAULT_ADDRESS)).toFixed(2),
         tvlUsd: tvlUsd.toFixed(2),
         apr: rewardsStats.apr.toFixed(4),
         apy: rewardsStats.apy.toFixed(4),
@@ -61,7 +55,7 @@ const getVaults = memoizee(
     maxAge: 60_000,
     promise: true,
     preFetch: true,
-  }
+  },
 );
 
 const getPLPMetadata = memoizee(
@@ -72,7 +66,7 @@ const getPLPMetadata = memoizee(
     maxAge: 24 * 60 * 60 * 1000, // 1 day
 
     promise: true,
-  }
+  },
 );
 
 const getLPAddress = memoizee(
@@ -85,7 +79,7 @@ const getLPAddress = memoizee(
     maxAge: 24 * 60 * 60 * 1000, // 1 day
 
     promise: true,
-  }
+  },
 );
 
 const getLPMetadata = memoizee(
@@ -96,7 +90,7 @@ const getLPMetadata = memoizee(
   {
     maxAge: 24 * 60 * 60 * 1000, // 1 day
     promise: true,
-  }
+  },
 );
 
 const getVaultData = memoizee(
@@ -109,14 +103,14 @@ const getVaultData = memoizee(
   {
     maxAge: 60_000,
     promise: true,
-  }
+  },
 );
 
 const getDedustV3Pool = memoizee(
   async (address: string) => {
-    const operationName = "GetPool";
+    const operationName = 'GetPool';
     const query =
-      "query GetPool($address: ID!) { pool(address: $address) { totalSupply assets reserves } }";
+      'query GetPool($address: ID!) { pool(address: $address) { totalSupply assets reserves } }';
 
     const variables = {
       address,
@@ -133,31 +127,29 @@ const getDedustV3Pool = memoizee(
   {
     maxAge: 60_000,
     promise: true,
-  }
+  },
 );
 
 const getDedustLPInfo = memoizee(
   async (lpAddress: string) => {
     const { pool } = await getDedustV3Pool(lpAddress);
-    const [asset1Type, asset1Address] = pool.assets[0].split(":");
-    const [asset2Type, asset2Address] = pool.assets[1].split(":");
+    const [asset1Type, asset1Address] = pool.assets[0].split(':');
+    const [asset2Type, asset2Address] = pool.assets[1].split(':');
 
     const allDedustAssets = await getAllDedustAssets();
 
     const asset1 = allDedustAssets.assets.find(
-      (asset) => asset.address == asset1Address && asset.type == asset1Type
+      (asset) => asset.address == asset1Address && asset.type == asset1Type,
     );
     const asset2 = allDedustAssets.assets.find(
-      (asset) => asset.address == asset2Address && asset.type == asset2Type
+      (asset) => asset.address == asset2Address && asset.type == asset2Type,
     );
 
     if (!asset1 || !asset2) {
-      throw new Error("Asset not found");
+      throw new Error('Asset not found');
     }
 
-    const [reserve1, reserve2] = pool.reserves.map((reserve) =>
-      BigInt(reserve)
-    );
+    const [reserve1, reserve2] = pool.reserves.map(BigInt);
 
     const oneLP = 1_000_000_000n;
     const totalSupply = BigInt(pool.totalSupply);
@@ -168,40 +160,31 @@ const getDedustLPInfo = memoizee(
     const asset1Price = Number(asset1.price);
     const asset2Price = Number(asset2.price);
 
-    const precision = 10000;
+    const precision = 10_000;
 
     const lpPrice =
-      (Number(
-        (assetOneUnderLP * BigInt(precision)) / 10n ** BigInt(asset1.decimals)
-      ) /
-        precision) *
+      (Number((assetOneUnderLP * BigInt(precision)) / 10n ** BigInt(asset1.decimals)) / precision) *
         asset1Price +
-      (Number(
-        (assetTwoUnderLP * BigInt(precision)) / 10n ** BigInt(asset2.decimals)
-      ) /
-        precision) *
+      (Number((assetTwoUnderLP * BigInt(precision)) / 10n ** BigInt(asset2.decimals)) / precision) *
         asset2Price;
 
     return {
       lpPrice,
       asset1Price,
       asset2Price,
-      poolTvlUsd:
-        (Number((totalSupply * BigInt(precision)) / oneLP) * lpPrice) /
-        precision,
+      poolTvlUsd: (Number((totalSupply * BigInt(precision)) / oneLP) * lpPrice) / precision,
     };
   },
   {
     maxAge: 60_000,
     promise: true,
-  }
+  },
 );
 
 const getAllDedustAssets = memoizee(
   async () => {
-    const operationName = "GetAllAssets";
-    const query =
-      "query GetAllAssets { assets { type address price decimals } }";
+    const operationName = 'GetAllAssets';
+    const query = 'query GetAllAssets { assets { type address price decimals } }';
 
     return fetchDedustV3Api<{
       assets: {
@@ -216,7 +199,7 @@ const getAllDedustAssets = memoizee(
     maxAge: 60_000,
 
     promise: true,
-  }
+  },
 );
 
 const getVaultLPPriceUSD = memoizee(
@@ -225,20 +208,17 @@ const getVaultLPPriceUSD = memoizee(
     const vault = TON_CLIENT.open(rawVault);
     const estimatedLpAmount = await asyncRetry(
       () => vault.getEstimatedLpAmount(1_000_000_000n),
-      RETRY_CONFIG
+      RETRY_CONFIG,
     );
 
     const precision = 1000;
 
-    return (
-      (Number((estimatedLpAmount * BigInt(precision)) / 10n ** 9n) * lpPrice) /
-      precision
-    );
+    return (Number((estimatedLpAmount * BigInt(precision)) / 10n ** 9n) * lpPrice) / precision;
   },
   {
     maxAge: 60_000,
     promise: true,
-  }
+  },
 );
 
 const getVaultTVLUSD = memoizee(
@@ -248,7 +228,7 @@ const getVaultTVLUSD = memoizee(
     } = await asyncRetry(() => TON_CLIENT.getLastBlock(), RETRY_CONFIG);
     const { account } = await asyncRetry(
       () => TON_CLIENT.getAccountLite(seqno, Address.parse(vaultAddress)),
-      RETRY_CONFIG
+      RETRY_CONFIG,
     );
     const balance = fromNano(account.balance.coins);
     const tonPrice = await getTonPrice();
@@ -257,9 +237,7 @@ const getVaultTVLUSD = memoizee(
     const precision = 1000;
 
     const tvl =
-      (Number((vaultData.depositedLp * BigInt(precision)) / 10n ** 9n) /
-        precision) *
-        lpPriceUSD +
+      (Number((vaultData.depositedLp * BigInt(precision)) / 10n ** 9n) / precision) * lpPriceUSD +
       Number(balance) * tonPrice;
 
     return tvl;
@@ -267,20 +245,20 @@ const getVaultTVLUSD = memoizee(
   {
     maxAge: 60_000,
     promise: true,
-  }
+  },
 );
 
 const getTonPrice = memoizee(
   async () => {
     const { rates } = await tonApiHttpClient.rates.getRates({
-      currencies: ["USD"],
-      tokens: ["TON"],
+      currencies: ['USD'],
+      tokens: ['TON'],
     });
 
-    const rate = rates["TON"].prices?.["USD"];
+    const rate = rates['TON'].prices?.['USD'];
 
     if (!rate) {
-      throw new Error("TON price not found");
+      throw new Error('TON price not found');
     }
 
     return rate;
@@ -288,7 +266,7 @@ const getTonPrice = memoizee(
   {
     maxAge: 60_000,
     promise: true,
-  }
+  },
 );
 
 const getAllTonBoosts = memoizee(
@@ -303,9 +281,9 @@ const getAllTonBoosts = memoizee(
         endAt: string;
       }[];
     }>(
-      "GetAllBoosts",
-      "query GetAllBoosts { boosts { liquidityPool asset budget rewardPerDay startAt endAt } }",
-      {}
+      'GetAllBoosts',
+      'query GetAllBoosts { boosts { liquidityPool asset budget rewardPerDay startAt endAt } }',
+      {},
     );
 
     return fetchResult.boosts;
@@ -313,7 +291,7 @@ const getAllTonBoosts = memoizee(
   {
     maxAge: 60_000 * 5,
     promise: true,
-  }
+  },
 );
 
 const getRewardsStats = memoizee(
@@ -322,14 +300,12 @@ const getRewardsStats = memoizee(
     const nativeBoost = allBoosts.find(
       (boost) =>
         boost.liquidityPool == lpAddress &&
-        boost.asset === "native" &&
+        boost.asset === 'native' &&
         new Date(boost.startAt) < new Date() &&
-        new Date(boost.endAt) > new Date()
+        new Date(boost.endAt) > new Date(),
     );
 
-    const dailyRewards = nativeBoost?.rewardPerDay
-      ? Number(fromNano(nativeBoost.rewardPerDay))
-      : 0;
+    const dailyRewards = nativeBoost?.rewardPerDay ? Number(fromNano(nativeBoost.rewardPerDay)) : 0;
 
     const dailyRewardsUsd = dailyRewards * (await getTonPrice());
     const apr = (dailyRewardsUsd * 365) / tvlUsd;
@@ -344,7 +320,7 @@ const getRewardsStats = memoizee(
   {
     maxAge: 60_000 * 10,
     promise: true,
-  }
+  },
 );
 
 const getStrategyInfoByVault = memoizee(
@@ -356,30 +332,30 @@ const getStrategyInfoByVault = memoizee(
     return asyncRetry(() => strategy.getStrategyData(), {
       retries: 5,
       minTimeout: 2000,
-      maxTimeout: 20000,
+      maxTimeout: 20_000,
     });
   },
   {
     maxAge: 60_000 * 5,
     promise: true,
-  }
+  },
 );
 
 const fetchDedustV3Api = async <Response = unknown, Vars = unknown>(
   operationName: string,
   query: string,
-  variables: Vars
+  variables: Vars,
 ): Promise<Response> => {
-  const url = "https://api.dedust.io/v3/graphql";
+  const url = 'https://api.dedust.io/v3/graphql';
   const response = await fetch(url, {
-    method: "POST",
+    method: 'POST',
     body: JSON.stringify({
       operationName,
       query,
       variables,
     }),
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
   });
 
