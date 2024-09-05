@@ -4,6 +4,7 @@
   "dialog_close": "Закрити",
   "mode_title": "Кольорова схема",
   "language_title": "Мова",
-  "referral_title": "Реферальне посилання",
+  "referral_title": "Реф. посилання",
+  "referral_mini_app": "Реф. посилання на miniapp",
   "copy_referral": "Копіювати"
 }
