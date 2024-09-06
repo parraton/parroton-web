@@ -8,19 +8,19 @@ import { FaucetLpButton } from '@components/faucet/faucet-lp.button';
 import { formatNumber } from '@lib/utils';
 import { useJettonBalance } from '@hooks/use-jetton-balance';
 import { OrLoader } from '@components/loader/loader';
-import { usePoolMetadata } from '@hooks/use-pool-metadata';
+import { useVaultData } from '@hooks/use-vault-data';
 
 const useFaucetFormData = () => {
-  const { vault, lng } = useParams(VaultPage);
-  const { balance: lpBalance } = useLpBalance(vault);
-  const { balance: jettonBalance } = useJettonBalance(vault);
-  const { metadata } = usePoolMetadata(vault);
+  const { vault: vaultAddress, lng } = useParams(VaultPage);
+  const { balance: lpBalance } = useLpBalance(vaultAddress);
+  const { balance: jettonBalance } = useJettonBalance(vaultAddress);
+  const { vault } = useVaultData(vaultAddress);
 
   return {
     jettonBalance,
     lpBalance,
-    name: metadata?.name,
-    currency: metadata?.symbol,
+    name: vault?.lpMetadata.name,
+    currency: vault?.lpMetadata.symbol,
     lng,
   };
 };

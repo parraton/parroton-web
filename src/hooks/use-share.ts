@@ -1,19 +1,17 @@
 import { getVaultData } from '@core';
 import { Address } from '@ton/core';
 import useSWR from 'swr';
-import { usePool } from '@hooks/use-pool';
-import { getSupply } from '@hooks/use-vault-tvl';
+import { useVaultData } from './use-vault-data';
 
 export function useShare(vaultAddress: string) {
-  const { pool } = usePool(vaultAddress);
+  const { vault } = useVaultData(vaultAddress);
 
-  const { data, error } = useSWR(['useShare', vaultAddress, Boolean(pool)], async () => {
-    if (!pool) return null;
+  const { data, error } = useSWR(['useShare', vaultAddress, Boolean(vault)], async () => {
+    if (!vault) return null;
 
     const { depositedLp } = await getVaultData(Address.parse(vaultAddress));
-    const poolSupply = await getSupply(pool);
 
-    return String(Number(depositedLp) / Number(poolSupply));
+    return String(Number(depositedLp) / Number(vault.lpTotalSupply));
   });
 
   return {

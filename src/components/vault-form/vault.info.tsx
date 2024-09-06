@@ -4,24 +4,32 @@
 import { VaultPage } from '@routes';
 import { useParams } from '@routes/hooks';
 import { useSharesBalance } from '@hooks/use-shares-balance';
-import { usePoolNumbers } from '@hooks/use-pool-numbers';
 import { OrLoader } from '@components/loader/loader';
 import { ReactNode } from 'react';
 import { useTranslation } from '@i18n/client';
 import { cn, formatCurrency, formatNumber, formatPercentage } from '@lib/utils';
-import { usePoolMetadata } from '@hooks/use-pool-metadata';
 import { KpiDialog } from '@components/kpi/kpi-dialog';
 import { GlassCard } from '@components/glass-card';
 import { useRevenue } from '@hooks/use-revenue';
 import { useShare } from '@hooks/use-share';
+import { useVaultData } from '@hooks/use-vault-data';
 
 const useVaultInfo = () => {
-  const { vault, lng } = useParams(VaultPage);
-  const { balance: sharesBalance } = useSharesBalance(vault);
-  const { metadata } = usePoolMetadata(vault);
-  const { poolNumbers } = usePoolNumbers(vault);
-  const { revenue } = useRevenue(vault);
-  const { share } = useShare(vault);
+  const { vault: vaultAddress, lng } = useParams(VaultPage);
+  const { vault } = useVaultData(vaultAddress);
+
+  const poolNumbers = {
+    tvlInUsd: vault?.tvlUsd,
+    priceForOne: vault?.lpPriceUsd,
+    apy: vault?.apy,
+    daily: vault?.dpr,
+    extraApr: '0',
+  };
+
+  const metadata = vault?.lpMetadata;
+  const { balance: sharesBalance } = useSharesBalance(vaultAddress);
+  const { revenue } = useRevenue(vaultAddress);
+  const { share } = useShare(vaultAddress);
 
   return { sharesBalance: sharesBalance?.lpBalance, metadata, poolNumbers, lng, revenue, share };
 };

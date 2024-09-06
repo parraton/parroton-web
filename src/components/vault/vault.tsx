@@ -5,24 +5,22 @@ import { useSharesBalance } from '@hooks/use-shares-balance';
 
 import { Language } from '@i18n/settings';
 
-import { useVaultMetadata } from '@hooks/use-vault-metadata';
-import { usePoolNumbers } from '@hooks/use-pool-numbers';
+import { useVaultData } from '@hooks/use-vault-data';
 
 export function Vault({ address, lng }: { address: string; lng: Language }) {
   const { balance: lpBalance } = useLpBalance(address);
   const { balance: sharesBalance } = useSharesBalance(address);
-  const { metadata } = useVaultMetadata(address);
-  const { poolNumbers } = usePoolNumbers(address);
+  const { vault } = useVaultData(address);
 
   const data: VaultCardProps = {
-    title: metadata?.name,
+    title: vault?.name,
     balance: lpBalance,
-    currency: metadata?.symbol,
+    currency: vault?.plpMetadata?.symbol,
     deposited: sharesBalance?.lpBalance,
-    apy: poolNumbers?.apy,
-    daily: poolNumbers?.daily,
-    extraApr: poolNumbers?.extraApr,
-    tvl: poolNumbers?.tvlInUsd,
+    apy: vault?.apy,
+    daily: vault?.dpr,
+    extraApr: '0',
+    tvl: vault?.tvlUsd,
     address,
   };
 

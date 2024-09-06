@@ -17,7 +17,6 @@ import { toast } from 'sonner';
 import { successTransaction } from '@utils/transaction-subjects';
 import { useParams } from '@routes/hooks';
 import { VaultPage } from '@routes';
-import { useVaultTvl } from '@hooks/use-vault-tvl';
 import { multiplyIfPossible } from '@utils/multiply-if-possible';
 import { OrLoader } from '@components/loader/loader';
 import { TransactionSent } from '@components/transactions/sent';
@@ -26,19 +25,18 @@ import { useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 import { getVault } from '@core';
 import { Address, fromNano, toNano } from '@ton/core';
-import { usePoolMetadata } from '@hooks/use-pool-metadata';
+import { useVaultData } from '@hooks/use-vault-data';
 
 const useFormData = () => {
   const { t } = useTranslation({ ns: 'form' });
-  const { vault } = useParams(VaultPage);
-  const { tvlData } = useVaultTvl(vault);
-  const { metadata } = usePoolMetadata(vault);
-  const { balance } = useLpBalance(vault);
+  const { vault: vaultAddress } = useParams(VaultPage);
+  const { vault } = useVaultData(vaultAddress);
+  const { balance } = useLpBalance(vaultAddress);
 
   const [estimatedShares, setEstimatedShares] = useState<string>('');
 
   const fetchSharesEquivalent = useDebouncedCallback(async (value) => {
-    const v = await getVault(Address.parse(vault));
+    const v = await getVault(Address.parse(vaultAddress));
     const x = await v.getEstimatedSharesAmount(toNano(value));
 
     setEstimatedShares(fromNano(x));
@@ -58,8 +56,8 @@ const useFormData = () => {
     estimatedShares,
     fetchSharesEquivalent,
     validate,
-    currency: metadata?.symbol,
-    dollarEquivalent: multiplyIfPossible(tvlData?.priceForOne, balance),
+    currency: vault?.lpMetadata.symbol,
+    dollarEquivalent: multiplyIfPossible(vault?.lpPriceUsd, balance),
     outputTitle: t('plp_output'),
   };
 };

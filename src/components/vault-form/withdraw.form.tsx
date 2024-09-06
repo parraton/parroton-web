@@ -18,27 +18,26 @@ import { TonviewerLink } from '@components/tonviewer-link';
 import { successTransaction } from '@utils/transaction-subjects';
 import { useParams } from '@routes/hooks';
 import { VaultPage } from '@routes';
-import { useVaultMetadata } from '@hooks/use-vault-metadata';
 import { multiplyIfPossible } from '@utils/multiply-if-possible';
-import { useVaultTvl } from '@hooks/use-vault-tvl';
 import { OrLoader } from '@components/loader/loader';
 import { TransactionSent } from '@components/transactions/sent';
 import { useDebouncedCallback } from 'use-debounce';
 import { useState } from 'react';
 import { getVault } from '@core';
 import { Address, fromNano, toNano } from '@ton/core';
+import { useVaultData } from '@hooks/use-vault-data';
 
 const useFormData = () => {
   const { t } = useTranslation({ ns: 'form' });
-  const { vault } = useParams(VaultPage);
-  const { tvlData } = useVaultTvl(vault);
-  const { metadata } = useVaultMetadata(vault);
-  const { balance } = useSharesBalance(vault);
+  const { vault: vaultAddress } = useParams(VaultPage);
+
+  const { vault } = useVaultData(vaultAddress);
+  const { balance } = useSharesBalance(vaultAddress);
 
   const [estimatedLp, setEstimatedLp] = useState<string>('');
 
   const fetchLpEquivalent = useDebouncedCallback(async (value) => {
-    const v = await getVault(Address.parse(vault));
+    const v = await getVault(Address.parse(vaultAddress));
     const x = await v.getEstimatedLpAmount(toNano(value));
 
     setEstimatedLp(fromNano(x));
@@ -64,8 +63,8 @@ const useFormData = () => {
     estimatedLp,
     fetchLpEquivalent,
     validate,
-    currency: metadata?.symbol,
-    lpPrice: tvlData?.priceForOne,
+    currency: vault?.plpMetadata.symbol,
+    lpPrice: vault?.lpPriceUsd,
     outputTitle: t('lp_output'),
   };
 };
