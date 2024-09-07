@@ -22,7 +22,7 @@ export function Guard() {
     <Dialog open={open} onOpenChange={close}>
       <DialogContent>
         <DialogHeader>{t('header')}</DialogHeader>
-        <DialogDescription>{t('description')}</DialogDescription>
+        <DialogDescription dangerouslySetInnerHTML={{ __html: t('description') }} />
         <DialogFooter className='w-full'>
           <Button onClick={close} className='w-full bg-[#19A7E7]'>
             {t('accept')}

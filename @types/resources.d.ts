@@ -9,7 +9,8 @@ interface Resources {
   },
   "form": {
     "deposit_title": "Deposit",
-    "deposit_description": "Deposit your lp to automate rewards reinvestment",
+    "deposit_description": "Deposit your lp to automate rewards reinvestment.",
+    "get_lp_description": "Not enough LP? Invest in DeDust pool",
     "withdraw_title": "Withdraw",
     "withdraw_description": "Burn your PLPs to get underlying LPs",
     "faucet_title": "Faucet",

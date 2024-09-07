@@ -1,6 +1,7 @@
 {
   "deposit_title": "Вкласти",
-  "deposit_description": "Вкладіть свої токени ліквідності DeDust та автоматизуйте реінвестування нагород",
+  "deposit_description": "Вкладіть свої токени ліквідності DeDust та автоматизуйте реінвестування нагород.",
+  "get_lp_description": "Недостатньо LP? Інвестуйте в DeDust пул",
   "withdraw_title": "Вивести",
   "withdraw_description": "Обміняйте свою долю у волті назад у токени ліквідності DeDust",
   "faucet_title": "Кран",
