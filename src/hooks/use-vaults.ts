@@ -1,7 +1,7 @@
 import useSWR from 'swr';
 import { VAULTS_API } from '@config/api.config';
 
-export type VaultsApiResponse = Array<{
+export interface VaultApiEntry {
   name: string;
   vaultAddress: string;
   vaultAddressFormatted: string;
@@ -30,9 +30,9 @@ export type VaultsApiResponse = Array<{
   apy: string;
   dailyUsdRewards: string;
   managementFee: string;
-}>;
+}
 
-function fetchVaults(): Promise<VaultsApiResponse> {
+function fetchVaults(): Promise<VaultApiEntry[]> {
   return fetch(VAULTS_API)
     .then((response) => response.json())
     .then((data) => data);

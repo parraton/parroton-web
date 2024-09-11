@@ -1,9 +1,9 @@
+'use client';
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs';
 
 import { DepositForm } from '@components/vault-form/deposit.form';
 import { WithdrawForm } from '@components/vault-form/withdraw.form';
-import { Language } from '@i18n/settings';
-import { serverTranslation } from '@i18n';
 import { FormCard } from '@components/vault-form/form-card';
 import { cn } from '@lib/utils';
 import { Actions } from '@types';
@@ -12,6 +12,12 @@ import { ClaimBalance } from '@components/claim/claim-balance';
 import { ClaimButton } from '@components/claim/claim.button';
 import { FaucetForm } from '@components/vault-form/faucet.form';
 import { isMainnet } from '@lib/utils';
+import { useMemo } from 'react';
+import { Address } from '@ton/core';
+import { useTranslation } from '@i18n/client';
+import { useVaultData } from '@hooks/use-vault-data';
+import { VaultPage } from '@routes';
+import { useParams } from '@routes/hooks';
 
 type TabsListItem<Action extends Actions = Actions> = {
   [key in Actions]: {
@@ -49,8 +55,15 @@ const tabsToRender = tabs.filter((tab) => {
   return true;
 });
 
-export async function Form({ lng }: { lng: Language }) {
-  const { t } = await serverTranslation(lng, 'form');
+export function Form() {
+  const { vault: vaultAddress } = useParams(VaultPage);
+  const { t } = useTranslation({ ns: 'form' });
+
+  const { vault } = useVaultData(vaultAddress);
+  const formattedLpAddress = useMemo(
+    () => (vault ? Address.parse(vault.lpMetadata.address).toString() : undefined),
+    [vault],
+  );
 
   return (
     <Tabs defaultValue={Actions.deposit} className='custom-wrapper w-full'>
@@ -73,24 +86,24 @@ export async function Form({ lng }: { lng: Language }) {
         ))}
       </TabsList>
       <TabsContent value={Actions.deposit}>
-        <FormCard action={Actions.deposit} lng={lng}>
+        <FormCard formattedLpAddress={formattedLpAddress} action={Actions.deposit}>
           <DepositForm />
         </FormCard>
       </TabsContent>
       <TabsContent value={Actions.withdraw}>
-        <FormCard action={Actions.withdraw} lng={lng}>
+        <FormCard formattedLpAddress={formattedLpAddress} action={Actions.withdraw}>
           <WithdrawForm />
         </FormCard>
       </TabsContent>
       <TabsContent value={Actions.faucet}>
-        <FormCard action={Actions.faucet} lng={lng}>
+        <FormCard formattedLpAddress={formattedLpAddress} action={Actions.faucet}>
           <CardFooter className={'justify-between'}>
             <FaucetForm />
           </CardFooter>
         </FormCard>
       </TabsContent>
       <TabsContent value={Actions.claim}>
-        <FormCard action={Actions.claim} lng={lng}>
+        <FormCard formattedLpAddress={formattedLpAddress} action={Actions.claim}>
           <CardContent className='space-y-2'>
             <ClaimBalance />
             <ClaimButton />
