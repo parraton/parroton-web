@@ -10,6 +10,7 @@ const defaultInfo = {
 import * as HomeRoute from "@/app/[lng]/page.info";
 import * as VaultPageRoute from "@/app/[lng]/[vault]/page.info";
 import * as WelcomeRoute from "@/app/[lng]/welcome/page.info";
+import * as ApiTonClientPathRoute from "@/app/api/ton-client/[...path]/route.info";
 
 export const Home = makeRoute(
   "/[lng]",
@@ -30,6 +31,13 @@ export const Welcome = makeRoute(
   {
     ...defaultInfo,
     ...WelcomeRoute.Route
+  }
+);
+export const ApiTonClientPath = makeRoute(
+  "/api/ton-client/[...path]",
+  {
+    ...defaultInfo,
+    ...ApiTonClientPathRoute.Route
   }
 );
 

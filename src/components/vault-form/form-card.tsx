@@ -12,7 +12,7 @@ export function FormCard({
   action,
   formattedLpAddress,
   children,
-}: PropsWithChildren<{ action: Actions; formattedLpAddress: string | undefined }>) {
+}: PropsWithChildren<{ action: Actions; formattedLpAddress: string }>) {
   const { t } = useTranslation({ ns: 'form' });
 
   // TODO: use link in Deposit description, remove hardcoded link & style
@@ -29,14 +29,12 @@ export function FormCard({
           ) : (
             <>
               {t(`${action}_description`)} <br />
-              {formattedLpAddress && (
-                <Link
-                  href={`https://dedust.io/pools/${formattedLpAddress}`}
-                  style={{ color: '#007bff', textDecoration: 'underline' }}
-                >
-                  {t('get_lp_description')}
-                </Link>
-              )}
+              <Link
+                href={`https://dedust.io/pools/${formattedLpAddress}`}
+                style={{ color: '#007bff', textDecoration: 'underline' }}
+              >
+                {t('get_lp_description')}
+              </Link>
             </>
           )}
         </CardDescription>

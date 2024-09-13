@@ -61,7 +61,7 @@ export function Form() {
 
   const { vault } = useVaultData(vaultAddress);
   const formattedLpAddress = useMemo(
-    () => (vault ? Address.parse(vault.lpMetadata.address).toString() : undefined),
+    () => (vault ? Address.parse(vault.lpMetadata.address).toString() : ''),
     [vault],
   );
 
