@@ -1,8 +1,8 @@
 /* eslint-disable prettier/prettier */
 interface Resources {
   "common": {
-    "app_title": "Parroton",
-    "app_description": "Description for Parroton",
+    "app_title": "Parraton",
+    "app_description": "Description for Parraton",
     "amount": "Amount",
     "deposit": "Deposit",
     "withdraw": "Withdraw",
