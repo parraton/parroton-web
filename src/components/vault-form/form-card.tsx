@@ -1,17 +1,20 @@
-import { serverTranslation } from '@i18n';
+'use client';
+
 import { Language } from '@i18n/settings';
 import { CardDescription, CardHeader, CardTitle } from '@UI/card';
 import { PropsWithChildren } from 'react';
 import { Actions } from '@types';
 import { GlassCard } from '@components/glass-card';
 import Link from 'next/link';
+import { useTranslation } from '@i18n/client';
 
-export async function FormCard({
+export function FormCard({
   action,
   lng,
   children,
-}: PropsWithChildren<{ lng: Language; action: Actions }>) {
-  const { t } = await serverTranslation(lng, 'form');
+  formattedLpAddress,
+}: PropsWithChildren<{ lng: Language; action: Actions; formattedLpAddress?: string }>) {
+  const { t } = useTranslation({ ns: 'form', lng });
 
   // TODO: use link in Deposit description, remove hardcoded link & style
   const isDeposit = action === Actions.deposit;
@@ -27,7 +30,7 @@ export async function FormCard({
             <>
               {t(`${action}_description`)} <br />
               <Link
-                href={'https://dedust.io/pools/EQA-X_yo3fzzbDbJ_0bzFWKqtRuZFIRa1sJsveZJ1YpViO3r'}
+                href={`https://dedust.io/pools/${formattedLpAddress}`}
                 style={{ color: '#007bff', textDecoration: 'underline' }}
               >
                 {t('get_lp_description')}
