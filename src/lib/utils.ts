@@ -1,6 +1,8 @@
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { Language } from '@i18n/settings';
+import BigNumber from 'bignumber.js';
+import z from 'zod';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -14,9 +16,17 @@ const languageToIntlLocaleMap: Record<Language, Intl.LocalesArgument> = {
 export const formatNumber = (num: number | string | undefined | null, locale: Language = 'en') => {
   if (num === undefined || num === null) return '~~~~';
 
-  return new Intl.NumberFormat(languageToIntlLocaleMap[locale], {
-    minimumFractionDigits: 2,
-  }).format(Number(num));
+  const parsedValue = new BigNumber(num);
+  const decimalsSeparator = Intl.NumberFormat(languageToIntlLocaleMap[locale]).formatToParts(0.1)[1]
+    .value;
+  // eslint-disable-next-line unicorn/require-number-to-fixed-digits-argument
+  let result = parsedValue.toFixed();
+  if (parsedValue.decimalPlaces() === 0) {
+    result += '.';
+  }
+  result += '0'.repeat(Math.max(0, 2 - (parsedValue.decimalPlaces() ?? 0)));
+
+  return result.replace('.', decimalsSeparator);
 };
 
 export const formatCurrency = (
@@ -44,3 +54,67 @@ export const formatPercentage = (num: number | string, locale: Language = 'en') 
 };
 
 export const isMainnet = process.env.NETWORK === 'mainnet';
+
+interface AmountValidationMessages {
+  required: string;
+  invalidFormat: string;
+  /* eslint-disable no-unused-vars */
+  min: (minAmount: string | number) => string;
+  max: (maxAmount: string | number) => string;
+  /* eslint-enable no-unused-vars */
+}
+
+interface AmountValidationOptions {
+  required: boolean;
+  min?: string | number;
+  max?: string | number;
+}
+
+export const getAmountAsStringValidationSchema = (
+  messages: AmountValidationMessages,
+  validationOptions: AmountValidationOptions,
+) => {
+  const {
+    required: requiredMessage,
+    invalidFormat: invalidFormatMessage,
+    min: minMessageFn,
+    max: maxMessageFn,
+  } = messages;
+  const { required, min, max } = validationOptions;
+
+  return z.string().superRefine((value, ctx) => {
+    if (!value) {
+      if (required) {
+        ctx.addIssue({ message: requiredMessage, code: z.ZodIssueCode.custom });
+      }
+
+      return;
+    }
+
+    const parsedValue = new BigNumber(value.replace(',', '.'));
+
+    if (!parsedValue.isFinite()) {
+      ctx.addIssue({ message: invalidFormatMessage, code: z.ZodIssueCode.custom });
+
+      return;
+    }
+
+    if (min != null && parsedValue.lte(min)) {
+      ctx.addIssue({
+        message: minMessageFn(min),
+        code: z.ZodIssueCode.custom,
+      });
+
+      return;
+    }
+
+    if (max != null && parsedValue.gt(max)) {
+      ctx.addIssue({
+        message: maxMessageFn(formatNumber(max)),
+        code: z.ZodIssueCode.custom,
+      });
+
+      return;
+    }
+  });
+};
