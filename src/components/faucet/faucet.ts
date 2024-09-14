@@ -27,12 +27,16 @@ export const faucetToken = async (sender: Sender, vaultAddress: Address) => {
     throw new Error('Wallet is not connected');
   }
 
+  console.log('oy vey 1');
   const { jettonMasterAddress } = await getStrategyInfoByVault(vaultAddress);
 
+  console.log('oy vey 2');
   const rawJettonMinter = JettonMinter.createFromAddress(jettonMasterAddress);
   const jettonMinter = tonClient.open(rawJettonMinter);
 
+  console.log('oy vey 3');
   await mint(jettonMinter, sender, sender.address, jettonAmount);
+  console.log('oy vey 4');
 };
 
 export const faucetLp = async (sender: Sender, vaultAddress: Address) => {
