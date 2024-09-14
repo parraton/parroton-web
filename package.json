@@ -39,6 +39,7 @@
     "@tonconnect/ui-react": "^2.0.6",
     "@vkruglikov/react-telegram-web-app": "^2.1.9",
     "accept-language": "^3.0.18",
+    "bignumber.js": "^9.1.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "eruda": "^3.0.1",

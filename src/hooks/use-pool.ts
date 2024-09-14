@@ -1,17 +1,22 @@
-import { useEffect, useState } from 'react';
+import { useCallback } from 'react';
 import { Address } from '@ton/core';
 import { getStrategyInfoByVault } from '@core';
+import useSWR from 'swr';
 
 export function usePool(vaultAddress: string) {
-  const [poolAddress, setPoolAddress] = useState<Address | null>(null);
+  const getPoolAddress = useCallback(([, vaultAddress]: [string, string]) => {
+    return getStrategyInfoByVault(Address.parse(vaultAddress)).then(
+      ({ poolAddress }) => poolAddress,
+    );
+  }, []);
 
-  useEffect(() => {
-    getStrategyInfoByVault(Address.parse(vaultAddress)).then(({ poolAddress }) => {
-      setPoolAddress(poolAddress);
-    });
-  }, [vaultAddress]);
+  const { data: poolAddress } = useSWR(['pool', vaultAddress], getPoolAddress, {
+    shouldRetryOnError: true,
+    errorRetryInterval: 5000,
+    suspense: false,
+  });
 
   return {
-    pool: poolAddress,
+    pool: poolAddress ?? null,
   };
 }
