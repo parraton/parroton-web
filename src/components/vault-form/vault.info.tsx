@@ -76,9 +76,6 @@ export function VaultInfo() {
       ? Number(poolNumbers.apy) + Number(poolNumbers.extraApr)
       : undefined;
 
-  const tooltipApy = `${t('apy')}: `;
-  const tooltipExtraApr = `${t('extraApr')}: `;
-
   return (
     <div className={'g flex flex-col gap-4'}>
       <h1
