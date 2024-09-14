@@ -16,6 +16,7 @@ export function useConnection({ batch }: ConnectionOptions = {}): {
 } {
   const [TonConnectUI] = useTonConnectUI();
   const [connected, setConnected] = useState(false);
+  const rawAddress = TonConnectUI?.connector.wallet?.account.address;
 
   useEffect(() => {
     setConnected(Boolean(TonConnectUI?.connector.wallet?.provider));
@@ -31,10 +32,8 @@ export function useConnection({ batch }: ConnectionOptions = {}): {
   }, [TonConnectUI]);
 
   return {
-    sender: new Sender(TonConnectUI?.connector, batch),
+    sender: new Sender(TonConnectUI, batch),
     connected,
-    address: TonConnectUI?.connector.wallet?.account.address
-      ? Address.parse(TonConnectUI?.connector.wallet?.account.address)
-      : undefined,
+    address: rawAddress ? Address.parse(rawAddress) : undefined,
   };
 }

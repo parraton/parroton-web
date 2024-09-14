@@ -4,28 +4,29 @@
 import { CardContent, CardFooter } from '@UI/card';
 import { Label } from '@UI/label';
 import { Button } from '@UI/button';
-import { ErrorMessage, Formik, Form, Field } from 'formik';
+import { ErrorMessage, Form, Field, useFormik, FormikHelpers, FormikProvider } from 'formik';
 import { Input } from '@UI/input';
 import { useDeposit } from '@hooks/use-deposit';
 import { useTranslation } from '@i18n/client';
 import { useLpBalance } from '@hooks/use-lp-balance';
-import { cn, formatCurrency, formatNumber } from '@lib/utils';
+import { cn, formatCurrency, formatNumber, getAmountAsStringValidationSchema } from '@lib/utils';
 import { toFormikValidate } from 'zod-formik-adapter';
 import { z } from 'zod';
-import { firstValueFrom } from 'rxjs';
 import { toast } from 'sonner';
-import { successTransaction } from '@utils/transaction-subjects';
+import { errorTransaction, successTransaction } from '@utils/transaction-subjects';
 import { useParams } from '@routes/hooks';
 import { VaultPage } from '@routes';
 import { multiplyIfPossible } from '@utils/multiply-if-possible';
 import { OrLoader } from '@components/loader/loader';
 import { TransactionSent } from '@components/transactions/sent';
 import { TransactionCompleted } from '@components/transactions/completed';
-import { useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 import { getVault } from '@core';
 import { Address, fromNano, toNano } from '@ton/core';
 import { useVaultData } from '@hooks/use-vault-data';
+import useSWR from 'swr';
+import { TransactionFailed } from '@components/transactions/failed';
 
 const useFormData = () => {
   const { t } = useTranslation({ ns: 'form' });
@@ -35,20 +36,55 @@ const useFormData = () => {
 
   const [estimatedShares, setEstimatedShares] = useState<string>('');
 
-  const fetchSharesEquivalent = useDebouncedCallback(async (value) => {
-    const v = await getVault(Address.parse(vaultAddress));
-    const x = await v.getEstimatedSharesAmount(toNano(value));
+  const getVaultContract = useCallback(
+    ([, vaultAddress]: [string, string]) => getVault(Address.parse(vaultAddress)),
+    [],
+  );
+  const { data: vaultContract } = useSWR(['vault-contract', vaultAddress], getVaultContract, {
+    shouldRetryOnError: true,
+    errorRetryInterval: 5000,
+    suspense: false,
+  });
+
+  const fetchSharesEquivalent = useDebouncedCallback(async (value: string) => {
+    if (amountValidationSchema.safeParse(value).success === false) {
+      setEstimatedShares('0');
+
+      return;
+    }
+
+    const x = await (
+      vaultContract ?? (await getVaultContract(['', vaultAddress]))
+    ).getEstimatedSharesAmount(toNano(value));
 
     setEstimatedShares(fromNano(x));
   }, 500);
 
-  const validate = toFormikValidate(
-    z.object({
-      amount: z
-        .number()
-        .gt(0, t('validation.min_deposit', { minDeposit: 0 }))
-        .lte(Number(balance), t('validation.max_deposit', { maxDeposit: formatNumber(balance) })),
-    }),
+  const amountValidationSchema = useMemo(
+    () =>
+      getAmountAsStringValidationSchema(
+        {
+          required: t('validation.required'),
+          invalidFormat: t('validation.invalid_format'),
+          min: (amount: string | number) => t('validation.min_deposit', { minDeposit: amount }),
+          max: (amount: string | number) => t('validation.max_deposit', { maxDeposit: amount }),
+        },
+        {
+          required: true,
+          min: 0,
+          max: balance ?? undefined,
+        },
+      ),
+    [balance, t],
+  );
+  const validate = useMemo(
+    () =>
+      toFormikValidate(
+        z.object({
+          amount: amountValidationSchema,
+        }),
+      ),
+    [amountValidationSchema],
   );
 
   return {
@@ -75,69 +111,102 @@ export function DepositForm() {
     outputTitle,
   } = useFormData();
 
+  const onSubmit = useCallback(
+    async (values: { amount: string }, actions: FormikHelpers<{ amount: string }>) => {
+      actions.setSubmitting(true);
+      try {
+        await deposit(values.amount);
+
+        toast.info(<TransactionSent />);
+
+        await new Promise<void>((resolve) => {
+          const successSub = successTransaction.subscribe((successHash) => {
+            toast.success(<TransactionCompleted hash={successHash} />);
+            successSub.unsubscribe();
+            resolve();
+          });
+          const errorSub = errorTransaction.subscribe((error) => {
+            console.error(error);
+            toast.error(<TransactionFailed />);
+            errorSub.unsubscribe();
+            resolve();
+          });
+        });
+      } catch (error) {
+        console.error(error);
+        toast.error('Something went wrong. Please try again later.');
+      } finally {
+        actions.setSubmitting(false);
+        actions.resetForm();
+      }
+    },
+    [deposit],
+  );
+
+  const formik = useFormik({
+    initialValues: {
+      amount: balance ?? '0',
+    },
+    validate,
+    onSubmit,
+  });
+  const { isSubmitting, isValid, values, setValues } = formik;
+
+  useEffect(
+    () => void fetchSharesEquivalent(values.amount),
+    [fetchSharesEquivalent, values.amount],
+  );
+
+  const handleMaxAmountClick = useCallback(() => {
+    if (balance) {
+      setValues((prevValues) => ({ ...prevValues, amount: balance }));
+    }
+  }, [balance, setValues]);
+
+  const formattedEstimatedShares = useMemo(
+    () => estimatedShares && formatNumber(estimatedShares, lng),
+    [estimatedShares, lng],
+  );
+
   return (
-    <Formik
-      initialValues={{
-        amount: balance ? Number(balance) : 0,
-      }}
-      validate={validate}
-      onSubmit={async (values, actions) => {
-        actions.setSubmitting(true);
-        try {
-          await deposit(values.amount);
-
-          toast.info(<TransactionSent />);
-
-          const successHash = await firstValueFrom(successTransaction);
-
-          //TODO: make component for toast
-          toast.success(<TransactionCompleted hash={successHash} />);
-        } catch (error) {
-          console.error(error);
-          toast.error('Something went wrong. Please try again later.');
-        } finally {
-          actions.setSubmitting(false);
-          actions.resetForm();
-        }
-      }}
-    >
-      {({ isSubmitting, isValid, values }) => {
-        void fetchSharesEquivalent(values.amount);
-        return (
-          <Form>
-            <CardContent className='space-y-2'>
-              <div className='space-y-1'>
-                <Label className={'flex items-center gap-1'} htmlFor='amount'>
-                  {t('amount')}:{' '}
-                  {<OrLoader value={balance} modifier={(x) => formatNumber(x, lng)} />}{' '}
-                  {<OrLoader animation value={currency} />} (
-                  <OrLoader value={dollarEquivalent} modifier={(x) => formatCurrency(x, lng)} />)
-                </Label>
-                <Field name='amount' id='amount' type='number' as={Input} />
-                <ErrorMessage
-                  className={cn('text-sm text-red-500', 'mt-1')}
-                  component='div'
-                  name='amount'
-                />
-                <Label>{outputTitle}</Label>
-                <Field
-                  name='output'
-                  id='output'
-                  type='number'
-                  as={Input}
-                  readOnly
-                  value={estimatedShares}
-                />
-              </div>
-            </CardContent>
-            <CardFooter>
-              <Button disabled={isSubmitting || !isValid} type='submit' className='custom-main-btn'>
-                {t('deposit')}
-              </Button>
-            </CardFooter>
-          </Form>
-        );
-      }}
-    </Formik>
+    <FormikProvider value={formik}>
+      <Form>
+        <CardContent className='space-y-2'>
+          <div className='space-y-1'>
+            <Label className={'flex items-center gap-1'} htmlFor='amount'>
+              {t('amount')}: {<OrLoader value={balance} modifier={(x) => formatNumber(x, lng)} />}{' '}
+              {<OrLoader animation value={currency} />} (
+              <OrLoader value={dollarEquivalent} modifier={(x) => formatCurrency(x, lng)} />)
+            </Label>
+            <Field
+              name='amount'
+              id='amount'
+              type='text'
+              as={Input}
+              onMaxAmountClick={balance && handleMaxAmountClick}
+            />
+            <ErrorMessage
+              className={cn('text-sm text-red-500', 'mt-1')}
+              component='div'
+              name='amount'
+            />
+            <Label>{outputTitle}</Label>
+            <Field
+              name='output'
+              id='output'
+              type='text'
+              as={Input}
+              readOnly
+              value={formattedEstimatedShares}
+            />
+          </div>
+        </CardContent>
+        <CardFooter>
+          <Button disabled={isSubmitting || !isValid} type='submit' className='custom-main-btn'>
+            {t('deposit')}
+          </Button>
+        </CardFooter>
+      </Form>
+    </FormikProvider>
   );
 }
