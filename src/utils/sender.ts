@@ -8,7 +8,7 @@ import {
   StateInit,
   storeStateInit,
 } from '@ton/core';
-import { ITonConnect, SendTransactionResponse } from '@tonconnect/ui';
+import { ITonConnect, SendTransactionResponse, TonConnectUI } from '@tonconnect/ui';
 import { SendTransactionRequest } from '@tonconnect/sdk';
 import { transactionSubject } from '@utils/transaction-subjects';
 import { Maybe, TransactionStatus } from '@types';
@@ -38,7 +38,7 @@ export class Sender implements ISender {
   }
 
   constructor(
-    private readonly ton: ITonConnect,
+    private readonly ton: ITonConnect | TonConnectUI,
     private readonly batch: boolean = false,
     private readonly ttl: number = DEFAULT_TTL,
   ) {}
