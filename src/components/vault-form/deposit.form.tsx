@@ -151,7 +151,7 @@ export function DepositForm() {
   const { isSubmitting, isValid, values, setValues } = formik;
 
   useEffect(
-    () => void fetchSharesEquivalent(values.amount),
+    () => void fetchSharesEquivalent(values.amount.replace(',', '.')),
     [fetchSharesEquivalent, values.amount],
   );
 

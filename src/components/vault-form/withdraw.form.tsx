@@ -159,7 +159,10 @@ export function WithdrawForm() {
     }
   }, [sharesBalance, setValues]);
 
-  useEffect(() => void fetchLpEquivalent(values.amount), [fetchLpEquivalent, values.amount]);
+  useEffect(
+    () => void fetchLpEquivalent(values.amount.replace(',', '.')),
+    [fetchLpEquivalent, values.amount],
+  );
   const dollarEquivalent = multiplyIfPossible(lpPrice, sharesBalance);
 
   const formattedEstimatedLp = useMemo(
