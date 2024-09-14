@@ -80,7 +80,6 @@ interface Resources {
   },
   "transaction": {
     "failed": "Transaction Failed",
-    "sent": "Transaction Sent",
     "view_explorer": "View Explorer",
     "completed": "Transaction Completed"
   },

@@ -116,28 +116,6 @@ export function VaultInfo() {
               modifier={(x) => formatPercentage(x, lng)}
             />
           }
-          tooltip={
-            totalRewardPercent ? (
-              <div>
-                <div>
-                  {tooltipApy}
-                  <OrLoader
-                    animation
-                    value={poolNumbers!.apy}
-                    modifier={(x) => formatPercentage(x, lng)}
-                  />
-                </div>
-                <div>
-                  {tooltipExtraApr}
-                  <OrLoader
-                    animation
-                    value={poolNumbers!.extraApr}
-                    modifier={(x) => formatPercentage(x, lng)}
-                  />
-                </div>
-              </div>
-            ) : undefined
-          }
         />
         <NanoInfoPlate
           title={t('daily')}
