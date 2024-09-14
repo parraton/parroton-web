@@ -16,8 +16,11 @@ export const useDeposit = () => {
       return;
     }
 
+    console.log('oy vey 1');
     const vault = await getVault(Address.parse(vaultAddress));
+    console.log('oy vey 2');
     const investorLpWallet = await getWallet(sender.address, pool);
+    console.log('oy vey 3');
 
     const atomicAmount = toNano(amount);
 
