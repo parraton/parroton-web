@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 interface Resources {
   "common": {
     "app_title": "Parroton",
@@ -17,6 +18,8 @@ interface Resources {
     "claim_title": "Claim",
     "claim_description": "Get extra rewards from our platform",
     "validation": {
+      "required": "Field is required",
+      "invalid_format": "Invalid format",
       "min_deposit": "Deposit can not be less or equal {{minDeposit}}",
       "max_deposit": "Deposit can not be more than {{maxDeposit}}",
       "min_withdraw": "Withdraw can not be less or equal {{minWithdraw}}",
@@ -33,7 +36,8 @@ interface Resources {
       "button": "Mint Jettons"
     },
     "lp_output": "LPs to receive",
-    "plp_output": "PLPs to receive"
+    "plp_output": "PLPs to receive",
+    "max_label": "MAX"
   },
   "kpi": {
     "wanna_know_our_goals": "Wanna know our goals?",
@@ -74,6 +78,7 @@ interface Resources {
     "accept": "I agree"
   },
   "transaction": {
+    "failed": "Transaction Failed",
     "sent": "Transaction Sent",
     "view_explorer": "View Explorer",
     "completed": "Transaction Completed"

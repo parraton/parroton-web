@@ -8,6 +8,8 @@
   "claim_title": "Бонуси",
   "claim_description": "Отримайте додаткові нагороди за вклад через нашу платформу",
   "validation": {
+    "required": "Це поле обов'язкове",
+    "invalid_format": "Невірний формат",
     "min_deposit": "Мінімальний депозит {{minDeposit}}",
     "max_deposit": "Максимальний депозит {{maxDeposit}}",
     "min_withdraw": "Неможливо вивести {{minWithdraw}} або менше",
@@ -24,5 +26,6 @@
     "button": "Випустити токени"
   },
   "lp_output": "Кількість LP, яку ви отримаєте",
-  "plp_output": "Кількість PLP, яку ви отримаєте"
+  "plp_output": "Кількість PLP, яку ви отримаєте",
+  "max_label": "Макс."
 }

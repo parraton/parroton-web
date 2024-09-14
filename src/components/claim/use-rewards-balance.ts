@@ -7,26 +7,29 @@ import { getRewardsDictionary } from '@components/claim/claim';
 import { fromNano, OpenedContract } from '@ton/core';
 import { tonClient } from '@core/config';
 import { DistributionAccount, DistributionPool } from '@dedust/apiary-v1';
-import { useEffect, useState } from 'react';
+import { useCallback, useMemo } from 'react';
 
 function useDistributionAccount(distributionPool: OpenedContract<DistributionPool> | null) {
   const {
     sender: { address },
   } = useConnection();
-  const [distributionAccount, setDistributionAccount] =
-    useState<OpenedContract<DistributionAccount> | null>(null);
 
-  useEffect(() => {
-    (async () => {
-      if (!distributionPool || !address) return;
-      const accountAddress = await distributionPool.getAccountAddress(address);
-      const distributionAccount = tonClient.open(
-        DistributionAccount.createFromAddress(accountAddress),
-      );
-      setDistributionAccount(distributionAccount);
-    })();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [distributionPool, address?.toString()]);
+  const getDistributionAccountAddress = useCallback(async () => {
+    if (!distributionPool || !address) return null;
+
+    return await distributionPool.getAccountAddress(address);
+  }, [distributionPool, address]);
+  const { data: distributionAccountAddress } = useSWR(
+    ['distribution-account-address', distributionPool?.address.toString(), address?.toString()],
+    getDistributionAccountAddress,
+    { shouldRetryOnError: true, errorRetryInterval: 5000, suspense: false },
+  );
+
+  const distributionAccount = useMemo(() => {
+    if (!distributionAccountAddress) return null;
+
+    return tonClient.open(DistributionAccount.createFromAddress(distributionAccountAddress));
+  }, [distributionAccountAddress]);
 
   return {
     distributionAccount,

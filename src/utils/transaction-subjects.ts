@@ -53,13 +53,20 @@ pendingTransaction.subscribe(async (boc) => {
       takeUntil(successTransaction),
       takeUntil(errorTransaction),
       map(async () => {
-        const { in_progress } = await tonApiHttpClient.events.getEvent(hash);
+        // TODO: implement transaction failure handling
+        try {
+          const { in_progress } = await tonApiHttpClient.events.getEvent(hash);
 
-        return in_progress != undefined && !in_progress;
+          return in_progress != undefined && !in_progress;
+        } catch (error) {
+          console.error(error);
+
+          return false;
+        }
       }),
     )
-    .subscribe(async (isMined) => {
-      if (await isMined) {
+    .subscribe(async (minePromise) => {
+      if (await minePromise) {
         transactionSubject.next({
           status: TransactionStatus.Success,
           data: hash,
