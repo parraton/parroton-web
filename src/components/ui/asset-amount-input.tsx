@@ -2,7 +2,7 @@ import React, { ChangeEvent, useCallback } from 'react';
 
 import { Input, InputProps } from './input';
 
-export interface AssetAmountInputProps extends Omit<InputProps, 'type' | 'value'> {
+interface AssetAmountInputProps extends Omit<InputProps, 'type' | 'value'> {
   value: string;
 }
 

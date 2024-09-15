@@ -35,17 +35,17 @@ export type RouteInfoToLayout<
   searchParams: Info['search'] extends z.ZodSchema ? z.output<Info['search']> : undefined;
 }>;
 
-export interface GetInfo<Result extends z.ZodSchema> {
+interface GetInfo<Result extends z.ZodSchema> {
   result: Result;
 }
 
-export interface PostInfo<Body extends z.ZodSchema, Result extends z.ZodSchema> {
+interface PostInfo<Body extends z.ZodSchema, Result extends z.ZodSchema> {
   body: Body;
   result: Result;
   description?: string;
 }
 
-export interface PutInfo<Body extends z.ZodSchema, Result extends z.ZodSchema> {
+interface PutInfo<Body extends z.ZodSchema, Result extends z.ZodSchema> {
   body: Body;
   result: Result;
   description?: string;

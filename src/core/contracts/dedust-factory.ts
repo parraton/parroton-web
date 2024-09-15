@@ -3,14 +3,11 @@ import {
   Address,
   beginCell,
   Cell,
-  contractAddress,
   ContractProvider,
   Sender,
   SendMode,
 } from '@ton/core';
 import {Factory} from '@dedust/sdk';
-
-export type DeDustFactoryConfig = {};
 
 export class DeDustFactory extends Factory {
   constructor(

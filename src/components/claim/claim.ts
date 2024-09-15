@@ -15,7 +15,7 @@ export const getRewardsDictionary = async (distributionPool: OpenedContract<Dist
   return await fetchDictionaryFromIpfs(dataUri);
 };
 
-export const claimRewards = async (
+const claimRewards = async (
   sender: Sender,
   distributionPool: OpenedContract<DistributionPool>,
   userAddress: Address,

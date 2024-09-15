@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useTranslation } from '@i18n/client';
 import { TONVIEWER_URL } from '@config/api.config';
 
-export interface TonviewerLinkProps {
+interface TonviewerLinkProps {
   hash: string;
 }
 

@@ -6,7 +6,7 @@ import styles from './loader.module.scss';
 import { cn } from '@lib/utils';
 import { useConnection } from '@hooks/use-connection';
 
-export interface DashPlugProps {
+interface DashPlugProps {
   zoom?: number;
   animation?: boolean;
   className?: string;
@@ -16,7 +16,7 @@ export interface DashPlugProps {
 const DASH_QUANTITY = 4;
 const DEFAULT_ZOOM = 1;
 
-export const Loader: FC<DashPlugProps> = ({ zoom, animation, className, quantity }) => {
+const Loader: FC<DashPlugProps> = ({ zoom, animation, className, quantity }) => {
   const container = useRef<HTMLDivElement>(null);
 
   const wrapperClassName = cn(

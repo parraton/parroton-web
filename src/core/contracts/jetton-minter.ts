@@ -10,22 +10,22 @@ import {
   SendMode,
 } from '@ton/core';
 
-export type JettonMinterConfig = {
+interface JettonMinterConfig {
   totalSupply: bigint;
   adminAddress: Address;
   content: Cell;
   jettonWalletCode: Cell;
-};
+}
 
-export type JettonMinterData = {
+interface JettonMinterData {
   totalSupply: bigint;
   mintable: boolean;
   adminAddress: Address;
   content: Cell;
   jettonWalletCode: Cell;
-};
+}
 
-export function testJettonMinterConfigToCell(config: JettonMinterConfig): Cell {
+function testJettonMinterConfigToCell(config: JettonMinterConfig): Cell {
   return beginCell()
     .storeCoins(config.totalSupply)
     .storeAddress(config.adminAddress)
@@ -34,7 +34,7 @@ export function testJettonMinterConfigToCell(config: JettonMinterConfig): Cell {
     .endCell();
 }
 
-export const Opcodes = {
+const Opcodes = {
   mint: 0x3_18_f3_61,
 };
 
