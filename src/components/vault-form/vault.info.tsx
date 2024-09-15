@@ -147,6 +147,7 @@ export function VaultInfo() {
               }
             />
           }
+          tooltip={<span className='block w-80 text-wrap'>{t('reinvest_tooltip')}</span>}
         />
         <NanoInfoPlate
           title={t('deposited')}
