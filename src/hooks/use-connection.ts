@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { Sender } from '@utils/sender';
 import { Address } from '@ton/core';
 
-export interface ConnectionOptions {
+interface ConnectionOptions {
   batch?: boolean;
 }
 

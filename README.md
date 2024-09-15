@@ -1,8 +1,8 @@
-# Parroton Webapp
+# Parraton Webapp
 
-Parroton is a decentralized, permission-less, open-source yield optimization protocol on TON blockchain. Visit [parroton.org](https://parroton.org) for more information.
+Parraton is a decentralized, permission-less, open-source yield optimization protocol on TON blockchain. Visit [parraton.org](https://parraton.org) for more information.
 
-Parroton consists of these components:
+Parraton consists of these components:
 
 **[Contract](https://github.com/KStasi/parroton-core)**: The smart contract code that is running on-chain.
 
@@ -25,7 +25,7 @@ Parroton consists of these components:
 
 ## Overview
 
-Parroton simplifies the process of reinvesting in DeDust by providing an intuitive platform with enhanced security and
+Parraton simplifies the process of reinvesting in DeDust by providing an intuitive platform with enhanced security and
 performance.
 
 ## Getting Started

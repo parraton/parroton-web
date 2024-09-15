@@ -1,8 +1,8 @@
 /* eslint-disable prettier/prettier */
 interface Resources {
   "common": {
-    "app_title": "Parroton",
-    "app_description": "Description for Parroton",
+    "app_title": "Parraton",
+    "app_description": "Description for Parraton",
     "amount": "Amount",
     "deposit": "Deposit",
     "withdraw": "Withdraw",
@@ -80,7 +80,6 @@ interface Resources {
   },
   "transaction": {
     "failed": "Transaction Failed",
-    "sent": "Transaction Sent",
     "view_explorer": "View Explorer",
     "completed": "Transaction Completed"
   },
@@ -90,6 +89,8 @@ interface Resources {
     "currency": "Currency",
     "apy": "APY",
     "daily": "Daily",
+    "pending_reinvest": "Pending Reinvest",
+    "reinvest_tooltip": "The reinvest happens once per day if at least 7 TON are in pending rewards",
     "extraApr": "Extra APR",
     "tvl": "TVL"
   },

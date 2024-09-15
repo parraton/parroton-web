@@ -12,9 +12,9 @@ const copyToClipboard = async (data: string) => {
   await navigator.clipboard.writeText(data);
 };
 
-export type CopyButtonProps = {
+interface CopyButtonProps {
   miniApp?: boolean;
-};
+}
 
 export function CopyButton({ miniApp }: CopyButtonProps) {
   const [isCopied, setIsCopied] = useState(false);

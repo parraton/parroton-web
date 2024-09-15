@@ -18,7 +18,6 @@ import { useParams } from '@routes/hooks';
 import { VaultPage } from '@routes';
 import { multiplyIfPossible } from '@utils/multiply-if-possible';
 import { OrLoader } from '@components/loader/loader';
-import { TransactionSent } from '@components/transactions/sent';
 import { useDebouncedCallback } from 'use-debounce';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { getVault } from '@core';
@@ -26,6 +25,8 @@ import { Address, fromNano, toNano } from '@ton/core';
 import { useVaultData } from '@hooks/use-vault-data';
 import { TransactionCompleted } from '@components/transactions/completed';
 import { TransactionFailed } from '@components/transactions/failed';
+import useSWR from 'swr';
+import { AssetAmountInput } from '@UI/asset-amount-input';
 
 const useFormData = () => {
   const { t } = useTranslation({ ns: 'form' });
@@ -36,9 +37,25 @@ const useFormData = () => {
 
   const [estimatedLp, setEstimatedLp] = useState<string>('');
 
+  const getVaultContract = useCallback(
+    ([, vaultAddress]: [string, string]) => getVault(Address.parse(vaultAddress)),
+    [],
+  );
+  const { data: vaultContract } = useSWR(['vault-contract', vaultAddress], getVaultContract, {
+    shouldRetryOnError: true,
+    errorRetryInterval: 5000,
+    suspense: false,
+  });
   const fetchLpEquivalent = useDebouncedCallback(async (value) => {
-    const v = await getVault(Address.parse(vaultAddress));
-    const x = await v.getEstimatedLpAmount(toNano(value));
+    if (amountValidationSchema.safeParse(value).success === false) {
+      setEstimatedLp('0');
+
+      return;
+    }
+
+    const x = await (
+      vaultContract ?? (await getVaultContract(['', vaultAddress]))
+    ).getEstimatedLpAmount(toNano(value));
 
     setEstimatedLp(fromNano(x));
   }, 500);
@@ -78,6 +95,7 @@ const useFormData = () => {
     validate,
     currency: vault?.plpMetadata.symbol,
     lpPrice: vault?.lpPriceUsd,
+    plpPrice: vault?.plpPriceUsd,
     outputTitle: t('lp_output'),
   };
 };
@@ -92,7 +110,7 @@ export function WithdrawForm() {
     fetchLpEquivalent,
     validate,
     currency,
-    lpPrice,
+    plpPrice,
     outputTitle,
   } = useFormData();
 
@@ -100,9 +118,7 @@ export function WithdrawForm() {
     async (values: { amount: string }, actions: FormikHelpers<{ amount: string }>) => {
       actions.setSubmitting(true);
       try {
-        await withdraw(values.amount);
-
-        toast.info(<TransactionSent />);
+        await withdraw(values.amount.replace(',', '.'));
 
         await new Promise<void>((resolve) => {
           const successSub = successTransaction.subscribe((successHash) => {
@@ -144,8 +160,11 @@ export function WithdrawForm() {
     }
   }, [sharesBalance, setValues]);
 
-  useEffect(() => void fetchLpEquivalent(values.amount), [fetchLpEquivalent, values.amount]);
-  const dollarEquivalent = multiplyIfPossible(lpPrice, sharesBalance);
+  useEffect(
+    () => void fetchLpEquivalent(values.amount.replace(',', '.')),
+    [fetchLpEquivalent, values.amount],
+  );
+  const dollarEquivalent = multiplyIfPossible(plpPrice, sharesBalance);
 
   const formattedEstimatedLp = useMemo(
     () => estimatedLp && formatNumber(estimatedLp, lng),
@@ -167,7 +186,7 @@ export function WithdrawForm() {
               name='amount'
               id='current'
               type='text'
-              as={Input}
+              as={AssetAmountInput}
               placeholder='0'
               onMaxAmountClick={sharesBalance && handleMaxAmountClick}
             />

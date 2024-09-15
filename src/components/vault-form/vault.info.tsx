@@ -5,7 +5,7 @@ import { VaultPage } from '@routes';
 import { useParams } from '@routes/hooks';
 import { useSharesBalance } from '@hooks/use-shares-balance';
 import { OrLoader } from '@components/loader/loader';
-import { ReactNode } from 'react';
+import { ReactNode, useCallback, useMemo } from 'react';
 import { useTranslation } from '@i18n/client';
 import { cn, formatCurrency, formatNumber, formatPercentage } from '@lib/utils';
 import { KpiDialog } from '@components/kpi/kpi-dialog';
@@ -13,25 +13,57 @@ import { GlassCard } from '@components/glass-card';
 import { useRevenue } from '@hooks/use-revenue';
 import { useShare } from '@hooks/use-share';
 import { useVaultData } from '@hooks/use-vault-data';
+import { useTonPrice } from '@hooks/use-ton-price';
+import BigNumber from 'bignumber.js';
+import { multiplyIfPossible } from '@utils/multiply-if-possible';
 
 const useVaultInfo = () => {
   const { vault: vaultAddress, lng } = useParams(VaultPage);
   const { vault } = useVaultData(vaultAddress);
+  const { tonPrice } = useTonPrice();
+  const pendingReinvestUSD = vault?.pendingRewardsUSD;
 
-  const poolNumbers = {
-    tvlInUsd: vault?.tvlUsd,
-    priceForOne: vault?.lpPriceUsd,
-    apy: vault?.apy,
-    daily: vault?.dpr,
-    extraApr: '0',
-  };
+  const poolNumbers = useMemo(
+    () => ({
+      tvlInUsd: vault?.tvlUsd,
+      priceForOne: vault?.lpPriceUsd,
+      apy: vault?.apy,
+      pendingReinvest: pendingReinvestUSD
+        ? {
+            usd: pendingReinvestUSD,
+            ton:
+              typeof tonPrice === 'number'
+                ? formatNumber(
+                    new BigNumber(pendingReinvestUSD)
+                      .div(tonPrice)
+                      .decimalPlaces(2, BigNumber.ROUND_FLOOR)
+                      .toString(),
+                    lng,
+                  )
+                : undefined,
+          }
+        : undefined,
+      extraApr: '0',
+    }),
+    [vault, tonPrice, lng, pendingReinvestUSD],
+  );
 
   const metadata = vault?.lpMetadata;
   const { balance: sharesBalance } = useSharesBalance(vaultAddress);
   const { revenue } = useRevenue(vaultAddress);
   const { share } = useShare(vaultAddress);
+  const lpBalance = sharesBalance?.lpBalance;
 
-  return { sharesBalance: sharesBalance?.lpBalance, metadata, poolNumbers, lng, revenue, share };
+  return {
+    sharesBalance: lpBalance
+      ? { lp: lpBalance, usd: multiplyIfPossible(lpBalance, poolNumbers.priceForOne) }
+      : undefined,
+    metadata,
+    poolNumbers,
+    lng,
+    revenue,
+    share,
+  };
 };
 
 const NanoInfoPlate = ({
@@ -70,14 +102,54 @@ const NanoInfoPlate = ({
 export function VaultInfo() {
   const { sharesBalance, metadata, poolNumbers, revenue, share, lng } = useVaultInfo();
   const { t } = useTranslation({ ns: 'vault-card' });
+  const { apy, extraApr } = poolNumbers;
 
   const totalRewardPercent =
-    poolNumbers?.apy != null && poolNumbers?.extraApr != null
-      ? Number(poolNumbers.apy) + Number(poolNumbers.extraApr)
-      : undefined;
+    apy != null && extraApr != null ? Number(apy) + Number(extraApr) : undefined;
 
-  const tooltipApy = `${t('apy')}: `;
-  const tooltipExtraApr = `${t('extraApr')}: `;
+  const pendingReinvestModifier = useCallback(
+    ({ usd, ton }: { usd: string; ton: string | undefined }) => {
+      const dollarEquivalent = formatCurrency(usd, lng);
+
+      return ton ? `${formatNumber(ton, lng)} TON (${dollarEquivalent})` : dollarEquivalent;
+    },
+    [lng],
+  );
+
+  const sharesBalanceModifier = useCallback(
+    ({
+      sharesBalance,
+      currency,
+    }: {
+      sharesBalance: { lp: string; usd: number | undefined };
+      currency: string;
+    }) => {
+      const parsedBalance = new BigNumber(sharesBalance.lp);
+      let lpBalance: string;
+
+      if (parsedBalance.gte(1e6)) {
+        lpBalance = parsedBalance.integerValue(BigNumber.ROUND_FLOOR).toString();
+      } else if (parsedBalance.gte(1)) {
+        // Leave 7 significant digits
+        const exponent = parsedBalance.e ?? 0;
+
+        lpBalance = parsedBalance
+          .shiftedBy(-exponent)
+          .decimalPlaces(6, BigNumber.ROUND_FLOOR)
+          .shiftedBy(exponent)
+          .toString();
+      } else if (parsedBalance.lte(1e-6) && parsedBalance.gt(0)) {
+        lpBalance = '< 0.000001';
+      } else {
+        lpBalance = parsedBalance.decimalPlaces(6, BigNumber.ROUND_FLOOR).toString();
+      }
+
+      return sharesBalance.usd
+        ? `${lpBalance} ${currency} (${formatCurrency(sharesBalance.usd, lng)})`
+        : `${lpBalance} ${currency}`;
+    },
+    [lng],
+  );
 
   return (
     <div className={'g flex flex-col gap-4'}>
@@ -99,12 +171,12 @@ export function VaultInfo() {
         />
       </h1>
       {/**/}
-      <KpiDialog tvl={poolNumbers?.tvlInUsd!} share={share!} revenue={revenue?.toString()!} />
+      <KpiDialog tvl={poolNumbers.tvlInUsd!} share={share!} revenue={revenue?.toString()!} />
       <div className='custom-list !gap-2'>
         <NanoInfoPlate
           title={t('tvl')}
           value={
-            <OrLoader animation value={poolNumbers?.tvlInUsd} modifier={(x) => formatCurrency(x)} />
+            <OrLoader animation value={poolNumbers.tvlInUsd} modifier={(x) => formatCurrency(x)} />
           }
         />
         <NanoInfoPlate
@@ -116,38 +188,17 @@ export function VaultInfo() {
               modifier={(x) => formatPercentage(x, lng)}
             />
           }
-          tooltip={
-            totalRewardPercent ? (
-              <div>
-                <div>
-                  {tooltipApy}
-                  <OrLoader
-                    animation
-                    value={poolNumbers!.apy}
-                    modifier={(x) => formatPercentage(x, lng)}
-                  />
-                </div>
-                <div>
-                  {tooltipExtraApr}
-                  <OrLoader
-                    animation
-                    value={poolNumbers!.extraApr}
-                    modifier={(x) => formatPercentage(x, lng)}
-                  />
-                </div>
-              </div>
-            ) : undefined
-          }
         />
         <NanoInfoPlate
-          title={t('daily')}
+          title={t('pending_reinvest')}
           value={
             <OrLoader
               animation
-              value={poolNumbers?.daily}
-              modifier={(x) => formatPercentage(x, lng)}
+              value={poolNumbers.pendingReinvest}
+              modifier={pendingReinvestModifier}
             />
           }
+          tooltip={<span className='block w-48 text-wrap'>{t('reinvest_tooltip')}</span>}
         />
         <NanoInfoPlate
           title={t('deposited')}
@@ -161,9 +212,7 @@ export function VaultInfo() {
                     }
                   : undefined
               }
-              modifier={({ sharesBalance, currency }) =>
-                `${formatNumber(sharesBalance, lng)} ${currency}`
-              }
+              modifier={sharesBalanceModifier}
             />
           }
         />

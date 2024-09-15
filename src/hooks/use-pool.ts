@@ -1,20 +1,15 @@
-import { useCallback } from 'react';
+import { useMemo } from 'react';
 import { Address } from '@ton/core';
-import { getStrategyInfoByVault } from '@core';
-import useSWR from 'swr';
+import { useVaults } from './use-vaults';
 
 export function usePool(vaultAddress: string) {
-  const getPoolAddress = useCallback(([, vaultAddress]: [string, string]) => {
-    return getStrategyInfoByVault(Address.parse(vaultAddress)).then(
-      ({ poolAddress }) => poolAddress,
-    );
-  }, []);
+  const { vaults } = useVaults();
 
-  const { data: poolAddress } = useSWR(['pool', vaultAddress], getPoolAddress, {
-    shouldRetryOnError: true,
-    errorRetryInterval: 5000,
-    suspense: false,
-  });
+  const poolAddress = useMemo(() => {
+    const vault = vaults?.find((vault) => vault.vaultAddressFormatted === vaultAddress);
+
+    return vault ? Address.parse(vault.lpMetadata.address) : null;
+  }, [vaultAddress, vaults]);
 
   return {
     pool: poolAddress ?? null,

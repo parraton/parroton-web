@@ -10,7 +10,7 @@ function VaultPage({ params }: RouteInfoToLayout<typeof Route>) {
     <div className={'flex flex-col gap-8'}>
       <VaultInfo />
       <div className={cn('custom-form')}>
-        <Form lng={params.lng!} />
+        <Form lng={params.lng!} vaultAddress={params.vault} />
       </div>
     </div>
   );

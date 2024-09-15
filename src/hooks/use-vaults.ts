@@ -1,7 +1,7 @@
 import useSWR from 'swr';
 import { VAULTS_API } from '@config/api.config';
 
-export type VaultsApiResponse = Array<{
+type VaultsApiResponse = Array<{
   name: string;
   vaultAddress: string;
   vaultAddressFormatted: string;
@@ -25,6 +25,7 @@ export type VaultsApiResponse = Array<{
   lpPriceUsd: string;
   plpPriceUsd: string;
   tvlUsd: string;
+  pendingRewardsUSD: string;
   dpr: string;
   apr: string;
   apy: string;

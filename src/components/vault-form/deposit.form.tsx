@@ -18,7 +18,6 @@ import { useParams } from '@routes/hooks';
 import { VaultPage } from '@routes';
 import { multiplyIfPossible } from '@utils/multiply-if-possible';
 import { OrLoader } from '@components/loader/loader';
-import { TransactionSent } from '@components/transactions/sent';
 import { TransactionCompleted } from '@components/transactions/completed';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
@@ -27,6 +26,7 @@ import { Address, fromNano, toNano } from '@ton/core';
 import { useVaultData } from '@hooks/use-vault-data';
 import useSWR from 'swr';
 import { TransactionFailed } from '@components/transactions/failed';
+import { AssetAmountInput } from '@UI/asset-amount-input';
 
 const useFormData = () => {
   const { t } = useTranslation({ ns: 'form' });
@@ -115,9 +115,7 @@ export function DepositForm() {
     async (values: { amount: string }, actions: FormikHelpers<{ amount: string }>) => {
       actions.setSubmitting(true);
       try {
-        await deposit(values.amount);
-
-        toast.info(<TransactionSent />);
+        await deposit(values.amount.replace(',', '.'));
 
         await new Promise<void>((resolve) => {
           const successSub = successTransaction.subscribe((successHash) => {
@@ -153,7 +151,7 @@ export function DepositForm() {
   const { isSubmitting, isValid, values, setValues } = formik;
 
   useEffect(
-    () => void fetchSharesEquivalent(values.amount),
+    () => void fetchSharesEquivalent(values.amount.replace(',', '.')),
     [fetchSharesEquivalent, values.amount],
   );
 
@@ -182,7 +180,7 @@ export function DepositForm() {
               name='amount'
               id='amount'
               type='text'
-              as={Input}
+              as={AssetAmountInput}
               onMaxAmountClick={balance && handleMaxAmountClick}
             />
             <ErrorMessage
