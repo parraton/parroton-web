@@ -496,9 +496,13 @@ a {
 
 .custom-list {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
   gap: 20px;
   z-index: 2;
+  grid-template-columns: repeat(1, 1fr);
+
+  @media (min-width: 480px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
 
   @media (min-width: 768px) {
     grid-template-columns: repeat(4, 1fr);
@@ -554,8 +558,8 @@ a {
     border: 1px solid #000;
     border-radius: 50%;
     position: absolute;
-    top: 1px;
-    right: 10px;
+    top: 0;
+    right: 0;
 
     .light & {
       color: #000;
@@ -584,17 +588,16 @@ a {
   padding: 20px;
   border-radius: 1rem;
   position: absolute;
-  top: calc(100% + 5px);
-  right: 20px;
+  top: 20px;
+  right: -10px;
   white-space: nowrap;
   z-index: 10000;
   display: none;
 
   @media (min-width: 768px) {
-    top: 50%;
-    left: calc(100% + 20px);
-    right: unset;
-    transform: translate(0, -50%);
+    top: 24px;
+    right: -16px;
+    left: unset;
   }
 
   .light & {
@@ -614,9 +617,9 @@ a {
   &::before {
     content: "";
     position: absolute;
-    left: -10px;
-    top: 50%;
-    transform: translate(0, calc(-50% - 6px));
+    top: -10px;
+    right: 12px;
+    transform: rotate(90deg);
     transition: 0.4s;
     border-top: 10px solid transparent;
     border-right: 20px solid #000;
