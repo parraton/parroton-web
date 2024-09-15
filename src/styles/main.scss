@@ -498,11 +498,8 @@ a {
   display: grid;
   gap: 20px;
   z-index: 2;
-  grid-template-columns: repeat(1, 1fr);
 
-  @media (min-width: 480px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
+  grid-template-columns: repeat(2, 1fr);
 
   @media (min-width: 768px) {
     grid-template-columns: repeat(4, 1fr);
@@ -589,14 +586,20 @@ a {
   border-radius: 1rem;
   position: absolute;
   top: 20px;
-  right: -10px;
+  left: 0px;
   white-space: nowrap;
   z-index: 10000;
   display: none;
 
+  @media (min-width: 480px) {
+    right: -16px;
+    left: unset;
+  }
+
   @media (min-width: 768px) {
     top: 24px;
     right: -16px;
+    transform: none;
     left: unset;
   }
 

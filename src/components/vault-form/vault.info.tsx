@@ -124,11 +124,29 @@ export function VaultInfo() {
       sharesBalance: { lp: string; usd: number | undefined };
       currency: string;
     }) => {
-      const lpBalance = formatNumber(sharesBalance.lp, lng);
+      const parsedBalance = new BigNumber(sharesBalance.lp);
+      let lpBalance: string;
+
+      if (parsedBalance.gte(1e6)) {
+        lpBalance = parsedBalance.integerValue(BigNumber.ROUND_FLOOR).toString();
+      } else if (parsedBalance.gte(1)) {
+        // Leave 7 significant digits
+        const exponent = parsedBalance.e ?? 0;
+
+        lpBalance = parsedBalance
+          .shiftedBy(-exponent)
+          .decimalPlaces(6, BigNumber.ROUND_FLOOR)
+          .shiftedBy(exponent)
+          .toString();
+      } else if (parsedBalance.lte(1e-6) && parsedBalance.gt(0)) {
+        lpBalance = '< 0.000001';
+      } else {
+        lpBalance = parsedBalance.decimalPlaces(6, BigNumber.ROUND_FLOOR).toString();
+      }
 
       return sharesBalance.usd
         ? `${lpBalance} ${currency} (${formatCurrency(sharesBalance.usd, lng)})`
-        : lpBalance;
+        : `${lpBalance} ${currency}`;
     },
     [lng],
   );
