@@ -89,6 +89,7 @@ interface Resources {
     "currency": "Currency",
     "apy": "APY",
     "daily": "Daily",
+    "pending_reinvest": "Pending Reinvest",
     "extraApr": "Extra APR",
     "tvl": "TVL"
   },

@@ -4,6 +4,7 @@
   "currency": "Валюта",
   "apy": "APY",
   "daily": "Денний",
+  "pending_reinvest": "Очікуваний реінвест",
   "extraApr": "Додатковий APR",
   "tvl": "Ліквідність"
 }

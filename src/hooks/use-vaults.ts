@@ -25,6 +25,7 @@ type VaultsApiResponse = Array<{
   lpPriceUsd: string;
   plpPriceUsd: string;
   tvlUsd: string;
+  pendingRewardsUSD: string;
   dpr: string;
   apr: string;
   apy: string;
