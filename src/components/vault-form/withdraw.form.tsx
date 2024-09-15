@@ -95,6 +95,7 @@ const useFormData = () => {
     validate,
     currency: vault?.plpMetadata.symbol,
     lpPrice: vault?.lpPriceUsd,
+    plpPrice: vault?.plpPriceUsd,
     outputTitle: t('lp_output'),
   };
 };
@@ -109,7 +110,7 @@ export function WithdrawForm() {
     fetchLpEquivalent,
     validate,
     currency,
-    lpPrice,
+    plpPrice,
     outputTitle,
   } = useFormData();
 
@@ -163,7 +164,7 @@ export function WithdrawForm() {
     () => void fetchLpEquivalent(values.amount.replace(',', '.')),
     [fetchLpEquivalent, values.amount],
   );
-  const dollarEquivalent = multiplyIfPossible(lpPrice, sharesBalance);
+  const dollarEquivalent = multiplyIfPossible(plpPrice, sharesBalance);
 
   const formattedEstimatedLp = useMemo(
     () => estimatedLp && formatNumber(estimatedLp, lng),
