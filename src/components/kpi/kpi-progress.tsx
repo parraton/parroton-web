@@ -1,5 +1,6 @@
 /* eslint-disable  no-unused-vars */
 import { Progress } from '@UI/progress';
+import type { Language } from '@i18n/settings';
 import { formatCurrency, formatPercentage } from '@lib/utils';
 
 export enum KpiType {
@@ -17,14 +18,15 @@ type KPIProgressProps = {
   value: number;
   total: number;
   type: KpiType;
+  lng?: Language;
 };
 
 const zero = 0;
 
-export function KPIProgress({ title, value, total, type }: KPIProgressProps) {
+export function KPIProgress({ title, value, total, type, lng }: KPIProgressProps) {
   const percentage = (value / total) * 100;
 
-  const valueToShow = KpiTypeToModifier[type](value);
+  const valueToShow = KpiTypeToModifier[type](value, lng);
 
   if (type === KpiType.Percent) {
     console.log({

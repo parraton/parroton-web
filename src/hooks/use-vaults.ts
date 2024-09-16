@@ -1,6 +1,21 @@
 import useSWR from 'swr';
 import { VAULTS_API } from '@config/api.config';
 
+export interface VaultKpis {
+  tvl: {
+    target: string;
+    current: string;
+  };
+  liquidityFraction: {
+    target: string;
+    current: string;
+  };
+  revenue: {
+    target: string;
+    current: number;
+  };
+}
+
 type VaultsApiResponse = Array<{
   name: string;
   vaultAddress: string;
@@ -31,6 +46,7 @@ type VaultsApiResponse = Array<{
   apy: string;
   dailyUsdRewards: string;
   managementFee: string;
+  kpis: VaultKpis;
 }>;
 
 function fetchVaults(): Promise<VaultsApiResponse> {

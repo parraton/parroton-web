@@ -10,8 +10,6 @@ import { useTranslation } from '@i18n/client';
 import { cn, formatCurrency, formatNumber, formatPercentage } from '@lib/utils';
 import { KpiDialog } from '@components/kpi/kpi-dialog';
 import { GlassCard } from '@components/glass-card';
-import { useRevenue } from '@hooks/use-revenue';
-import { useShare } from '@hooks/use-share';
 import { useVaultData } from '@hooks/use-vault-data';
 import { useTonPrice } from '@hooks/use-ton-price';
 import BigNumber from 'bignumber.js';
@@ -50,8 +48,6 @@ const useVaultInfo = () => {
 
   const metadata = vault?.lpMetadata;
   const { balance: sharesBalance } = useSharesBalance(vaultAddress);
-  const { revenue } = useRevenue(vaultAddress);
-  const { share } = useShare(vaultAddress);
   const lpBalance = sharesBalance?.lpBalance;
 
   return {
@@ -60,9 +56,8 @@ const useVaultInfo = () => {
       : undefined,
     metadata,
     poolNumbers,
+    kpis: vault?.kpis,
     lng,
-    revenue,
-    share,
   };
 };
 
@@ -100,7 +95,7 @@ const NanoInfoPlate = ({
 );
 
 export function VaultInfo() {
-  const { sharesBalance, metadata, poolNumbers, revenue, share, lng } = useVaultInfo();
+  const { sharesBalance, metadata, poolNumbers, kpis, lng } = useVaultInfo();
   const { t } = useTranslation({ ns: 'vault-card' });
   const { apy, extraApr } = poolNumbers;
 
@@ -172,7 +167,7 @@ export function VaultInfo() {
         />
       </h1>
       {/**/}
-      <KpiDialog tvl={poolNumbers.tvlInUsd!} share={share!} revenue={revenue?.toString()!} />
+      <KpiDialog values={kpis} lng={lng} />
       <div className='custom-list !gap-2'>
         <NanoInfoPlate
           title={t('tvl')}

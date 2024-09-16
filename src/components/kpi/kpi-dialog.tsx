@@ -9,25 +9,25 @@ import {
   DialogTrigger,
 } from '@UI/dialog';
 
-import { KPIProgress, KpiType } from '@components/kpi/kpi-progress';
-import { formatCurrency } from '@lib/utils';
 import { useTranslation } from '@i18n/client';
-import { goals } from '@config/goals.config';
+import type { VaultKpis } from '@hooks/use-vaults';
+import { OrLoader } from '@components/loader/loader';
+import { useCallback } from 'react';
+import { KpiContent } from './kpi-content';
+import type { Language } from '@i18n/settings';
 
-type KpiDialogProps = {
-  tvl: string;
-  share: string;
-  revenue: string;
-};
+interface KpiDialogProps {
+  values?: VaultKpis;
+  lng?: Language;
+}
 
-export function KpiDialog({ tvl, share, revenue }: KpiDialogProps) {
+export function KpiDialog({ values, lng }: KpiDialogProps) {
   const { t } = useTranslation({ ns: 'kpi' });
 
-  console.log({ tvl, share, revenue });
-
-  const localTvl = tvl ? Number(tvl) : 0;
-  const localShare = share ? Number(share) : 0;
-  const localRevenue = revenue ? Number(revenue) : 0;
+  const renderKpis = useCallback(
+    (values: VaultKpis) => <KpiContent values={values} lng={lng} />,
+    [lng],
+  );
 
   return (
     <Dialog>
@@ -40,26 +40,7 @@ export function KpiDialog({ tvl, share, revenue }: KpiDialogProps) {
             <DialogTitle className='text-2xl'>{t('our_kpi')}</DialogTitle>
             <DialogDescription>{t('reach_together')}</DialogDescription>
           </DialogHeader>
-          <div className='mt-4 flex flex-col gap-6'>
-            <KPIProgress
-              title={t('goals.tvl', { tvl_goal: formatCurrency(goals.tvl) })}
-              value={localTvl}
-              total={goals.tvl}
-              type={KpiType.Dollar}
-            />
-            <KPIProgress
-              title={t('goals.shares', { share_goal: goals.share })}
-              value={localShare * 100}
-              total={goals.share}
-              type={KpiType.Percent}
-            />
-            <KPIProgress
-              title={t('goals.revenue', { revenue_goal: formatCurrency(goals.revenue) })}
-              value={localRevenue}
-              total={goals.revenue}
-              type={KpiType.Dollar}
-            />
-          </div>
+          <OrLoader animation value={values} modifier={renderKpis} />
         </div>
       </DialogContent>
     </Dialog>

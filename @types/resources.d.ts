@@ -47,7 +47,7 @@ interface Resources {
     "goals": {
       "revenue": "{{revenue_goal}} Revenue",
       "tvl": "{{tvl_goal}} TVL",
-      "shares": "{{share_goal}}% of Dedust Lp"
+      "shares": "{{share_goal}} of Dedust Lp"
     }
   },
   "language": {

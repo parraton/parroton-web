@@ -38,7 +38,7 @@ export const getWallet = async (
   return tonClient.open(rawLpWallet);
 };
 
-export const getVaultData = mem(
+const getVaultData = mem(
   async (vaultAddress: Address) => {
     const rawVault = Vault.createFromAddress(vaultAddress);
     const vault = tonClient.open(rawVault);
