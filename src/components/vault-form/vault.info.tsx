@@ -139,10 +139,11 @@ export function VaultInfo() {
           .shiftedBy(exponent)
           .toString();
       } else if (parsedBalance.lte(1e-6) && parsedBalance.gt(0)) {
-        lpBalance = '< 0.000001';
+        lpBalance = `< ${formatNumber(1e-6, lng)}`;
       } else {
         lpBalance = parsedBalance.decimalPlaces(6, BigNumber.ROUND_FLOOR).toString();
       }
+      lpBalance = formatNumber(lpBalance, lng);
 
       return sharesBalance.usd
         ? `${lpBalance} ${currency} (${formatCurrency(sharesBalance.usd, lng)})`
