@@ -16,7 +16,7 @@ const languageToIntlLocaleMap: Record<Language, Intl.LocalesArgument> = {
 export const formatNumber = (num: number | string | undefined | null, locale: Language = 'en') => {
   if (num === undefined || num === null) return '~~~~';
 
-  const parsedValue = new BigNumber(num);
+  const parsedValue = new BigNumber(typeof num === 'string' ? num.replace(',', '.') : num);
   const decimalsSeparator = Intl.NumberFormat(languageToIntlLocaleMap[locale]).formatToParts(0.1)[1]
     .value;
   // eslint-disable-next-line unicorn/require-number-to-fixed-digits-argument

@@ -180,7 +180,7 @@ export function WithdrawForm() {
               {t('amount')}:{' '}
               {<OrLoader value={sharesBalance} modifier={(x) => formatNumber(x, lng)} />}{' '}
               {<OrLoader animation value={currency} />} (
-              <OrLoader value={dollarEquivalent} modifier={(x) => formatCurrency(x)} />)
+              <OrLoader value={dollarEquivalent} modifier={(x) => formatCurrency(x, lng)} />)
             </Label>
             <Field
               name='amount'
