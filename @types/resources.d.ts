@@ -90,7 +90,7 @@ interface Resources {
     "apy": "APY",
     "daily": "Daily",
     "pending_reinvest": "Pending Reinvest",
-    "reinvest_tooltip": "The reinvest happens once per day if at least 7 TON are in pending rewards",
+    "reinvest_tooltip": "This is the total pending rewards for all users. The reinvest happens once per day if at least 7 TON are in pending rewards",
     "extraApr": "Extra APR",
     "tvl": "TVL"
   },
