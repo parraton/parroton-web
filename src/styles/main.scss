@@ -359,6 +359,16 @@ a {
   }
 }
 
+.logo-loader {
+  width: 50px;
+  height: 50px;
+  min-width: 50px;
+  background-image: url("../images/logo.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+
 .custom-dialog {
   max-width: 90vw;
   width: 90vw;

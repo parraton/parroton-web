@@ -2,25 +2,24 @@
 import { VaultCard, VaultCardProps } from '@components/vault/vault-card';
 import { useLpBalance } from '@hooks/use-lp-balance';
 import { useSharesBalance } from '@hooks/use-shares-balance';
+import { Vault as BackendVault } from '@hooks/use-vaults';
 
 import { Language } from '@i18n/settings';
 
-import { useVaultData } from '@hooks/use-vault-data';
-
-export function Vault({ address, lng }: { address: string; lng: Language }) {
+export function Vault({ lng, vault }: { lng: Language; vault: BackendVault }) {
+  const { vaultAddressFormatted: address } = vault;
   const { balance: lpBalance } = useLpBalance(address);
   const { balance: sharesBalance } = useSharesBalance(address);
-  const { vault } = useVaultData(address);
 
   const data: VaultCardProps = {
-    title: vault?.name,
+    title: vault.name,
     balance: lpBalance,
-    currency: vault?.plpMetadata?.symbol,
+    currency: vault.plpMetadata?.symbol,
     deposited: sharesBalance?.lpBalance,
-    apy: vault?.apy,
-    daily: vault?.dpr,
+    apy: vault.apy,
+    daily: vault.dpr,
     extraApr: '0',
-    tvl: vault?.tvlUsd,
+    tvl: vault.tvlUsd,
     address,
   };
 

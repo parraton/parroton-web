@@ -16,25 +16,21 @@ export interface VaultKpis {
   };
 }
 
-type VaultsApiResponse = Array<{
+export interface Asset {
+  address: string;
+  name: string;
+  symbol: string;
+  decimals: string;
+  image: string;
+  description?: string;
+}
+
+export interface Vault {
   name: string;
   vaultAddress: string;
   vaultAddressFormatted: string;
-  plpMetadata: {
-    address: string;
-    name: string;
-    symbol: string;
-    decimals: string;
-    image: string;
-    description: string;
-  };
-  lpMetadata: {
-    address: string;
-    name: string;
-    symbol: string;
-    decimals: string;
-    image: string;
-  };
+  plpMetadata: Asset;
+  lpMetadata: Asset;
   lpTotalSupply: string;
   plpTotalSupply: string;
   lpPriceUsd: string;
@@ -47,9 +43,10 @@ type VaultsApiResponse = Array<{
   dailyUsdRewards: string;
   managementFee: string;
   kpis: VaultKpis;
-}>;
+  assets: Asset[];
+}
 
-function fetchVaults(): Promise<VaultsApiResponse> {
+function fetchVaults(): Promise<Vault[]> {
   return fetch(VAULTS_API)
     .then((response) => response.json())
     .then((data) => data);

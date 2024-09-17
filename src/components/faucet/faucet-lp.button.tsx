@@ -8,21 +8,31 @@ import { successTransaction } from '@utils/transaction-subjects';
 import { toast } from 'sonner';
 import { useParams } from '@routes/hooks';
 import { VaultPage } from '@routes';
-import { Address } from '@ton/core';
 import { TransactionCompleted } from '@components/transactions/completed';
 import { useTranslation } from '@i18n/client';
+import { useVaultData } from '@hooks/use-vault-data';
 
 export function FaucetLpButton({ disabled }: { disabled: boolean }) {
-  const { vault } = useParams(VaultPage);
+  const { vault: vaultAddress } = useParams(VaultPage);
+  const { vault } = useVaultData(vaultAddress);
   const { sender } = useConnection({ batch: true });
   const { t } = useTranslation({ ns: 'form' });
 
   const handleFaucet = async () => {
-    await faucetLp(sender, Address.parse(vault));
+    if (!vault) {
+      return;
+    }
 
-    const hash = await firstValueFrom(successTransaction);
+    try {
+      await faucetLp(sender, vault);
 
-    toast.success(<TransactionCompleted hash={hash} />);
+      const hash = await firstValueFrom(successTransaction);
+
+      toast.success(<TransactionCompleted hash={hash} />);
+    } catch (error) {
+      console.error(error);
+      toast.error('Failed to get LP');
+    }
   };
 
   return (

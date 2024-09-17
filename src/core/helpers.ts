@@ -1,10 +1,16 @@
 import mem from 'mem';
 
 import { Address, OpenedContract } from '@ton/core';
-import { SharesWallet, Vault } from '@parraton/sdk';
+import {
+  SharesWallet,
+  JettonJettonTonStrategy,
+  TonJettonTonStrategy,
+  Vault,
+  TonJettonTonStrategyConfig,
+  JettonJettonTonStrategyConfig,
+} from '@parraton/sdk';
 import { tonClient } from '@core/config';
 import { JettonRoot, JettonWallet } from '@dedust/sdk';
-import { TonJettonTonStrategy } from '@parraton/sdk';
 
 export const getSharesWallet = mem(
   async (vault: OpenedContract<Vault>, sender: Address) => {
@@ -52,15 +58,22 @@ const getVaultData = mem(
 );
 
 export const getStrategyInfoByVault = mem(
-  async (vaultAddress: Address) => {
+  // TODO: implement getting `isTonToJetton` in this method
+  async (
+    vaultAddress: Address,
+    isTonToJetton: boolean,
+  ): Promise<JettonJettonTonStrategyConfig | TonJettonTonStrategyConfig> => {
     const { strategyAddress } = await getVaultData(vaultAddress);
-    const rawStrategy = TonJettonTonStrategy.createFromAddress(strategyAddress);
+    const rawStrategy = (
+      isTonToJetton ? TonJettonTonStrategy : JettonJettonTonStrategy
+    ).createFromAddress(strategyAddress);
     const strategy = tonClient.open(rawStrategy);
 
     return await strategy.getStrategyData();
   },
   {
     maxAge: 60_000,
-    cacheKey: ([vaultAddress]) => `getStrategyInfoByVault_${vaultAddress.toString()}`,
+    cacheKey: ([vaultAddress, isTonToJetton]) =>
+      `getStrategyInfoByVault_${vaultAddress.toString()}_${isTonToJetton}`,
   },
 );
