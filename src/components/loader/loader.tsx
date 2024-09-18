@@ -4,7 +4,7 @@ import { FC, ReactNode, useLayoutEffect, useMemo, useRef } from 'react';
 
 import styles from './loader.module.scss';
 import { cn } from '@lib/utils';
-import { useConnection } from '@hooks/use-connection';
+import { useIsConnectionRestored } from '@tonconnect/ui-react';
 
 interface DashPlugProps {
   zoom?: number;
@@ -50,9 +50,9 @@ export function OrLoader<T>(props: {
   //eslint-disable-next-line no-unused-vars
   modifier?: (_: T) => ReactNode;
 }) {
-  const { connected } = useConnection();
+  const isConnectionRestored = useIsConnectionRestored();
 
-  const affected = connected || props.animation;
+  const affected = props.animation || isConnectionRestored;
   return props.value == null ? (
     <Loader animation={Boolean(affected)} />
   ) : props.modifier ? (

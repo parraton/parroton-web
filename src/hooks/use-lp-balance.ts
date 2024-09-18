@@ -1,8 +1,8 @@
-import { useConnection } from '@hooks/use-connection';
 import { Address, fromNano } from '@ton/core';
 import useSWR from 'swr';
 import { getWallet } from '@core';
 import { usePool } from '@hooks/use-pool';
+import { useTonAddress } from '@tonconnect/ui-react';
 
 const getLpBalance = async (senderAddress: Address, poolAddress: Address) => {
   const lpWallet = await getWallet(senderAddress, poolAddress);
@@ -13,16 +13,17 @@ const getLpBalance = async (senderAddress: Address, poolAddress: Address) => {
 };
 
 export const useLpBalance = (vaultAddress: string) => {
-  const { sender } = useConnection();
+  const walletAddress = useTonAddress();
 
   const { pool } = usePool(vaultAddress);
 
   const { data, error } = useSWR(
-    ['lpBalance', sender.address?.toString(), vaultAddress, Boolean(pool)],
+    ['lpBalance', walletAddress?.toString(), vaultAddress, Boolean(pool)],
     async () => {
-      if (!sender.address || !pool) return null;
+      if (!walletAddress || !pool) return null;
       try {
-        return await getLpBalance(sender.address, pool);
+        const address = Address.parse(walletAddress);
+        return await getLpBalance(address, pool);
       } catch (error) {
         if ((error as Error)?.message.includes('-256')) {
           return '0';
