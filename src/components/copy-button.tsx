@@ -3,10 +3,10 @@
 import { Button } from '@UI/button';
 import { ClipboardCheck, Files } from 'lucide-react';
 import { useTranslation } from '@i18n/client';
-import { useConnection } from '@hooks/use-connection';
 import { useState } from 'react';
 import { cn } from '@lib/utils';
 import { domain, miniAppLink } from '@config/links';
+import { useTonAddress } from '@tonconnect/ui-react';
 
 const copyToClipboard = async (data: string) => {
   await navigator.clipboard.writeText(data);
@@ -20,7 +20,7 @@ export function CopyButton({ miniApp }: CopyButtonProps) {
   const [isCopied, setIsCopied] = useState(false);
   const { t } = useTranslation({ ns: 'settings' });
 
-  const { address: referral } = useConnection();
+  const referral = useTonAddress();
 
   const onAfterCopy = () => {
     setIsCopied(true);

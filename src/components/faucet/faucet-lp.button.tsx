@@ -1,28 +1,32 @@
 'use client';
 
 import { Button } from '@UI/button';
-import { useConnection } from '@hooks/use-connection';
 import { faucetLp } from './faucet';
-import { firstValueFrom } from 'rxjs';
-import { successTransaction } from '@utils/transaction-subjects';
 import { toast } from 'sonner';
 import { useParams } from '@routes/hooks';
 import { VaultPage } from '@routes';
 import { Address } from '@ton/core';
-import { TransactionCompleted } from '@components/transactions/completed';
 import { useTranslation } from '@i18n/client';
+import { useSendTransaction } from '@hooks/use-send-transaction.hook';
+import { useTonAddress } from '@tonconnect/ui-react';
 
 export function FaucetLpButton({ disabled }: { disabled: boolean }) {
   const { vault } = useParams(VaultPage);
-  const { sender } = useConnection({ batch: true });
+  const walletAddress = useTonAddress();
+  const sendTransaction = useSendTransaction();
   const { t } = useTranslation({ ns: 'form' });
 
   const handleFaucet = async () => {
-    await faucetLp(sender, Address.parse(vault));
-
-    const hash = await firstValueFrom(successTransaction);
-
-    toast.success(<TransactionCompleted hash={hash} />);
+    try {
+      if (!walletAddress) {
+        return;
+      }
+      const faucetMessages = await faucetLp(Address.parse(walletAddress), Address.parse(vault));
+      await sendTransaction(Address.parse(walletAddress), faucetMessages);
+    } catch (error) {
+      console.error(error);
+      toast.error('Something went wrong. Please try again later.');
+    }
   };
 
   return (

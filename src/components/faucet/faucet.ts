@@ -1,13 +1,14 @@
-import { Sender } from '@utils/sender';
 import { tonClient } from '@core/config';
 import { Asset, AssetType, JettonRoot, Pool, PoolType, VaultJetton } from '@dedust/sdk';
 import { Address, toNano } from '@ton/core';
 import { getStrategyInfoByVault } from '@core';
-import { JettonMinter } from '@core/contracts/jetton-minter';
-import { mint } from '@core/functions/mint';
 import { DeDustFactory } from '@core/contracts/dedust-factory';
 import { addresses } from '@config/contracts-config';
+import { Message } from '../../types/message.type';
+import { prepareJettonTransferBody } from '@core/messages/jetton-transfer.body';
+import { prepareDedustDepositTonBody } from '@core/messages/dedust-deposit-ton.body';
 
+export const FAUCET_JETTON_AMOUNT = toNano('10');
 const tonAmount = toNano('1');
 const jettonAmount = toNano('10');
 
@@ -22,23 +23,11 @@ const fixAssets = (candidateAssets: [Asset, Asset]): [Asset, Asset] => {
   return assets as [Asset, Asset];
 };
 
-export const faucetToken = async (sender: Sender, vaultAddress: Address) => {
-  if (!sender.address) {
-    throw new Error('Wallet is not connected');
-  }
-
-  const { jettonMasterAddress } = await getStrategyInfoByVault(vaultAddress);
-
-  const rawJettonMinter = JettonMinter.createFromAddress(jettonMasterAddress);
-  const jettonMinter = tonClient.open(rawJettonMinter);
-
-  await mint(jettonMinter, sender, sender.address, jettonAmount);
-};
-
-export const faucetLp = async (sender: Sender, vaultAddress: Address) => {
-  if (!sender.address) {
-    throw new Error('Wallet is not connected');
-  }
+export const faucetLp = async (
+  investorAddress: Address,
+  vaultAddress: Address,
+): Promise<Message[]> => {
+  const messages: Message[] = [];
 
   const { poolAddress } = await getStrategyInfoByVault(vaultAddress);
 
@@ -53,30 +42,40 @@ export const faucetLp = async (sender: Sender, vaultAddress: Address) => {
 
   const rawDeDustFactory = DeDustFactory.createFromAddress(addresses.dedustFactory);
   const dedustFactory = tonClient.open(rawDeDustFactory);
-  const nativeVault = tonClient.open(await dedustFactory.getNativeVault());
-  const jettonVault = tonClient.open(await dedustFactory.getJettonVault(jettonAddress));
+  const nativeVaultAddress = await dedustFactory.getVaultAddress(Asset.native());
+  const jettonVaultAddress = await dedustFactory.getVaultAddress(Asset.jetton(jettonAddress));
 
-  await nativeVault.sendDepositLiquidity(sender, {
+  const dedustDepositTonBody = prepareDedustDepositTonBody({
+    amount: tonAmount,
     poolType: PoolType.VOLATILE,
     assets: assets,
     targetBalances: assetAmounts,
-    amount: tonAmount,
+  });
+  messages.push({
+    address: nativeVaultAddress.toRawString(),
+    amount: toNano('0.8').toString(),
+    payload: dedustDepositTonBody.toBoc().toString('base64'),
   });
 
   const jettonRoot = tonClient.open(JettonRoot.createFromAddress(jettonAddress));
-  const investorJettonWallet = tonClient.open(await jettonRoot.getWallet(sender.address!));
+  const investorWalletAddress = await jettonRoot.getWalletAddress(investorAddress);
 
-  await investorJettonWallet.sendTransfer(sender, toNano('1.2'), {
+  const jettonTransferBody = prepareJettonTransferBody({
+    destination: jettonVaultAddress,
     amount: jettonAmount,
-    destination: jettonVault.address,
-    responseAddress: sender.address!,
-    forwardAmount: toNano('1'),
+    responseAddress: investorAddress,
+    forwardAmount: toNano('0.5'),
     forwardPayload: VaultJetton.createDepositLiquidityPayload({
       poolType: PoolType.VOLATILE,
       assets: assets,
       targetBalances: assetAmounts,
     }),
   });
+  messages.push({
+    address: investorWalletAddress.toRawString(),
+    amount: toNano('0.8').toString(),
+    payload: jettonTransferBody.toBoc().toString('base64'),
+  });
 
-  await sender.sendBatch();
+  return messages;
 };

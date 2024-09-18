@@ -1,7 +1,7 @@
 import { getSharesWallet, getVault } from '@core';
-import { useConnection } from '@hooks/use-connection';
 import useSWR from 'swr';
 import { Address, fromNano } from '@ton/core';
+import { useTonAddress } from '@tonconnect/ui-react';
 
 const getSharesBalance = async (senderAddress: Address, vaultAddress: Address) => {
   const vault = await getVault(vaultAddress);
@@ -16,14 +16,14 @@ const getSharesBalance = async (senderAddress: Address, vaultAddress: Address) =
 };
 
 export const useSharesBalance = (vaultAddress: string) => {
-  const { sender } = useConnection();
+  const walletAddress = useTonAddress();
 
   const { data, error } = useSWR(
-    ['sharesBalance', sender.address?.toString(), vaultAddress],
+    ['sharesBalance', walletAddress, vaultAddress],
     async () => {
-      if (!sender.address) return null;
+      if (!walletAddress) return null;
       try {
-        return await getSharesBalance(sender.address, Address.parse(vaultAddress));
+        return await getSharesBalance(Address.parse(walletAddress), Address.parse(vaultAddress));
       } catch (error) {
         if ((error as Error)?.message.includes('-256')) {
           return {

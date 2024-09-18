@@ -2,25 +2,22 @@ import { useVaultDistributionPool } from '@hooks/use-vault-distribution-pool';
 import { VaultPage } from '@routes';
 import { useParams } from '@routes/hooks';
 import useSWR from 'swr';
-import { useConnection } from '@hooks/use-connection';
 import { getRewardsDictionary } from '@components/claim/claim';
-import { fromNano, OpenedContract } from '@ton/core';
+import { Address, fromNano, OpenedContract } from '@ton/core';
 import { tonClient } from '@core/config';
 import { DistributionAccount, DistributionPool } from '@dedust/apiary-v1';
 import { useCallback, useMemo } from 'react';
+import { useTonAddress } from '@tonconnect/ui-react';
 
 function useDistributionAccount(distributionPool: OpenedContract<DistributionPool> | null) {
-  const {
-    sender: { address },
-  } = useConnection();
+  const walletAddress = useTonAddress();
 
   const getDistributionAccountAddress = useCallback(async () => {
-    if (!distributionPool || !address) return null;
-
-    return await distributionPool.getAccountAddress(address);
-  }, [distributionPool, address]);
+    if (!distributionPool || !walletAddress) return null;
+    return await distributionPool.getAccountAddress(Address.parse(walletAddress));
+  }, [distributionPool, walletAddress]);
   const { data: distributionAccountAddress } = useSWR(
-    ['distribution-account-address', distributionPool?.address.toString(), address?.toString()],
+    ['distribution-account-address', distributionPool?.address.toString(), walletAddress],
     getDistributionAccountAddress,
     { shouldRetryOnError: true, errorRetryInterval: 5000, suspense: false },
   );
@@ -37,20 +34,15 @@ function useDistributionAccount(distributionPool: OpenedContract<DistributionPoo
 }
 
 export function useRewardsBalance() {
-  const { sender } = useConnection();
+  const walletAddress = useTonAddress();
   const { vault } = useParams(VaultPage);
   const { distributionPool } = useVaultDistributionPool(vault);
   const { distributionAccount } = useDistributionAccount(distributionPool);
 
   const { data, error } = useSWR(
-    [
-      'rewards-balance',
-      Boolean(distributionAccount),
-      Boolean(distributionPool),
-      sender.address?.toString(),
-    ],
+    ['rewards-balance', Boolean(distributionAccount), Boolean(distributionPool), walletAddress],
     async () => {
-      if (!sender.address || !distributionPool || !distributionAccount) return null;
+      if (!walletAddress || !distributionPool || !distributionAccount) return null;
 
       try {
         let totalPaid = 0n;
@@ -61,7 +53,7 @@ export function useRewardsBalance() {
 
         const rewardsDictionary = await getRewardsDictionary(distributionPool);
 
-        const value = rewardsDictionary.get(sender.address);
+        const value = rewardsDictionary.get(Address.parse(walletAddress));
 
         return value ? fromNano(value - totalPaid) : undefined;
       } catch (error) {

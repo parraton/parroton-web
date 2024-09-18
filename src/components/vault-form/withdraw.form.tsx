@@ -13,7 +13,6 @@ import { z } from 'zod';
 import { cn, formatCurrency, formatNumber, getAmountAsStringValidationSchema } from '@lib/utils';
 import { useSharesBalance } from '@hooks/use-shares-balance';
 import { toast } from 'sonner';
-import { errorTransaction, successTransaction } from '@utils/transaction-subjects';
 import { useParams } from '@routes/hooks';
 import { VaultPage } from '@routes';
 import { multiplyIfPossible } from '@utils/multiply-if-possible';
@@ -23,8 +22,6 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { getVault } from '@core';
 import { Address, fromNano, toNano } from '@ton/core';
 import { useVaultData } from '@hooks/use-vault-data';
-import { TransactionCompleted } from '@components/transactions/completed';
-import { TransactionFailed } from '@components/transactions/failed';
 import useSWR from 'swr';
 import { AssetAmountInput } from '@UI/asset-amount-input';
 
@@ -119,22 +116,7 @@ export function WithdrawForm() {
       actions.setSubmitting(true);
       try {
         await withdraw(values.amount.replace(',', '.'));
-
-        await new Promise<void>((resolve) => {
-          const successSub = successTransaction.subscribe((successHash) => {
-            toast.success(<TransactionCompleted hash={successHash} />);
-            successSub.unsubscribe();
-            errorSub.unsubscribe();
-            resolve();
-          });
-          const errorSub = errorTransaction.subscribe((error) => {
-            console.error(error);
-            toast.error(<TransactionFailed />);
-            successSub.unsubscribe();
-            errorSub.unsubscribe();
-            resolve();
-          });
-        });
+        // TODO: implement status tracking
       } catch (error) {
         console.error(error);
         toast.error('Something went wrong. Please try again later.');

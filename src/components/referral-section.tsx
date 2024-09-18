@@ -3,13 +3,14 @@
 import { cn } from '@lib/utils';
 import { CopyButton } from '@components/copy-button';
 import { Separator } from '@UI/separator';
-import { useConnection } from '@hooks/use-connection';
 import { useTranslation } from '@i18n/client';
+import { useTonAddress } from '@tonconnect/ui-react';
 
 export function ReferralSection() {
-  const { address } = useConnection();
+  const walletAddress = useTonAddress();
   const { t } = useTranslation({ ns: 'settings' });
-  if (!address) {
+
+  if (!walletAddress) {
     return null;
   }
 
