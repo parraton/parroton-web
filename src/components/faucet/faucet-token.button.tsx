@@ -3,13 +3,10 @@
 import { Button } from '@UI/button';
 import { useConnection } from '@hooks/use-connection';
 import { faucetToken } from './faucet';
-import { firstValueFrom } from 'rxjs';
-import { successTransaction } from '@utils/transaction-subjects';
 import { toast } from 'sonner';
 import { useParams } from '@routes/hooks';
 import { VaultPage } from '@routes';
 import { Address } from '@ton/core';
-import { TransactionCompleted } from '@components/transactions/completed';
 import { useTranslation } from '@i18n/client';
 
 export function FaucetTokenButton({ disabled }: { disabled: boolean }) {
@@ -18,11 +15,13 @@ export function FaucetTokenButton({ disabled }: { disabled: boolean }) {
   const { t } = useTranslation({ ns: 'form' });
 
   const handleFaucet = async () => {
-    await faucetToken(sender, Address.parse(vault));
-
-    const hash = await firstValueFrom(successTransaction);
-
-    toast.success(<TransactionCompleted hash={hash} />);
+    try {
+      await faucetToken(sender, Address.parse(vault));
+      // TODO: implement status tracking
+    } catch (error) {
+      console.error(error);
+      toast.error('Something went wrong. Please try again later.');
+    }
   };
 
   return (

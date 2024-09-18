@@ -10,13 +10,9 @@ import {
 } from '@ton/core';
 import { ITonConnect, SendTransactionResponse, TonConnectUI } from '@tonconnect/ui';
 import { SendTransactionRequest } from '@tonconnect/sdk';
-import { transactionSubject } from '@utils/transaction-subjects';
-import { Maybe, TransactionStatus } from '@types';
-import { Subject } from 'rxjs';
+import { Maybe } from '@types';
 
 const DEFAULT_TTL = 5 * 60 * 1000;
-
-export const transactionModalSubject = new Subject<void>();
 
 const argsInitToMessageStateInit = (init: Maybe<StateInit>) =>
   init
@@ -44,21 +40,15 @@ export class Sender implements ISender {
   ) {}
 
   private async sendTonTransaction(args: SendTransactionRequest): Promise<SendTransactionResponse> {
-    transactionModalSubject.next();
     const { boc } = await this.ton.sendTransaction(args);
 
     return { boc };
   }
 
   private async sendTransaction(args: SenderArguments) {
-    const { boc } = await this.sendTonTransaction({
+    await this.sendTonTransaction({
       validUntil: Date.now() + this.ttl,
       messages: [argsToMessage(args)],
-    });
-
-    transactionSubject.next({
-      status: TransactionStatus.Pending,
-      data: boc,
     });
   }
 
@@ -76,17 +66,14 @@ export class Sender implements ISender {
 
   async sendBatch(): Promise<void> {
     if (this.batch) {
-      const { boc } = await this.sendTonTransaction({
-        validUntil: Date.now() + this.ttl,
-        messages: this.messages.toReversed(),
-      });
-
-      this.messages = [];
-
-      transactionSubject.next({
-        status: TransactionStatus.Pending,
-        data: boc,
-      });
+      try {
+        await this.sendTonTransaction({
+          validUntil: Date.now() + this.ttl,
+          messages: this.messages.toReversed(),
+        });
+      } finally {
+        this.messages = [];
+      }
     } else {
       throw new Error('Batch mode is disabled');
     }

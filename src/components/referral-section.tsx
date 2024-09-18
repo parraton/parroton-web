@@ -5,12 +5,12 @@ import { CopyButton } from '@components/copy-button';
 import { Separator } from '@UI/separator';
 import { useTranslation } from '@i18n/client';
 import { useTonAddress } from '@tonconnect/ui-react';
-import { isAddressDefined } from '@utils/is-address-defined';
 
 export function ReferralSection() {
   const walletAddress = useTonAddress();
   const { t } = useTranslation({ ns: 'settings' });
-  if (!isAddressDefined(walletAddress)) {
+
+  if (!walletAddress) {
     return null;
   }
 

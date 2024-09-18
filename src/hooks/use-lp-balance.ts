@@ -18,7 +18,7 @@ export const useLpBalance = (vaultAddress: string) => {
   const { pool } = usePool(vaultAddress);
 
   const { data, error } = useSWR(
-    ['lpBalance', walletAddress?.toString(), vaultAddress, Boolean(pool)],
+    ['lpBalance', walletAddress, vaultAddress, Boolean(pool)],
     async () => {
       if (!walletAddress || !pool) return null;
       try {

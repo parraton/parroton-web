@@ -7,14 +7,13 @@ import { Address, fromNano, OpenedContract } from '@ton/core';
 import { tonClient } from '@core/config';
 import { DistributionAccount, DistributionPool } from '@dedust/apiary-v1';
 import { useCallback, useMemo } from 'react';
-import { isAddressDefined } from '@utils/is-address-defined';
 import { useTonAddress } from '@tonconnect/ui-react';
 
 function useDistributionAccount(distributionPool: OpenedContract<DistributionPool> | null) {
   const walletAddress = useTonAddress();
 
   const getDistributionAccountAddress = useCallback(async () => {
-    if (!distributionPool || !isAddressDefined(walletAddress)) return null;
+    if (!distributionPool || !walletAddress) return null;
     return await distributionPool.getAccountAddress(Address.parse(walletAddress));
   }, [distributionPool, walletAddress]);
   const { data: distributionAccountAddress } = useSWR(
@@ -41,15 +40,9 @@ export function useRewardsBalance() {
   const { distributionAccount } = useDistributionAccount(distributionPool);
 
   const { data, error } = useSWR(
-    [
-      'rewards-balance',
-      Boolean(distributionAccount),
-      Boolean(distributionPool),
-      isAddressDefined(walletAddress),
-    ],
+    ['rewards-balance', Boolean(distributionAccount), Boolean(distributionPool), walletAddress],
     async () => {
-      if (!isAddressDefined(walletAddress) || !distributionPool || !distributionAccount)
-        return null;
+      if (!walletAddress || !distributionPool || !distributionAccount) return null;
 
       try {
         let totalPaid = 0n;

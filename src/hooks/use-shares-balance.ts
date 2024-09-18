@@ -2,7 +2,6 @@ import { getSharesWallet, getVault } from '@core';
 import useSWR from 'swr';
 import { Address, fromNano } from '@ton/core';
 import { useTonAddress } from '@tonconnect/ui-react';
-import { isAddressDefined } from '@utils/is-address-defined';
 
 const getSharesBalance = async (senderAddress: Address, vaultAddress: Address) => {
   const vault = await getVault(vaultAddress);
@@ -22,7 +21,7 @@ export const useSharesBalance = (vaultAddress: string) => {
   const { data, error } = useSWR(
     ['sharesBalance', walletAddress, vaultAddress],
     async () => {
-      if (!isAddressDefined(walletAddress)) return null;
+      if (!walletAddress) return null;
       try {
         return await getSharesBalance(Address.parse(walletAddress), Address.parse(vaultAddress));
       } catch (error) {

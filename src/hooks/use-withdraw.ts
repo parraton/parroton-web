@@ -4,7 +4,6 @@ import { useParams } from '@routes/hooks';
 import { VaultPage } from '@routes';
 import { useSendTransaction } from './use-send-transaction.hook';
 import { useTonAddress } from '@tonconnect/ui-react';
-import { isAddressDefined } from '@utils/is-address-defined';
 
 export const useWithdraw = () => {
   const walletAddress = useTonAddress();
@@ -12,7 +11,7 @@ export const useWithdraw = () => {
   const { vault: vaultAddress } = useParams(VaultPage);
 
   const withdraw = async (amount: string | number) => {
-    if (!isAddressDefined(walletAddress)) {
+    if (!walletAddress) {
       return;
     }
 
@@ -25,8 +24,6 @@ export const useWithdraw = () => {
     const withdrawMessage = withdrawApi(sharesWalletAddress, address, atomicAmount);
 
     await sendTransaction(Address.parse(walletAddress), [withdrawMessage]);
-
-    return sendTransaction;
   };
 
   return { withdraw };

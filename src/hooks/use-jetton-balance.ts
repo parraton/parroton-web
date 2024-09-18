@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { getStrategyInfoByVault, getWallet } from '@core';
 import { Address, fromNano } from '@ton/core';
 import { useTonAddress } from '@tonconnect/ui-react';
-import { isAddressDefined } from '@utils/is-address-defined';
 
 export function useJettonBalance(vaultAddress: string) {
   const walletAddress = useTonAddress();
@@ -10,7 +9,7 @@ export function useJettonBalance(vaultAddress: string) {
 
   useEffect(() => {
     const fetchBalance = async () => {
-      if (!isAddressDefined(walletAddress)) return;
+      if (!walletAddress) return;
       try {
         const { jettonMasterAddress } = await getStrategyInfoByVault(Address.parse(vaultAddress));
         const wallet = await getWallet(Address.parse(walletAddress), jettonMasterAddress);

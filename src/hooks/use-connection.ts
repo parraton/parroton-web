@@ -35,6 +35,6 @@ export function useConnection({ batch }: ConnectionOptions = {}): {
   return {
     sender: new Sender(TonConnectUI, batch),
     connected,
-    address: walletAddress !== '' ? Address.parse(walletAddress) : undefined,
+    address: walletAddress ? Address.parse(walletAddress) : undefined,
   };
 }

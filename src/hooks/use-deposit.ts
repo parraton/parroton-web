@@ -4,7 +4,6 @@ import { useParams } from '@routes/hooks';
 import { VaultPage } from '@routes';
 import { usePool } from '@hooks/use-pool';
 import { useTonAddress } from '@tonconnect/ui-react';
-import { isAddressDefined } from '@utils/is-address-defined';
 import { useSendTransaction } from './use-send-transaction.hook';
 
 export const useDeposit = () => {
@@ -15,7 +14,7 @@ export const useDeposit = () => {
   const { pool } = usePool(vaultAddress);
 
   const deposit = async (amount: string | number) => {
-    if (!isAddressDefined(walletAddress) || !pool) {
+    if (!walletAddress || !pool) {
       return;
     }
 
@@ -29,8 +28,6 @@ export const useDeposit = () => {
     const depositMessage = depositApi(investorLpWalletAddress, vault, atomicAmount, referral);
 
     await sendTransaction(Address.parse(walletAddress), [depositMessage]);
-
-    return sendTransaction;
   };
 
   return { deposit };
