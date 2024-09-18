@@ -12,6 +12,7 @@ export function deposit(
   const jettonTransferBody = prepareJettonTransferBody({
     destination: vault.address,
     amount: atomicJettonAmount,
+    // DEV: should ve change to sender's address?
     responseAddress: vault.address,
     forwardAmount: toNano('0.05'),
     forwardPayload: vault.prepareDepositPayload({

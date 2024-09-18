@@ -1,15 +1,19 @@
-import { toNano, Address, Sender, OpenedContract } from '@ton/core';
-import { JettonMinter } from '@core/contracts/jetton-minter';
+import { toNano, Address } from '@ton/core';
+import { prepareJettonMintBody } from '@core/messages/jetton-mint.body';
+import { Message } from '../../types/message.type';
 
-export async function mint(
-  jettonMinter: OpenedContract<JettonMinter>,
-  sender: Sender,
+export function mint(
+  jettonAddress: Address,
   receiverAddress: Address,
   jettonAmount: bigint,
-) {
-  return await jettonMinter.sendMint(sender, {
-    value: toNano('0.05'),
+): Message {
+  const jettonMintBody = prepareJettonMintBody({
     receiver: receiverAddress,
     amount: jettonAmount,
   });
+  return {
+    address: jettonAddress.toRawString(),
+    amount: toNano('0.05').toString(),
+    payload: jettonMintBody.toBoc().toString('base64'),
+  };
 }
