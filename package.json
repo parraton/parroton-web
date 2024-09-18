@@ -22,7 +22,7 @@
   "dependencies": {
     "@dedust/apiary-v1": "^0.0.1",
     "@dedust/sdk": "^0.8.7",
-    "@parraton/sdk": "^1.1.0",
+    "@parraton/sdk": "^1.2.2",
     "@radix-ui/react-dialog": "^1.0.5",
     "@radix-ui/react-icons": "^1.3.0",
     "@radix-ui/react-label": "^2.0.2",
