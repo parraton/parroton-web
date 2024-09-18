@@ -5,6 +5,8 @@ interface Resources {
     "app_description": "Description for Parraton",
     "amount": "Amount",
     "deposit": "Deposit",
+    "confirm_deposit": "Confirm Deposit",
+    "connect_wallet_to_deposit": "Connect wallet to deposit",
     "withdraw": "Withdraw",
     "rewards": "Claim Rewards"
   },
