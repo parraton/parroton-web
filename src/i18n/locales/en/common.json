@@ -4,5 +4,6 @@
   "amount": "Amount",
   "deposit": "Deposit",
   "withdraw": "Withdraw",
-  "rewards": "Claim Rewards"
+  "rewards": "Claim Rewards",
+  "get_data_error": "Failed to get data, please reload the page"
 }

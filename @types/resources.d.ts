@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
 interface Resources {
   "common": {
+    "get_data_error": "Failed to get data, please reload the page",
     "app_title": "Parraton",
     "app_description": "Description for Parraton",
     "amount": "Amount",

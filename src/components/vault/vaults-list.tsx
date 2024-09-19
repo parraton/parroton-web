@@ -4,11 +4,13 @@ import { Vault as BackendVault, useVaults } from '@hooks/use-vaults';
 import { Language } from '@i18n/settings';
 import { useCallback, useEffect } from 'react';
 import { Vault } from './vault';
+import { useTranslation } from '@i18n/client';
 import { useRouter } from 'next/navigation';
 
 export const VaultsList = ({ lng }: { lng: Language }) => {
   const { replace } = useRouter();
-  const { vaults } = useVaults();
+  const { t } = useTranslation({ ns: 'common', lng });
+  const { vaults, error } = useVaults();
 
   const renderVaults = useCallback(
     (vaults: BackendVault[]) => (
@@ -26,6 +28,10 @@ export const VaultsList = ({ lng }: { lng: Language }) => {
       replace(`/${lng}/${vaults[0].vaultAddress}`);
     }
   }, [lng, replace, vaults]);
+
+  if (error) {
+    return <div className='flex w-full justify-center'>{t('get_data_error')}</div>;
+  }
 
   return vaults ? (
     renderVaults(vaults)
