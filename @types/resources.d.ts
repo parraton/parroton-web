@@ -6,7 +6,9 @@ interface Resources {
     "amount": "Amount",
     "deposit": "Deposit",
     "confirm_deposit": "Confirm Deposit",
+    "confirm_withdraw": "Confirm Withdraw",
     "connect_wallet_to_deposit": "Connect wallet to deposit",
+    "connect_wallet_to_withdraw": "Connect wallet to withdraw",
     "withdraw": "Withdraw",
     "rewards": "Claim Rewards"
   },

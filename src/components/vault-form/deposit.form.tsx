@@ -87,7 +87,7 @@ const useFormData = () => {
     },
     [amountValidationSchema, getVaultContract, vaultContract],
   );
-  const { data: estimatedShares, isLoading } = useSWR(
+  const { data: estimatedShares, error: sharesError } = useSWR(
     ['deposit-estimated-shares', inputAmount, vaultAddress, balance],
     fetchSharesEquivalent,
     {
@@ -99,6 +99,7 @@ const useFormData = () => {
   );
   const balanceIsLoading = !balanceError && balance === undefined;
   const currencyIsLoading = !vaultError && !vault;
+  const sharesLoading = !estimatedShares && !sharesError;
 
   return {
     balanceIsLoading,
@@ -106,7 +107,7 @@ const useFormData = () => {
     dollarEquivalentIsLoading: balanceIsLoading || currencyIsLoading,
     balance,
     estimatedShares,
-    sharesLoading: isLoading,
+    sharesLoading,
     walletAddress,
     triggerUpdateSharesEquivalent: setInputAmountDebounced,
     validate,
@@ -215,7 +216,6 @@ export function DepositForm() {
         <CardFooter>
           {walletAddress ? (
             <Dialog open={confirmIsOpen} onOpenChange={handleConfirmOpenChange}>
-              {/* <DialogTrigger asChild> */}
               <Button
                 disabled={isSubmitting || !isValid || sharesLoading}
                 type='submit'
@@ -223,7 +223,6 @@ export function DepositForm() {
               >
                 {sharesLoading ? <Loader animation /> : t('deposit')}
               </Button>
-              {/* </DialogTrigger> */}
               <DialogContent className='custom-dialog glass-card modal-card sm:max-w-md'>
                 <div className='p-6'>
                   <DialogHeader>
