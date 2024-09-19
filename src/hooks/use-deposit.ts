@@ -1,29 +1,33 @@
-import { deposit as depositApi, getVault, getWallet } from '@core';
+import { deposit as depositApi, getVault, getWalletAddress } from '@core';
 import { Address, toNano } from '@ton/core';
-import { useConnection } from '@hooks/use-connection';
 import { useParams } from '@routes/hooks';
 import { VaultPage } from '@routes';
 import { usePool } from '@hooks/use-pool';
+import { useTonAddress } from '@tonconnect/ui-react';
+import { useSendTransaction } from './use-send-transaction.hook';
 
 export const useDeposit = () => {
-  const { sender } = useConnection();
+  const walletAddress = useTonAddress();
+  const sendTransaction = useSendTransaction();
   const { vault: vaultAddress } = useParams(VaultPage);
 
   const { pool } = usePool(vaultAddress);
 
   const deposit = async (amount: string | number) => {
-    if (!sender?.address || !pool) {
+    if (!walletAddress || !pool) {
       return;
     }
 
     const vault = await getVault(Address.parse(vaultAddress));
-    const investorLpWallet = await getWallet(sender.address, pool);
+    const investorLpWalletAddress = await getWalletAddress(Address.parse(walletAddress), pool);
 
     const atomicAmount = toNano(amount);
 
     const referral = localStorage.getItem('ref');
 
-    return await depositApi(investorLpWallet, vault, sender, atomicAmount, referral);
+    const depositMessage = depositApi(investorLpWalletAddress, vault, atomicAmount, referral);
+
+    await sendTransaction(Address.parse(walletAddress), [depositMessage]);
   };
 
   return { deposit };

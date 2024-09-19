@@ -1,13 +1,14 @@
 'use client';
 
 import { Button } from '@UI/button';
-import { useConnection } from '@hooks/use-connection';
-import { faucetToken } from './faucet';
-import { firstValueFrom } from 'rxjs';
-import { successTransaction } from '@utils/transaction-subjects';
 import { toast } from 'sonner';
-import { TransactionCompleted } from '@components/transactions/completed';
+import { Address, toNano } from '@ton/core';
 import { useTranslation } from '@i18n/client';
+import { useTonAddress } from '@tonconnect/ui-react';
+import { useSendTransaction } from '@hooks/use-send-transaction.hook';
+import { mint } from '@core/functions/mint';
+
+const FAUCET_JETTON_AMOUNT = toNano('10');
 
 export function FaucetTokenButton({
   disabled,
@@ -16,15 +17,24 @@ export function FaucetTokenButton({
   disabled: boolean;
   assetAddress: string;
 }) {
-  const { sender } = useConnection();
+  const walletAddress = useTonAddress();
+  const sendTransaction = useSendTransaction();
   const { t } = useTranslation({ ns: 'form' });
 
   const handleFaucet = async () => {
-    await faucetToken(sender, assetAddress);
+    try {
+      if (!walletAddress) {
+        return;
+      }
 
-    const hash = await firstValueFrom(successTransaction);
+      const address = Address.parse(walletAddress);
+      const mintMessage = mint(Address.parse(assetAddress), address, FAUCET_JETTON_AMOUNT);
 
-    toast.success(<TransactionCompleted hash={hash} />);
+      await sendTransaction(address, [mintMessage]);
+    } catch (error) {
+      console.error(error);
+      toast.error('Something went wrong. Please try again later.');
+    }
   };
 
   return (

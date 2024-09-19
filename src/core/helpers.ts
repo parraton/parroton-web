@@ -36,3 +36,14 @@ export const getWallet = async (
   const rawLpWallet = await jettonRoot.getWallet(senderAddress);
   return tonClient.open(rawLpWallet);
 };
+
+export const getWalletAddress = async (
+  senderAddress: Address,
+  poolAddress: Address,
+): Promise<Address> => {
+  const rawPool = JettonRoot.createFromAddress(poolAddress);
+
+  const jettonRoot = tonClient.open(rawPool);
+
+  return await jettonRoot.getWalletAddress(senderAddress);
+};

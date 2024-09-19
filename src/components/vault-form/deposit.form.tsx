@@ -13,19 +13,16 @@ import { cn, formatCurrency, formatNumber, getAmountAsStringValidationSchema } f
 import { toFormikValidate } from 'zod-formik-adapter';
 import { z } from 'zod';
 import { toast } from 'sonner';
-import { errorTransaction, successTransaction } from '@utils/transaction-subjects';
 import { useParams } from '@routes/hooks';
 import { VaultPage } from '@routes';
 import { multiplyIfPossible } from '@utils/multiply-if-possible';
 import { OrLoader } from '@components/loader/loader';
-import { TransactionCompleted } from '@components/transactions/completed';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 import { getVault } from '@core';
 import { Address, fromNano, toNano } from '@ton/core';
 import { useVaultData } from '@hooks/use-vault-data';
 import useSWR from 'swr';
-import { TransactionFailed } from '@components/transactions/failed';
 import { AssetAmountInput } from '@UI/asset-amount-input';
 
 const useFormData = () => {
@@ -116,20 +113,7 @@ export function DepositForm() {
       actions.setSubmitting(true);
       try {
         await deposit(values.amount.replace(',', '.'));
-
-        await new Promise<void>((resolve) => {
-          const successSub = successTransaction.subscribe((successHash) => {
-            toast.success(<TransactionCompleted hash={successHash} />);
-            successSub.unsubscribe();
-            resolve();
-          });
-          const errorSub = errorTransaction.subscribe((error) => {
-            console.error(error);
-            toast.error(<TransactionFailed />);
-            errorSub.unsubscribe();
-            resolve();
-          });
-        });
+        // TODO: implement status tracking
       } catch (error) {
         console.error(error);
         toast.error('Something went wrong. Please try again later.');

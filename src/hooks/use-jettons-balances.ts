@@ -1,23 +1,21 @@
 import { useEffect, useState } from 'react';
 import { getWallet } from '@core';
 import { Address, fromNano } from '@ton/core';
-import { useConnection } from '@hooks/use-connection';
 import { Asset as BackendAsset } from './use-vaults';
+import { useTonAddress } from '@tonconnect/ui-react';
 
 export function useJettonsBalances(assets: BackendAsset[] = []) {
-  const { sender } = useConnection();
+  const sender = useTonAddress();
   const [balances, setBalances] = useState<string[] | null>(null);
 
   useEffect(() => {
     const fetchBalance = async () => {
-      if (!sender.address) return;
+      if (!sender) return;
       try {
-        const senderAddress = sender.address;
-
         const newBalances = await Promise.all(
           assets.map(async ({ address }) => {
             try {
-              const wallet = await getWallet(senderAddress, Address.parse(address));
+              const wallet = await getWallet(Address.parse(sender), Address.parse(address));
               const rawBalance = await wallet.getBalance();
 
               return fromNano(rawBalance);
@@ -37,8 +35,7 @@ export function useJettonsBalances(assets: BackendAsset[] = []) {
     };
 
     void fetchBalance();
-    //eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [assets, sender.address?.toString()]);
+  }, [assets, sender]);
 
   return { balances };
 }

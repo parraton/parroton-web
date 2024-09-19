@@ -35,7 +35,7 @@ const SetTonConnectSettings = () => {
 
   useEffect(() => {
     if (process.env.NODE_ENV === 'development') {
-      import('eruda').then((lib) => lib.default.init());
+      import('eruda').then((lib) => lib.default.init()).catch(console.error);
     }
   }, []);
 
