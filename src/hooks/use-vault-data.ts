@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { useVaults } from './use-vaults';
 
 export function useVaultData(vaultAddress: string) {
-  const { isLoading, vaults } = useVaults();
+  const { error, isLoading, vaults } = useVaults();
 
   const vault = useMemo(
     () =>
@@ -10,5 +10,5 @@ export function useVaultData(vaultAddress: string) {
     [vaults, vaultAddress],
   );
 
-  return { isLoading, vault };
+  return { error, isLoading, vault };
 }

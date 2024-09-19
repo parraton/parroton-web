@@ -4,7 +4,6 @@ import { Address, OpenedContract } from '@ton/core';
 import { SharesWallet, Vault } from '@parraton/sdk';
 import { tonClient } from '@core/config';
 import { JettonRoot, JettonWallet } from '@dedust/sdk';
-import { TonJettonTonStrategy } from '@parraton/sdk';
 
 export const getSharesWallet = mem(
   async (vault: OpenedContract<Vault>, sender: Address) => {
@@ -48,30 +47,3 @@ export const getWalletAddress = async (
 
   return await jettonRoot.getWalletAddress(senderAddress);
 };
-
-export const getVaultData = mem(
-  async (vaultAddress: Address) => {
-    const rawVault = Vault.createFromAddress(vaultAddress);
-    const vault = tonClient.open(rawVault);
-
-    return vault.getVaultData();
-  },
-  {
-    maxAge: 60_000,
-    cacheKey: ([vaultAddress]) => `getVaultData_${vaultAddress.toString()}`,
-  },
-);
-
-export const getStrategyInfoByVault = mem(
-  async (vaultAddress: Address) => {
-    const { strategyAddress } = await getVaultData(vaultAddress);
-    const rawStrategy = TonJettonTonStrategy.createFromAddress(strategyAddress);
-    const strategy = tonClient.open(rawStrategy);
-
-    return await strategy.getStrategyData();
-  },
-  {
-    maxAge: 60_000,
-    cacheKey: ([vaultAddress]) => `getStrategyInfoByVault_${vaultAddress.toString()}`,
-  },
-);

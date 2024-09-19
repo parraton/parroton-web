@@ -5,6 +5,6 @@
   "goals": {
     "revenue": "{{revenue_goal}} доходу",
     "tvl": "{{tvl_goal}} TVL",
-    "shares": "{{share_goal}}% від Dedust LP"
+    "shares": "{{share_goal}} від Dedust LP"
   }
 }

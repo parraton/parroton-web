@@ -2,10 +2,7 @@ import type { Metadata } from 'next';
 import { serverTranslation } from '@i18n';
 import { RouteInfoToLayout } from '@routes/makeRoute';
 import { Route } from './page.info';
-import { Vault } from '@components/vault/vault';
-import { addresses } from '@config/contracts-config';
-import { redirect } from 'next/navigation';
-import { RedirectType } from 'next/dist/client/components/redirect';
+import { VaultsList } from '@components/vault/vaults-list';
 
 export async function generateMetadata({
   params,
@@ -18,23 +15,6 @@ export async function generateMetadata({
   };
 }
 
-//need to remove typescript unintentional warning
-const isRedirectNeeded = (vaultsQuantity: number) => vaultsQuantity === 1;
-export default function Home({ params, searchParams }: RouteInfoToLayout<typeof Route>) {
-  if (isRedirectNeeded(addresses.vaults.length)) {
-    const search = new URLSearchParams(searchParams);
-    const searchStr = search.toString() ? `?${search.toString()}` : '';
-
-    const url = `/${params.lng}/${addresses.vaults[0].vault.toString()}${searchStr}`;
-
-    redirect(url, RedirectType.replace);
-  }
-
-  return (
-    <>
-      {addresses.vaults.map(({ vault }, index) => (
-        <Vault key={index} lng={params.lng!} address={vault.toString()} />
-      ))}
-    </>
-  );
+export default function Home({ params }: RouteInfoToLayout<typeof Route>) {
+  return <VaultsList lng={params.lng!} />;
 }

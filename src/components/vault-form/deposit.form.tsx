@@ -29,8 +29,8 @@ import { useTonAddress, useTonConnectModal } from '@tonconnect/ui-react';
 const useFormData = () => {
   const { t } = useTranslation({ ns: 'form' });
   const { vault: vaultAddress } = useParams(VaultPage);
-  const { vault } = useVaultData(vaultAddress);
-  const { balance } = useLpBalance(vaultAddress);
+  const { vault, error: vaultError } = useVaultData(vaultAddress);
+  const { balance, error: balanceError } = useLpBalance(vaultAddress);
   const walletAddress = useTonAddress();
 
   const [inputAmount, setInputAmount] = useState<string>('');
@@ -87,11 +87,7 @@ const useFormData = () => {
     },
     [amountValidationSchema, getVaultContract, vaultContract],
   );
-  const {
-    data: estimatedShares,
-    isLoading,
-    isValidating,
-  } = useSWR(
+  const { data: estimatedShares, isLoading } = useSWR(
     ['deposit-estimated-shares', inputAmount, vaultAddress, balance],
     fetchSharesEquivalent,
     {
@@ -101,9 +97,13 @@ const useFormData = () => {
       suspense: false,
     },
   );
-  console.log('oy vey 1', estimatedShares, isLoading, isValidating, inputAmount, vaultAddress);
+  const balanceIsLoading = !balanceError && balance === undefined;
+  const currencyIsLoading = !vaultError && !vault;
 
   return {
+    balanceIsLoading,
+    currencyIsLoading,
+    dollarEquivalentIsLoading: balanceIsLoading || currencyIsLoading,
     balance,
     estimatedShares,
     sharesLoading: isLoading,
@@ -128,6 +128,9 @@ export function DepositForm() {
     validate,
     currency,
     dollarEquivalent,
+    balanceIsLoading,
+    currencyIsLoading,
+    dollarEquivalentIsLoading,
   } = useFormData();
   const tonConnectModal = useTonConnectModal();
   const [confirmIsOpen, handleConfirmOpenChange] = useState(false);
@@ -179,9 +182,21 @@ export function DepositForm() {
         <CardContent className='space-y-2'>
           <div className='space-y-1'>
             <Label className={'flex items-center gap-1'} htmlFor='amount'>
-              {t('amount')}: {<OrLoader value={balance} modifier={(x) => formatNumber(x, lng)} />}{' '}
-              {<OrLoader animation value={currency} />} (
-              <OrLoader value={dollarEquivalent} modifier={(x) => formatCurrency(x, lng)} />)
+              {t('amount')}:{' '}
+              {
+                <OrLoader
+                  animation={balanceIsLoading}
+                  value={balance}
+                  modifier={(x) => formatNumber(x, lng)}
+                />
+              }{' '}
+              {<OrLoader animation={currencyIsLoading} value={currency} />} (
+              <OrLoader
+                animation={dollarEquivalentIsLoading}
+                value={dollarEquivalent}
+                modifier={(x) => formatCurrency(x, lng)}
+              />
+              )
             </Label>
             <Field
               name='amount'

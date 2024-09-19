@@ -12,9 +12,14 @@ const toAddressesDict = <T extends Record<string, string>>(rawAddresses: T): Add
   ) as AddressDict<T>;
 };
 
-const usdtVaultTestnet = toAddressesDict({
+const tonUsdtVaultTestnet = toAddressesDict({
   vault: 'EQCczQbuj2Z5tLLt4mYb-kVgt52A9kXbkVFWSuToexwbajV_',
   extraDistributionPool: 'EQDWQ59GyQ2qxkC2_kdoOnjwfVv_3kTBA1_GQ3JG9QhkM2sq',
+});
+
+const sttonUsdtVaultTestnet = toAddressesDict({
+  vault: 'EQBtfvTWugSCJZqqsM5wWlYBCcAaWmwOUVEs7i7j8mAn0hZ0',
+  extraDistributionPool: 'EQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAM9c',
 });
 
 const commonAddressesTestnet = toAddressesDict({
@@ -22,7 +27,7 @@ const commonAddressesTestnet = toAddressesDict({
 });
 
 const testnetAddresses = {
-  vaults: [usdtVaultTestnet], //, scaleVault, notVault],
+  vaults: [tonUsdtVaultTestnet, sttonUsdtVaultTestnet],
   ...commonAddressesTestnet,
 } as const;
 
@@ -36,7 +41,7 @@ const commonAddressesMainnet = toAddressesDict({
 });
 
 const mainnetAddresses = {
-  vaults: [usdtVaultMainnet], //, scaleVault, notVault],
+  vaults: [usdtVaultMainnet],
   ...commonAddressesMainnet,
 } as const;
 
