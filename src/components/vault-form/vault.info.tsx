@@ -17,8 +17,8 @@ import { multiplyIfPossible } from '@utils/multiply-if-possible';
 
 const useVaultInfo = () => {
   const { vault: vaultAddress, lng } = useParams(VaultPage);
-  const { vault } = useVaultData(vaultAddress);
-  const { tonPrice } = useTonPrice();
+  const { vault, error: vaultError } = useVaultData(vaultAddress);
+  const { tonPrice, error: tonPriceError } = useTonPrice();
   const pendingReinvestUSD = vault?.pendingRewardsUSD;
 
   const poolNumbers = useMemo(
@@ -47,10 +47,16 @@ const useVaultInfo = () => {
   );
 
   const metadata = vault?.lpMetadata;
-  const { balance: sharesBalance } = useSharesBalance(vaultAddress);
+  const { balance: sharesBalance, error: sharesBalanceError } = useSharesBalance(vaultAddress);
   const lpBalance = sharesBalance?.lpBalance;
+  const vaultLoading = !vaultError && !vault;
+  const tonPriceLoading = !tonPriceError && tonPrice == null;
+  const sharesBalanceLoading = !sharesBalanceError && (sharesBalance === undefined);
 
   return {
+    vaultLoading,
+    pendingReinvestLoading: vaultLoading || tonPriceLoading,
+    depositedLoading: vaultLoading || sharesBalanceLoading,
     sharesBalance: lpBalance
       ? { lp: lpBalance, usd: multiplyIfPossible(lpBalance, poolNumbers.priceForOne) }
       : undefined,
@@ -95,7 +101,7 @@ const NanoInfoPlate = ({
 );
 
 export function VaultInfo() {
-  const { sharesBalance, metadata, poolNumbers, kpis, lng } = useVaultInfo();
+  const { sharesBalance, metadata, poolNumbers, kpis, lng, vaultLoading, pendingReinvestLoading, depositedLoading } = useVaultInfo();
   const { t } = useTranslation({ ns: 'vault-card' });
   const { apy, extraApr } = poolNumbers;
 
@@ -155,7 +161,7 @@ export function VaultInfo() {
         }
       >
         <OrLoader
-          animation
+          animation={vaultLoading}
           value={
             metadata?.name && (
               <>
@@ -172,14 +178,18 @@ export function VaultInfo() {
         <NanoInfoPlate
           title={t('tvl')}
           value={
-            <OrLoader animation value={poolNumbers.tvlInUsd} modifier={(x) => formatCurrency(x)} />
+            <OrLoader
+              animation={vaultLoading}
+              value={poolNumbers.tvlInUsd}
+              modifier={(x) => formatCurrency(x)}
+            />
           }
         />
         <NanoInfoPlate
           title={t('apy')}
           value={
             <OrLoader
-              animation
+              animation={vaultLoading}
               value={totalRewardPercent}
               modifier={(x) => formatPercentage(x, lng)}
             />
@@ -189,7 +199,7 @@ export function VaultInfo() {
           title={t('pending_reinvest')}
           value={
             <OrLoader
-              animation
+              animation={pendingReinvestLoading}
               value={poolNumbers.pendingReinvest}
               modifier={pendingReinvestModifier}
             />
@@ -200,6 +210,7 @@ export function VaultInfo() {
           title={t('deposited')}
           value={
             <OrLoader
+              animation={depositedLoading}
               value={
                 sharesBalance && metadata?.symbol
                   ? {

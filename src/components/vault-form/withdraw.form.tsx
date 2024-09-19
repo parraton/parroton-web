@@ -29,8 +29,8 @@ const useFormData = () => {
   const { t } = useTranslation({ ns: 'form' });
   const { vault: vaultAddress } = useParams(VaultPage);
 
-  const { vault } = useVaultData(vaultAddress);
-  const { balance } = useSharesBalance(vaultAddress);
+  const { vault, error: vaultError } = useVaultData(vaultAddress);
+  const { balance, error: balanceError } = useSharesBalance(vaultAddress);
 
   const [estimatedLp, setEstimatedLp] = useState<string>('');
 
@@ -84,7 +84,13 @@ const useFormData = () => {
     [amountValidationSchema],
   );
 
+  const sharesBalanceLoading = !balanceError && balance === undefined;
+  const currencyIsLoading = !vaultError && !vault;
+
   return {
+    sharesBalanceLoading,
+    currencyIsLoading,
+    dollarEquivalentIsLoading: sharesBalanceLoading || currencyIsLoading,
     lpBalance: balance?.lpBalance,
     sharesBalance: balance?.sharesBalance,
     estimatedLp,
@@ -102,6 +108,9 @@ export function WithdrawForm() {
   const { withdraw } = useWithdraw();
 
   const {
+    sharesBalanceLoading,
+    currencyIsLoading,
+    dollarEquivalentIsLoading,
     sharesBalance,
     estimatedLp,
     fetchLpEquivalent,
@@ -160,9 +169,20 @@ export function WithdrawForm() {
           <div className='space-y-1'>
             <Label className={'flex items-center gap-1'} htmlFor='amount'>
               {t('amount')}:{' '}
-              {<OrLoader value={sharesBalance} modifier={(x) => formatNumber(x, lng)} />}{' '}
-              {<OrLoader animation value={currency} />} (
-              <OrLoader value={dollarEquivalent} modifier={(x) => formatCurrency(x, lng)} />)
+              {
+                <OrLoader
+                  animation={sharesBalanceLoading}
+                  value={sharesBalance}
+                  modifier={(x) => formatNumber(x, lng)}
+                />
+              }{' '}
+              {<OrLoader animation={currencyIsLoading} value={currency} />} (
+              <OrLoader
+                animation={dollarEquivalentIsLoading}
+                value={dollarEquivalent}
+                modifier={(x) => formatCurrency(x, lng)}
+              />
+              )
             </Label>
             <Field
               name='amount'

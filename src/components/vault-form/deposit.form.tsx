@@ -28,8 +28,8 @@ import { AssetAmountInput } from '@UI/asset-amount-input';
 const useFormData = () => {
   const { t } = useTranslation({ ns: 'form' });
   const { vault: vaultAddress } = useParams(VaultPage);
-  const { vault } = useVaultData(vaultAddress);
-  const { balance } = useLpBalance(vaultAddress);
+  const { vault, error: vaultError } = useVaultData(vaultAddress);
+  const { balance, error: balanceError } = useLpBalance(vaultAddress);
 
   const [estimatedShares, setEstimatedShares] = useState<string>('');
 
@@ -84,7 +84,13 @@ const useFormData = () => {
     [amountValidationSchema],
   );
 
+  const balanceIsLoading = !balanceError && balance === undefined;
+  const currencyIsLoading = !vaultError && !vault;
+
   return {
+    balanceIsLoading,
+    currencyIsLoading,
+    dollarEquivalentIsLoading: balanceIsLoading || currencyIsLoading,
     balance,
     estimatedShares,
     fetchSharesEquivalent,
@@ -106,6 +112,9 @@ export function DepositForm() {
     currency,
     dollarEquivalent,
     outputTitle,
+    balanceIsLoading,
+    currencyIsLoading,
+    dollarEquivalentIsLoading,
   } = useFormData();
 
   const onSubmit = useCallback(
@@ -156,9 +165,21 @@ export function DepositForm() {
         <CardContent className='space-y-2'>
           <div className='space-y-1'>
             <Label className={'flex items-center gap-1'} htmlFor='amount'>
-              {t('amount')}: {<OrLoader value={balance} modifier={(x) => formatNumber(x, lng)} />}{' '}
-              {<OrLoader animation value={currency} />} (
-              <OrLoader value={dollarEquivalent} modifier={(x) => formatCurrency(x, lng)} />)
+              {t('amount')}:{' '}
+              {
+                <OrLoader
+                  animation={balanceIsLoading}
+                  value={balance}
+                  modifier={(x) => formatNumber(x, lng)}
+                />
+              }{' '}
+              {<OrLoader animation={currencyIsLoading} value={currency} />} (
+              <OrLoader
+                animation={dollarEquivalentIsLoading}
+                value={dollarEquivalent}
+                modifier={(x) => formatCurrency(x, lng)}
+              />
+              )
             </Label>
             <Field
               name='amount'
