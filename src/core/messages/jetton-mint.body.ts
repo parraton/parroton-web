@@ -1,7 +1,7 @@
 import { Address, beginCell } from '@ton/ton';
 
 // eslint-disable-next-line unicorn/numeric-separators-style
-export const MINT_OP_CODE = 0x595f07bc;
+export const MINT_OP_CODE = 0x3_18_f3_61;
 
 export function prepareJettonMintBody({
   queryId,
