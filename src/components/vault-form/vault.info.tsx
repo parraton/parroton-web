@@ -10,8 +10,6 @@ import { useTranslation } from '@i18n/client';
 import { cn, formatCurrency, formatNumber, formatPercentage } from '@lib/utils';
 import { KpiDialog } from '@components/kpi/kpi-dialog';
 import { GlassCard } from '@components/glass-card';
-import { useRevenue } from '@hooks/use-revenue';
-import { useShare } from '@hooks/use-share';
 import { useVaultData } from '@hooks/use-vault-data';
 import { useTonPrice } from '@hooks/use-ton-price';
 import BigNumber from 'bignumber.js';
@@ -19,8 +17,8 @@ import { multiplyIfPossible } from '@utils/multiply-if-possible';
 
 const useVaultInfo = () => {
   const { vault: vaultAddress, lng } = useParams(VaultPage);
-  const { vault } = useVaultData(vaultAddress);
-  const { tonPrice } = useTonPrice();
+  const { vault, error: vaultError } = useVaultData(vaultAddress);
+  const { tonPrice, error: tonPriceError } = useTonPrice();
   const pendingReinvestUSD = vault?.pendingRewardsUSD;
 
   const poolNumbers = useMemo(
@@ -49,20 +47,23 @@ const useVaultInfo = () => {
   );
 
   const metadata = vault?.lpMetadata;
-  const { balance: sharesBalance } = useSharesBalance(vaultAddress);
-  const { revenue } = useRevenue(vaultAddress);
-  const { share } = useShare(vaultAddress);
+  const { balance: sharesBalance, error: sharesBalanceError } = useSharesBalance(vaultAddress);
   const lpBalance = sharesBalance?.lpBalance;
+  const vaultLoading = !vaultError && !vault;
+  const tonPriceLoading = !tonPriceError && tonPrice == null;
+  const sharesBalanceLoading = !sharesBalanceError && sharesBalance === undefined;
 
   return {
+    vaultLoading,
+    pendingReinvestLoading: vaultLoading || tonPriceLoading,
+    depositedLoading: vaultLoading || sharesBalanceLoading,
     sharesBalance: lpBalance
       ? { lp: lpBalance, usd: multiplyIfPossible(lpBalance, poolNumbers.priceForOne) }
       : undefined,
     metadata,
     poolNumbers,
+    kpis: vault?.kpis,
     lng,
-    revenue,
-    share,
   };
 };
 
@@ -100,7 +101,16 @@ const NanoInfoPlate = ({
 );
 
 export function VaultInfo() {
-  const { sharesBalance, metadata, poolNumbers, revenue, share, lng } = useVaultInfo();
+  const {
+    sharesBalance,
+    metadata,
+    poolNumbers,
+    kpis,
+    lng,
+    vaultLoading,
+    pendingReinvestLoading,
+    depositedLoading,
+  } = useVaultInfo();
   const { t } = useTranslation({ ns: 'vault-card' });
   const { apy, extraApr } = poolNumbers;
 
@@ -160,7 +170,7 @@ export function VaultInfo() {
         }
       >
         <OrLoader
-          animation
+          animation={vaultLoading}
           value={
             metadata?.name && (
               <>
@@ -172,19 +182,23 @@ export function VaultInfo() {
         />
       </h1>
       {/**/}
-      <KpiDialog tvl={poolNumbers.tvlInUsd!} share={share!} revenue={revenue?.toString()!} />
+      <KpiDialog values={kpis} lng={lng} />
       <div className='custom-list !gap-2'>
         <NanoInfoPlate
           title={t('tvl')}
           value={
-            <OrLoader animation value={poolNumbers.tvlInUsd} modifier={(x) => formatCurrency(x)} />
+            <OrLoader
+              animation={vaultLoading}
+              value={poolNumbers.tvlInUsd}
+              modifier={(x) => formatCurrency(x)}
+            />
           }
         />
         <NanoInfoPlate
           title={t('apy')}
           value={
             <OrLoader
-              animation
+              animation={vaultLoading}
               value={totalRewardPercent}
               modifier={(x) => formatPercentage(x, lng)}
             />
@@ -194,7 +208,7 @@ export function VaultInfo() {
           title={t('pending_reinvest')}
           value={
             <OrLoader
-              animation
+              animation={pendingReinvestLoading}
               value={poolNumbers.pendingReinvest}
               modifier={pendingReinvestModifier}
             />
@@ -205,6 +219,7 @@ export function VaultInfo() {
           title={t('deposited')}
           value={
             <OrLoader
+              animation={depositedLoading}
               value={
                 sharesBalance && metadata?.symbol
                   ? {

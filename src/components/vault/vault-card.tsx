@@ -20,9 +20,14 @@ export type VaultCardProps = {
   extraApr: Maybe<string>;
   tvl: Maybe<string>;
   address: string;
+  isLpError: boolean;
+  isSharesError: boolean;
 };
 
-type CardProps = React.ComponentProps<typeof Card> & { data: VaultCardProps; locale: Language };
+type CardProps = React.ComponentProps<typeof Card> & {
+  data: VaultCardProps;
+  locale: Language;
+};
 
 function NanoInfo({ title, value }: { title: string; value: ReactNode }) {
   return (
@@ -47,12 +52,7 @@ function LinkedInfo({
   return (
     <div className='custom-list-el custom-card-info'>
       <div className={`custom-card-title `}>
-        <div
-          className={`${tooltip && 'custom-list-header'}`}
-          style={{
-            width: 'fit-content',
-          }}
-        >
+        <div className={tooltip ? 'custom-list-header' : undefined}>
           {title}
           {tooltip && (
             <span className='custom-tooltip custom-tooltip-xs'>
@@ -88,11 +88,23 @@ export function VaultCard({ data, locale, className, ...props }: CardProps) {
           </CardTitle>
           <NanoInfo
             title={t('balance')}
-            value={<OrLoader value={data.balance} modifier={(x) => formatNumber(x, locale)} />}
+            value={
+              <OrLoader
+                animation={data.balance !== null && !data.isLpError}
+                value={data.balance}
+                modifier={(x) => formatNumber(x, locale)}
+              />
+            }
           />
           <NanoInfo
             title={t('deposited')}
-            value={<OrLoader value={data.deposited} modifier={(x) => formatNumber(x, locale)} />}
+            value={
+              <OrLoader
+                animation={data.deposited !== null && !data.isSharesError}
+                value={data.deposited}
+                modifier={(x) => formatNumber(x, locale)}
+              />
+            }
           />
           <LinkedInfo
             title={t('apy')}
