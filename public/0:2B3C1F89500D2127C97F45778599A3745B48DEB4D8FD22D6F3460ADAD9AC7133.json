@@ -1,0 +1,13 @@
+{
+  "decimals": "9",
+  "description": "Autocompound pool for tsTON/USDT => TON farm on Dedust",
+  "image": "https://parraton.com/images/lp.svg",
+  "name": "Parraton: Dedust tsTON/USDT",
+  "social": [
+    "https://parraton.com/"
+  ],
+  "symbol": "tsTON/USDT PLP",
+  "websites": [
+    "https://parraton.com"
+  ]
+}
