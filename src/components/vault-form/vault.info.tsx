@@ -51,7 +51,7 @@ const useVaultInfo = () => {
   const lpBalance = sharesBalance?.lpBalance;
   const vaultLoading = !vaultError && !vault;
   const tonPriceLoading = !tonPriceError && tonPrice == null;
-  const sharesBalanceLoading = !sharesBalanceError && (sharesBalance === undefined);
+  const sharesBalanceLoading = !sharesBalanceError && sharesBalance === undefined;
 
   return {
     vaultLoading,
@@ -101,7 +101,16 @@ const NanoInfoPlate = ({
 );
 
 export function VaultInfo() {
-  const { sharesBalance, metadata, poolNumbers, kpis, lng, vaultLoading, pendingReinvestLoading, depositedLoading } = useVaultInfo();
+  const {
+    sharesBalance,
+    metadata,
+    poolNumbers,
+    kpis,
+    lng,
+    vaultLoading,
+    pendingReinvestLoading,
+    depositedLoading,
+  } = useVaultInfo();
   const { t } = useTranslation({ ns: 'vault-card' });
   const { apy, extraApr } = poolNumbers;
 
