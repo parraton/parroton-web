@@ -14,6 +14,7 @@ import { useVaultData } from '@hooks/use-vault-data';
 import { useTonPrice } from '@hooks/use-ton-price';
 import BigNumber from 'bignumber.js';
 import { multiplyIfPossible } from '@utils/multiply-if-possible';
+import { ArrowLeftIcon } from 'lucide-react';
 
 const useVaultInfo = () => {
   const { vault: vaultAddress, lng } = useParams(VaultPage);
@@ -166,9 +167,16 @@ export function VaultInfo() {
     <div className={'g flex flex-col gap-4'}>
       <h1
         className={
-          'grid scroll-m-20 place-items-center gap-x-1 text-4xl font-medium tracking-tight md:flex'
+          'relative grid scroll-m-20 place-items-center gap-x-1 text-4xl font-medium tracking-tight md:flex'
         }
       >
+        <button
+          className='absolute left-0 top-0 md:static md:left-auto md:top-auto'
+          type='button'
+          onClick={() => window.history.back()}
+        >
+          <ArrowLeftIcon className='h-5 w-auto md:h-10' />
+        </button>
         <OrLoader
           animation={vaultLoading}
           value={
