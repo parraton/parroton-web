@@ -115,6 +115,7 @@ const useFormData = () => {
     estimatedLp,
     triggerUpdateLpEquivalent: setInputAmountDebounced,
     validate,
+    lpSymbol: vault?.lpMetadata.symbol,
     currency: vault?.plpMetadata.symbol,
     lpPrice: vault?.lpPriceUsd,
     plpPrice,
@@ -125,6 +126,7 @@ const useFormData = () => {
 
 export function WithdrawForm() {
   const { t, lng } = useTranslation({ ns: 'common' });
+  const { t: formT } = useTranslation({ ns: 'form' });
   const { withdraw } = useWithdraw();
 
   const {
@@ -140,6 +142,7 @@ export function WithdrawForm() {
     outputTitle,
     dollarEquivalent,
     lpLoading,
+    lpSymbol,
   } = useFormData();
   const tonConnectModal = useTonConnectModal();
   const [confirmIsOpen, handleConfirmOpenChange] = useState(false);
@@ -230,31 +233,33 @@ export function WithdrawForm() {
                 type='submit'
                 className='custom-main-btn'
               >
-                {lpLoading ? <Loader animation /> : t('withdraw')}
+                {lpLoading ? <Loader animation /> : formT('preview_withdraw')}
               </Button>
               <DialogContent className='custom-dialog glass-card modal-card sm:max-w-md'>
-                <div className='p-6'>
+                <div className='flex flex-col gap-2'>
                   <DialogHeader>
-                    <DialogTitle className='text-2xl'>{t('confirm_withdraw')}</DialogTitle>
+                    <DialogTitle className='text-2xl'>{formT('confirm_withdraw')}</DialogTitle>
                   </DialogHeader>
-                  <div className='mt-4 flex flex-col gap-2'>
+                  <div className='flex flex-1 flex-col gap-2'>
                     <div className='flex justify-between gap-2'>
                       <span>{t('amount')}</span>
-                      <span>{formatNumber(values.amount, lng)}</span>
+                      <span>{formatNumber(values.amount, lng)} PLP</span>
                     </div>
                     <div className='flex justify-between gap-2'>
                       <span>{outputTitle}</span>
-                      <span>{formattedEstimatedLp}</span>
+                      <span>
+                        {formattedEstimatedLp} {lpSymbol}
+                      </span>
                     </div>
-                    <Button
-                      disabled={!isValid}
-                      type='button'
-                      className='custom-main-btn'
-                      onClick={handleWithdrawClick}
-                    >
-                      {t('withdraw')}
-                    </Button>
                   </div>
+                  <Button
+                    disabled={!isValid}
+                    type='button'
+                    className='custom-main-btn'
+                    onClick={handleWithdrawClick}
+                  >
+                    {t('withdraw')}
+                  </Button>
                 </div>
               </DialogContent>
             </Dialog>
@@ -265,7 +270,7 @@ export function WithdrawForm() {
               className='custom-main-btn'
               onClick={tonConnectModal.open}
             >
-              {t('connect_wallet_to_withdraw')}
+              {formT('connect_wallet_to_withdraw')}
             </Button>
           )}
         </CardFooter>

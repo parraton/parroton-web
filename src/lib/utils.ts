@@ -13,12 +13,13 @@ const languageToIntlLocaleMap: Record<Language, Intl.LocalesArgument> = {
   ua: 'uk-UA',
 };
 
+const getDecimalsSeparator = (locale: Language) =>
+  Intl.NumberFormat(languageToIntlLocaleMap[locale]).formatToParts(0.1)[1].value;
+
 export const formatNumber = (num: number | string | undefined | null, locale: Language = 'en') => {
   if (num === undefined || num === null) return '~~~~';
 
   const parsedValue = new BigNumber(typeof num === 'string' ? num.replace(',', '.') : num);
-  const decimalsSeparator = Intl.NumberFormat(languageToIntlLocaleMap[locale]).formatToParts(0.1)[1]
-    .value;
   // eslint-disable-next-line unicorn/require-number-to-fixed-digits-argument
   let result = parsedValue.toFixed();
   if (parsedValue.decimalPlaces() === 0) {
@@ -26,7 +27,33 @@ export const formatNumber = (num: number | string | undefined | null, locale: La
   }
   result += '0'.repeat(Math.max(0, 2 - (parsedValue.decimalPlaces() ?? 0)));
 
-  return result.replace('.', decimalsSeparator);
+  return result.replace('.', getDecimalsSeparator(locale));
+};
+
+export const formatLpAmount = (input: string, locale: Language = 'en') => {
+  const suggestedDigitsAmount = 7;
+
+  const parsedBalance = new BigNumber(input);
+  let result: string;
+
+  if (parsedBalance.gte(10 ** (suggestedDigitsAmount - 1))) {
+    result = parsedBalance.integerValue(BigNumber.ROUND_FLOOR).toString();
+  } else if (parsedBalance.gte(1)) {
+    // Leave 7 significant digits
+    const exponent = parsedBalance.e ?? 0;
+
+    result = parsedBalance
+      .shiftedBy(-exponent)
+      .decimalPlaces(suggestedDigitsAmount - 1, BigNumber.ROUND_FLOOR)
+      .shiftedBy(exponent)
+      .toString();
+  } else if (parsedBalance.lte(10 ** (-suggestedDigitsAmount + 1)) && parsedBalance.gt(0)) {
+    result = `< ${formatNumber(10 ** (-suggestedDigitsAmount + 1), locale)}`;
+  } else {
+    result = parsedBalance.decimalPlaces(6, BigNumber.ROUND_FLOOR).toString();
+  }
+
+  return result.replace('.', getDecimalsSeparator(locale));
 };
 
 export const formatCurrency = (

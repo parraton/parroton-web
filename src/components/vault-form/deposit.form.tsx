@@ -8,7 +8,14 @@ import { ErrorMessage, Form, Field, useFormik, FormikProvider } from 'formik';
 import { useDeposit } from '@hooks/use-deposit';
 import { useTranslation } from '@i18n/client';
 import { useLpBalance } from '@hooks/use-lp-balance';
-import { cn, formatCurrency, formatNumber, getAmountAsStringValidationSchema } from '@lib/utils';
+import {
+  cn,
+  formatCurrency,
+  formatLpAmount,
+  formatNumber,
+  formatPercentage,
+  getAmountAsStringValidationSchema,
+} from '@lib/utils';
 import { toFormikValidate } from 'zod-formik-adapter';
 import { z } from 'zod';
 import { toast } from 'sonner';
@@ -25,6 +32,7 @@ import useSWR from 'swr';
 import { AssetAmountInput } from '@UI/asset-amount-input';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@UI/dialog';
 import { useTonAddress, useTonConnectModal } from '@tonconnect/ui-react';
+import BigNumber from 'bignumber.js';
 
 const useFormData = () => {
   const { t } = useTranslation({ ns: 'form' });
@@ -105,6 +113,7 @@ const useFormData = () => {
     balanceIsLoading,
     currencyIsLoading,
     dollarEquivalentIsLoading: balanceIsLoading || currencyIsLoading,
+    apy: vault?.apy,
     balance,
     estimatedShares,
     sharesLoading,
@@ -132,6 +141,7 @@ export function DepositForm() {
     balanceIsLoading,
     currencyIsLoading,
     dollarEquivalentIsLoading,
+    apy,
   } = useFormData();
   const tonConnectModal = useTonConnectModal();
   const [confirmIsOpen, handleConfirmOpenChange] = useState(false);
@@ -173,9 +183,21 @@ export function DepositForm() {
   }, [balance, setValues]);
 
   const formattedEstimatedShares = useMemo(
-    () => estimatedShares && formatNumber(estimatedShares, lng),
+    () => estimatedShares && formatLpAmount(estimatedShares, lng),
     [estimatedShares, lng],
   );
+
+  const formattedExchangeRate = useMemo(() => {
+    if (!estimatedShares || !Number(estimatedShares)) {
+      return '~~~~';
+    }
+
+    const exchangeRate = new BigNumber(values.amount)
+      .div(estimatedShares)
+      .decimalPlaces(4, BigNumber.ROUND_FLOOR);
+
+    return `1 PLP = ${formatNumber(exchangeRate.toString())} ${currency}`;
+  }, [currency, estimatedShares, values.amount]);
 
   return (
     <FormikProvider value={formik}>
@@ -221,31 +243,49 @@ export function DepositForm() {
                 type='submit'
                 className='custom-main-btn'
               >
-                {sharesLoading ? <Loader animation /> : t('deposit')}
+                {sharesLoading ? <Loader animation /> : formT('preview_deposit')}
               </Button>
               <DialogContent className='custom-dialog glass-card modal-card sm:max-w-md'>
-                <div className='p-6'>
+                <div className='flex flex-col gap-2'>
                   <DialogHeader>
-                    <DialogTitle className='text-2xl'>{t('confirm_deposit')}</DialogTitle>
+                    <DialogTitle className='text-2xl'>{formT('confirm_deposit')}</DialogTitle>
                   </DialogHeader>
-                  <div className='mt-4 flex flex-col gap-2'>
-                    <div className='flex justify-between gap-2'>
-                      <span>{t('amount')}</span>
-                      <span>{formatNumber(values.amount, lng)}</span>
+                  <div className='flex-1'>
+                    <div className='mt-4 flex flex-col gap-2'>
+                      <div className='flex justify-between gap-2'>
+                        <span>{t('amount')}</span>
+                        <span>
+                          {formatNumber(values.amount, lng)} {currency}
+                        </span>
+                      </div>
+                      <div className='flex justify-between gap-2'>
+                        <span>{formT('plp_output')}</span>
+                        <span>{formattedEstimatedShares} PLP</span>
+                      </div>
+                      <div className='flex justify-between gap-2'>
+                        <span>{formT('your_balance')}</span>
+                        <span>
+                          {formatNumber(balance, lng)} {currency}
+                        </span>
+                      </div>
+                      <div className='flex justify-between gap-2'>
+                        <span>{t('apy')}</span>
+                        <span>{formatPercentage(apy ?? '0', lng)}</span>
+                      </div>
+                      <div className='flex justify-between gap-2'>
+                        <span>{formT('some_token_exchange_rate', { token: 'PLP' })}</span>
+                        <span>{formattedExchangeRate}</span>
+                      </div>
                     </div>
-                    <div className='flex justify-between gap-2'>
-                      <span>{formT('plp_output')}</span>
-                      <span>{formattedEstimatedShares}</span>
-                    </div>
-                    <Button
-                      disabled={!isValid}
-                      type='button'
-                      className='custom-main-btn'
-                      onClick={handleDepositClick}
-                    >
-                      {t('deposit')}
-                    </Button>
                   </div>
+                  <Button
+                    disabled={!isValid}
+                    type='button'
+                    className='custom-main-btn'
+                    onClick={handleDepositClick}
+                  >
+                    {t('deposit')}
+                  </Button>
                 </div>
               </DialogContent>
             </Dialog>
@@ -256,7 +296,7 @@ export function DepositForm() {
               className='custom-main-btn'
               onClick={tonConnectModal.open}
             >
-              {t('connect_wallet_to_deposit')}
+              {formT('connect_wallet_to_deposit')}
             </Button>
           )}
         </CardFooter>
