@@ -63,8 +63,8 @@ const useFormData = () => {
         {
           required: t('validation.required'),
           invalidFormat: t('validation.invalid_format'),
-          min: (amount: string | number) => t('validation.min_deposit', { minDeposit: amount }),
-          max: (amount: string | number) => t('validation.max_deposit', { maxDeposit: amount }),
+          min: (amount: string | number) => t('validation.min_withdraw', { minWithdraw: amount }),
+          max: (amount: string | number) => t('validation.max_withdraw', { maxWithdraw: amount }),
         },
         {
           required: true,
