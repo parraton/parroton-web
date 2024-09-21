@@ -1,0 +1,22 @@
+{
+  "deposit_liquidity": "Додати ліквідність",
+  "deposit_liquidity_rewards_description": "+1,000 за $100 на годину",
+  "deposit": "Вкласти",
+  "invite_friends": "Запросити друзів",
+  "invite_friends_rewards_description": "+5,000 за друга + 5% їхніх балів",
+  "invite": "Запросити",
+  "join_channel": "Приєднатися до каналу",
+  "join_channel_rewards_description": "+2,000 балів",
+  "explore_telegram_apps": "Відкрити додатки Telegram",
+  "explore_telegram_apps_rewards_description": "+1,000 балів",
+  "explore": "Відкрити",
+  "claim": "Забрати",
+  "invited_friends": "Запрошені друзі",
+  "earn_more": "Заробляйте більше",
+  "earn_points_title": "Заробляйте бали за свій вклад",
+  "claimed": "Забрано",
+  "pending": "В очікуванні",
+  "referral_title": "Реферальне посилання на веб-сторінку",
+  "referral_mini_app": "Реферальне посилання на міні-додаток",
+  "copy_referral": "Скопіювати"
+}

@@ -3,6 +3,7 @@ import { twMerge } from 'tailwind-merge';
 import { Language } from '@i18n/settings';
 import BigNumber from 'bignumber.js';
 import z from 'zod';
+import { domain, miniAppLink } from '@config/links';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
