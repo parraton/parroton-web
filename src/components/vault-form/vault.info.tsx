@@ -14,9 +14,12 @@ import { useVaultData } from '@hooks/use-vault-data';
 import { useTonPrice } from '@hooks/use-ton-price';
 import BigNumber from 'bignumber.js';
 import { multiplyIfPossible } from '@utils/multiply-if-possible';
+import { ArrowLeftIcon } from 'lucide-react';
+import { useVaults } from '@hooks/use-vaults';
 
 const useVaultInfo = () => {
   const { vault: vaultAddress, lng } = useParams(VaultPage);
+  const { vaults } = useVaults();
   const { vault, error: vaultError } = useVaultData(vaultAddress);
   const { tonPrice, error: tonPriceError } = useTonPrice();
   const pendingReinvestUSD = vault?.pendingRewardsUSD;
@@ -64,6 +67,7 @@ const useVaultInfo = () => {
     poolNumbers,
     kpis: vault?.kpis,
     lng,
+    shouldShowBackButton: vaults ? vaults.length > 1 : false,
   };
 };
 
@@ -110,6 +114,7 @@ export function VaultInfo() {
     vaultLoading,
     pendingReinvestLoading,
     depositedLoading,
+    shouldShowBackButton,
   } = useVaultInfo();
   const { t } = useTranslation({ ns: 'vault-card' });
   const { apy, extraApr } = poolNumbers;
@@ -166,9 +171,18 @@ export function VaultInfo() {
     <div className={'g flex flex-col gap-4'}>
       <h1
         className={
-          'grid scroll-m-20 place-items-center gap-x-1 text-4xl font-medium tracking-tight md:flex'
+          'relative grid scroll-m-20 place-items-center gap-x-1 text-4xl font-medium tracking-tight md:flex'
         }
       >
+        {shouldShowBackButton && (
+          <button
+            className='absolute left-0 top-0 md:static md:left-auto md:top-auto'
+            type='button'
+            onClick={() => window.history.back()}
+          >
+            <ArrowLeftIcon className='h-5 w-auto md:h-10' />
+          </button>
+        )}
         <OrLoader
           animation={vaultLoading}
           value={
