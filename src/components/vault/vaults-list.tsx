@@ -16,7 +16,9 @@ export const VaultsList = ({ lng }: { lng: Language }) => {
           <Vault key={vault.vaultAddress} lng={lng} vault={vault} />
         ))}
         {/* eslint-disable-next-line react/jsx-no-literals */}
-        <Link href={`/${lng}/rewards`}>Rewards</Link>
+        <Link className='custom-wrapper text-blue-500 underline' href={`/${lng}/rewards`}>
+          Rewards
+        </Link>
       </>
     ),
     [lng],

@@ -110,7 +110,8 @@ interface Resources {
     "invite_friends_rewards_description": "+5,000 per 1 friend + 5% of their points",
     "invite": "Invite",
     "join_channel": "Join Channel",
-    "join_channel_rewards_description": "+2,000 points",
+    "join_parraton_channel_rewards_description": "+2,000 points",
+    "join_tapps_channel_rewards_description": "+1,000 points",
     "explore_telegram_apps": "Explore Telegram Apps",
     "explore_telegram_apps_rewards_description": "+1,000 points",
     "explore": "Explore",
@@ -123,6 +124,9 @@ interface Resources {
     "referral_title": "Referral link for web page",
     "referral_mini_app": "Referral link to miniapp",
     "copy_referral": "Copy",
+    "use_telegram_mini_app": "Use Telegram Mini App to access this section",
+    "no_friends_invited": "No friends have been invited yet",
+    "telegram_apps_center": "Telegram Apps Center",
   }
 }
 

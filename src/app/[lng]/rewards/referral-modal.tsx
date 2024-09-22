@@ -12,18 +12,37 @@ interface ReferralModalProps {
 export const ReferralModal = ({ isOpen, onClose }: ReferralModalProps) => {
   const { t } = useTranslation({ ns: 'rewards' });
   const handleOpenChange = useCallback((newValue: boolean) => !newValue && onClose(), [onClose]);
+  // TODO: replace 'telegram' with 'ton' after backend starts accepting TON address as referral
   const { link: webAppLink, copyLink: copyWebAppLink } = useCopyReferralLink(false);
   const { link: miniAppLink, copyLink: copyMiniAppLink } = useCopyReferralLink(true);
 
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       <DialogContent className={`custom-dialog glass-card modal-card sm:max-w-md`}>
-        <p>{t('referral_mini_app')}</p>
-        <textarea rows={2} readOnly className='w-full resize-none rounded-lg' value={miniAppLink} />
-        <Button onClick={copyMiniAppLink}>{t('copy_referral')}</Button>
-        <p>{t('referral_title')}</p>
-        <textarea rows={2} readOnly className='w-full resize-none rounded-lg' value={webAppLink} />
-        <Button onClick={copyWebAppLink}>{t('copy_referral')}</Button>
+        {miniAppLink ? (
+          <>
+            <p>{t('referral_mini_app')}</p>
+            <textarea
+              rows={2}
+              readOnly
+              className='w-full resize-none rounded-lg'
+              value={miniAppLink}
+            />
+            <Button onClick={copyMiniAppLink}>{t('copy_referral')}</Button>
+          </>
+        ) : null}
+        {webAppLink ? (
+          <>
+            <p>{t('referral_title')}</p>
+            <textarea
+              rows={2}
+              readOnly
+              className='w-full resize-none rounded-lg'
+              value={webAppLink}
+            />
+            <Button onClick={copyWebAppLink}>{t('copy_referral')}</Button>
+          </>
+        ) : null}
       </DialogContent>
     </Dialog>
   );

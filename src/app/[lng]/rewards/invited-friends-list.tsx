@@ -1,10 +1,12 @@
 import React, { useCallback } from 'react';
-import { InvitedFriendProps } from './use-points-sources';
+import { InvitedFriendProps } from '../../../hooks/use-points-sources';
 import { useTranslation } from '@i18n/client';
 import { Button } from '@UI/button';
+import { OrLoader } from '@components/loader/loader';
 
 interface InvitedFriendsListProps {
-  invitedFriends: InvitedFriendProps[];
+  data: InvitedFriendProps[] | undefined;
+  loading: boolean;
   // eslint-disable-next-line no-unused-vars
   claimRewards: (friendId: string) => void;
 }
@@ -34,13 +36,14 @@ const InvitedFriendView = ({ friend, claimRewards }: InvitedFriendViewProps) => 
   );
 };
 
-export const InvitedFriendsList = ({ invitedFriends, claimRewards }: InvitedFriendsListProps) => {
+export const InvitedFriendsList = ({ data, loading, claimRewards }: InvitedFriendsListProps) => {
   const { t } = useTranslation({ ns: 'rewards' });
 
-  return (
-    <>
-      <p>{t('invited_friends')}</p>
-      <div className='max-h-24 overflow-y-auto rounded-lg bg-gray-500 p-3 md:max-h-none'>
+  const renderInvitedFriendsList = useCallback(
+    (invitedFriends: InvitedFriendProps[]) =>
+      invitedFriends.length === 0 ? (
+        t('no_friends_invited')
+      ) : (
         <table className='w-full'>
           <thead>
             <tr>
@@ -56,6 +59,15 @@ export const InvitedFriendsList = ({ invitedFriends, claimRewards }: InvitedFrie
             ))}
           </tbody>
         </table>
+      ),
+    [claimRewards, t],
+  );
+
+  return (
+    <>
+      <p>{t('invited_friends')}</p>
+      <div className='max-h-24 overflow-y-auto rounded-lg bg-gray-500 p-3 md:max-h-none'>
+        <OrLoader value={data} animation={loading} modifier={renderInvitedFriendsList} />
       </div>
     </>
   );

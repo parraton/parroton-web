@@ -17,7 +17,7 @@ export async function generateMetadata({
 
 export default function Rewards() {
   return (
-    <div className='z-[1] flex w-full justify-center'>
+    <div className='custom-wrapper flex w-full justify-center'>
       <div className='flex max-w-md flex-col gap-2 md:gap-4'>
         <RewardsBody />
       </div>

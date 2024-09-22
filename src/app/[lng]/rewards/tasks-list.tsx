@@ -1,5 +1,5 @@
 import React from 'react';
-import { TaskProps } from './use-points-sources';
+import { TaskProps } from '../../../hooks/use-points-sources';
 import { useTranslation } from '@i18n/client';
 import Image from 'next/image';
 
@@ -19,7 +19,7 @@ export const TasksList = ({ tasks }: TasksListProps) => {
             <Image className='size-12' src={iconSrc} alt='' />
             <div>
               <p className='text-xs font-semibold'>{title}</p>
-              <p className='text-xs font-semibold'>{rewardsDescription}</p>
+              {rewardsDescription && <p className='text-xs font-semibold'>{rewardsDescription}</p>}
             </div>
           </div>
           {actionButton}
