@@ -13,7 +13,8 @@ export const RewardsBody = () => {
   const {
     invitedFriends,
     invitedFriendsLoading,
-    tasks,
+    quests,
+    questsLoading,
     totalPointsEarned,
     userDataLoading,
     referralModalIsOpen,
@@ -38,7 +39,7 @@ export const RewardsBody = () => {
           loading={invitedFriendsLoading}
           claimRewards={claimFriendRewards}
         />
-        <TasksList tasks={tasks} />
+        <TasksList quests={quests} loading={questsLoading} />
         <ReferralModal isOpen={referralModalIsOpen} onClose={closeReferralModal} />
       </>
     );

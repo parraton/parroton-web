@@ -1,19 +1,20 @@
-import React from 'react';
-import { TaskProps } from '../../../hooks/use-points-sources';
+import React, { useCallback } from 'react';
+import { QuestProps } from '../../../hooks/use-points-sources';
 import { useTranslation } from '@i18n/client';
 import Image from 'next/image';
+import { OrLoader } from '@components/loader/loader';
 
 interface TasksListProps {
-  tasks: TaskProps[];
+  quests: QuestProps[] | undefined;
+  loading: boolean;
 }
 
-export const TasksList = ({ tasks }: TasksListProps) => {
+export const TasksList = ({ quests, loading }: TasksListProps) => {
   const { t } = useTranslation({ ns: 'rewards' });
 
-  return (
-    <>
-      <p>{t('earn_more')}</p>
-      {tasks.map(({ id, iconSrc, title, rewardsDescription, actionButton }) => (
+  const renderQuests = useCallback(
+    (questsList: QuestProps[]) =>
+      questsList.map(({ id, iconSrc, title, rewardsDescription, actionButton }) => (
         <div className='flex items-center justify-between gap-2' key={id}>
           <div className='flex items-center gap-2'>
             <Image className='size-12' src={iconSrc} alt='' />
@@ -24,7 +25,14 @@ export const TasksList = ({ tasks }: TasksListProps) => {
           </div>
           {actionButton}
         </div>
-      ))}
+      )),
+    [],
+  );
+
+  return (
+    <>
+      <p>{t('earn_more')}</p>
+      <OrLoader animation={loading} value={quests} modifier={renderQuests} />
     </>
   );
 };

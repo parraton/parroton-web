@@ -11,26 +11,28 @@ export interface User {
   referrer?: string;
 }
 
+type QuestType = 'deposit-liquidity' | 'invite-friends' | 'follow-link' | 'section-name';
+
 interface QuestBase {
-  type: string;
+  type: QuestType;
   id: string;
-  name: string;
-  reward: number;
-  started: boolean;
+  /** Key is locale */
+  names: Record<string, string>;
   claimed: boolean;
 }
 
-interface InviteFriendsQuest extends QuestBase {
-  type: 'invite-friends';
-  friendsRequired: number;
+interface EternalQuest extends QuestBase {
+  type: 'deposit-liquidity' | 'invite-friends' | 'section-name';
 }
 
-interface SocialMediaQuest extends QuestBase {
-  type: 'social-media';
-  id: 'follow-on-x' | 'retweet-on-x';
+interface FollowLinkQuest extends QuestBase {
+  type: 'follow-link';
+  link: string;
+  isTelegramLink: boolean;
+  amount: number;
 }
 
-export type Quest = InviteFriendsQuest | SocialMediaQuest;
+export type Quest = EternalQuest | FollowLinkQuest;
 
 export type AdsQuest =
   | {

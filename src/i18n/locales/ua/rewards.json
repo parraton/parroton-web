@@ -5,12 +5,6 @@
   "invite_friends": "Запросити друзів",
   "invite_friends_rewards_description": "+5,000 за друга + 5% їхніх балів",
   "invite": "Запросити",
-  "join_channel": "Приєднатися до каналу",
-  "join_parraton_channel_rewards_description": "+2,000 балів",
-  "join_tapps_channel_rewards_description": "+1,000 балів",
-  "explore_telegram_apps": "Відкрити застосунки Telegram",
-  "explore_telegram_apps_rewards_description": "+1,000 балів",
-  "explore": "Відкрити",
   "claim": "Забрати",
   "invited_friends": "Запрошені друзі",
   "earn_more": "Заробляйте більше",
@@ -22,5 +16,6 @@
   "copy_referral": "Скопіювати",
   "use_telegram_mini_app": "Використовуйте міні-застосунок Telegram для доступу до цього розділу",
   "no_friends_invited": "Ніхто ще не був запрошений",
-  "telegram_apps_center": "Центр застосунків Telegram"
+  "telegram_apps_center": "Центр застосунків Telegram",
+  "one_time_rewards_description": "+{{amount}} балів"
 }

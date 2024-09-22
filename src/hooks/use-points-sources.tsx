@@ -12,8 +12,11 @@ import { ChevronRightIcon } from 'lucide-react';
 import { useInitData } from '@vkruglikov/react-telegram-web-app';
 import useSWR from 'swr';
 import BigNumber from 'bignumber.js';
-import { TelegramLinkButton } from '@components/rewards/telegram-link-button';
 import { QuestsApi } from '@core/quests-api';
+import { useStorage } from './use-storage';
+import { CheckCircledIcon } from '@radix-ui/react-icons';
+import { ActionLink } from '@components/rewards/action-link';
+import { ClaimButton } from '@components/rewards/claim-button';
 
 export interface InvitedFriendProps {
   id: string;
@@ -22,7 +25,7 @@ export interface InvitedFriendProps {
   pendingPoints: number;
 }
 
-export interface TaskProps {
+export interface QuestProps {
   id: string;
   iconSrc: StaticImageData;
   title: string;
@@ -31,11 +34,41 @@ export interface TaskProps {
 }
 
 const REFERRAL_REWARD_PERCENTAGE = 5;
+const FOLLOWED_LINKS_STORAGE_KEY = 'followed-links';
 
 export const usePointsSources = () => {
+  const { getItem, setItem } = useStorage();
   const [, initData] = useInitData();
-  const { t } = useTranslation({ ns: 'rewards' });
+  const { t, lng } = useTranslation({ ns: 'rewards' });
   const { push } = useRouter();
+
+  const getFollowedLinks = useCallback(async (): Promise<string[]> => {
+    try {
+      const maybeItems = JSON.parse((await getItem(FOLLOWED_LINKS_STORAGE_KEY)) || '[]');
+      console.log('oy vey 2', maybeItems);
+
+      if (Array.isArray(maybeItems) && maybeItems.every((item) => typeof item === 'string')) {
+        console.log('oy vey 3');
+
+        return maybeItems;
+      }
+
+      throw new Error('Invalid data');
+    } catch (error) {
+      console.error('oy vey 1', error);
+      setItem(FOLLOWED_LINKS_STORAGE_KEY, '[]').catch(console.error);
+
+      return [];
+    }
+  }, [getItem, setItem]);
+  const { data: followedLinks, mutate: mutateFollowedLinks } = useSWR(
+    'followed-links',
+    getFollowedLinks,
+    {
+      suspense: false,
+      shouldRetryOnError: true,
+    },
+  );
 
   const api = useMemo(() => (initData ? new QuestsApi(initData) : null), [initData]);
   const {
@@ -47,20 +80,15 @@ export const usePointsSources = () => {
     suspense: false,
     shouldRetryOnError: true,
   });
-  // TODO: use it after the backend returns appropriate data
-  /* const {
+  const {
     data: questsData,
     error: questsDataError,
     mutate: mutateQuestsData,
-  } = useSWR(
-    ['rewards-quests-data', initData],
-    () => (api ? api.getQuests() : null),
-    {
-      refreshInterval: 10_000,
-      suspense: false,
-      shouldRetryOnError: true,
-    },
-  ); */
+  } = useSWR(['rewards-quests-data', initData], () => (api ? api.getQuests() : null), {
+    refreshInterval: 10_000,
+    suspense: false,
+    shouldRetryOnError: true,
+  });
   const {
     data: referralsData,
     error: referralsDataError,
@@ -108,69 +136,107 @@ export const usePointsSources = () => {
   const openReferralModal = useCallback(() => setReferralModalIsOpen(true), []);
   const closeReferralModal = useCallback(() => setReferralModalIsOpen(false), []);
 
-  // TODO: add logic for claiming and marking quests as completed
-  const tasks = useMemo<TaskProps[]>(() => {
-    return [
-      {
-        id: '1',
-        iconSrc: depositLiquiditySrc,
-        title: t('deposit_liquidity'),
-        rewardsDescription: t('deposit_liquidity_rewards_description'),
-        actionButton: <Button onClick={() => push('/')}>{t('deposit')}</Button>,
-      },
-      {
-        id: '2',
-        iconSrc: addPersonSrc,
-        title: t('invite_friends'),
-        rewardsDescription: t('invite_friends_rewards_description'),
-        actionButton: <Button onClick={openReferralModal}>{t('invite')}</Button>,
-      },
-      {
-        id: '3',
-        iconSrc: telegramSrc,
-        title: t('join_channel'),
-        rewardsDescription: t('join_parraton_channel_rewards_description'),
-        actionButton: (
-          <TelegramLinkButton link='https://t.me/parraton_en'>
-            <ChevronRightIcon className='h-5 w-auto' />
-          </TelegramLinkButton>
-        ),
-      },
-      {
-        id: 'dummy-1',
-        iconSrc: tappsSrc,
-        title: 'Telegram Apps Center',
-        rewardsDescription: '',
-        actionButton: null,
-      },
-      {
-        id: '4',
-        iconSrc: telegramSrc,
-        title: t('join_channel'),
-        rewardsDescription: t('join_tapps_channel_rewards_description'),
-        actionButton: (
-          <TelegramLinkButton link='https://t.me/trendingapps'>
-            <ChevronRightIcon className='h-5 w-auto' />
-          </TelegramLinkButton>
-        ),
-      },
-      {
-        id: '5',
-        iconSrc: telegramSrc,
-        title: t('explore_telegram_apps'),
-        rewardsDescription: t('explore_telegram_apps_rewards_description'),
-        actionButton: (
-          <TelegramLinkButton link='https://t.me/tapps_bot?profile'>
-            <ChevronRightIcon className='h-5 w-auto' />
-          </TelegramLinkButton>
-        ),
-      },
-    ];
-  }, [openReferralModal, push, t]);
+  const claimQuestReward = useCallback(
+    async (questId: string) => {
+      if (!api) {
+        return;
+      }
+
+      try {
+        await api.claimQuest(questId);
+        await Promise.all([mutateQuestsData(), mutateUserData()]);
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    [api, mutateQuestsData, mutateUserData],
+  );
+
+  const handleActionLinkClick = useCallback(
+    async (link: string) => {
+      try {
+        const newFollowedLinks = [...(followedLinks ?? []), link];
+        await setItem(FOLLOWED_LINKS_STORAGE_KEY, JSON.stringify(newFollowedLinks));
+        await mutateFollowedLinks(newFollowedLinks);
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    [followedLinks, mutateFollowedLinks, setItem],
+  );
+
+  // TODO: modify frontend and backend to remove hardcoding icons
+  const quests = useMemo(() => {
+    if (!questsData || !followedLinks) {
+      return;
+    }
+
+    return questsData.map<QuestProps>((quest) => {
+      const { id, names, claimed } = quest;
+      const basicProps = { id, title: names[lng] || names.en };
+
+      switch (quest.type) {
+        case 'deposit-liquidity': {
+          return {
+            ...basicProps,
+            iconSrc: depositLiquiditySrc,
+            rewardsDescription: t('deposit_liquidity_rewards_description'),
+            actionButton: <Button onClick={() => push('/')}>{t('deposit')}</Button>,
+          };
+        }
+        case 'invite-friends': {
+          return {
+            ...basicProps,
+            iconSrc: addPersonSrc,
+            rewardsDescription: t('invite_friends_rewards_description'),
+            actionButton: <Button onClick={openReferralModal}>{t('invite')}</Button>,
+          };
+        }
+        case 'section-name': {
+          return {
+            ...basicProps,
+            iconSrc: tappsSrc,
+            rewardsDescription: '',
+            actionButton: null,
+          };
+        }
+        case 'follow-link': {
+          return {
+            ...basicProps,
+            iconSrc: telegramSrc,
+            rewardsDescription: t('one_time_rewards_description', { amount: quest.amount }),
+            actionButton: claimed ? (
+              <CheckCircledIcon className='h-5 w-auto text-green-500' />
+            ) : followedLinks.includes(quest.link) ? (
+              <ClaimButton questId={id} onClick={claimQuestReward} />
+            ) : (
+              <ActionLink
+                link={quest.link}
+                isTelegram={quest.isTelegramLink}
+                onClick={handleActionLinkClick}
+              >
+                <ChevronRightIcon className='h-5 w-auto' />
+              </ActionLink>
+            ),
+          };
+        }
+      }
+    });
+  }, [
+    claimQuestReward,
+    followedLinks,
+    handleActionLinkClick,
+    lng,
+    openReferralModal,
+    push,
+    questsData,
+    t,
+  ]);
 
   const userDataLoading = userData === undefined && !userError;
   const referralsDataLoading = referralsData === undefined && !referralsDataError;
   const invitedFriendsLoading = userDataLoading || referralsDataLoading;
+  const questsLoading = !followedLinks || (questsData === undefined && !questsDataError);
 
   // TODO: implement claiming rewards by a friend after the backend is ready
   const claimFriendRewards = useCallback(async () => {
@@ -178,8 +244,12 @@ export const usePointsSources = () => {
       return;
     }
 
-    await api.claimReferrals();
-    await Promise.all([mutateReferralsData(), mutateUserData()]);
+    try {
+      await api.claimReferrals();
+      await Promise.all([mutateReferralsData(), mutateUserData()]);
+    } catch (error) {
+      console.error(error);
+    }
   }, [api, mutateReferralsData, mutateUserData]);
 
   return {
@@ -188,7 +258,8 @@ export const usePointsSources = () => {
     isTelegram: Boolean(initData),
     invitedFriends,
     invitedFriendsLoading,
-    tasks,
+    quests,
+    questsLoading,
     referralModalIsOpen,
     claimFriendRewards,
     openReferralModal,
