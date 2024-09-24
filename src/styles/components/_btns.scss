@@ -1,0 +1,47 @@
+.ton-connect-btn {
+  button {
+    border-radius: $border-sm-radius;
+
+    svg {
+      display: none;
+    }
+
+    @include themify($themes) {
+      background-color: themed("button");
+    }
+  }
+}
+
+.settings-btn {
+  border: none;
+  padding: 0;
+  width: 40px;
+  height: 40px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: transparent;
+  background-size: 30px;
+
+  @include themify($themes) {
+    background-image: themed("settings-icon");
+  }
+
+  &:hover,
+  &.hover {
+    background-color: transparent;
+  }
+
+  @media (min-width: 768px) {
+    background-size: 25px;
+  }
+}
+
+.custom-settings-header {
+  .settings-btn {
+    display: none;
+
+    @media (min-width: 768px) {
+      display: flex;
+    }
+  }
+}
