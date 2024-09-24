@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-literals */
 import { cn } from '@lib/utils';
 import { Home } from '@routes';
 import { Settings } from '@components/settings';

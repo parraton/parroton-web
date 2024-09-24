@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-literals */
 'use client';
 
 import { Vault as BackendVault, useVaults } from '@hooks/use-vaults';
