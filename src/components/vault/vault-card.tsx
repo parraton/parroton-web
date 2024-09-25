@@ -1,6 +1,6 @@
 'use client';
 
-import { cn, formatCurrency, formatNumber, formatPercentage } from '@lib/utils';
+import { cn, formatNumber, formatPercentage } from '@lib/utils';
 import { Card, CardContent, CardTitle } from '@UI/card';
 import { Language } from '@i18n/settings';
 import { Maybe } from '@types';
@@ -29,29 +29,29 @@ type CardProps = React.ComponentProps<typeof Card> & {
   locale: Language;
 };
 
-function NanoInfo({ title, value }: { title: string; value: ReactNode }) {
+function NanoInfo({ value }: { value: ReactNode }) {
   return (
     <div className='custom-card-info'>
-      <span className='custom-card-title'>{title}</span>
+      {/* <span className='custom-card-title'>{title}</span> */}
       <span className='custom-card-value'>{value}</span>
     </div>
   );
 }
 
 function LinkedInfo({
-  title,
+  // title,
   value,
-  tooltip,
-  tooltipTitle,
+  // tooltip,
+  // tooltipTitle,
 }: {
   title: ReactNode;
   value: ReactNode;
-  tooltip?: ReactNode;
-  tooltipTitle?: string;
+  // tooltip?: ReactNode;
+  // tooltipTitle?: string;
 }) {
   return (
     <div className='custom-list-el custom-card-info'>
-      <div className={`custom-card-title `}>
+      {/* <div className={`custom-card-title `}>
         <div className={tooltip ? 'custom-list-header' : undefined}>
           {title}
           {tooltip && (
@@ -60,7 +60,7 @@ function LinkedInfo({
             </span>
           )}
         </div>
-      </div>
+      </div> */}
       <div className={`custom-card-link custom-card-value`}>{value}</div>
     </div>
   );
@@ -76,8 +76,8 @@ export function VaultCard({ data, locale, className, ...props }: CardProps) {
       ? Number(data.apy) + Number(data.extraApr)
       : undefined;
 
-  const tooltipApy = `${t('apy')}: `;
-  const tooltipExtraApr = `${t('extraApr')}: `;
+  // const tooltipApy = `${t('apy')}: `;
+  // const tooltipExtraApr = `${t('extraApr')}: `;
 
   return (
     <Link href={data.address} className='custom-wrapper'>
@@ -86,7 +86,7 @@ export function VaultCard({ data, locale, className, ...props }: CardProps) {
           <CardTitle className='custom-card-header'>
             {data.title?.replace('Parraton: ', '')}
           </CardTitle>
-          <NanoInfo
+          {/* <NanoInfo
             title={t('balance')}
             value={
               <OrLoader
@@ -95,9 +95,9 @@ export function VaultCard({ data, locale, className, ...props }: CardProps) {
                 modifier={(x) => formatNumber(x, locale)}
               />
             }
-          />
+          /> */}
           <NanoInfo
-            title={t('deposited')}
+            // title={t('deposited')}
             value={
               <OrLoader
                 animation={data.deposited !== null && !data.isSharesError}
@@ -115,30 +115,30 @@ export function VaultCard({ data, locale, className, ...props }: CardProps) {
                 modifier={(x) => formatPercentage(x, locale)}
               />
             }
-            tooltip={
-              totalRewardPercent ? (
-                <div>
-                  <div>
-                    {tooltipApy}
-                    <OrLoader
-                      animation
-                      value={data.apy}
-                      modifier={(x) => formatPercentage(x, locale)}
-                    />
-                  </div>
-                  <div>
-                    {tooltipExtraApr}
-                    <OrLoader
-                      animation
-                      value={data.extraApr}
-                      modifier={(x) => formatPercentage(x, locale)}
-                    />
-                  </div>
-                </div>
-              ) : undefined
-            }
+            // tooltip={
+            //   totalRewardPercent ? (
+            //     <div>
+            //       <div>
+            //         {tooltipApy}
+            //         <OrLoader
+            //           animation
+            //           value={data.apy}
+            //           modifier={(x) => formatPercentage(x, locale)}
+            //         />
+            //       </div>
+            //       <div>
+            //         {tooltipExtraApr}
+            //         <OrLoader
+            //           animation
+            //           value={data.extraApr}
+            //           modifier={(x) => formatPercentage(x, locale)}
+            //         />
+            //       </div>
+            //     </div>
+            //   ) : undefined
+            // }
           />
-          <NanoInfo
+          {/* <NanoInfo
             title={t('daily')}
             value={
               <OrLoader
@@ -147,13 +147,13 @@ export function VaultCard({ data, locale, className, ...props }: CardProps) {
                 modifier={(x) => formatPercentage(x, locale)}
               />
             }
-          />
-          <NanoInfo
+          /> */}
+          {/* <NanoInfo
             title={t('tvl')}
             value={
               <OrLoader animation value={data.tvl} modifier={(x) => formatCurrency(x, locale)} />
             }
-          />
+          /> */}
         </CardContent>
       </GlassCard>
     </Link>
