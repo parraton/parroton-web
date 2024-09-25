@@ -101,6 +101,27 @@ interface Resources {
     "description": "Ahoy, stranger! First time here? Learn how to use our platform in our short video guide 🏴‍☠️",
     "watch": "Watch",
     "skip": "Skip"
+  },
+  "rewards": {
+    "deposit_liquidity": "Deposit liquidity", 
+    "deposit_liquidity_rewards_description": "+1,000 per $100/hour",
+    "deposit": "Deposit",
+    "invite_friends": "Invite friends",
+    "invite_friends_rewards_description": "+5,000 per 1 friend + 5% of their points",
+    "invite": "Invite",
+    "claim": "Claim",
+    "invited_friends": "Invited friends",
+    "earn_more": "Earn more",
+    "earn_points_title": "Earn points for your efforts",
+    "claimed": "Claimed",
+    "pending": "Pending",
+    "referral_title": "Referral link for web page",
+    "referral_mini_app": "Referral link to miniapp",
+    "copy_referral": "Copy",
+    "use_telegram_mini_app": "Use Telegram Mini App to access this section",
+    "no_friends_invited": "No friends have been invited yet",
+    "telegram_apps_center": "Telegram Apps Center",
+    "one_time_rewards_description": "+{{amount}} points"
   }
 }
 

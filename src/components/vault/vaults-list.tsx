@@ -5,6 +5,7 @@ import { Vault as BackendVault, useVaults } from '@hooks/use-vaults';
 import { Language } from '@i18n/settings';
 import { useCallback } from 'react';
 import { Vault } from './vault';
+import Link from 'next/link';
 
 export const VaultsList = ({ lng }: { lng: Language }) => {
   const { vaults } = useVaults();
@@ -20,6 +21,10 @@ export const VaultsList = ({ lng }: { lng: Language }) => {
         {vaults.map((vault) => (
           <Vault key={vault.vaultAddress} lng={lng} vault={vault} />
         ))}
+        {/* eslint-disable-next-line react/jsx-no-literals */}
+        <Link className='custom-wrapper text-blue-500 underline' href={`/${lng}/rewards`}>
+          Rewards
+        </Link>
       </div>
     ),
     [lng],

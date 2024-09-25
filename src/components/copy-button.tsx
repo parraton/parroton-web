@@ -5,12 +5,7 @@ import { ClipboardCheck, Files } from 'lucide-react';
 import { useTranslation } from '@i18n/client';
 import { useState } from 'react';
 import { cn } from '@lib/utils';
-import { domain, miniAppLink } from '@config/links';
-import { useTonAddress } from '@tonconnect/ui-react';
-
-const copyToClipboard = async (data: string) => {
-  await navigator.clipboard.writeText(data);
-};
+import { useCopyReferralLink } from '@hooks/use-copy-referral-link';
 
 interface CopyButtonProps {
   miniApp?: boolean;
@@ -20,8 +15,6 @@ export function CopyButton({ miniApp }: CopyButtonProps) {
   const [isCopied, setIsCopied] = useState(false);
   const { t } = useTranslation({ ns: 'settings' });
 
-  const referral = useTonAddress();
-
   const onAfterCopy = () => {
     setIsCopied(true);
     setTimeout(() => {
@@ -29,17 +22,11 @@ export function CopyButton({ miniApp }: CopyButtonProps) {
     }, 2000);
   };
 
-  const copy = async () => {
-    const link = miniApp ? `${miniAppLink}?startapp=${referral}` : `${domain}?ref=${referral}`;
-
-    await copyToClipboard(link);
-
-    onAfterCopy();
-  };
+  const { copyLink } = useCopyReferralLink(miniApp ?? false, onAfterCopy);
 
   return (
     <Button
-      onClick={copy}
+      onClick={copyLink}
       variant='outline'
       size='sm'
       className={cn('copy-button flex h-7 w-fit transform gap-1 bg-[#19A7E7] px-3', {
