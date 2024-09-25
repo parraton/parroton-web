@@ -7,7 +7,7 @@ import { useSharesBalance } from '@hooks/use-shares-balance';
 import { OrLoader } from '@components/loader/loader';
 import { ReactNode, useCallback, useMemo } from 'react';
 import { useTranslation } from '@i18n/client';
-import { cn, formatCurrency, formatNumber, formatPercentage } from '@lib/utils';
+import { cn, formatCurrency, formatLpAmount, formatNumber, formatPercentage } from '@lib/utils';
 import { KpiDialog } from '@components/kpi/kpi-dialog';
 import { GlassCard } from '@components/glass-card';
 import { useVaultData } from '@hooks/use-vault-data';
@@ -134,26 +134,7 @@ export function VaultInfo() {
       sharesBalance: { lp: string; usd: number | undefined };
       currency: string;
     }) => {
-      const parsedBalance = new BigNumber(sharesBalance.lp);
-      let lpBalance: string;
-
-      if (parsedBalance.gte(1e6)) {
-        lpBalance = parsedBalance.integerValue(BigNumber.ROUND_FLOOR).toString();
-      } else if (parsedBalance.gte(1)) {
-        // Leave 7 significant digits
-        const exponent = parsedBalance.e ?? 0;
-
-        lpBalance = parsedBalance
-          .shiftedBy(-exponent)
-          .decimalPlaces(6, BigNumber.ROUND_FLOOR)
-          .shiftedBy(exponent)
-          .toString();
-      } else if (parsedBalance.lte(1e-6) && parsedBalance.gt(0)) {
-        lpBalance = `< ${formatNumber(1e-6, lng)}`;
-      } else {
-        lpBalance = parsedBalance.decimalPlaces(6, BigNumber.ROUND_FLOOR).toString();
-      }
-      lpBalance = formatNumber(lpBalance, lng);
+      const lpBalance = formatLpAmount(sharesBalance.lp, lng);
 
       return sharesBalance.usd
         ? `${lpBalance} ${currency} (${formatCurrency(sharesBalance.usd, lng)})`
