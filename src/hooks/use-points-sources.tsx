@@ -45,17 +45,13 @@ export const usePointsSources = () => {
   const getFollowedLinks = useCallback(async (): Promise<string[]> => {
     try {
       const maybeItems = JSON.parse((await getItem(FOLLOWED_LINKS_STORAGE_KEY)) || '[]');
-      console.log('oy vey 2', maybeItems);
 
       if (Array.isArray(maybeItems) && maybeItems.every((item) => typeof item === 'string')) {
-        console.log('oy vey 3');
-
         return maybeItems;
       }
 
       throw new Error('Invalid data');
-    } catch (error) {
-      console.error('oy vey 1', error);
+    } catch {
       setItem(FOLLOWED_LINKS_STORAGE_KEY, '[]').catch(console.error);
 
       return [];

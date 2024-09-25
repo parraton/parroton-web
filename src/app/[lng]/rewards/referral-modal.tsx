@@ -12,7 +12,6 @@ interface ReferralModalProps {
 export const ReferralModal = ({ isOpen, onClose }: ReferralModalProps) => {
   const { t } = useTranslation({ ns: 'rewards' });
   const handleOpenChange = useCallback((newValue: boolean) => !newValue && onClose(), [onClose]);
-  // TODO: replace 'telegram' with 'ton' after backend starts accepting TON address as referral
   const { link: webAppLink, copyLink: copyWebAppLink } = useCopyReferralLink(false);
   const { link: miniAppLink, copyLink: copyMiniAppLink } = useCopyReferralLink(true);
 
