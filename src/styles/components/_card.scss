@@ -1,0 +1,148 @@
+.glass-card {
+  background: none;
+  border-radius: $border-sm-radius;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(4px);
+
+  @include themify($themes) {
+    background-color: themed("content");
+  }
+}
+
+.custom-card {
+  border-color: #ebebeb;
+  background-color: rgba(255, 255, 255, 0.7);
+
+  .light & {
+    background-color: rgba(255, 255, 255, 0.7);
+  }
+
+  .dark & {
+    background-color: rgba(0, 0, 0, 0.7);
+  }
+}
+
+.custom-card-content {
+  display: grid;
+  grid-template-columns: 2fr repeat(2, 1fr);
+  align-items: center;
+  padding: 20px 10px;
+  gap: 10px;
+  position: relative;
+
+  @media (min-width: 768px) {
+    grid-template-rows: auto;
+    gap: 20px;
+    padding: 1.5rem;
+  }
+
+  &:after {
+    content: "";
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translate(0, -50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 25px;
+    height: 25px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    @include themify($themes) {
+      background-image: themed("arrow-next");
+    }
+
+    @media (min-width: 768px) {
+      right: 30px;
+    }
+  }
+}
+
+.custom-card-header {
+  height: var(--header-hieght);
+
+  @media (min-width: 768px) {
+    padding-right: 20px;
+  }
+}
+
+.custom-card-info {
+  display: grid;
+  grid-template-columns: 0.5fr 1fr;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+
+  @media (min-width: 768px) {
+    grid-template-columns: auto;
+  }
+}
+
+.custom-card-title {
+  display: block;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.custom-card-value {
+  display: flex;
+  font-size: 16px;
+  font-weight: bold;
+  max-width: 100%;
+
+  @media (min-width: 768px) {
+    text-align: left;
+  }
+}
+
+.custom-card-link {
+  display: flex;
+  font-size: 16px;
+  font-weight: bold;
+  max-width: 100%;
+
+  @include themify($themes) {
+    color: themed("link");
+  }
+
+  @media (min-width: 768px) {
+    text-align: left;
+  }
+}
+
+.custom-card-list {
+  display: grid;
+  padding: 10px 10px 0 10px;
+  grid-template-columns: 2fr repeat(2, 1fr);
+  grid-template-rows: auto;
+  gap: 20px;
+
+  @media (min-width: 768px) {
+    padding: 1.5rem 1.5rem 0 1.5rem;
+  }
+}
+
+.custom-card-list-item {
+  font-size: 16px;
+  font-weight: normal;
+
+  @include themify($themes) {
+    color: themed("text");
+  }
+}
+
+.custom-card-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  padding: 20px;
+
+  @media (min-width: 768px) {
+    width: 28rem;
+    margin: 0 auto;
+    padding: 0;
+  }
+}

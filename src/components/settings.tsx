@@ -1,5 +1,3 @@
-import { SlidersHorizontal } from 'lucide-react';
-
 import { Button } from '@UI/button';
 import {
   Dialog,
@@ -22,13 +20,7 @@ export async function Settings({ lng }: { lng: Language }) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button
-          variant='outline'
-          className='border-[#19A7E7] bg-accent px-3 hover:scale-95'
-          // text-accent-foreground hover:text-accent'
-        >
-          <SlidersHorizontal color='#19A7E7' className='size-4' />
-        </Button>
+        <Button variant='outline' className='settings-btn' />
       </DialogTrigger>
       <DialogContent className={`custom-dialog glass-card modal-card sm:max-w-md`}>
         <DialogHeader>
