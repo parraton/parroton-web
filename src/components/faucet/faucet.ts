@@ -39,7 +39,7 @@ export const faucetLp = async (
     });
     messages.push({
       address: nativeVaultAddress.toRawString(),
-      amount: toNano('0.8').toString(),
+      amount: (tonAmount + toNano('0.3')).toString(),
       payload: dedustDepositTonBody.toBoc().toString('base64'),
     });
   }
