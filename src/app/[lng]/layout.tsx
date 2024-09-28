@@ -32,13 +32,7 @@ export default function RootLayout({
           <div className={cn('grid min-h-screen', 'grid-rows-[auto,1fr]')}>
             <Navbar lng={lng!} />
             <main className='custom-main-container bg-background'>
-              {children}
-              <div className='cloud-container'>
-                <div className='cloud' />
-                <div className='cloud' />
-                <div className='cloud' />
-                <div className='island' />
-              </div>
+              <div className='custom-card-wrapper'>{children}</div>
             </main>
           </div>
         </SandwichProvider>

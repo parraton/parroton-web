@@ -1,12 +1,5 @@
 import { Button } from '@UI/button';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@UI/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@UI/dialog';
 import { ModeToggle } from '@components/mode-toggle';
 import { LanguageToggle } from '@components/toggle-language';
 import { cn } from '@lib/utils';
@@ -22,10 +15,9 @@ export async function Settings({ lng }: { lng: Language }) {
       <DialogTrigger asChild>
         <Button variant='outline' className='settings-btn' />
       </DialogTrigger>
-      <DialogContent className={`custom-dialog glass-card modal-card sm:max-w-md`}>
+      <DialogContent className={`custom-dialog custom-modal-settings sm:max-w-md`}>
         <DialogHeader>
           <DialogTitle className='text-2xl'>{t('dialog_title')}</DialogTitle>
-          <DialogDescription className='text-[14px]'>{t('dialog_description')}</DialogDescription>
         </DialogHeader>
         <div className='custom-toggler-list'>
           <div className={cn('custom-toggler')}>

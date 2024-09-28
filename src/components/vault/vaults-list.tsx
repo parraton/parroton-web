@@ -12,7 +12,7 @@ export const VaultsList = ({ lng }: { lng: Language }) => {
 
   const renderVaults = useCallback(
     (vaults: BackendVault[]) => (
-      <div className='custom-card-wrapper'>
+      <>
         <ul className='custom-card-list'>
           <li className='custom-card-list-item'>Deposit asset</li>
           <li className='custom-card-list-item'>You earn</li>
@@ -22,10 +22,10 @@ export const VaultsList = ({ lng }: { lng: Language }) => {
           <Vault key={vault.vaultAddress} lng={lng} vault={vault} />
         ))}
         {/* eslint-disable-next-line react/jsx-no-literals */}
-        <Link className='custom-wrapper text-blue-500 underline' href={`/${lng}/rewards`}>
+        <Link className='custom-link' href={`/${lng}/rewards`}>
           Rewards
         </Link>
-      </div>
+      </>
     ),
     [lng],
   );
