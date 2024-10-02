@@ -49,3 +49,9 @@ input[type="number"] {
 textarea {
   resize: none;
 }
+
+.custom-text-link {
+  @include themify($themes) {
+    color: themed("link");
+  }
+}

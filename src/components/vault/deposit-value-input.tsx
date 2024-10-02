@@ -4,7 +4,6 @@ import { useTonBalance } from '@hooks/use-ton-balance';
 import { useTonPrice } from '@hooks/use-ton-price';
 import { useTranslation } from '@i18n/client';
 import { Currency } from '@types';
-import { Button } from '@UI/button';
 import BigNumber from 'bignumber.js';
 import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
@@ -117,14 +116,9 @@ export const DepositValueInput: FC<DepositValueInputProps> = ({ value, onChange 
             <div className='flex items-center justify-between'>
               <span>{t('you_deposit')}</span>
 
-              <Button
-                variant='link'
-                type='button'
-                onClick={handleMaxButtonClick}
-                className='h-fit p-0'
-              >
+              <button type='button' onClick={handleMaxButtonClick} className='custom-card-link'>
                 {t('use_max')}
-              </Button>
+              </button>
             </div>
 
             <div className='flex max-w-full items-center text-ellipsis whitespace-pre text-xl font-bold'>
