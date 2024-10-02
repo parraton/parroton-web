@@ -1,29 +1,42 @@
 'use client';
+
 import { VaultCard, VaultCardProps } from '@components/vault/vault-card';
-import { useLpBalance } from '@hooks/use-lp-balance';
-import { useSharesBalance } from '@hooks/use-shares-balance';
+import { usePreferredCurrency } from '@hooks/use-preferred-currency';
 import { Vault as BackendVault } from '@hooks/use-vaults';
+import { formatNumberWithDigitsLimit } from '@lib/utils';
 
 import { Language } from '@i18n/settings';
+import BigNumber from 'bignumber.js';
+import { useMemo } from 'react';
 
-export function Vault({ lng, vault }: { lng: Language; vault: BackendVault }) {
+interface VaultProps {
+  lng: Language;
+  vault: BackendVault;
+  depositValue: string;
+}
+
+export function Vault({ lng, vault, depositValue }: VaultProps) {
   const { vaultAddressFormatted: address } = vault;
-  const { balance: lpBalance, error: lpError } = useLpBalance(address);
-  const { balance: sharesBalance, error: sharesError } = useSharesBalance(address);
+  const { preferredCurrency } = usePreferredCurrency();
 
-  const data: VaultCardProps = {
-    title: vault.name,
-    balance: lpBalance,
-    currency: vault.plpMetadata?.symbol,
-    deposited: sharesBalance === null ? null : sharesBalance?.lpBalance,
-    apy: vault.apy,
-    daily: vault.dpr,
-    extraApr: '0',
-    tvl: vault.tvlUsd,
-    address,
-    isLpError: !!lpError,
-    isSharesError: !!sharesError,
-  };
+  const data = useMemo<VaultCardProps>(() => {
+    const totalYield = Number(vault.apy);
+    const earnAmount =
+      totalYield === undefined || !depositValue
+        ? undefined
+        : formatNumberWithDigitsLimit(
+            new BigNumber(depositValue).times(totalYield).div(100).toString(),
+            lng,
+            4,
+          );
+
+    return {
+      title: vault.name,
+      earnValue: earnAmount ? { amount: earnAmount, currency: preferredCurrency } : undefined,
+      totalYield,
+      address,
+    };
+  }, [address, depositValue, lng, preferredCurrency, vault.apy, vault.name]);
 
   return <VaultCard data={data} locale={lng} />;
 }

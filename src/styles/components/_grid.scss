@@ -107,7 +107,7 @@
 
   @media (min-width: 768px) {
     display: grid;
-    grid-template-columns: 1fr 28rem 1fr;
+    grid-template-columns: 46px 20rem 1fr;
     padding: 20px 30px;
   }
 }
@@ -423,35 +423,35 @@ input[type="number"] {
     background-color: themed("content");
   }
 
-  a {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    font-size: 16px;
-    font-weight: normal;
-    border-radius: $border-radius;
-
-    &:hover {
-      @include themify($themes) {
-        color: themed("link");
-      }
-    }
-
-    @media (min-width: 768px) {
-      padding: 8px 20px;
-
-      @include themify($themes) {
-        color: themed("text");
-        background-color: themed("content");
-      }
-    }
-  }
-
   @media (min-width: 768px) {
     position: static;
     justify-content: flex-start;
     padding: 0;
     background-color: transparent !important;
+  }
+}
+
+.custom-nav-list a, .custom-preferred-currency-button {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 1rem;
+  font-weight: normal;
+  border-radius: $border-radius;
+
+  &:hover {
+    @include themify($themes) {
+      color: themed("link");
+    }
+  }
+
+  @media (min-width: 768px) {
+    padding: 8px 20px;
+
+    @include themify($themes) {
+      color: themed("text");
+      background-color: themed("content");
+    }
   }
 }
 

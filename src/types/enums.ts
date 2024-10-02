@@ -13,3 +13,8 @@ export enum TransactionStatus {
   Error = 'error',
   Hash = 'hash',
 }
+
+export enum Currency {
+  USD = 'USD',
+  TON = 'TON',
+}

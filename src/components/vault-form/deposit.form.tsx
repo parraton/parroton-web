@@ -11,7 +11,7 @@ import { useLpBalance } from '@hooks/use-lp-balance';
 import {
   cn,
   formatCurrency,
-  formatLpAmount,
+  formatNumberWithDigitsLimit,
   formatNumber,
   formatPercentage,
   getAmountAsStringValidationSchema,
@@ -183,7 +183,7 @@ export function DepositForm() {
   }, [balance, setValues]);
 
   const formattedEstimatedShares = useMemo(
-    () => estimatedShares && formatLpAmount(estimatedShares, lng),
+    () => estimatedShares && formatNumberWithDigitsLimit(estimatedShares, lng),
     [estimatedShares, lng],
   );
 

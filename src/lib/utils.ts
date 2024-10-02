@@ -30,13 +30,15 @@ export const formatNumber = (num: number | string | undefined | null, locale: La
   return result.replace('.', getDecimalsSeparator(locale));
 };
 
-export const formatLpAmount = (input: string, locale: Language = 'en') => {
-  const suggestedDigitsAmount = 7;
-
+export const formatNumberWithDigitsLimit = (
+  input: string,
+  locale: Language = 'en',
+  digitsLimit = 7,
+) => {
   const parsedBalance = new BigNumber(input);
   let result: string;
 
-  if (parsedBalance.gte(10 ** (suggestedDigitsAmount - 1))) {
+  if (parsedBalance.gte(10 ** (digitsLimit - 1))) {
     result = parsedBalance.integerValue(BigNumber.ROUND_FLOOR).toString();
   } else if (parsedBalance.gte(1)) {
     // Leave 7 significant digits
@@ -44,13 +46,13 @@ export const formatLpAmount = (input: string, locale: Language = 'en') => {
 
     result = parsedBalance
       .shiftedBy(-exponent)
-      .decimalPlaces(suggestedDigitsAmount - 1, BigNumber.ROUND_FLOOR)
+      .decimalPlaces(digitsLimit - 1, BigNumber.ROUND_FLOOR)
       .shiftedBy(exponent)
       .toString();
-  } else if (parsedBalance.lte(10 ** (-suggestedDigitsAmount + 1)) && parsedBalance.gt(0)) {
-    result = `< ${formatNumber(10 ** (-suggestedDigitsAmount + 1), locale)}`;
+  } else if (parsedBalance.lte(10 ** (-digitsLimit + 1)) && parsedBalance.gt(0)) {
+    result = `< ${formatNumber(10 ** (-digitsLimit + 1), locale)}`;
   } else {
-    result = parsedBalance.decimalPlaces(6, BigNumber.ROUND_FLOOR).toString();
+    result = parsedBalance.decimalPlaces(digitsLimit - 1, BigNumber.ROUND_FLOOR).toString();
   }
 
   return result.replace('.', getDecimalsSeparator(locale));

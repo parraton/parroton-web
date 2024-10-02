@@ -101,7 +101,12 @@ interface Resources {
     "pending_reinvest": "Pending Reinvest",
     "reinvest_tooltip": "This is the total pending rewards for all users. The reinvest happens once per day if at least 7 TON are in pending rewards",
     "extraApr": "Extra APR",
-    "tvl": "TVL"
+    "tvl": "TVL",
+    "deposit_asset": "Deposit asset",
+    "you_earn": "You earn",
+    "yield": "Yield",
+    "you_deposit": "You deposit",
+    "use_max": "Use Max",
   },
   "welcome": {
     "main": "We are on Testnet!",

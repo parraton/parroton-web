@@ -8,6 +8,7 @@ import Image from 'next/image';
 
 import Logo from '../images/logo.svg';
 import Link from 'next/link';
+import { PreferredCurrencyButton } from '@preferred-currency-button';
 
 export async function Navbar({ lng }: { lng: Language }) {
   // const { t } = await serverTranslation(lng, 'common');
@@ -16,7 +17,6 @@ export async function Navbar({ lng }: { lng: Language }) {
     <div className={cn('custom-header')}>
       <Home.Link className={cn('flex items-center gap-2')}>
         <Image src={Logo} alt='Home' width={36} height={36} />
-        {/*<span className='custom-header-title'>{t('app_title')}</span>*/}
       </Home.Link>
 
       <ul className='custom-nav-list'>
@@ -34,6 +34,7 @@ export async function Navbar({ lng }: { lng: Language }) {
       </ul>
 
       <div className={cn('custom-settings-header flex items-center justify-end gap-4')}>
+        <PreferredCurrencyButton />
         <ConnectWallet />
         <Settings lng={lng} />
       </div>

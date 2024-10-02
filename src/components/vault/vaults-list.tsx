@@ -1,25 +1,30 @@
-/* eslint-disable react/jsx-no-literals */
 'use client';
 
 import { Vault as BackendVault, useVaults } from '@hooks/use-vaults';
 import { Language } from '@i18n/settings';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { Vault } from './vault';
 import Link from 'next/link';
+import { useTranslation } from '@i18n/client';
+import { DepositValueInput } from './deposit-value-input';
 
 export const VaultsList = ({ lng }: { lng: Language }) => {
   const { vaults } = useVaults();
+  const { t } = useTranslation({ ns: 'vault-card' });
+  const [depositValue, setDepositValue] = useState('1000');
 
   const renderVaults = useCallback(
     (vaults: BackendVault[]) => (
       <>
+        <DepositValueInput value={depositValue} onChange={setDepositValue} />
+
         <ul className='custom-card-list'>
-          <li className='custom-card-list-item'>Deposit asset</li>
-          <li className='custom-card-list-item'>You earn</li>
-          <li className='custom-card-list-item'>Yield</li>
+          <li className='custom-card-list-item'>{t('deposit_asset')}</li>
+          <li className='custom-card-list-item'>{t('you_earn')}</li>
+          <li className='custom-card-list-item'>{t('yield')}</li>
         </ul>
         {vaults.map((vault) => (
-          <Vault key={vault.vaultAddress} lng={lng} vault={vault} />
+          <Vault key={vault.vaultAddress} lng={lng} vault={vault} depositValue={depositValue} />
         ))}
         {/* eslint-disable-next-line react/jsx-no-literals */}
         <Link className='custom-link' href={`/${lng}/rewards`}>
@@ -27,13 +32,13 @@ export const VaultsList = ({ lng }: { lng: Language }) => {
         </Link>
       </>
     ),
-    [lng],
+    [depositValue, lng, t],
   );
 
   return vaults ? (
     renderVaults(vaults)
   ) : (
-    <div className='flex w-full justify-center'>
+    <div className='mt-5 flex w-full justify-center'>
       <div className='logo-loader animate-pulse' />
     </div>
   );

@@ -234,6 +234,25 @@ export const usePointsSources = () => {
   const invitedFriendsLoading = userDataLoading || referralsDataLoading;
   const questsLoading = !followedLinks || (questsData === undefined && !questsDataError);
 
+  const totalPointsEarned = userData?.balance;
+  const userLevel = useMemo(() => {
+    if (!totalPointsEarned || totalPointsEarned < 1000) {
+      return 1;
+    }
+
+    if (totalPointsEarned >= 12_200) {
+      return 9 + Math.floor(Math.log(totalPointsEarned / 12_200) / Math.log(1.2));
+    }
+
+    const a = 100;
+    const b = 500;
+    const c = -400 - totalPointsEarned;
+    const discriminant = b ** 2 - 4 * a * c;
+    const x = (-b + Math.sqrt(discriminant)) / (2 * a);
+
+    return Math.floor(x);
+  }, [totalPointsEarned]);
+
   // TODO: implement claiming rewards by a friend after the backend is ready
   const claimFriendRewards = useCallback(async () => {
     if (!api) {
@@ -249,7 +268,8 @@ export const usePointsSources = () => {
   }, [api, mutateReferralsData, mutateUserData]);
 
   return {
-    totalPointsEarned: userData?.balance,
+    userLevel,
+    totalPointsEarned,
     userDataLoading,
     isTelegram: Boolean(initData),
     invitedFriends,
