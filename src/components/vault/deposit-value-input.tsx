@@ -113,11 +113,11 @@ export const DepositValueInput: FC<DepositValueInputProps> = ({ value, onChange 
     <div className='custom-wrapper mt-5'>
       <GlassCard className='overflow-hidden'>
         <div className='flex flex-col gap-2'>
-          <div className='flex flex-col gap-2 px-2.5 py-5'>
+          <div className='flex flex-col gap-2 px-4 pt-4'>
             <div className='flex items-center justify-between'>
               <span>{t('you_deposit')}</span>
 
-              <Button variant='link' type='button' onClick={handleMaxButtonClick}>
+              <Button variant='link' type='button' onClick={handleMaxButtonClick} className='h-fit p-0'>
                 {t('use_max')}
               </Button>
             </div>
