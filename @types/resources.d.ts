@@ -8,6 +8,8 @@ interface Resources {
     "withdraw": "Withdraw",
     "rewards": "Claim Rewards",
     "apy": "APY",
+    "earn": "Earn",
+    "stake": "Stake",
   },
   "form": {
     "deposit_title": "Deposit",

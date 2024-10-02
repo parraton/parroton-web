@@ -5,5 +5,7 @@
   "deposit": "Deposit",
   "withdraw": "Withdraw",
   "rewards": "Claim Rewards",
-  "apy": "APY"
+  "apy": "APY",
+  "earn": "Earn",
+  "stake": "Stake"
 }

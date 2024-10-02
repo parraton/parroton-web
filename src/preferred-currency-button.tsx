@@ -74,7 +74,7 @@ const CurrencyOption = ({ value, isSelected, onClick }: CurrencyOptionProps) => 
     >
       {value}
 
-      {isSelected && <CheckCircle2 size={16} className='custom-text-link' />}
+      {isSelected && <CheckCircle2 size={16} className='text-custom-link' />}
     </Button>
   );
 };

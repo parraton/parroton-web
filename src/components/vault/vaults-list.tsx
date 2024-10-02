@@ -4,7 +4,6 @@ import { Vault as BackendVault, useVaults } from '@hooks/use-vaults';
 import { Language } from '@i18n/settings';
 import { useCallback, useState } from 'react';
 import { Vault } from './vault';
-import Link from 'next/link';
 import { useTranslation } from '@i18n/client';
 import { DepositValueInput } from './deposit-value-input';
 
@@ -28,10 +27,6 @@ export const VaultsList = ({ lng }: { lng: Language }) => {
         {vaults.map((vault) => (
           <Vault key={vault.vaultAddress} lng={lng} vault={vault} depositValue={depositValue} />
         ))}
-        {/* eslint-disable-next-line react/jsx-no-literals */}
-        <Link className='custom-link' href={`/${lng}/rewards`}>
-          Rewards
-        </Link>
       </>
     ),
     [depositValue, lng, t],

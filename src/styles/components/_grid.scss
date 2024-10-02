@@ -481,26 +481,6 @@ input[type="number"] {
   }
 }
 
-.custom-nav-settings {
-  display: flex;
-
-  @media (min-width: 768px) {
-    display: none;
-  }
-}
-
-.icon-stake {
-  @include themify($themes) {
-    background-image: themed("stake-icon");
-  }
-}
-
-.icon-earn {
-  @include themify($themes) {
-    background-image: themed("earn-icon");
-  }
-}
-
 .backdrop-blur-lg {
   opacity: 0.8;
 }
