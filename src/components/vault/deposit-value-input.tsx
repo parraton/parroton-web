@@ -117,7 +117,12 @@ export const DepositValueInput: FC<DepositValueInputProps> = ({ value, onChange 
             <div className='flex items-center justify-between'>
               <span>{t('you_deposit')}</span>
 
-              <Button variant='link' type='button' onClick={handleMaxButtonClick} className='h-fit p-0'>
+              <Button
+                variant='link'
+                type='button'
+                onClick={handleMaxButtonClick}
+                className='h-fit p-0'
+              >
                 {t('use_max')}
               </Button>
             </div>
