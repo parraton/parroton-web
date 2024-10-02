@@ -110,7 +110,7 @@ export const DepositValueInput: FC<DepositValueInputProps> = ({ value, onChange 
   const handleMaxButtonClick = useCallback(() => setValue(maxValue), [maxValue, setValue]);
 
   return (
-    <div className='custom-wrapper mt-5'>
+    <div className='custom-wrapper'>
       <GlassCard className='overflow-hidden'>
         <div className='flex flex-col gap-2'>
           <div className='flex flex-col gap-2 px-4 pt-4'>

@@ -16,6 +16,8 @@ export const VaultsList = ({ lng }: { lng: Language }) => {
   const renderVaults = useCallback(
     (vaults: BackendVault[]) => (
       <>
+        <h1 className='mt-5 text-center text-3xl font-bold'>{t('put_your_liquidity_at_work')}</h1>
+
         <DepositValueInput value={depositValue} onChange={setDepositValue} />
 
         <ul className='custom-card-list'>

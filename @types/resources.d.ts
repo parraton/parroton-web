@@ -107,6 +107,7 @@ interface Resources {
     "yield": "Yield",
     "you_deposit": "You deposit",
     "use_max": "Use Max",
+    "put_your_liquidity_at_work": "Put your liquidity at work"
   },
   "welcome": {
     "main": "We are on Testnet!",
