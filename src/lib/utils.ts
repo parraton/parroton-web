@@ -19,7 +19,7 @@ const getDecimalsSeparator = (locale: Language) =>
 export const formatNumber = (
   num: number | string | undefined | null,
   locale: Language = 'en',
-  shouldAddExtraDecimals = true
+  shouldAddExtraDecimals = true,
 ) => {
   if (num === undefined || num === null) return '~~~~';
 
