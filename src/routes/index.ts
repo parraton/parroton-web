@@ -10,6 +10,7 @@ const defaultInfo = {
 import * as HomeRoute from "@/app/[lng]/page.info";
 import * as VaultPageRoute from "@/app/[lng]/[vault]/page.info";
 import * as RewardsRoute from "@/app/[lng]/rewards/page.info";
+import * as SettingsRoute from "@/app/[lng]/settings/page.info";
 import * as WelcomeRoute from "@/app/[lng]/welcome/page.info";
 
 export const Home = makeRoute(
@@ -31,6 +32,13 @@ export const Rewards = makeRoute(
   {
     ...defaultInfo,
     ...RewardsRoute.Route
+  }
+);
+export const Settings = makeRoute(
+  "/[lng]/settings",
+  {
+    ...defaultInfo,
+    ...SettingsRoute.Route
   }
 );
 export const Welcome = makeRoute(

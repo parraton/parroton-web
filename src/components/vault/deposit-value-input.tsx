@@ -23,16 +23,20 @@ export const DepositValueInput: FC<DepositValueInputProps> = ({ value, onChange 
   const { preferredCurrency } = usePreferredCurrency();
   const prevPreferredCurrencyRef = useRef(preferredCurrency);
   const { balance } = useTonBalance();
-  const maxValue = useMemo(
+  const maxSliderValue = useMemo(
     () =>
       new BigNumber(balance ?? FALLBACK_BALANCE)
         .times(preferredCurrency === Currency.USD ? tonPrice : 1)
         .decimalPlaces(2, BigNumber.ROUND_FLOOR),
     [balance, preferredCurrency, tonPrice],
   );
+  const prevMaxSliderValueRef = useRef(maxSliderValue);
   const sliderShiftQuotient = useMemo(
-    () => (maxValue.isZero() ? 1 : new BigNumber(value).div(maxValue).toNumber()),
-    [maxValue, value],
+    () =>
+      maxSliderValue.isZero()
+        ? 1
+        : Math.min(new BigNumber(value).div(maxSliderValue).toNumber(), 1),
+    [maxSliderValue, value],
   );
   const [numberInputValue, setNumberInputValue] = useState(value);
 
@@ -45,8 +49,12 @@ export const DepositValueInput: FC<DepositValueInputProps> = ({ value, onChange 
   );
 
   useEffect(() => {
-    if (maxValue.isLessThan(value)) {
-      setValue(maxValue);
+    if (
+      maxSliderValue.isLessThan(value) &&
+      !prevMaxSliderValueRef.current.isEqualTo(maxSliderValue)
+    ) {
+      prevMaxSliderValueRef.current = maxSliderValue;
+      setValue(maxSliderValue);
     }
     if (prevPreferredCurrencyRef.current !== preferredCurrency) {
       prevPreferredCurrencyRef.current = preferredCurrency;
@@ -56,7 +64,7 @@ export const DepositValueInput: FC<DepositValueInputProps> = ({ value, onChange 
           : new BigNumber(value).div(tonPrice);
       setValue(unroundedValue.decimalPlaces(2, BigNumber.ROUND_FLOOR));
     }
-  }, [value, maxValue, onChange, preferredCurrency, setValue, tonPrice]);
+  }, [value, maxSliderValue, onChange, preferredCurrency, setValue, tonPrice]);
 
   const handleSliderChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -82,11 +90,7 @@ export const DepositValueInput: FC<DepositValueInputProps> = ({ value, onChange 
         BigNumber.ROUND_FLOOR,
       );
 
-      if (
-        !parsedValue.isFinite() ||
-        parsedValue.isNegative() ||
-        parsedValue.isGreaterThan(maxValue)
-      ) {
+      if (!parsedValue.isFinite() || parsedValue.isNegative()) {
         setNumberInputValue(newRawValue);
 
         return;
@@ -103,10 +107,13 @@ export const DepositValueInput: FC<DepositValueInputProps> = ({ value, onChange 
       );
       onChange(newValue);
     },
-    [maxValue, onChange],
+    [onChange],
   );
 
-  const handleMaxButtonClick = useCallback(() => setValue(maxValue), [maxValue, setValue]);
+  const handleMaxButtonClick = useCallback(
+    () => setValue(maxSliderValue),
+    [maxSliderValue, setValue],
+  );
 
   return (
     <div className='custom-wrapper'>
@@ -147,10 +154,10 @@ export const DepositValueInput: FC<DepositValueInputProps> = ({ value, onChange 
             <input
               type='range'
               min='0'
-              max={maxValue.toString()}
+              max={maxSliderValue.toString()}
               step='0.01'
-              value={value}
-              className='size-full cursor-pointer appearance-none bg-secondary pl-5'
+              value={BigNumber.max(value, maxSliderValue).toString()}
+              className='box-border size-full cursor-pointer appearance-none bg-secondary pl-5'
               onChange={handleSliderChange}
             />
 

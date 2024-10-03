@@ -49,3 +49,11 @@ input[type="number"] {
 textarea {
   resize: none;
 }
+
+input[type="range" i]::-webkit-slider-runnable-track {
+  opacity: 0;
+}
+
+input[type="range" i]::-moz-range-thumb {
+  opacity: 0;
+}

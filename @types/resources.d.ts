@@ -75,14 +75,14 @@ interface Resources {
     }
   },
   "settings": {
-    "dialog_title": "Settings",
-    "dialog_description": "Here you can manage the settings of the application",
-    "dialog_close": "Close",
-    "mode_title": "Color mode",
+    "settings_title": "Settings",
+    "theme_title": "Theme",
     "language_title": "Language",
-    "referral_title": "Referral link for web",
-    "referral_mini_app": "Referral link to miniapp",
-    "copy_referral": "Copy"
+    "links": "Links",
+    "website": "Website",
+    "telegram_mini_app": "Telegram miniapp",
+    "telegram_channel": "Telegram channel",
+    "docs": "Docs",
   },
   "terms": {
     "header": "Accept Terms",

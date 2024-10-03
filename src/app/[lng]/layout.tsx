@@ -32,7 +32,9 @@ export default function RootLayout({
           <div className={cn('grid min-h-screen', 'grid-rows-[auto,1fr]')}>
             <Navbar lng={lng!} />
             <main className='custom-main-container bg-background'>
-              <div className='custom-card-wrapper'>{children}</div>
+              <div className='flex w-full flex-col gap-5 p-5 md:mx-auto md:max-w-md md:px-0'>
+                {children}
+              </div>
             </main>
           </div>
         </SandwichProvider>

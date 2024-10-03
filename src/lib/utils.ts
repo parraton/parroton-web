@@ -16,16 +16,23 @@ const languageToIntlLocaleMap: Record<Language, Intl.LocalesArgument> = {
 const getDecimalsSeparator = (locale: Language) =>
   Intl.NumberFormat(languageToIntlLocaleMap[locale]).formatToParts(0.1)[1].value;
 
-export const formatNumber = (num: number | string | undefined | null, locale: Language = 'en') => {
+export const formatNumber = (
+  num: number | string | undefined | null,
+  locale: Language = 'en',
+  shouldAddExtraDecimals = true
+) => {
   if (num === undefined || num === null) return '~~~~';
 
   const parsedValue = new BigNumber(typeof num === 'string' ? num.replace(',', '.') : num);
   // eslint-disable-next-line unicorn/require-number-to-fixed-digits-argument
   let result = parsedValue.toFixed();
-  if (parsedValue.decimalPlaces() === 0) {
-    result += '.';
+
+  if (shouldAddExtraDecimals) {
+    if (parsedValue.decimalPlaces() === 0) {
+      result += '.';
+    }
+    result += '0'.repeat(Math.max(0, 2 - (parsedValue.decimalPlaces() ?? 0)));
   }
-  result += '0'.repeat(Math.max(0, 2 - (parsedValue.decimalPlaces() ?? 0)));
 
   return result.replace('.', getDecimalsSeparator(locale));
 };

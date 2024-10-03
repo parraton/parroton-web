@@ -15,7 +15,7 @@ export const VaultsList = ({ lng }: { lng: Language }) => {
   const renderVaults = useCallback(
     (vaults: BackendVault[]) => (
       <>
-        <h1 className='mt-5 text-center text-3xl font-bold'>{t('put_your_liquidity_at_work')}</h1>
+        <h1 className='text-center text-3xl font-bold'>{t('put_your_liquidity_at_work')}</h1>
 
         <DepositValueInput value={depositValue} onChange={setDepositValue} />
 
@@ -35,7 +35,7 @@ export const VaultsList = ({ lng }: { lng: Language }) => {
   return vaults ? (
     renderVaults(vaults)
   ) : (
-    <div className='mt-5 flex w-full justify-center'>
+    <div className='flex w-full justify-center'>
       <div className='logo-loader animate-pulse' />
     </div>
   );

@@ -141,20 +141,6 @@
   }
 }
 
-.custom-card-wrapper {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  width: 100%;
-  padding: 20px 20px 100px 20px;
-
-  @media (min-width: 768px) {
-    width: 28rem;
-    margin: 0 auto;
-    padding: 0;
-  }
-}
-
 .custom-text-like-asset-input {
   &:after, &::before {
     @include themify($themes) {
