@@ -18,10 +18,10 @@ const links: LinkInput[] = [
   { i18nKey: 'telegram_mini_app', href: miniAppLink },
   { label: 'Github', href: 'https://github.com/parraton' },
   { i18nKey: 'telegram_channel', href: 'https://t.me/parraton_en' },
-  { i18nKey: 'docs', href: 'https://github.com/parraton/parraton-core/blob/main/README.md' }
+  { i18nKey: 'docs', href: 'https://github.com/parraton/parraton-core/blob/main/README.md' },
 ];
 
-export async function SettingsPage({ params }: RouteInfoToLayout<typeof Route>) {
+async function SettingsPage({ params }: RouteInfoToLayout<typeof Route>) {
   const { t } = await serverTranslation(params.lng!, 'settings');
 
   return (
@@ -37,7 +37,9 @@ export async function SettingsPage({ params }: RouteInfoToLayout<typeof Route>) 
       </div>
       <h1 className='text-center text-lg font-bold'>{t('links')}</h1>
       {links.map(({ i18nKey, label, href }) => (
-        <a key={href} href={href} target='_blank' className='text-custom-link'>{i18nKey ? t(i18nKey) : label}</a>
+        <a key={href} href={href} target='_blank' className='text-custom-link'>
+          {i18nKey ? t(i18nKey) : label}
+        </a>
       ))}
     </div>
   );
