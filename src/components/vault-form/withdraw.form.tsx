@@ -4,8 +4,7 @@
 import { CardContent, CardFooter } from '@UI/card';
 import { Label } from '@UI/label';
 import { Button } from '@UI/button';
-import { ErrorMessage, Field, Form, FormikHelpers, FormikProvider, useFormik } from 'formik';
-import { Input } from '@UI/input';
+import { ErrorMessage, Field, Form, FormikProvider, useFormik } from 'formik';
 import { useWithdraw } from '@hooks/use-withdraw';
 import { useTranslation } from '@i18n/client';
 import { toFormikValidate } from 'zod-formik-adapter';
@@ -16,7 +15,7 @@ import { toast } from 'sonner';
 import { useParams } from '@routes/hooks';
 import { VaultPage } from '@routes';
 import { multiplyIfPossible } from '@utils/multiply-if-possible';
-import { OrLoader } from '@components/loader/loader';
+import { Loader, OrLoader } from '@components/loader/loader';
 import { useDebouncedCallback } from 'use-debounce';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { getVault } from '@core';
@@ -24,15 +23,18 @@ import { Address, fromNano, toNano } from '@ton/core';
 import { useVaultData } from '@hooks/use-vault-data';
 import useSWR from 'swr';
 import { AssetAmountInput } from '@UI/asset-amount-input';
+import { useTonAddress, useTonConnectModal } from '@tonconnect/ui-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@UI/dialog';
 
 const useFormData = () => {
   const { t } = useTranslation({ ns: 'form' });
   const { vault: vaultAddress } = useParams(VaultPage);
-
   const { vault, error: vaultError } = useVaultData(vaultAddress);
   const { balance, error: balanceError } = useSharesBalance(vaultAddress);
+  const walletAddress = useTonAddress();
 
-  const [estimatedLp, setEstimatedLp] = useState<string>('');
+  const [inputAmount, setInputAmount] = useState<string>('');
+  const setInputAmountDebounced = useDebouncedCallback(setInputAmount, 500);
 
   const getVaultContract = useCallback(
     ([, vaultAddress]: [string, string]) => getVault(Address.parse(vaultAddress)),
@@ -43,19 +45,6 @@ const useFormData = () => {
     errorRetryInterval: 5000,
     suspense: false,
   });
-  const fetchLpEquivalent = useDebouncedCallback(async (value) => {
-    if (amountValidationSchema.safeParse(value).success === false) {
-      setEstimatedLp('0');
-
-      return;
-    }
-
-    const x = await (
-      vaultContract ?? (await getVaultContract(['', vaultAddress]))
-    ).getEstimatedLpAmount(toNano(value));
-
-    setEstimatedLp(fromNano(x));
-  }, 500);
 
   const amountValidationSchema = useMemo(
     () =>
@@ -63,8 +52,8 @@ const useFormData = () => {
         {
           required: t('validation.required'),
           invalidFormat: t('validation.invalid_format'),
-          min: (amount: string | number) => t('validation.min_deposit', { minDeposit: amount }),
-          max: (amount: string | number) => t('validation.max_deposit', { maxDeposit: amount }),
+          min: (amount: string | number) => t('validation.min_withdraw', { minWithdraw: amount }),
+          max: (amount: string | number) => t('validation.max_withdraw', { maxWithdraw: amount }),
         },
         {
           required: true,
@@ -84,58 +73,84 @@ const useFormData = () => {
     [amountValidationSchema],
   );
 
-  const sharesBalanceLoading = !balanceError && balance === undefined;
+  const fetchLpEquivalent = useCallback(
+    async ([, inputAmount, vaultAddress]: [string, string, string]) => {
+      if (amountValidationSchema.safeParse(inputAmount).success === false) {
+        return '0';
+      }
+
+      const x = await (
+        vaultContract ?? (await getVaultContract(['', vaultAddress]))
+      ).getEstimatedLpAmount(toNano(inputAmount.replace(',', '.')));
+
+      return fromNano(x);
+    },
+    [amountValidationSchema, getVaultContract, vaultContract],
+  );
+  const { data: estimatedLp, error: estimatedLpError } = useSWR(
+    ['withdraw-estimated-lp', inputAmount, vaultAddress, balance],
+    fetchLpEquivalent,
+    {
+      refreshInterval: 10_000,
+      shouldRetryOnError: true,
+      errorRetryInterval: 1000,
+      suspense: false,
+    },
+  );
+
+  const balancesLoading = !balanceError && balance === undefined;
   const currencyIsLoading = !vaultError && !vault;
+  const plpPrice = vault?.plpPriceUsd;
+  const sharesBalance = balance?.sharesBalance;
+  const lpLoading = !estimatedLp && !estimatedLpError;
 
   return {
-    sharesBalanceLoading,
+    balancesLoading,
     currencyIsLoading,
-    dollarEquivalentIsLoading: sharesBalanceLoading || currencyIsLoading,
+    dollarEquivalentIsLoading: balancesLoading || currencyIsLoading,
     lpBalance: balance?.lpBalance,
-    sharesBalance: balance?.sharesBalance,
+    sharesBalance,
+    lpLoading: lpLoading,
+    walletAddress,
     estimatedLp,
-    fetchLpEquivalent,
+    triggerUpdateLpEquivalent: setInputAmountDebounced,
     validate,
+    lpSymbol: vault?.lpMetadata.symbol,
     currency: vault?.plpMetadata.symbol,
     lpPrice: vault?.lpPriceUsd,
-    plpPrice: vault?.plpPriceUsd,
+    plpPrice,
     outputTitle: t('lp_output'),
+    dollarEquivalent: multiplyIfPossible(plpPrice, sharesBalance),
   };
 };
 
 export function WithdrawForm() {
   const { t, lng } = useTranslation({ ns: 'common' });
+  const { t: formT } = useTranslation({ ns: 'form' });
   const { withdraw } = useWithdraw();
 
   const {
-    sharesBalanceLoading,
+    balancesLoading,
     currencyIsLoading,
     dollarEquivalentIsLoading,
     sharesBalance,
     estimatedLp,
-    fetchLpEquivalent,
+    triggerUpdateLpEquivalent,
+    walletAddress,
     validate,
     currency,
-    plpPrice,
     outputTitle,
+    dollarEquivalent,
+    lpLoading,
+    lpSymbol,
   } = useFormData();
+  const tonConnectModal = useTonConnectModal();
+  const [confirmIsOpen, handleConfirmOpenChange] = useState(false);
 
-  const onSubmit = useCallback(
-    async (values: { amount: string }, actions: FormikHelpers<{ amount: string }>) => {
-      actions.setSubmitting(true);
-      try {
-        await withdraw(values.amount.replace(',', '.'));
-        // TODO: implement status tracking
-      } catch (error) {
-        console.error(error);
-        toast.error('Something went wrong. Please try again later.');
-      } finally {
-        actions.setSubmitting(false);
-        actions.resetForm();
-      }
-    },
-    [withdraw],
-  );
+  const onSubmit = useCallback(async () => {
+    handleConfirmOpenChange(true);
+  }, []);
+
   const formik = useFormik({
     initialValues: {
       amount: '0',
@@ -143,7 +158,19 @@ export function WithdrawForm() {
     validate,
     onSubmit,
   });
-  const { isSubmitting, isValid, values, setValues } = formik;
+  const { isSubmitting, isValid, values, setValues, resetForm } = formik;
+
+  const handleWithdrawClick = useCallback(async () => {
+    try {
+      await withdraw(values.amount.replace(',', '.'));
+      // TODO: implement status tracking
+    } catch (error) {
+      console.error(error);
+      toast.error('Something went wrong. Please try again later.');
+    } finally {
+      resetForm();
+    }
+  }, [resetForm, values.amount, withdraw]);
 
   const handleMaxAmountClick = useCallback(() => {
     if (sharesBalance) {
@@ -152,10 +179,9 @@ export function WithdrawForm() {
   }, [sharesBalance, setValues]);
 
   useEffect(
-    () => void fetchLpEquivalent(values.amount.replace(',', '.')),
-    [fetchLpEquivalent, values.amount],
+    () => triggerUpdateLpEquivalent(values.amount),
+    [triggerUpdateLpEquivalent, values.amount],
   );
-  const dollarEquivalent = multiplyIfPossible(plpPrice, sharesBalance);
 
   const formattedEstimatedLp = useMemo(
     () => estimatedLp && formatNumber(estimatedLp, lng),
@@ -171,7 +197,7 @@ export function WithdrawForm() {
               {t('amount')}:{' '}
               {
                 <OrLoader
-                  animation={sharesBalanceLoading}
+                  animation={balancesLoading}
                   value={sharesBalance}
                   modifier={(x) => formatNumber(x, lng)}
                 />
@@ -197,21 +223,56 @@ export function WithdrawForm() {
               component='div'
               name='amount'
             />
-            <Label>{outputTitle}</Label>
-            <Field
-              name='output'
-              id='output'
-              type='text'
-              as={Input}
-              readOnly
-              value={formattedEstimatedLp}
-            />
           </div>
         </CardContent>
         <CardFooter>
-          <Button type='submit' disabled={isSubmitting || !isValid} className='custom-main-btn'>
-            {t('withdraw')}
-          </Button>
+          {walletAddress ? (
+            <Dialog open={confirmIsOpen} onOpenChange={handleConfirmOpenChange}>
+              <Button
+                disabled={isSubmitting || !isValid || lpLoading}
+                type='submit'
+                className='custom-main-btn'
+              >
+                {lpLoading ? <Loader animation /> : formT('preview_withdraw')}
+              </Button>
+              <DialogContent className='custom-dialog glass-card modal-card sm:max-w-md'>
+                <div className='flex flex-col gap-2'>
+                  <DialogHeader>
+                    <DialogTitle className='text-2xl'>{formT('confirm_withdraw')}</DialogTitle>
+                  </DialogHeader>
+                  <div className='flex flex-1 flex-col gap-2'>
+                    <div className='flex justify-between gap-2'>
+                      <span>{t('amount')}</span>
+                      <span>{formatNumber(values.amount, lng)} PLP</span>
+                    </div>
+                    <div className='flex justify-between gap-2'>
+                      <span>{outputTitle}</span>
+                      <span>
+                        {formattedEstimatedLp} {lpSymbol}
+                      </span>
+                    </div>
+                  </div>
+                  <Button
+                    disabled={!isValid}
+                    type='button'
+                    className='custom-main-btn'
+                    onClick={handleWithdrawClick}
+                  >
+                    {t('withdraw')}
+                  </Button>
+                </div>
+              </DialogContent>
+            </Dialog>
+          ) : (
+            <Button
+              disabled={!isValid}
+              type='button'
+              className='custom-main-btn'
+              onClick={tonConnectModal.open}
+            >
+              {formT('connect_wallet_to_withdraw')}
+            </Button>
+          )}
         </CardFooter>
       </Form>
     </FormikProvider>

@@ -3,8 +3,9 @@
   "app_description": "Опис для Parraton",
   "amount": "Баланс",
   "deposit": "Вкласти",
-  "confirm_deposit": "Підтвердити вкладення",
-  "connect_wallet_to_deposit": "Підключіть гаманець, щоб вкластися",
   "withdraw": "Вивести",
-  "rewards": "Забрати нагороди"
+  "rewards": "Забрати нагороди",
+  "apy": "APY",
+  "earn": "Заробіток",
+  "stake": "Стейк"
 }

@@ -1,0 +1,13 @@
+.ton-connect-btn {
+  button {
+    border-radius: $border-sm-radius;
+
+    svg {
+      display: none;
+    }
+
+    @include themify($themes) {
+      background-color: themed("button");
+    }
+  }
+}

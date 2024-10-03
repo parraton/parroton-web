@@ -1,10 +1,15 @@
 {
-  "dialog_title": "Налаштування",
+  "settings_title": "Налаштування",
   "dialog_description": "Тут ви можете змінити налаштування додатку",
   "dialog_close": "Закрити",
-  "mode_title": "Кольорова схема",
+  "theme_title": "Тема",
   "language_title": "Мова",
   "referral_title": "Реф. посилання",
   "referral_mini_app": "Реф. посилання на miniapp",
-  "copy_referral": "Копіювати"
+  "copy_referral": "Копіювати",
+  "links": "Посилання",
+  "website": "Сайт",
+  "telegram_mini_app": "Мінідодаток Telegram",
+  "telegram_channel": "Канал в Telegram",
+  "docs": "Документація"
 }

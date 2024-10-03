@@ -5,14 +5,23 @@ interface Resources {
     "app_description": "Description for Parraton",
     "amount": "Amount",
     "deposit": "Deposit",
-    "confirm_deposit": "Confirm Deposit",
-    "connect_wallet_to_deposit": "Connect wallet to deposit",
     "withdraw": "Withdraw",
-    "rewards": "Claim Rewards"
+    "rewards": "Claim Rewards",
+    "apy": "APY",
+    "earn": "Earn",
+    "stake": "Stake",
   },
   "form": {
     "deposit_title": "Deposit",
     "deposit_description": "Deposit your lp to automate rewards reinvestment.",
+    "preview_deposit": "Preview Deposit",
+    "preview_withdraw": "Preview Withdraw",
+    "confirm_deposit": "Confirm Deposit",
+    "confirm_withdraw": "Confirm Withdraw",
+    "connect_wallet_to_deposit": "Connect wallet to deposit",
+    "connect_wallet_to_withdraw": "Connect wallet to withdraw",
+    "your_balance": "Your balance",
+    "some_token_exchange_rate": "{{token}} exchange rate",
     "get_lp_description": "Not enough LP? Invest in DeDust pool",
     "withdraw_title": "Withdraw",
     "withdraw_description": "Burn your PLPs to get underlying LPs",
@@ -66,14 +75,14 @@ interface Resources {
     }
   },
   "settings": {
-    "dialog_title": "Settings",
-    "dialog_description": "Here you can manage the settings of the application",
-    "dialog_close": "Close",
-    "mode_title": "Color mode",
+    "settings_title": "Settings",
+    "theme_title": "Theme",
     "language_title": "Language",
-    "referral_title": "Referral link for web",
-    "referral_mini_app": "Referral link to miniapp",
-    "copy_referral": "Copy"
+    "links": "Links",
+    "website": "Website",
+    "telegram_mini_app": "Telegram miniapp",
+    "telegram_channel": "Telegram channel",
+    "docs": "Docs",
   },
   "terms": {
     "header": "Accept Terms",
@@ -94,13 +103,40 @@ interface Resources {
     "pending_reinvest": "Pending Reinvest",
     "reinvest_tooltip": "This is the total pending rewards for all users. The reinvest happens once per day if at least 7 TON are in pending rewards",
     "extraApr": "Extra APR",
-    "tvl": "TVL"
+    "tvl": "TVL",
+    "deposit_asset": "Deposit asset",
+    "you_earn": "You earn",
+    "yield": "Yield",
+    "you_deposit": "You deposit",
+    "use_max": "Use Max",
+    "put_your_liquidity_at_work": "Put your liquidity at work"
   },
   "welcome": {
     "main": "We are on Testnet!",
     "description": "Ahoy, stranger! First time here? Learn how to use our platform in our short video guide 🏴‍☠️",
     "watch": "Watch",
     "skip": "Skip"
+  },
+  "rewards": {
+    "deposit_liquidity": "Deposit liquidity", 
+    "deposit_liquidity_rewards_description": "+1,000 per $100/hour",
+    "deposit": "Deposit",
+    "invite_friends": "Invite friends",
+    "invite_friends_rewards_description": "+5,000 per 1 friend + 5% of their points",
+    "invite": "Invite",
+    "claim": "Claim",
+    "invited_friends": "Invited friends",
+    "earn_more": "Earn more",
+    "earn_points_title": "Earn points for your efforts",
+    "claimed": "Claimed",
+    "pending": "Pending",
+    "referral_title": "Referral link for web page",
+    "referral_mini_app": "Referral link to miniapp",
+    "copy_referral": "Copy",
+    "use_telegram_mini_app": "Use Telegram Mini App to access this section",
+    "no_friends_invited": "No friends have been invited yet",
+    "telegram_apps_center": "Telegram Apps Center",
+    "one_time_rewards_description": "+{{amount}} points"
   }
 }
 

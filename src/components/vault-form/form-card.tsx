@@ -29,11 +29,8 @@ export function FormCard({
           ) : (
             <>
               {t(`${action}_description`)} <br />
-              <Link
-                href={`https://dedust.io/pools/${formattedLpAddress}`}
-                style={{ color: '#007bff', textDecoration: 'underline' }}
-              >
-                {t('get_lp_description')}
+              <Link href={`https://dedust.io/pools/${formattedLpAddress}`}>
+                <span className='custom-link'>{t('get_lp_description')}</span>
               </Link>
             </>
           )}

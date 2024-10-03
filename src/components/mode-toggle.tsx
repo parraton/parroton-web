@@ -10,7 +10,7 @@ export function ModeToggle() {
 
   return (
     <input
-      className='custom-theme-btn'
+      className='custom-switch'
       type='checkbox'
       onChange={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
       checked={theme !== 'dark'}

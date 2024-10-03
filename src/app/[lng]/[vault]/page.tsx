@@ -7,12 +7,12 @@ import { VaultInfo } from '@components/vault-form/vault.info';
 
 function VaultPage({ params }: RouteInfoToLayout<typeof Route>) {
   return (
-    <div className={'flex flex-col gap-8'}>
+    <>
       <VaultInfo />
       <div className={cn('custom-form')}>
         <Form lng={params.lng!} vaultAddress={params.vault} />
       </div>
-    </div>
+    </>
   );
 }
 

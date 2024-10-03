@@ -54,6 +54,10 @@ const config = {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))',
         },
+        custom: {
+          link: 'var(--custom-link)',
+          button: 'var(--custom-button)',
+        },
       },
       borderRadius: {
         lg: 'var(--radius)',

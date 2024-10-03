@@ -31,17 +31,15 @@ export function KpiDialog({ values, lng }: KpiDialogProps) {
 
   return (
     <Dialog>
-      <DialogTrigger className='z-10'>
-        <p className='bg-none font-semibold text-[#19A7E7]'>{t('wanna_know_our_goals')}</p>
+      <DialogTrigger>
+        <p className='custom-link bold'>{t('wanna_know_our_goals')}</p>
       </DialogTrigger>
-      <DialogContent className='custom-dialog glass-card modal-card sm:max-w-md'>
-        <div className='p-6'>
-          <DialogHeader>
-            <DialogTitle className='text-2xl'>{t('our_kpi')}</DialogTitle>
-            <DialogDescription>{t('reach_together')}</DialogDescription>
-          </DialogHeader>
-          <OrLoader animation value={values} modifier={renderKpis} />
-        </div>
+      <DialogContent className={`custom-dialog custom-modal-settings sm:max-w-md`}>
+        <DialogHeader>
+          <DialogTitle className='text-2xl'>{t('our_kpi')}</DialogTitle>
+          <DialogDescription>{t('reach_together')}</DialogDescription>
+        </DialogHeader>
+        <OrLoader animation value={values} modifier={renderKpis} />
       </DialogContent>
     </Dialog>
   );
