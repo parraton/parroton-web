@@ -172,36 +172,6 @@
   background-size: contain;
 }
 
-.custom-dialog {
-  border-radius: 20px 20px 0 0;
-
-  @media (min-width: 768px) {
-    border-radius: 20px;
-    width: 500px;
-  }
-}
-
-.custom-modal-settings {
-  display: grid;
-  grid-template-rows: repeat(3, min-content);
-  width: 100vw;
-  max-width: unset;
-  bottom: 0;
-  top: unset;
-  height: 80vh;
-  gap: 2rem;
-  @include themify($themes) {
-    background-color: themed("content");
-  }
-
-  @media (min-width: 768px) {
-    max-width: 28rem;
-    top: 50%;
-    height: fit-content;
-    gap: 1rem;
-  }
-}
-
 .custom-form {
   display: grid;
   grid-template-columns: 1fr;
@@ -479,10 +449,6 @@ input[type="number"] {
     width: 20px;
     height: 20px;
   }
-}
-
-.backdrop-blur-lg {
-  opacity: 0.8;
 }
 
 .custom-info-list {

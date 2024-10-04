@@ -17,7 +17,7 @@ export function FormCard({
   const { t } = useTranslation({ ns: 'form', lng });
 
   // TODO: use link in Deposit description, remove hardcoded link & style
-  const isDeposit = action === Actions.deposit;
+  const isDeposit = action === Actions.depositOrWithdraw;
 
   return (
     <GlassCard>

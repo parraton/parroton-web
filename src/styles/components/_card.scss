@@ -96,6 +96,10 @@
   font-weight: bold;
   max-width: 100%;
 
+  @media (min-width: 420px) {
+    white-space: nowrap;
+  }
+
   @media (min-width: 768px) {
     text-align: left;
   }
@@ -144,7 +148,7 @@
 .custom-text-like-asset-input {
   &:after, &::before {
     @include themify($themes) {
-      color: themed("primary-text");
+      color: #8f9fac;
       align-items: center;
       display: inline-flex;
     }
@@ -187,4 +191,9 @@
     opacity: 0.72;
     right: 0.5rem;
   }
+}
+
+.custom-vault-header {
+  display: grid;
+  grid-template-columns: 5rem 1fr 5rem;
 }

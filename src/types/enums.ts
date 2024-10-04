@@ -1,8 +1,7 @@
 /* eslint-disable no-unused-vars */
 
 export enum Actions {
-  deposit = 'deposit',
-  withdraw = 'withdraw',
+  depositOrWithdraw = 'deposit_or_withdraw',
   faucet = 'faucet',
   claim = 'claim',
 }

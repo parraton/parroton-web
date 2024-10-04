@@ -9,6 +9,7 @@ import { useTonPrice } from '@hooks/use-ton-price';
 import { multiplyIfPossible } from '@utils/multiply-if-possible';
 import { OrLoader } from '@components/loader/loader';
 import { useTranslation } from '@i18n/client';
+import { useMemo } from 'react';
 
 export function ClaimBalance() {
   const { lng } = useParams(VaultPage);
@@ -16,7 +17,7 @@ export function ClaimBalance() {
   const { tonPrice } = useTonPrice();
   const { t } = useTranslation({ ns: 'form' });
 
-  const dollarBalance = multiplyIfPossible(tonPrice, balance);
+  const dollarBalance = useMemo(() => multiplyIfPossible(tonPrice, balance), [balance, tonPrice]);
 
   return (
     <div>

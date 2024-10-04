@@ -1,17 +1,19 @@
+import BigNumber from 'bignumber.js';
+
 export const multiplyIfPossible = (
   a: number | string | null | undefined,
   b: number | string | null | undefined,
-): number | undefined => {
+): string | undefined => {
   if (a === null || a === undefined || b === null || b === undefined) {
     return undefined;
   }
 
-  const aNumber = Number(a);
-  const bNumber = Number(b);
+  const aNumber = new BigNumber(a);
+  const bNumber = new BigNumber(b);
 
-  if (Number.isNaN(aNumber) || Number.isNaN(bNumber)) {
+  if (aNumber.isNaN() || bNumber.isNaN()) {
     return undefined;
   }
 
-  return aNumber * bNumber;
+  return aNumber.times(bNumber).toString();
 };

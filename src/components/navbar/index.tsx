@@ -14,7 +14,7 @@ import { useMemo } from 'react';
 import { PiggyBankIcon } from '../icons/piggy-bank';
 import { StarIcon } from '../icons/star';
 import { LinkButton } from './link-button';
-import { SettingsButton } from './settings-button';
+import { SettingsIcon } from '@components/icons/settings';
 
 export function Navbar({ lng }: { lng: Language }) {
   const pathname = usePathname();
@@ -45,14 +45,18 @@ export function Navbar({ lng }: { lng: Language }) {
         <LinkButton href='/' isActive={activeButtonSlug === 'stake'} Icon={PiggyBankIcon}>
           {t('stake')}
         </LinkButton>
-
-        <SettingsButton className='md:!hidden' isActive={activeButtonSlug === 'settings'} />
+        <LinkButton
+          href={`/${lng}/settings`}
+          isActive={activeButtonSlug === 'settings'}
+          Icon={SettingsIcon}
+        >
+          {t('settings')}
+        </LinkButton>
       </ul>
 
       <div className={cn('flex items-center justify-end gap-4')}>
         <PreferredCurrencyButton />
         <ConnectWallet />
-        <SettingsButton className='hidden md:block' isActive={activeButtonSlug === 'settings'} />
       </div>
     </div>
   );

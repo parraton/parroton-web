@@ -10,6 +10,7 @@ interface Resources {
     "apy": "APY",
     "earn": "Earn",
     "stake": "Stake",
+    "settings": "Settings",
   },
   "form": {
     "deposit_title": "Deposit",
@@ -29,13 +30,15 @@ interface Resources {
     "faucet_description": "Get some free tokens to test our platform",
     "claim_title": "Claim",
     "claim_description": "Get extra rewards from our platform",
+    "deposit_or_withdraw_title": "Deposit/Withdraw",
+    "deposit_or_withdraw_description": "Deposit or withdraw your LPs to manage rewards reinvestment",
     "validation": {
       "required": "Field is required",
       "invalid_format": "Invalid format",
-      "min_deposit": "Deposit can not be less or equal {{minDeposit}}",
-      "max_deposit": "Deposit can not be more than {{maxDeposit}}",
-      "min_withdraw": "Withdraw can not be less or equal {{minWithdraw}}",
-      "max_withdraw": "Withdraw can not be more than {{maxWithdraw}}"
+      "min_deposit": "Deposit can not be less or equal {{minAmount}}",
+      "max_deposit": "Deposit can not be more than {{maxAmount}}",
+      "min_withdraw": "Withdraw can not be less or equal {{minAmount}}",
+      "max_withdraw": "Withdraw can not be more than {{maxAmount}}"
     },
     "claim": {
       "balance": "Your rewards",
@@ -49,7 +52,14 @@ interface Resources {
     },
     "lp_output": "LPs to receive",
     "plp_output": "PLPs to receive",
-    "max_label": "MAX"
+    "max_label": "MAX",
+    "back": "Back",
+    "stats": "Stats",
+    "deposit_header": "Earn up to <1>{{amount}}</1> in <4>{{symbol}}</4> yearly",
+    "deposit_withdraw_input_postfix": " in {{tokenSymbol}}"
+    "you_deposit": "You deposit",
+    "you_withdraw": "You withdraw",
+    "you_get": "You get",
   },
   "kpi": {
     "wanna_know_our_goals": "Wanna know our goals?",
@@ -59,7 +69,8 @@ interface Resources {
       "revenue": "{{revenue_goal}} Revenue",
       "tvl": "{{tvl_goal}} TVL",
       "shares": "{{share_goal}} of Dedust Lp"
-    }
+    },
+    "close": "Close",
   },
   "language": {
     "en": "English",
@@ -100,7 +111,7 @@ interface Resources {
     "currency": "Currency",
     "apy": "APY",
     "daily": "Daily",
-    "pending_reinvest": "Pending Reinvest",
+    "pending_reinvest": "To be reinvested",
     "reinvest_tooltip": "This is the total pending rewards for all users. The reinvest happens once per day if at least 7 TON are in pending rewards",
     "extraApr": "Extra APR",
     "tvl": "TVL",

@@ -1,34 +1,44 @@
 import { GlassCard } from '@components/glass-card';
 import { usePreferredCurrency } from '@hooks/use-preferred-currency';
-import { useTonBalance } from '@hooks/use-ton-balance';
 import { useTonPrice } from '@hooks/use-ton-price';
 import { useTranslation } from '@i18n/client';
+import { FALLBACK_TON_PRICE } from '@lib/constants';
 import { Currency } from '@types';
 import BigNumber from 'bignumber.js';
 import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-interface DepositValueInputProps {
+interface AssetAmountInputV2Props {
+  children?: React.ReactNode | React.ReactNode[];
   value: string;
+  error?: string;
+  maxValueTon: string;
+  numberInputPostfix?: string;
   // eslint-disable-next-line no-unused-vars
   onChange: (value: string) => void;
 }
 
-const FALLBACK_TON_PRICE = 5.5;
-const FALLBACK_BALANCE = 1000;
+const DECIMAL_PLACES = 2;
+const SLIDER_STEP = new BigNumber(10).pow(-DECIMAL_PLACES).toString();
 
-export const DepositValueInput: FC<DepositValueInputProps> = ({ value, onChange }) => {
+export const AssetAmountInputV2: FC<AssetAmountInputV2Props> = ({
+  children,
+  value,
+  error,
+  numberInputPostfix = '',
+  maxValueTon,
+  onChange,
+}) => {
   const { t } = useTranslation({ ns: 'vault-card' });
 
   const { tonPrice = FALLBACK_TON_PRICE } = useTonPrice();
-  const { preferredCurrency } = usePreferredCurrency();
-  const prevPreferredCurrencyRef = useRef(preferredCurrency);
-  const { balance } = useTonBalance();
+  const { preferredCurrency: currency } = usePreferredCurrency();
+  const prevCurrencyRef = useRef(currency);
   const maxSliderValue = useMemo(
     () =>
-      new BigNumber(balance ?? FALLBACK_BALANCE)
-        .times(preferredCurrency === Currency.USD ? tonPrice : 1)
-        .decimalPlaces(2, BigNumber.ROUND_FLOOR),
-    [balance, preferredCurrency, tonPrice],
+      new BigNumber(maxValueTon)
+        .times(currency === Currency.USD ? tonPrice : 1)
+        .decimalPlaces(DECIMAL_PLACES, BigNumber.ROUND_FLOOR),
+    [currency, maxValueTon, tonPrice],
   );
   const prevMaxSliderValueRef = useRef(maxSliderValue);
   const sliderShiftQuotient = useMemo(
@@ -49,22 +59,21 @@ export const DepositValueInput: FC<DepositValueInputProps> = ({ value, onChange 
   );
 
   useEffect(() => {
-    if (
-      maxSliderValue.isLessThan(value) &&
-      !prevMaxSliderValueRef.current.isEqualTo(maxSliderValue)
-    ) {
-      prevMaxSliderValueRef.current = maxSliderValue;
-      setValue(maxSliderValue);
-    }
-    if (prevPreferredCurrencyRef.current !== preferredCurrency) {
-      prevPreferredCurrencyRef.current = preferredCurrency;
+    if (prevCurrencyRef.current !== currency) {
+      prevCurrencyRef.current = currency;
       const unroundedValue =
-        preferredCurrency === Currency.USD
+        currency === Currency.USD
           ? new BigNumber(value).times(tonPrice)
           : new BigNumber(value).div(tonPrice);
-      setValue(unroundedValue.decimalPlaces(2, BigNumber.ROUND_FLOOR));
+      setValue(unroundedValue.decimalPlaces(DECIMAL_PLACES, BigNumber.ROUND_FLOOR));
     }
-  }, [value, maxSliderValue, onChange, preferredCurrency, setValue, tonPrice]);
+    if (!prevMaxSliderValueRef.current.eq(maxSliderValue)) {
+      if (prevMaxSliderValueRef.current.eq(value)) {
+        setValue(maxSliderValue);
+      }
+      prevMaxSliderValueRef.current = maxSliderValue;
+    }
+  }, [value, maxSliderValue, onChange, currency, setValue, tonPrice]);
 
   const handleSliderChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -120,6 +129,8 @@ export const DepositValueInput: FC<DepositValueInputProps> = ({ value, onChange 
       <GlassCard className='overflow-hidden'>
         <div className='flex flex-col gap-2'>
           <div className='flex flex-col gap-2 px-4 pt-4'>
+            {children}
+
             <div className='flex items-center justify-between'>
               <span>{t('you_deposit')}</span>
 
@@ -130,9 +141,9 @@ export const DepositValueInput: FC<DepositValueInputProps> = ({ value, onChange 
 
             <div className='flex max-w-full items-center text-ellipsis whitespace-pre text-xl font-bold'>
               <label
-                data-currency-prefix={preferredCurrency === Currency.USD ? '$\u00A0' : ''}
+                data-currency-prefix={currency === Currency.USD ? '$\u00A0' : ''}
                 data-currency-suffix={
-                  preferredCurrency === Currency.USD ? '' : `\u00A0${preferredCurrency}`
+                  currency === Currency.USD ? '' : `\u00A0${currency}${numberInputPostfix}`
                 }
                 className='custom-text-like-asset-input inline-flex cursor-text'
               >
@@ -150,12 +161,14 @@ export const DepositValueInput: FC<DepositValueInputProps> = ({ value, onChange 
             </div>
           </div>
 
+          {error && <span className='text-sm text-red-500'>{error}</span>}
+
           <div className='relative h-12 w-full touch-none'>
             <input
               type='range'
               min='0'
               max={maxSliderValue.toString()}
-              step='0.01'
+              step={SLIDER_STEP}
               value={BigNumber.max(value, maxSliderValue).toString()}
               className='box-border size-full cursor-pointer appearance-none bg-secondary pl-5'
               onChange={handleSliderChange}

@@ -6,5 +6,6 @@
     "revenue": "{{revenue_goal}} in revenue",
     "tvl": "{{tvl_goal}} TVL",
     "shares": "{{share_goal}} of Dedust LP"
-  }
+  },
+  "close": "Close"
 }

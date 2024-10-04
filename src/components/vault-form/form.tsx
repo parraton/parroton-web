@@ -2,11 +2,8 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs';
 
-import { DepositForm } from '@components/vault-form/deposit.form';
-import { WithdrawForm } from '@components/vault-form/withdraw.form';
 import { Language } from '@i18n/settings';
 import { FormCard } from '@components/vault-form/form-card';
-import { cn } from '@lib/utils';
 import { Actions } from '@types';
 import { CardContent, CardFooter } from '@UI/card';
 import { ClaimBalance } from '@components/claim/claim-balance';
@@ -14,9 +11,7 @@ import { ClaimButton } from '@components/claim/claim.button';
 import { FaucetForm } from '@components/vault-form/faucet.form';
 import { isMainnet } from '@lib/utils';
 import { useTranslation } from '@i18n/client';
-import { useVaultData } from '@hooks/use-vault-data';
-import { Address } from '@ton/core';
-import { useMemo } from 'react';
+import { MainnetActionsForm } from './mainnet-actions/form';
 
 type TabsListItem<Action extends Actions = Actions> = {
   [key in Actions]: {
@@ -28,12 +23,8 @@ type TabsListItem<Action extends Actions = Actions> = {
 
 const tabs: ReadonlyArray<TabsListItem> = [
   {
-    title: 'deposit_title',
-    action: Actions.deposit,
-  },
-  {
-    title: 'withdraw_title',
-    action: Actions.withdraw,
+    title: 'deposit_or_withdraw_title',
+    action: Actions.depositOrWithdraw,
   },
   {
     title: 'faucet_title',
@@ -57,25 +48,21 @@ const tabsToRender = tabs.filter((tab) => {
 export function Form({ lng, vaultAddress }: { lng: Language; vaultAddress: string }) {
   const { t } = useTranslation({ lng, ns: 'form' });
 
-  const { vault } = useVaultData(vaultAddress);
-  const formattedLpAddress = useMemo(
-    () => (vault ? Address.parse(vault.lpMetadata.address).toString() : ''),
-    [vault],
-  );
+  if (isMainnet) {
+    return <MainnetActionsForm vaultAddress={vaultAddress} />;
+  }
 
   return (
-    <Tabs defaultValue={Actions.deposit} className='custom-wrapper w-full'>
+    <Tabs defaultValue={Actions.depositOrWithdraw} className='w-full'>
       <TabsList
         style={{
           gridTemplateColumns: `repeat(${tabsToRender.length}, minmax(0, 1fr))`,
         }}
-        className={cn(
-          'dark:border-[rgba(255, 255, 255, 0.12)] grid h-auto w-full rounded-[8px] border-[1px] p-0 dark:bg-[#151618]',
-        )}
+        className='grid h-auto w-full rounded-full border border-switcher bg-transparent p-0'
       >
         {tabsToRender.map((tab) => (
           <TabsTrigger
-            className='m-px rounded-[7px] dark:data-[state="active"]:!bg-[#FFFFFF1A] dark:data-[state="active"]:!text-[#FFFFFF]'
+            className='rounded-full py-2 text-xs text-white data-[state="active"]:bg-switcher data-[state="active"]:font-semibold'
             key={tab.action}
             value={tab.action}
           >
@@ -83,15 +70,8 @@ export function Form({ lng, vaultAddress }: { lng: Language; vaultAddress: strin
           </TabsTrigger>
         ))}
       </TabsList>
-      <TabsContent value={Actions.deposit}>
-        <FormCard action={Actions.deposit} lng={lng} formattedLpAddress={formattedLpAddress}>
-          <DepositForm />
-        </FormCard>
-      </TabsContent>
-      <TabsContent value={Actions.withdraw}>
-        <FormCard action={Actions.withdraw} lng={lng}>
-          <WithdrawForm />
-        </FormCard>
+      <TabsContent value={Actions.depositOrWithdraw}>
+        <MainnetActionsForm vaultAddress={vaultAddress} />
       </TabsContent>
       <TabsContent value={Actions.faucet}>
         <FormCard action={Actions.faucet} lng={lng}>

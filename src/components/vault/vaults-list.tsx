@@ -5,19 +5,26 @@ import { Language } from '@i18n/settings';
 import { useCallback, useState } from 'react';
 import { Vault } from './vault';
 import { useTranslation } from '@i18n/client';
-import { DepositValueInput } from './deposit-value-input';
+import { AssetAmountInputV2 } from '../ui/asset-amount-input-v2';
+import { useTonBalance } from '@hooks/use-ton-balance';
+import { FALLBACK_MAX_ASSET_VALUE } from '@lib/constants';
 
 export const VaultsList = ({ lng }: { lng: Language }) => {
   const { vaults } = useVaults();
   const { t } = useTranslation({ ns: 'vault-card' });
-  const [depositValue, setDepositValue] = useState('1000');
+  const { balance: tonBalance } = useTonBalance();
+  const [depositValue, setDepositValue] = useState(FALLBACK_MAX_ASSET_VALUE);
 
   const renderVaults = useCallback(
     (vaults: BackendVault[]) => (
       <>
         <h1 className='text-center text-3xl font-bold'>{t('put_your_liquidity_at_work')}</h1>
 
-        <DepositValueInput value={depositValue} onChange={setDepositValue} />
+        <AssetAmountInputV2
+          maxValueTon={tonBalance ?? FALLBACK_MAX_ASSET_VALUE}
+          value={depositValue}
+          onChange={setDepositValue}
+        />
 
         <ul className='custom-card-list'>
           <li className='custom-card-list-item'>{t('deposit_asset')}</li>
@@ -29,7 +36,7 @@ export const VaultsList = ({ lng }: { lng: Language }) => {
         ))}
       </>
     ),
-    [depositValue, lng, t],
+    [depositValue, lng, t, tonBalance],
   );
 
   return vaults ? (

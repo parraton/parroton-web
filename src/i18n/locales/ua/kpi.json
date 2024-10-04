@@ -6,5 +6,6 @@
     "revenue": "{{revenue_goal}} доходу",
     "tvl": "{{tvl_goal}} TVL",
     "shares": "{{share_goal}} від Dedust LP"
-  }
+  },
+  "close": "Закрити"
 }

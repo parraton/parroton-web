@@ -58,6 +58,10 @@ const config = {
           link: 'var(--custom-link)',
           button: 'var(--custom-button)',
         },
+        dialog: {
+          overlay: '#384551',
+        },
+        switcher: '#6e8892',
       },
       borderRadius: {
         lg: 'var(--radius)',
