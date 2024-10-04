@@ -32,6 +32,7 @@ export const AssetAmountInputV2: FC<AssetAmountInputV2Props> = ({
 
   const { tonPrice = FALLBACK_TON_PRICE } = useTonPrice();
   const { preferredCurrency: currency } = usePreferredCurrency();
+  const prevValueRef = useRef(value);
   const prevCurrencyRef = useRef(currency);
   const maxSliderValue = useMemo(
     () =>
@@ -59,20 +60,21 @@ export const AssetAmountInputV2: FC<AssetAmountInputV2Props> = ({
   );
 
   useEffect(() => {
-    if (prevCurrencyRef.current !== currency) {
-      prevCurrencyRef.current = currency;
+    const prevMaxSliderValue = prevMaxSliderValueRef.current;
+    if (prevValueRef.current !== value) {
+      setValue(new BigNumber(value).decimalPlaces(DECIMAL_PLACES, BigNumber.ROUND_FLOOR));
+    } else if (prevCurrencyRef.current !== currency) {
       const unroundedValue =
         currency === Currency.USD
           ? new BigNumber(value).times(tonPrice)
           : new BigNumber(value).div(tonPrice);
       setValue(unroundedValue.decimalPlaces(DECIMAL_PLACES, BigNumber.ROUND_FLOOR));
+    } else if (!prevMaxSliderValue.eq(maxSliderValue) && maxSliderValue.gte(value)) {
+      setValue(maxSliderValue);
     }
-    if (!prevMaxSliderValueRef.current.eq(maxSliderValue)) {
-      if (prevMaxSliderValueRef.current.eq(value)) {
-        setValue(maxSliderValue);
-      }
-      prevMaxSliderValueRef.current = maxSliderValue;
-    }
+    prevValueRef.current = value;
+    prevCurrencyRef.current = currency;
+    prevMaxSliderValueRef.current = maxSliderValue;
   }, [value, maxSliderValue, onChange, currency, setValue, tonPrice]);
 
   const handleSliderChange = useCallback(
@@ -159,9 +161,9 @@ export const AssetAmountInputV2: FC<AssetAmountInputV2Props> = ({
                 </span>
               </label>
             </div>
-          </div>
 
-          {error && <span className='text-sm text-red-500'>{error}</span>}
+            {error && <span className='text-sm text-red-500'>{error}</span>}
+          </div>
 
           <div className='relative h-12 w-full touch-none'>
             <input

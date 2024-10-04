@@ -28,15 +28,6 @@ export function KPIProgress({ title, value, total, type, lng }: KPIProgressProps
 
   const valueToShow = KpiTypeToModifier[type](value, lng);
 
-  if (type === KpiType.Percent) {
-    console.log({
-      title,
-      percentage,
-      valueToShow,
-      total,
-    });
-  }
-
   return (
     <div className='flex flex-col gap-1'>
       <h3 className='text-sm font-semibold'>{title}</h3>

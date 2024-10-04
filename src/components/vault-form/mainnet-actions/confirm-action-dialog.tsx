@@ -20,8 +20,8 @@ interface ConfirmActionDialogProps {
   inputTokenSymbol: string;
   outputAmount: Maybe<string>;
   outputTokenSymbol: string;
-  outputBalance: Maybe<string>;
-  balancesLoading: boolean;
+  inputBalance: Maybe<string>;
+  inputBalanceLoading: boolean;
   apy: Maybe<string>;
   apyIsLoading: boolean;
   exchangeRate: Maybe<string>;
@@ -41,8 +41,8 @@ export const ConfirmActionDialog = ({
   inputTokenSymbol,
   outputAmount,
   outputTokenSymbol,
-  outputBalance,
-  balancesLoading,
+  inputBalance,
+  inputBalanceLoading,
   apy,
   apyIsLoading,
   exchangeRate,
@@ -78,9 +78,9 @@ export const ConfirmActionDialog = ({
 
             <NanoInfoPlate
               name={t('your_balance')}
-              value={outputBalance}
-              modifier={(x) => `${formatNumberWithDigitsLimit(x, lng)} ${outputTokenSymbol}`}
-              loading={balancesLoading}
+              value={inputBalance}
+              modifier={(x) => `${formatNumberWithDigitsLimit(x, lng)} ${inputTokenSymbol}`}
+              loading={inputBalanceLoading}
             />
 
             <NanoInfoPlate
@@ -116,12 +116,14 @@ interface NanoInfoPlateProps {
 }
 
 const NanoInfoPlate = ({ name, value, modifier, loading }: NanoInfoPlateProps) => (
-  <div className='flex items-center gap-3'>
+  <div className='flex items-center justify-between gap-3'>
     <span className='font-semibold'>{name}</span>
     <OrLoader
       animation={loading}
       value={value}
-      modifier={(x) => <span className='font-medium'>{modifier ? modifier(x) : x}</span>}
+      modifier={(x) => (
+        <span className='font-medium text-custom-link'>{modifier ? modifier(x) : x}</span>
+      )}
     />
   </div>
 );

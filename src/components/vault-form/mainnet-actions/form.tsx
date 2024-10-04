@@ -41,8 +41,8 @@ export function MainnetActionsForm({ vaultAddress }: MainnetActionsFormProps) {
     shouldShowConnectButton,
     estimatedOutput,
     estimatedOutputLoading,
-    outputBalance,
-    balancesLoading,
+    inputBalance,
+    inputBalanceLoading,
     shortInputSymbol,
     shortOutputSymbol,
     expectedYearlyYield,
@@ -69,14 +69,16 @@ export function MainnetActionsForm({ vaultAddress }: MainnetActionsFormProps) {
   const resetValues = useCallback(
     (newAction: MainnetAction) => {
       const newAmount = newAction === 'deposit' ? maxDepositValue : maxWithdrawValue;
-      setValues(() => ({ amount: newAmount, action: newAction }));
+      setValues(() => ({ amount: newAmount, action: newAction }), true);
+      setInputAmount(newAmount);
+      setAction(newAction);
     },
-    [maxDepositValue, maxWithdrawValue, setValues],
+    [maxDepositValue, maxWithdrawValue, setAction, setInputAmount, setValues],
   );
 
   const handleConfirmActionClick = useCallback(async () => {
     try {
-      await doAction(amount.replace(',', '.'));
+      await doAction(inputAmountLpOrPlp);
       handleConfirmOpenChange(false);
       // TODO: implement status tracking
     } catch (error) {
@@ -85,29 +87,26 @@ export function MainnetActionsForm({ vaultAddress }: MainnetActionsFormProps) {
     } finally {
       resetValues(action);
     }
-  }, [doAction, amount, resetValues, action]);
+  }, [doAction, inputAmountLpOrPlp, resetValues, action]);
 
   const handleAmountChange = useCallback(
     (newValue: string) => {
-      setFieldValue('amount', newValue);
+      setFieldValue('amount', newValue, true);
       setInputAmount(newValue);
     },
     [setFieldValue, setInputAmount],
   );
   const handleActionChange = useCallback(
     (newAction: MainnetAction) => {
-      const newAmount = newAction === 'deposit' ? maxDepositValue : maxWithdrawValue;
-      setValues(() => ({ amount: newAmount, action: newAction }));
-      setInputAmount(newAmount);
-      setAction(newAction);
+      resetValues(newAction);
     },
-    [maxDepositValue, maxWithdrawValue, setAction, setInputAmount, setValues],
+    [resetValues],
   );
 
   return (
     <FormikProvider value={formik}>
       <Form className='flex w-full flex-col gap-4'>
-        {values.action === 'deposit' && (
+        {(vaultIsLoading || expectedYearlyYield) && (
           <div className='flex justify-center'>
             <OrLoader
               animation={vaultIsLoading}
@@ -127,7 +126,7 @@ export function MainnetActionsForm({ vaultAddress }: MainnetActionsFormProps) {
         )}
 
         <AssetAmountInputV2
-          value={values.amount}
+          value={amount}
           error={errors.amount}
           maxValueTon={maxValueTon}
           numberInputPostfix={t('deposit_withdraw_input_postfix', {
@@ -157,8 +156,8 @@ export function MainnetActionsForm({ vaultAddress }: MainnetActionsFormProps) {
             inputTokenSymbol={shortInputSymbol}
             outputAmount={estimatedOutput}
             outputTokenSymbol={shortOutputSymbol}
-            outputBalance={outputBalance}
-            balancesLoading={balancesLoading}
+            inputBalance={inputBalance}
+            inputBalanceLoading={inputBalanceLoading}
             apy={apy}
             apyIsLoading={vaultIsLoading}
             exchangeRate={inputToOutputExchangeRate}

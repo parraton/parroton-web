@@ -6,8 +6,6 @@ import { useTheme } from 'next-themes';
 export function ModeToggle() {
   const { theme, setTheme } = useTheme();
 
-  console.log({ theme });
-
   return (
     <input
       className='custom-switch'
