@@ -9,7 +9,8 @@ interface Resources {
     "rewards": "Claim Rewards",
     "apy": "APY",
     "earn": "Earn",
-    "stake": "Stake",
+    "settings": "Settings",
+    "tokens": "Tokens",
   },
   "form": {
     "deposit_title": "Deposit",
@@ -29,13 +30,15 @@ interface Resources {
     "faucet_description": "Get some free tokens to test our platform",
     "claim_title": "Claim",
     "claim_description": "Get extra rewards from our platform",
+    "deposit_or_withdraw_title": "Deposit/Withdraw",
+    "deposit_or_withdraw_description": "Deposit or withdraw your LPs to manage rewards reinvestment",
     "validation": {
       "required": "Field is required",
       "invalid_format": "Invalid format",
-      "min_deposit": "Deposit can not be less or equal {{minDeposit}}",
-      "max_deposit": "Deposit can not be more than {{maxDeposit}}",
-      "min_withdraw": "Withdraw can not be less or equal {{minWithdraw}}",
-      "max_withdraw": "Withdraw can not be more than {{maxWithdraw}}"
+      "min_deposit": "Deposit can not be less or equal {{minAmount}}",
+      "max_deposit": "Deposit can not be more than {{maxAmount}}",
+      "min_withdraw": "Withdraw can not be less or equal {{minAmount}}",
+      "max_withdraw": "Withdraw can not be more than {{maxAmount}}"
     },
     "claim": {
       "balance": "Your rewards",
@@ -49,17 +52,25 @@ interface Resources {
     },
     "lp_output": "LPs to receive",
     "plp_output": "PLPs to receive",
-    "max_label": "MAX"
+    "max_label": "MAX",
+    "back": "Back",
+    "stats": "Stats",
+    "deposit_header_in_usd": "Earn up to <1>{{amount}}</1>\nin <2>{{symbol}}</2> yearly",
+    "deposit_header_in_asset": "Earn up to <1>{{amount}}</1>\n{{symbol}} yearly",
+    "you_deposit": "You deposit",
+    "you_withdraw": "You withdraw",
+    "you_get": "You get",
   },
   "kpi": {
-    "wanna_know_our_goals": "Wanna know our goals?",
+    "our_goals": "Our goals",
     "our_kpi": "Our KPI",
     "reach_together": "Let’s reach them together",
     "goals": {
       "revenue": "{{revenue_goal}} Revenue",
       "tvl": "{{tvl_goal}} TVL",
       "shares": "{{share_goal}} of Dedust Lp"
-    }
+    },
+    "close": "Close",
   },
   "language": {
     "en": "English",
@@ -86,7 +97,7 @@ interface Resources {
   },
   "terms": {
     "header": "Accept Terms",
-    "description": "By using this platform, you agree to our Terms of Use and Privacy Policy. The platform is not responsible for any losses incurred. Use at your own risk.",
+    "description": "By using this platform, you agree to our <1>Terms of Use and Privacy Policy</1>. The platform is not responsible for any losses incurred. Use at your own risk.",
     "accept": "I agree"
   },
   "transaction": {
@@ -100,7 +111,7 @@ interface Resources {
     "currency": "Currency",
     "apy": "APY",
     "daily": "Daily",
-    "pending_reinvest": "Pending Reinvest",
+    "pending_reinvest": "To be reinvested",
     "reinvest_tooltip": "This is the total pending rewards for all users. The reinvest happens once per day if at least 7 TON are in pending rewards",
     "extraApr": "Extra APR",
     "tvl": "TVL",
@@ -109,7 +120,8 @@ interface Resources {
     "yield": "Yield",
     "you_deposit": "You deposit",
     "use_max": "Use Max",
-    "put_your_liquidity_at_work": "Put your liquidity at work"
+    "put_your_liquidity_at_work": "Put your <1>liquidity</1> at work",
+    "actual_asset_postfix": " in {{tokenSymbol}}",
   },
   "welcome": {
     "main": "We are on Testnet!",

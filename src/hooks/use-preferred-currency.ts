@@ -13,9 +13,9 @@ export const usePreferredCurrency = () => {
 
     return Object.values(Currency).includes(rawValue as Currency)
       ? (rawValue as Currency)
-      : Currency.USD;
+      : Currency.Tokens;
   }, [getItem]);
-  const { data: preferredCurrency = Currency.USD, mutate } = useSWR(
+  const { data: preferredCurrency = Currency.Tokens, mutate } = useSWR(
     storageKey,
     getPreferredCurrency,
     {

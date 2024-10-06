@@ -19,10 +19,10 @@
   "validation": {
     "required": "Це поле обов'язкове",
     "invalid_format": "Невірний формат",
-    "min_deposit": "Мінімальний депозит {{minDeposit}}",
-    "max_deposit": "Максимальний депозит {{maxDeposit}}",
-    "min_withdraw": "Неможливо вивести {{minWithdraw}} або менше",
-    "max_withdraw": "Неможливо вивести більше ніж {{maxWithdraw}}"
+    "min_deposit": "Мінімальний депозит {{minAmount}}",
+    "max_deposit": "Максимальний депозит {{maxAmount}}",
+    "min_withdraw": "Неможливо вивести {{minAmount}} або менше",
+    "max_withdraw": "Неможливо вивести більше ніж {{maxAmount}}"
   },
   "claim": {
     "balance": "Доступні нагороди",
@@ -36,5 +36,14 @@
   },
   "lp_output": "Кількість LP, яку ви отримаєте",
   "plp_output": "Кількість PLP, яку ви отримаєте",
-  "max_label": "Макс."
+  "max_label": "Макс.",
+  "back": "Назад",
+  "stats": "Статистика",
+  "deposit_header_in_usd": "Заробляйте до <1>{{amount}}</1>\nу <2>{{symbol}}</2> щорічно",
+  "deposit_header_in_asset": "Заробляйте до <1>{{amount}}</1>\n{{symbol}} щорічно",
+  "you_deposit": "Ви вкладаєте",
+  "you_withdraw": "Ви виводите",
+  "you_get": "Ви отримуєте",
+  "deposit_or_withdraw_title": "Вкласти/Вивести",
+  "deposit_or_withdraw_description": "Вкладіть або виведіть свої LP, щоб керувати реінвестуванням нагород"
 }

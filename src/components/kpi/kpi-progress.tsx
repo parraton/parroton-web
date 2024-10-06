@@ -24,18 +24,9 @@ type KPIProgressProps = {
 const zero = 0;
 
 export function KPIProgress({ title, value, total, type, lng }: KPIProgressProps) {
-  const percentage = (value / total) * 100;
+  const percentage = Math.min(value / total, 1) * 100;
 
   const valueToShow = KpiTypeToModifier[type](value, lng);
-
-  if (type === KpiType.Percent) {
-    console.log({
-      title,
-      percentage,
-      valueToShow,
-      total,
-    });
-  }
 
   return (
     <div className='flex flex-col gap-1'>

@@ -36,6 +36,7 @@
 
       --custom-link: #4dc3d7;
       --custom-button: #9b6fff;
+      --custom-primary-text: #212529;
     }
 
     .dark {
@@ -69,6 +70,7 @@
 
       --custom-link: #a8f3ff;
       --custom-button: #a684ff;
+      --custom-primary-text: #fff;
     }
   }
 

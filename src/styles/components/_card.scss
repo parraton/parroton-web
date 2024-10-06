@@ -24,10 +24,10 @@
 
 .custom-card-content {
   display: grid;
-  grid-template-columns: 2fr 3.5rem 1fr;
+  grid-template-columns: $vaults-list-grid-template-columns;
   align-items: center;
   padding: 20px 10px;
-  gap: 10px;
+  gap: $vaults-list-grid-gap;
   position: relative;
 
   @media (min-width: 420px) {
@@ -64,14 +64,6 @@
   }
 }
 
-.custom-card-header {
-  height: var(--header-hieght);
-
-  @media (min-width: 768px) {
-    padding-right: 20px;
-  }
-}
-
 .custom-card-info {
   display: grid;
   grid-template-columns: 0.5fr 1fr;
@@ -96,6 +88,10 @@
   font-weight: bold;
   max-width: 100%;
 
+  @media (min-width: 420px) {
+    white-space: nowrap;
+  }
+
   @media (min-width: 768px) {
     text-align: left;
   }
@@ -119,9 +115,9 @@
 .custom-card-list {
   display: grid;
   padding: 0 10px;
-  grid-template-columns: 2fr 3.5rem 1fr;
+  grid-template-columns: $vaults-list-grid-template-columns;
   grid-template-rows: auto;
-  gap: 20px;
+  gap: $vaults-list-grid-gap;
 
   @media (min-width: 420px) {
     grid-template-columns: 2fr repeat(2, 1fr);
@@ -144,7 +140,7 @@
 .custom-text-like-asset-input {
   &:after, &::before {
     @include themify($themes) {
-      color: themed("primary-text");
+      color: #8f9fac;
       align-items: center;
       display: inline-flex;
     }
@@ -187,4 +183,9 @@
     opacity: 0.72;
     right: 0.5rem;
   }
+}
+
+.custom-vault-header {
+  display: grid;
+  grid-template-columns: 5rem 1fr 5rem;
 }

@@ -1,6 +1,5 @@
 'use client';
 
-import { cn } from '@lib/utils';
 import { Home } from '@routes';
 import { Language } from '@i18n/settings';
 import { ConnectWallet } from '@components/connect-wallet';
@@ -14,7 +13,7 @@ import { useMemo } from 'react';
 import { PiggyBankIcon } from '../icons/piggy-bank';
 import { StarIcon } from '../icons/star';
 import { LinkButton } from './link-button';
-import { SettingsButton } from './settings-button';
+import { SettingsIcon } from '@components/icons/settings';
 
 export function Navbar({ lng }: { lng: Language }) {
   const pathname = usePathname();
@@ -25,12 +24,12 @@ export function Navbar({ lng }: { lng: Language }) {
 
     if (pathname.includes('/rewards')) return 'rewards';
 
-    return 'stake';
+    return 'deposit';
   }, [pathname]);
 
   return (
-    <div className={cn('custom-header')}>
-      <Home.Link className={cn('flex items-center gap-2')}>
+    <div className='custom-header'>
+      <Home.Link className='flex items-center gap-2'>
         <Image src={Logo} alt='Home' width={36} height={36} />
       </Home.Link>
 
@@ -42,17 +41,21 @@ export function Navbar({ lng }: { lng: Language }) {
         >
           {t('earn')}
         </LinkButton>
-        <LinkButton href='/' isActive={activeButtonSlug === 'stake'} Icon={PiggyBankIcon}>
-          {t('stake')}
+        <LinkButton href='/' isActive={activeButtonSlug === 'deposit'} Icon={PiggyBankIcon}>
+          {t('deposit')}
         </LinkButton>
-
-        <SettingsButton className='md:!hidden' isActive={activeButtonSlug === 'settings'} />
+        <LinkButton
+          href={`/${lng}/settings`}
+          isActive={activeButtonSlug === 'settings'}
+          Icon={SettingsIcon}
+        >
+          {t('settings')}
+        </LinkButton>
       </ul>
 
-      <div className={cn('flex items-center justify-end gap-4')}>
+      <div className='flex items-center justify-end gap-4'>
         <PreferredCurrencyButton />
         <ConnectWallet />
-        <SettingsButton className='hidden md:block' isActive={activeButtonSlug === 'settings'} />
       </div>
     </div>
   );

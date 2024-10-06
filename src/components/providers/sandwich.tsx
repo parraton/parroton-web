@@ -49,7 +49,6 @@ const SetReferral = () => {
 
   useEffect(() => {
     const existingRef = localStorage.getItem('ref');
-    console.log('ref', ref, existingRef);
     if (ref && ref !== existingRef) {
       localStorage.setItem('ref', ref);
     }

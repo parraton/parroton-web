@@ -18,7 +18,7 @@ const links: LinkInput[] = [
   { i18nKey: 'telegram_mini_app', href: miniAppLink },
   { label: 'Github', href: 'https://github.com/parraton' },
   { i18nKey: 'telegram_channel', href: 'https://t.me/parraton_en' },
-  { i18nKey: 'docs', href: 'https://github.com/parraton/parraton-core/blob/main/README.md' },
+  { i18nKey: 'docs', href: 'https://docs.parraton.com' },
 ];
 
 async function SettingsPage({ params }: RouteInfoToLayout<typeof Route>) {

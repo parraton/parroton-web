@@ -17,7 +17,7 @@ export const ReferralModal = ({ isOpen, onClose }: ReferralModalProps) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
-      <DialogContent className={`custom-dialog glass-card modal-card sm:max-w-md`}>
+      <DialogContent className={`glass-card modal-card sm:max-w-md`}>
         {miniAppLink ? (
           <>
             <p>{t('referral_mini_app')}</p>

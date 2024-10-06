@@ -4,7 +4,7 @@
   "currency": "Currency",
   "apy": "APY",
   "daily": "Daily",
-  "pending_reinvest": "Pending Reinvest",
+  "pending_reinvest": "To be reinvested",
   "reinvest_tooltip": "This is the total pending rewards for all users. The reinvest happens once per day if at least 7\u00a0TON are in pending rewards",
   "extraApr": "Extra APR",
   "tvl": "TVL",
@@ -13,5 +13,6 @@
   "yield": "Yield",
   "you_deposit": "You deposit",
   "use_max": "Use Max",
-  "put_your_liquidity_at_work": "Put your liquidity at work"
+  "put_your_liquidity_at_work": "Put your <1>liquidity</1> at work",
+  "actual_asset_postfix": " in {{tokenSymbol}}"
 }

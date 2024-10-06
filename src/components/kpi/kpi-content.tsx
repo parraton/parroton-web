@@ -41,7 +41,7 @@ export const KpiContent = ({ values, lng }: KpiContentProps) => {
   );
 
   return (
-    <div className='mt-4 flex flex-col gap-2'>
+    <div className='flex flex-1 flex-col gap-2'>
       {progressEntries.map(({ key, title, values, type }) => (
         <KPIProgress
           key={key}

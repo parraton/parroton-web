@@ -1,12 +1,13 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import { usePointsSources } from '../../../hooks/use-points-sources';
+import React from 'react';
 import { ReferralModal } from './referral-modal';
 import { InvitedFriendsList } from './invited-friends-list';
 import { TasksList } from './tasks-list';
 import { RewardsHeader } from './rewards-header';
 import { useTranslation } from '@i18n/client';
+import { useIsFirstRender } from '@hooks/use-is-first-render';
+import { usePointsSources } from '@hooks/use-points-sources';
 
 export const RewardsBody = () => {
   const { t } = useTranslation({ ns: 'rewards' });
@@ -23,8 +24,7 @@ export const RewardsBody = () => {
     claimFriendRewards,
   } = usePointsSources();
 
-  const [isFirstRender, setIsFirstRender] = useState(true);
-  useEffect(() => setIsFirstRender(false), []);
+  const isFirstRender = useIsFirstRender();
 
   if (isFirstRender) {
     return null;

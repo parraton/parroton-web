@@ -19,10 +19,10 @@
   "validation": {
     "required": "This field is required",
     "invalid_format": "Invalid format",
-    "min_deposit": "Deposit can not be less or equal {{minDeposit}}",
-    "max_deposit": "Deposit can not be more than {{maxDeposit}}",
-    "min_withdraw": "Withdraw can not be less or equal {{minWithdraw}}",
-    "max_withdraw": "Withdraw can not be more than {{maxWithdraw}}"
+    "min_deposit": "Deposit can not be less or equal {{minAmount}}",
+    "max_deposit": "Deposit can not be more than {{maxAmount}}",
+    "min_withdraw": "Withdraw can not be less or equal {{minAmount}}",
+    "max_withdraw": "Withdraw can not be more than {{maxAmount}}"
   },
   "claim": {
     "balance": "Your rewards",
@@ -36,5 +36,14 @@
   },
   "lp_output": "LPs to receive",
   "plp_output": "PLPs to receive",
-  "max_label": "MAX"
+  "max_label": "MAX",
+  "back": "Back",
+  "stats": "Stats",
+  "deposit_header_in_usd": "Earn up to <1>{{amount}}</1>\nin <2>{{symbol}}</2> yearly",
+  "deposit_header_in_asset": "Earn up to <1>{{amount}}</1>\n{{symbol}} yearly",
+  "you_deposit": "You deposit",
+  "you_withdraw": "You withdraw",
+  "you_get": "You get",
+  "deposit_or_withdraw_title": "Deposit/Withdraw",
+  "deposit_or_withdraw_description": "Deposit or withdraw your LPs to manage rewards reinvestment"
 }
