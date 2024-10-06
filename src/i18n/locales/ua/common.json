@@ -1,6 +1,6 @@
 {
   "app_title": "Parraton",
-  "app_description": "Опис для Parraton",
+  "app_description": "Parraton - це децентралізований протокол оптимізації доходів на блокчейні TON.",
   "amount": "Баланс",
   "deposit": "Вкласти",
   "withdraw": "Вивести",
@@ -8,6 +8,6 @@
   "apy": "APY",
   "earn": "Заробіток",
   "settings": "Налаштування",
-  "close": "Закрити",
-  "tokens": "Токени"
+  "tokens": "Токени",
+  "get_data_error": "Не вдалося отримати дані, будь ласка, перезавантажте сторінку"
 }

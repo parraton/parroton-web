@@ -3,6 +3,18 @@ import { WelcomeButtons } from '@components/welcome-buttons';
 import { RouteHoc } from '@routes/hoc';
 import { Route } from './page.info';
 import { RouteInfoToLayout } from '@routes/makeRoute';
+import type { Metadata } from 'next';
+
+export async function generateMetadata({
+  params,
+}: RouteInfoToLayout<typeof Route>): Promise<Metadata> {
+  const { t } = await serverTranslation(params.lng!, 'common');
+
+  return {
+    title: t('app_title'),
+    description: t('app_description'),
+  };
+}
 
 async function WelcomePage({ params }: RouteInfoToLayout<typeof Route>) {
   const { t } = await serverTranslation(params.lng, 'welcome');

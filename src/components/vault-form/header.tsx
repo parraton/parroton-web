@@ -3,6 +3,7 @@
 import { KpiDialog } from '@components/kpi/kpi-dialog';
 import { OrLoader } from '@components/loader/loader';
 import { useVaultData } from '@hooks/use-vault-data';
+import { useVaults } from '@hooks/use-vaults';
 import { useTranslation } from '@i18n/client';
 import { Language } from '@i18n/settings';
 import { ChevronLeftIcon } from 'lucide-react';
@@ -15,16 +16,19 @@ interface Props {
 
 export const VaultHeader = ({ lng, vaultAddress }: Props) => {
   const { t } = useTranslation({ lng, ns: 'form' });
+  const { vaults } = useVaults();
   const { vault, error: vaultError } = useVaultData(vaultAddress);
   const { back } = useRouter();
 
   return (
     <div className='custom-vault-header gap-5 font-semibold'>
       <div>
-        <button className='flex items-center text-custom-link' onClick={back}>
-          <ChevronLeftIcon size={16} />
-          <span>{t('back')}</span>
-        </button>
+        {(!vaults || vaults.length > 1) && (
+          <button className='flex items-center text-custom-link' onClick={back}>
+            <ChevronLeftIcon size={16} />
+            <span>{t('back')}</span>
+          </button>
+        )}
       </div>
       <div className='flex justify-center'>
         <OrLoader

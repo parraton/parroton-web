@@ -48,7 +48,13 @@ export interface Vault {
 
 function fetchVaults(): Promise<Vault[]> {
   return fetch(VAULTS_API)
-    .then((response) => response.json())
+    .then((response) => {
+      if (response.status >= 400) {
+        throw new Error(`Request for vaults failed with status ${response.status}`);
+      }
+
+      return response.json();
+    })
     .then((data) => data);
 }
 

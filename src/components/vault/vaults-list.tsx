@@ -2,7 +2,7 @@
 
 import { Vault as BackendVault, useVaults } from '@hooks/use-vaults';
 import { Language } from '@i18n/settings';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Vault } from './vault';
 import { useTranslation } from '@i18n/client';
 import { AssetAmountInputV2 } from '../ui/asset-amount-input-v2';
@@ -13,10 +13,13 @@ import { Trans } from 'react-i18next';
 import BigNumber from 'bignumber.js';
 import { usePreferredCurrency } from '@hooks/use-preferred-currency';
 import { Currency } from '@types';
+import { useRouter } from 'next/navigation';
 
 export const VaultsList = ({ lng }: { lng: Language }) => {
-  const { vaults } = useVaults();
+  const { replace } = useRouter();
+  const { vaults, error } = useVaults();
   const { t } = useTranslation({ ns: 'vault-card' });
+  const { t: commonT } = useTranslation({ ns: 'common' });
   const { balance: tonBalance } = useTonBalance();
   const { preferredCurrency } = usePreferredCurrency();
   const { tonPrice = FALLBACK_TON_PRICE } = useTonPrice();
@@ -59,6 +62,16 @@ export const VaultsList = ({ lng }: { lng: Language }) => {
     ),
     [depositValue, lng, t, tonBalance, tonPrice],
   );
+
+  useEffect(() => {
+    if (vaults?.length === 1) {
+      replace(`/${lng}/${vaults[0].vaultAddress}`);
+    }
+  }, [lng, replace, vaults]);
+
+  if (error) {
+    return <div className='flex w-full justify-center'>{commonT('get_data_error')}</div>;
+  }
 
   return vaults ? (
     renderVaults(vaults)
