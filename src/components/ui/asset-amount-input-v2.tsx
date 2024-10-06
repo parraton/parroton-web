@@ -220,16 +220,12 @@ const StyledThumb = ({
     {...restProps}
     className={cn(
       className,
-      'flex h-12 w-12 cursor-grab items-center justify-between bg-primary-foreground px-4',
+      'flex h-12 w-12 cursor-grab items-center justify-between bg-custom-link px-4',
     )}
     key={key}
   >
     {[0.32, 0.72, 1].map((opacity) => (
-      <div
-        key={opacity}
-        className='h-4 w-0.5 rounded-lg bg-custom-primary-text'
-        style={{ opacity }}
-      />
+      <div key={opacity} className='h-4 w-0.5 rounded-lg bg-[#74bec9]' style={{ opacity }} />
     ))}
   </div>
 );
@@ -240,16 +236,26 @@ interface TrackState {
 }
 
 const StyledTrack = (
-  { className, key, ...restProps }: HTMLPropsWithRefCallback<HTMLDivElement>,
+  { className, key, style: styleFromProps, ...restProps }: HTMLPropsWithRefCallback<HTMLDivElement>,
   { index }: TrackState,
-) => (
-  <div
-    {...restProps}
-    className={cn(
-      className,
-      'bottom-0 top-0',
-      index === 0 ? 'bg-primary-foreground' : 'bg-secondary',
-    )}
-    key={key}
-  />
-);
+) => {
+  const leftFromProps = styleFromProps?.left;
+
+  const style = {
+    ...styleFromProps,
+    left: leftFromProps && (index !== 0) ? (Number.parseInt(String(leftFromProps)) + 2) : leftFromProps,
+  };
+
+  return (
+    <div
+      {...restProps}
+      style={style}
+      className={cn(
+        className,
+        'bottom-0 top-0',
+        index === 0 ? 'bg-custom-link' : 'bg-gray-300 dark:bg-gray-600',
+      )}
+      key={key}
+    />
+  );
+};

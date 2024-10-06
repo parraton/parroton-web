@@ -62,7 +62,7 @@ interface Resources {
     "you_get": "You get",
   },
   "kpi": {
-    "wanna_know_our_goals": "Wanna know our goals?",
+    "our_goals": "Our goals",
     "our_kpi": "Our KPI",
     "reach_together": "Let’s reach them together",
     "goals": {

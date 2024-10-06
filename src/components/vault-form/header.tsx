@@ -35,8 +35,7 @@ export const VaultHeader = ({ lng, vaultAddress }: Props) => {
           )}
         />
       </div>
-      <div />
-      <div className='col-span-3 flex justify-center'>
+      <div className='flex justify-end'>
         <OrLoader
           animation={!vaultError && !vault}
           value={vault}
