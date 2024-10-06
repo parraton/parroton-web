@@ -206,8 +206,7 @@ const StyledThumb = ({
     {[0.32, 0.72, 1].map((opacity) => (
       <div
         key={opacity}
-        // eslint-disable-next-line tailwindcss/classnames-order
-        className='bg-custom-primary-text h-4 w-0.5 rounded-lg'
+        className='h-4 w-0.5 rounded-lg bg-custom-primary-text'
         style={{ opacity }}
       />
     ))}
