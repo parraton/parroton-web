@@ -206,7 +206,10 @@ export const AssetAmountInputV2: FC<AssetAmountInputV2Props> = ({
 };
 
 const StyledSlider = (props: ReactSliderProps) => (
-  <ReactSlider {...props} className={cn(props.className, 'h-12 w-full bg-secondary')} />
+  <ReactSlider
+    {...props}
+    className={cn(props.className, 'h-12 w-full bg-gray-300 dark:bg-gray-600')}
+  />
 );
 
 const StyledThumb = ({
@@ -236,26 +239,12 @@ interface TrackState {
 }
 
 const StyledTrack = (
-  { className, key, style: styleFromProps, ...restProps }: HTMLPropsWithRefCallback<HTMLDivElement>,
+  { className, key, ...restProps }: HTMLPropsWithRefCallback<HTMLDivElement>,
   { index }: TrackState,
-) => {
-  const leftFromProps = styleFromProps?.left;
-
-  const style = {
-    ...styleFromProps,
-    left: leftFromProps && index !== 0 ? Number.parseInt(String(leftFromProps)) + 2 : leftFromProps,
-  };
-
-  return (
-    <div
-      {...restProps}
-      style={style}
-      className={cn(
-        className,
-        'bottom-0 top-0',
-        index === 0 ? 'bg-custom-link' : 'bg-gray-300 dark:bg-gray-600',
-      )}
-      key={key}
-    />
-  );
-};
+) => (
+  <div
+    {...restProps}
+    className={cn(className, 'bottom-0 top-0', index === 0 ? 'bg-custom-link' : 'bg-transparent')}
+    key={key}
+  />
+);
