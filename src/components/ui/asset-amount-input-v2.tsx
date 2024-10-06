@@ -228,7 +228,11 @@ const StyledThumb = ({
     key={key}
   >
     {[0.32, 0.72, 1].map((opacity) => (
-      <div key={opacity} className='h-4 w-0.5 rounded-lg bg-[#74bec9]' style={{ opacity }} />
+      <div
+        key={opacity}
+        className='h-4 w-0.5 rounded-lg bg-[#5e99a3] dark:bg-[#74bec9]'
+        style={{ opacity }}
+      />
     ))}
   </div>
 );
