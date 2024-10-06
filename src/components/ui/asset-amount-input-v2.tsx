@@ -243,7 +243,7 @@ const StyledTrack = (
 
   const style = {
     ...styleFromProps,
-    left: leftFromProps && (index !== 0) ? (Number.parseInt(String(leftFromProps)) + 2) : leftFromProps,
+    left: leftFromProps && index !== 0 ? Number.parseInt(String(leftFromProps)) + 2 : leftFromProps,
   };
 
   return (
