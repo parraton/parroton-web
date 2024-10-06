@@ -15,5 +15,5 @@ export enum TransactionStatus {
 
 export enum Currency {
   USD = 'USD',
-  TON = 'TON',
+  Tokens = 'Tokens',
 }

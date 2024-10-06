@@ -7,6 +7,7 @@ import { useTonPrice } from '@hooks/use-ton-price';
 import { useVaultData } from '@hooks/use-vault-data';
 import { useTranslation } from '@i18n/client';
 import { Language } from '@i18n/settings';
+import { FALLBACK_TON_PRICE } from '@lib/constants';
 import { formatCurrency, formatNumberWithDigitsLimit, formatPercentage } from '@lib/utils';
 import { Currency } from '@types';
 import BigNumber from 'bignumber.js';
@@ -34,7 +35,7 @@ const useVaultStatsData = (lng: Language, vaultAddress: string) => {
 
       return tonPrice === undefined
         ? undefined
-        : `${formatNumberWithDigitsLimit(new BigNumber(usdAmount).div(tonPrice).toString(), lng, 4)} TON`;
+        : `${formatNumberWithDigitsLimit(new BigNumber(usdAmount).div(tonPrice ?? FALLBACK_TON_PRICE), lng, 4)} TON`;
     },
     [lng, preferredCurrency, tonPrice],
   );
@@ -44,14 +45,17 @@ const useVaultStatsData = (lng: Language, vaultAddress: string) => {
     () => toFormattedAmount(vault?.pendingRewardsUSD),
     [toFormattedAmount, vault],
   );
+  const tonPriceLoading =
+    preferredCurrency === Currency.Tokens && tonPrice === undefined && !tonPriceError;
+  const vaultIsLoading = !vaultError && !vault;
 
   return {
     apy: vault ? formatPercentage(vault.apy, lng) : undefined,
     formattedTvl,
     formattedReinvestAmount,
-    isLoading:
-      (!vaultError && !vault) ||
-      (preferredCurrency === Currency.TON && tonPrice === undefined && !tonPriceError),
+    apyIsLoading: vaultIsLoading,
+    tvlIsLoading: vaultIsLoading || tonPriceLoading,
+    reinvestAmountIsLoading: vaultIsLoading || tonPriceLoading,
   };
 };
 
@@ -77,23 +81,27 @@ const NanoInfoPlate = ({ name, value, isLoading }: NanoInfoPlateProps) => (
 export const VaultStats = ({ lng, vaultAddress }: Props) => {
   const { t } = useTranslation({ lng, ns: 'form' });
   const { t: vaultCardT } = useTranslation({ lng, ns: 'vault-card' });
-  const { apy, formattedTvl, formattedReinvestAmount, isLoading } = useVaultStatsData(
-    lng,
-    vaultAddress,
-  );
+  const {
+    apy,
+    formattedTvl,
+    formattedReinvestAmount,
+    apyIsLoading,
+    tvlIsLoading,
+    reinvestAmountIsLoading,
+  } = useVaultStatsData(lng, vaultAddress);
 
   return (
     <div className='flex flex-col gap-1'>
       <p className='text-lg font-semibold leading-tight'>{t('stats')}</p>
 
       <GlassCard className='custom-info-list py-4'>
-        <NanoInfoPlate name={vaultCardT('tvl')} value={formattedTvl} isLoading={isLoading} />
+        <NanoInfoPlate name={vaultCardT('tvl')} value={formattedTvl} isLoading={tvlIsLoading} />
         <NanoInfoPlate
           name={vaultCardT('pending_reinvest')}
           value={formattedReinvestAmount}
-          isLoading={isLoading}
+          isLoading={reinvestAmountIsLoading}
         />
-        <NanoInfoPlate name={vaultCardT('apy')} value={apy} isLoading={isLoading} />
+        <NanoInfoPlate name={vaultCardT('apy')} value={apy} isLoading={apyIsLoading} />
       </GlassCard>
     </div>
   );

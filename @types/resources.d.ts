@@ -11,6 +11,7 @@ interface Resources {
     "earn": "Earn",
     "stake": "Stake",
     "settings": "Settings",
+    "tokens": "Tokens",
   },
   "form": {
     "deposit_title": "Deposit",
@@ -56,7 +57,6 @@ interface Resources {
     "back": "Back",
     "stats": "Stats",
     "deposit_header": "Earn up to <1>{{amount}}</1> in <4>{{symbol}}</4> yearly",
-    "deposit_withdraw_input_postfix": " in {{tokenSymbol}}"
     "you_deposit": "You deposit",
     "you_withdraw": "You withdraw",
     "you_get": "You get",
@@ -120,7 +120,8 @@ interface Resources {
     "yield": "Yield",
     "you_deposit": "You deposit",
     "use_max": "Use Max",
-    "put_your_liquidity_at_work": "Put your liquidity at work"
+    "put_your_liquidity_at_work": "Put your liquidity at work",
+    "actual_asset_postfix": " in {{tokenSymbol}}",
   },
   "welcome": {
     "main": "We are on Testnet!",

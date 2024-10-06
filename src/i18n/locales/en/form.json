@@ -40,7 +40,6 @@
   "back": "Back",
   "stats": "Stats",
   "deposit_header": "Earn up to <1>{{amount}}</1> in <4>{{symbol}}</4> yearly",
-  "deposit_withdraw_input_postfix": " in {{tokenSymbol}}",
   "you_deposit": "You deposit",
   "you_withdraw": "You withdraw",
   "you_get": "You get",

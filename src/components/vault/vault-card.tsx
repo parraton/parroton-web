@@ -52,7 +52,7 @@ export function VaultCard({ data, locale, className, ...props }: CardProps) {
                 modifier={({ amount, currency }) =>
                   currency === Currency.USD
                     ? formatCurrency(amount, locale)
-                    : `${formatNumber(amount, locale, false)} ${currency}`
+                    : `${formatNumber(amount, locale, false)} TON`
                 }
               />
             }

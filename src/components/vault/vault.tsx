@@ -25,7 +25,7 @@ export function Vault({ lng, vault, depositValue }: VaultProps) {
       totalYield === undefined || !depositValue
         ? undefined
         : formatNumberWithDigitsLimit(
-            new BigNumber(depositValue).times(totalYield).div(100).toString(),
+            new BigNumber(depositValue).times(totalYield).div(100),
             lng,
             4,
           );

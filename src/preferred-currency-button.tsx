@@ -2,6 +2,7 @@
 
 import { GlassCard } from '@components/glass-card';
 import { usePreferredCurrency } from '@hooks/use-preferred-currency';
+import { useTranslation } from '@i18n/client';
 import { Currency } from '@types';
 import { Button } from '@UI/button';
 import { CheckCircle2, ChevronDownIcon } from 'lucide-react';
@@ -35,7 +36,7 @@ export const PreferredCurrencyButton = () => {
         onBlur={handleBlur}
         onClick={toggleDropdownIsOpen}
       >
-        {preferredCurrency}
+        <CurrencyLabel currency={preferredCurrency} />
 
         <ChevronDownIcon size={20} />
       </button>
@@ -72,9 +73,19 @@ const CurrencyOption = ({ value, isSelected, onClick }: CurrencyOptionProps) => 
       variant='ghost'
       onClick={handleClick}
     >
-      {value}
+      <CurrencyLabel currency={value} />
 
       {isSelected && <CheckCircle2 size={16} className='text-custom-link' />}
     </Button>
   );
+};
+
+interface CurrencyLabelProps {
+  currency: Currency;
+}
+
+export const CurrencyLabel = ({ currency }: CurrencyLabelProps) => {
+  const { t } = useTranslation({ ns: 'common' });
+
+  return currency === Currency.USD ? 'USD' : t('tokens');
 };

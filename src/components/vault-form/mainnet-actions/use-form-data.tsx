@@ -27,9 +27,8 @@ import { useLpBalance } from '@hooks/use-lp-balance';
 const getVaultContract = ([, vaultAddress]: [string, string]) =>
   getVault(Address.parse(vaultAddress));
 
-const INPUT_DECIMAL_PLACES = 2;
-const roundInputValue = (value: BigNumber) =>
-  value.decimalPlaces(INPUT_DECIMAL_PLACES, BigNumber.ROUND_FLOOR);
+const roundInputValue = (value: BigNumber, decimals: number) =>
+  value.decimalPlaces(decimals, BigNumber.ROUND_FLOOR);
 
 export const useFormData = (vaultAddress: string) => {
   const { t, lng } = useTranslation({ ns: 'form' });
@@ -44,10 +43,11 @@ export const useFormData = (vaultAddress: string) => {
 
   const [action, setAction] = useState<MainnetAction>('deposit');
   const isDeposit = action === 'deposit';
+  const inputAssetExchangeRate = isDeposit ? vault?.lpPriceUsd : vault?.plpPriceUsd;
 
   const fallbackMaxValueUsd = useMemo(
-    () => new BigNumber(FALLBACK_MAX_ASSET_VALUE).times(tonPrice ?? FALLBACK_TON_PRICE),
-    [tonPrice],
+    () => new BigNumber(FALLBACK_MAX_ASSET_VALUE).times(inputAssetExchangeRate ?? 1),
+    [inputAssetExchangeRate],
   );
 
   const maxDepositValueUsd = useMemo(() => {
@@ -65,38 +65,26 @@ export const useFormData = (vaultAddress: string) => {
     return new BigNumber(plpBalances.sharesBalance).times(vault.plpPriceUsd);
   }, [plpBalances, fallbackMaxValueUsd, vault]);
 
-  const maxDepositValueTon = useMemo(
-    () =>
-      maxDepositValueUsd && tonPrice !== undefined
-        ? maxDepositValueUsd.div(tonPrice)
-        : new BigNumber(FALLBACK_MAX_ASSET_VALUE),
-    [maxDepositValueUsd, tonPrice],
+  const maxDepositValueLp = useMemo(
+    () => new BigNumber(lpBalance ?? FALLBACK_MAX_ASSET_VALUE),
+    [lpBalance],
   );
-  const maxWithdrawValueTon = useMemo(
-    () =>
-      maxWithdrawValueUsd && tonPrice !== undefined
-        ? maxWithdrawValueUsd.div(tonPrice)
-        : new BigNumber(FALLBACK_MAX_ASSET_VALUE),
-    [maxWithdrawValueUsd, tonPrice],
+  const maxWithdrawValuePlp = useMemo(
+    () => new BigNumber(plpBalances?.sharesBalance ?? FALLBACK_MAX_ASSET_VALUE),
+    [plpBalances?.sharesBalance],
   );
 
   const maxValueUsd = useMemo(
-    () => roundInputValue(isDeposit ? maxDepositValueUsd : maxWithdrawValueUsd),
+    () => roundInputValue(isDeposit ? maxDepositValueUsd : maxWithdrawValueUsd, 2),
     [isDeposit, maxDepositValueUsd, maxWithdrawValueUsd],
   );
-  const maxValueTon = useMemo(
-    () => roundInputValue(isDeposit ? maxDepositValueTon : maxWithdrawValueTon),
-    [isDeposit, maxDepositValueTon, maxWithdrawValueTon],
+  const maxValueInputAsset = useMemo(
+    () => roundInputValue(isDeposit ? maxDepositValueLp : maxWithdrawValuePlp, 9),
+    [isDeposit, maxDepositValueLp, maxWithdrawValuePlp],
   );
-  const maxDepositValue = useMemo(
-    () => roundInputValue(currency === Currency.USD ? maxDepositValueUsd : maxDepositValueTon),
-    [currency, maxDepositValueTon, maxDepositValueUsd],
-  );
-  const maxWithdrawValue = useMemo(
-    () => roundInputValue(currency === Currency.USD ? maxWithdrawValueUsd : maxWithdrawValueTon),
-    [currency, maxWithdrawValueTon, maxWithdrawValueUsd],
-  );
-  const maxValue = currency === Currency.USD ? maxValueUsd : maxValueTon;
+  const maxDepositValue = currency === Currency.USD ? maxDepositValueUsd : maxDepositValueLp;
+  const maxWithdrawValue = currency === Currency.USD ? maxWithdrawValueUsd : maxWithdrawValuePlp;
+  const maxValue = currency === Currency.USD ? maxValueUsd : maxValueInputAsset;
 
   const [inputAmount, setInputAmount] = useState<string>(maxValue.toString());
   const setInputAmountDebounced = useDebouncedCallback(setInputAmount, 500);
@@ -165,16 +153,17 @@ export const useFormData = (vaultAddress: string) => {
   const inputAmountLpOrPlp = useMemo(() => {
     const parsedInputAmount = new BigNumber(inputAmount.replace(',', '.'));
 
-    if (!parsedInputAmount.isFinite() || !vault) {
+    if (!parsedInputAmount.isFinite()) {
       return '0';
     }
 
-    return parsedInputAmount
-      .times(currency === Currency.TON ? tonPrice ?? FALLBACK_TON_PRICE : 1)
-      .div(isDeposit ? vault.lpPriceUsd : vault.plpPriceUsd)
-      .decimalPlaces(9, BigNumber.ROUND_FLOOR)
-      .toString();
-  }, [currency, inputAmount, isDeposit, tonPrice, vault]);
+    const unroundedValue =
+      currency === Currency.Tokens
+        ? parsedInputAmount
+        : parsedInputAmount.div(inputAssetExchangeRate ?? 1);
+
+    return roundInputValue(unroundedValue, 9).toString();
+  }, [currency, inputAmount, inputAssetExchangeRate]);
   const { data: estimatedOutput, error: estimatedOutputError } = useSWR(
     ['estimated-lp-or-plp', inputAmountLpOrPlp, vaultAddress, isDeposit],
     isDeposit ? fetchSharesEquivalent : fetchLpEquivalent,
@@ -200,8 +189,12 @@ export const useFormData = (vaultAddress: string) => {
 
     return currency === Currency.USD
       ? formatCurrency(rawResult.toString(), lng)
-      : `${formatNumberWithDigitsLimit(rawResult.toString(), lng, 4)} TON`;
-  }, [currency, inputAmount, isDeposit, lng, vault]);
+      : `${formatNumberWithDigitsLimit(
+          rawResult.times(inputAssetExchangeRate ?? 1).div(tonPrice ?? FALLBACK_TON_PRICE),
+          lng,
+          4,
+        )} TON`;
+  }, [currency, inputAmount, inputAssetExchangeRate, isDeposit, lng, tonPrice, vault]);
 
   const inputToOutputExchangeRate = useMemo(() => {
     const inputAmount = new BigNumber(inputAmountLpOrPlp);
@@ -223,7 +216,6 @@ export const useFormData = (vaultAddress: string) => {
     setInputAmount: setInputAmountDebounced,
     setAction,
     apy: vault?.apy,
-    maxValueTon: maxValueTon.toString(),
     maxValue: maxValue.toString(),
     maxDepositValue: maxDepositValue.toString(),
     maxWithdrawValue: maxWithdrawValue.toString(),
@@ -238,6 +230,7 @@ export const useFormData = (vaultAddress: string) => {
     expectedYearlyYield,
     vaultIsLoading,
     inputAmountLpOrPlp,
+    inputAssetExchangeRate,
     inputToOutputExchangeRate,
     fullInputSymbol: underlyingTokensSymbols
       ? `${underlyingTokensSymbols}\u00A0${shortInputSymbol}`

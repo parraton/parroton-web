@@ -7,12 +7,14 @@ import { Vault } from './vault';
 import { useTranslation } from '@i18n/client';
 import { AssetAmountInputV2 } from '../ui/asset-amount-input-v2';
 import { useTonBalance } from '@hooks/use-ton-balance';
-import { FALLBACK_MAX_ASSET_VALUE } from '@lib/constants';
+import { FALLBACK_MAX_ASSET_VALUE, FALLBACK_TON_PRICE } from '@lib/constants';
+import { useTonPrice } from '@hooks/use-ton-price';
 
 export const VaultsList = ({ lng }: { lng: Language }) => {
   const { vaults } = useVaults();
   const { t } = useTranslation({ ns: 'vault-card' });
   const { balance: tonBalance } = useTonBalance();
+  const { tonPrice = FALLBACK_TON_PRICE } = useTonPrice();
   const [depositValue, setDepositValue] = useState(FALLBACK_MAX_ASSET_VALUE);
 
   const renderVaults = useCallback(
@@ -21,7 +23,11 @@ export const VaultsList = ({ lng }: { lng: Language }) => {
         <h1 className='text-center text-3xl font-bold'>{t('put_your_liquidity_at_work')}</h1>
 
         <AssetAmountInputV2
-          maxValueTon={tonBalance ?? FALLBACK_MAX_ASSET_VALUE}
+          maxValueInAsset={tonBalance ?? FALLBACK_MAX_ASSET_VALUE}
+          assetDecimalPlaces={2}
+          assetSymbol='TON'
+          assetExchangeRate={tonPrice}
+          shouldShowActualAssetPostfix={false}
           value={depositValue}
           onChange={setDepositValue}
         />
@@ -36,7 +42,7 @@ export const VaultsList = ({ lng }: { lng: Language }) => {
         ))}
       </>
     ),
-    [depositValue, lng, t, tonBalance],
+    [depositValue, lng, t, tonBalance, tonPrice],
   );
 
   return vaults ? (

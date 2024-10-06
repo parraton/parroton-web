@@ -1,8 +1,6 @@
 import { GlassCard } from '@components/glass-card';
 import { usePreferredCurrency } from '@hooks/use-preferred-currency';
-import { useTonPrice } from '@hooks/use-ton-price';
 import { useTranslation } from '@i18n/client';
-import { FALLBACK_TON_PRICE } from '@lib/constants';
 import { cn } from '@lib/utils';
 import { Currency } from '@types';
 import BigNumber from 'bignumber.js';
@@ -26,68 +24,84 @@ interface AssetAmountInputV2Props {
   children?: React.ReactNode | React.ReactNode[];
   value: string;
   error?: string;
-  maxValueTon: string;
-  numberInputPostfix?: string;
+  maxValueInAsset: string;
+  assetSymbol: string;
+  assetExchangeRate: BigNumber.Value;
+  assetDecimalPlaces?: number;
+  shouldShowActualAssetPostfix: boolean;
   // eslint-disable-next-line no-unused-vars
   onChange: (value: string) => void;
 }
-
-const DECIMAL_PLACES = 2;
-const SLIDER_STEP = new BigNumber(10).pow(-DECIMAL_PLACES).toNumber();
 
 export const AssetAmountInputV2: FC<AssetAmountInputV2Props> = ({
   children,
   value,
   error,
-  numberInputPostfix = '',
-  maxValueTon,
+  maxValueInAsset,
+  assetSymbol,
+  assetExchangeRate,
+  assetDecimalPlaces = 9,
+  shouldShowActualAssetPostfix,
   onChange,
 }) => {
   const { t } = useTranslation({ ns: 'vault-card' });
 
-  const { tonPrice = FALLBACK_TON_PRICE } = useTonPrice();
   const { preferredCurrency: currency } = usePreferredCurrency();
+  const decimalPlaces = currency === Currency.USD ? 2 : assetDecimalPlaces;
+  const sliderStep = useMemo(
+    () => new BigNumber(10).pow(-decimalPlaces).toNumber(),
+    [decimalPlaces],
+  );
+
+  const toProperDecimalPlacesValue = useCallback(
+    (value: BigNumber) => value.decimalPlaces(decimalPlaces, BigNumber.ROUND_FLOOR).toString(),
+    [decimalPlaces],
+  );
+
   const prevValueRef = useRef(value);
   const prevCurrencyRef = useRef(currency);
   const maxSliderValue = useMemo(
     () =>
-      new BigNumber(maxValueTon)
-        .times(currency === Currency.USD ? tonPrice : 1)
-        .decimalPlaces(DECIMAL_PLACES, BigNumber.ROUND_FLOOR),
-    [currency, maxValueTon, tonPrice],
+      new BigNumber(maxValueInAsset)
+        .times(currency === Currency.USD ? assetExchangeRate : 1)
+        .decimalPlaces(decimalPlaces, BigNumber.ROUND_FLOOR),
+    [assetExchangeRate, currency, decimalPlaces, maxValueInAsset],
   );
   const prevMaxSliderValueRef = useRef(maxSliderValue);
-  const [numberInputValue, setNumberInputValue] = useState(value);
+  const [numberInputValue, setNumberInputValue] = useState(() =>
+    toProperDecimalPlacesValue(new BigNumber(value)),
+  );
 
   const setValue = useCallback(
     (newValue: BigNumber) => {
-      setNumberInputValue(newValue.toString());
-      onChange(newValue.toString());
+      const sanitizedNewValue = toProperDecimalPlacesValue(newValue);
+      setNumberInputValue(sanitizedNewValue);
+      onChange(sanitizedNewValue);
     },
-    [onChange],
+    [onChange, toProperDecimalPlacesValue],
   );
 
   useEffect(() => {
     const prevMaxSliderValue = prevMaxSliderValueRef.current;
     if (prevValueRef.current !== value) {
-      setValue(new BigNumber(value).decimalPlaces(DECIMAL_PLACES, BigNumber.ROUND_FLOOR));
+      setValue(new BigNumber(value));
     } else if (prevCurrencyRef.current !== currency) {
-      const unroundedValue =
+      setValue(
         currency === Currency.USD
-          ? new BigNumber(value).times(tonPrice)
-          : new BigNumber(value).div(tonPrice);
-      setValue(unroundedValue.decimalPlaces(DECIMAL_PLACES, BigNumber.ROUND_FLOOR));
+          ? new BigNumber(value).times(assetExchangeRate)
+          : new BigNumber(value).div(assetExchangeRate),
+      );
     } else if (!prevMaxSliderValue.eq(maxSliderValue) && maxSliderValue.lt(value)) {
       setValue(maxSliderValue);
     }
     prevValueRef.current = value;
     prevCurrencyRef.current = currency;
     prevMaxSliderValueRef.current = maxSliderValue;
-  }, [value, maxSliderValue, onChange, currency, setValue, tonPrice]);
+  }, [value, maxSliderValue, onChange, currency, setValue, decimalPlaces, assetExchangeRate]);
 
   const handleSliderChange = useCallback(
-    (newValue: number) => setValue(new BigNumber(newValue).decimalPlaces(DECIMAL_PLACES)),
-    [setValue],
+    (newValue: number) => setValue(new BigNumber(newValue).decimalPlaces(decimalPlaces)),
+    [decimalPlaces, setValue],
   );
 
   const handleNumberInputChange = useCallback(
@@ -101,7 +115,7 @@ export const AssetAmountInputV2: FC<AssetAmountInputV2Props> = ({
       }
 
       const parsedValue = new BigNumber(newRawValue.replace(',', '.')).decimalPlaces(
-        2,
+        decimalPlaces,
         BigNumber.ROUND_FLOOR,
       );
 
@@ -118,11 +132,11 @@ export const AssetAmountInputV2: FC<AssetAmountInputV2Props> = ({
       setNumberInputValue(
         decimalSeparatorIndex === -1
           ? newRawValue
-          : newRawValue.slice(0, decimalSeparatorIndex + 3),
+          : newRawValue.slice(0, decimalSeparatorIndex + decimalPlaces + 1),
       );
       onChange(newValue);
     },
-    [onChange],
+    [decimalPlaces, onChange],
   );
 
   const handleMaxButtonClick = useCallback(
@@ -149,7 +163,14 @@ export const AssetAmountInputV2: FC<AssetAmountInputV2Props> = ({
               <label
                 data-currency-prefix={currency === Currency.USD ? '$\u00A0' : ''}
                 data-currency-suffix={
-                  currency === Currency.USD ? '' : `\u00A0${currency}${numberInputPostfix}`
+                  currency === Currency.USD
+                    ? shouldShowActualAssetPostfix
+                      ? t('actual_asset_postfix', {
+                          tokenSymbol: assetSymbol,
+                          interpolation: { escapeValue: false },
+                        })
+                      : ''
+                    : `\u00A0${assetSymbol}`
                 }
                 className='custom-text-like-asset-input inline-flex cursor-text'
               >
@@ -174,7 +195,7 @@ export const AssetAmountInputV2: FC<AssetAmountInputV2Props> = ({
             renderThumb={StyledThumb}
             min={0}
             max={maxSliderValue.toNumber()}
-            step={SLIDER_STEP}
+            step={sliderStep}
             value={BigNumber.min(maxSliderValue, value).toNumber()}
             onChange={handleSliderChange}
           />

@@ -13,6 +13,6 @@
   "yield": "Дохідність",
   "you_deposit": "Ви вкладаєте",
   "use_max": "Максимум",
-  "put_your_liquidity_at_work": "Змусьте свою ліквідність працювати",
-  "back": "Назад"
+  "put_your_liquidity_at_work": "Нехай ваша ліквідність працює",
+  "actual_asset_postfix": " в {{tokenSymbol}}"
 }

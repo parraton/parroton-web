@@ -38,11 +38,11 @@ export const formatNumber = (
 };
 
 export const formatNumberWithDigitsLimit = (
-  input: string,
+  input: BigNumber.Value,
   locale: Language = 'en',
   digitsLimit = 7,
 ) => {
-  const parsedBalance = new BigNumber(input);
+  const parsedBalance = input instanceof BigNumber ? input : new BigNumber(input);
   let result: string;
 
   if (parsedBalance.gte(10 ** (digitsLimit - 1))) {

@@ -12,6 +12,7 @@ import { ActionsSwitcher } from './actions-switcher';
 import { ButtonV2 } from '@UI/button-v2';
 import { useIsFirstRender } from '@hooks/use-is-first-render';
 import { ConfirmActionDialog } from './confirm-action-dialog';
+import { FALLBACK_MAX_ASSET_VALUE } from '@lib/constants';
 
 interface MainnetActionsFormProps {
   vaultAddress: string;
@@ -33,7 +34,6 @@ export function MainnetActionsForm({ vaultAddress }: MainnetActionsFormProps) {
     apy,
     setInputAmount,
     setAction,
-    maxValueTon,
     maxValue,
     maxDepositValue,
     maxWithdrawValue,
@@ -50,6 +50,7 @@ export function MainnetActionsForm({ vaultAddress }: MainnetActionsFormProps) {
     inputAmountLpOrPlp,
     inputToOutputExchangeRate,
     fullInputSymbol,
+    inputAssetExchangeRate,
     doAction,
   } = useFormData(vaultAddress);
   const onSubmit = useCallback(async () => {
@@ -128,11 +129,10 @@ export function MainnetActionsForm({ vaultAddress }: MainnetActionsFormProps) {
         <AssetAmountInputV2
           value={amount}
           error={errors.amount}
-          maxValueTon={maxValueTon}
-          numberInputPostfix={t('deposit_withdraw_input_postfix', {
-            tokenSymbol: fullInputSymbol,
-            interpolation: { escapeValue: false },
-          })}
+          maxValueInAsset={inputBalance ?? FALLBACK_MAX_ASSET_VALUE}
+          assetSymbol={fullInputSymbol ?? ''}
+          assetExchangeRate={inputAssetExchangeRate ?? 1}
+          shouldShowActualAssetPostfix
           onChange={handleAmountChange}
         >
           <ActionsSwitcher value={action} onChange={handleActionChange} />

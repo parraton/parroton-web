@@ -4,6 +4,7 @@ import { formatNumberWithDigitsLimit, formatPercentage } from '@lib/utils';
 import { Maybe } from '@types';
 import { ButtonV2 } from '@UI/button-v2';
 import { Dialog, DialogContent, DialogFooter, DialogTitle } from '@UI/dialog';
+import BigNumber from 'bignumber.js';
 import { ReactNode } from 'react';
 
 interface ConfirmActionDialogProps {
@@ -16,15 +17,15 @@ interface ConfirmActionDialogProps {
   confirmActionText: string;
   confirmButtonText: string;
   inputAmountLabel: string;
-  inputAmount: Maybe<string>;
+  inputAmount: Maybe<BigNumber.Value>;
   inputTokenSymbol: string;
-  outputAmount: Maybe<string>;
+  outputAmount: Maybe<BigNumber.Value>;
   outputTokenSymbol: string;
-  inputBalance: Maybe<string>;
+  inputBalance: Maybe<BigNumber.Value>;
   inputBalanceLoading: boolean;
   apy: Maybe<string>;
   apyIsLoading: boolean;
-  exchangeRate: Maybe<string>;
+  exchangeRate: Maybe<BigNumber.Value>;
   onConfirm: () => void;
 }
 
@@ -107,23 +108,26 @@ export const ConfirmActionDialog = ({
   );
 };
 
-interface NanoInfoPlateProps {
+interface NanoInfoPlateProps<T extends BigNumber.Value> {
   name: string;
-  value: Maybe<string>;
+  value: Maybe<T>;
   // eslint-disable-next-line no-unused-vars
-  modifier?: (value: string) => ReactNode;
+  modifier: (value: T) => ReactNode;
   loading?: boolean;
 }
 
-const NanoInfoPlate = ({ name, value, modifier, loading }: NanoInfoPlateProps) => (
+const NanoInfoPlate = <T extends BigNumber.Value>({
+  name,
+  value,
+  modifier,
+  loading,
+}: NanoInfoPlateProps<T>) => (
   <div className='flex items-center justify-between gap-3'>
     <span className='font-semibold'>{name}</span>
     <OrLoader
       animation={loading}
       value={value}
-      modifier={(x) => (
-        <span className='font-medium text-custom-link'>{modifier ? modifier(x) : x}</span>
-      )}
+      modifier={(x) => <span className='font-medium text-custom-link'>{modifier(x)}</span>}
     />
   </div>
 );
