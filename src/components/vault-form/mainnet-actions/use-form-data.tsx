@@ -235,6 +235,7 @@ export const useFormData = (vaultAddress: string) => {
     fullInputSymbol: underlyingTokensSymbols
       ? `${underlyingTokensSymbols}\u00A0${shortInputSymbol}`
       : undefined,
+    preferredCurrency: currency,
     doAction: isDeposit ? deposit : withdraw,
   };
 };

@@ -13,6 +13,7 @@ import { ButtonV2 } from '@UI/button-v2';
 import { useIsFirstRender } from '@hooks/use-is-first-render';
 import { ConfirmActionDialog } from './confirm-action-dialog';
 import { FALLBACK_MAX_ASSET_VALUE } from '@lib/constants';
+import { Currency } from '@types';
 
 interface MainnetActionsFormProps {
   vaultAddress: string;
@@ -51,6 +52,7 @@ export function MainnetActionsForm({ vaultAddress }: MainnetActionsFormProps) {
     inputToOutputExchangeRate,
     fullInputSymbol,
     inputAssetExchangeRate,
+    preferredCurrency,
     doAction,
   } = useFormData(vaultAddress);
   const onSubmit = useCallback(async () => {
@@ -113,11 +115,15 @@ export function MainnetActionsForm({ vaultAddress }: MainnetActionsFormProps) {
               animation={vaultIsLoading}
               value={expectedYearlyYield}
               modifier={(yearlyYield) => (
-                <h1 className='text-center text-2xl font-bold'>
+                <h1 className='whitespace-pre-wrap text-center text-2xl font-bold'>
                   <Trans
-                    i18nKey='form:deposit_header'
-                    values={{ amount: yearlyYield, symbol: fullInputSymbol }}
-                    components={{ 1: <span className='text-custom-link' />, 4: <span /> }}
+                    i18nKey={
+                      preferredCurrency === Currency.USD
+                        ? 'form:deposit_header_in_usd'
+                        : 'form:deposit_header_in_asset'
+                    }
+                    values={{ amount: yearlyYield, symbol: 'LP' }}
+                    components={{ 1: <span className='text-custom-link' />, 2: <span /> }}
                     tOptions={{ interpolation: { escapeValue: false } }}
                   />
                 </h1>
@@ -133,6 +139,7 @@ export function MainnetActionsForm({ vaultAddress }: MainnetActionsFormProps) {
           assetSymbol={fullInputSymbol ?? ''}
           assetExchangeRate={inputAssetExchangeRate ?? 1}
           shouldShowActualAssetPostfix
+          label={action === 'deposit' ? t('you_deposit') : t('you_withdraw')}
           onChange={handleAmountChange}
         >
           <ActionsSwitcher value={action} onChange={handleActionChange} />

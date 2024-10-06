@@ -55,7 +55,8 @@ interface Resources {
     "max_label": "MAX",
     "back": "Back",
     "stats": "Stats",
-    "deposit_header": "Earn up to <1>{{amount}}</1> in <4>{{symbol}}</4> yearly",
+    "deposit_header_in_usd": "Earn up to <1>{{amount}}</1>\nin <2>{{symbol}}</2> yearly",
+    "deposit_header_in_asset": "Earn up to <1>{{amount}}</1>\n{{symbol}} yearly",
     "you_deposit": "You deposit",
     "you_withdraw": "You withdraw",
     "you_get": "You get",
@@ -119,7 +120,7 @@ interface Resources {
     "yield": "Yield",
     "you_deposit": "You deposit",
     "use_max": "Use Max",
-    "put_your_liquidity_at_work": "Put your liquidity at work",
+    "put_your_liquidity_at_work": "Put your <1>liquidity</1> at work",
     "actual_asset_postfix": " in {{tokenSymbol}}",
   },
   "welcome": {

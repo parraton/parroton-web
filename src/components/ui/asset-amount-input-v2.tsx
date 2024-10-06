@@ -29,6 +29,7 @@ interface AssetAmountInputV2Props {
   assetExchangeRate: BigNumber.Value;
   assetDecimalPlaces?: number;
   shouldShowActualAssetPostfix: boolean;
+  label: string;
   // eslint-disable-next-line no-unused-vars
   onChange: (value: string) => void;
 }
@@ -42,6 +43,7 @@ export const AssetAmountInputV2: FC<AssetAmountInputV2Props> = ({
   assetExchangeRate,
   assetDecimalPlaces = 9,
   shouldShowActualAssetPostfix,
+  label,
   onChange,
 }) => {
   const { t } = useTranslation({ ns: 'vault-card' });
@@ -100,8 +102,8 @@ export const AssetAmountInputV2: FC<AssetAmountInputV2Props> = ({
   }, [value, maxSliderValue, onChange, currency, setValue, decimalPlaces, assetExchangeRate]);
 
   const handleSliderChange = useCallback(
-    (newValue: number) => setValue(new BigNumber(newValue).decimalPlaces(decimalPlaces)),
-    [decimalPlaces, setValue],
+    (newValue: number) => setValue(BigNumber.min(newValue, maxSliderValue)),
+    [maxSliderValue, setValue],
   );
 
   const handleNumberInputChange = useCallback(
@@ -152,7 +154,7 @@ export const AssetAmountInputV2: FC<AssetAmountInputV2Props> = ({
             {children}
 
             <div className='flex items-center justify-between'>
-              <span>{t('you_deposit')}</span>
+              <span>{label}</span>
 
               <button type='button' onClick={handleMaxButtonClick} className='custom-card-link'>
                 {t('use_max')}
