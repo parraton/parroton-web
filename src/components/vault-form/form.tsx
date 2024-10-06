@@ -62,7 +62,7 @@ export function Form({ lng, vaultAddress }: { lng: Language; vaultAddress: strin
       >
         {tabsToRender.map((tab) => (
           <TabsTrigger
-            className='rounded-full py-2 text-xs text-white data-[state="active"]:bg-switcher data-[state="active"]:font-semibold'
+            className='rounded-full py-2 text-xs data-[state="active"]:bg-switcher data-[state="active"]:font-semibold'
             key={tab.action}
             value={tab.action}
           >

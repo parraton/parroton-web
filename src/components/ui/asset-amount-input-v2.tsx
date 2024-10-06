@@ -3,9 +3,24 @@ import { usePreferredCurrency } from '@hooks/use-preferred-currency';
 import { useTonPrice } from '@hooks/use-ton-price';
 import { useTranslation } from '@i18n/client';
 import { FALLBACK_TON_PRICE } from '@lib/constants';
+import { cn } from '@lib/utils';
 import { Currency } from '@types';
 import BigNumber from 'bignumber.js';
-import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import {
+  FC,
+  HTMLProps,
+  RefCallback,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
+import ReactSlider, { ReactSliderProps } from 'react-slider';
+
+interface HTMLPropsWithRefCallback<T> extends HTMLProps<T> {
+  ref: RefCallback<T>;
+}
 
 interface AssetAmountInputV2Props {
   children?: React.ReactNode | React.ReactNode[];
@@ -18,7 +33,7 @@ interface AssetAmountInputV2Props {
 }
 
 const DECIMAL_PLACES = 2;
-const SLIDER_STEP = new BigNumber(10).pow(-DECIMAL_PLACES).toString();
+const SLIDER_STEP = new BigNumber(10).pow(-DECIMAL_PLACES).toNumber();
 
 export const AssetAmountInputV2: FC<AssetAmountInputV2Props> = ({
   children,
@@ -42,13 +57,6 @@ export const AssetAmountInputV2: FC<AssetAmountInputV2Props> = ({
     [currency, maxValueTon, tonPrice],
   );
   const prevMaxSliderValueRef = useRef(maxSliderValue);
-  const sliderShiftQuotient = useMemo(
-    () =>
-      maxSliderValue.isZero()
-        ? 1
-        : Math.min(new BigNumber(value).div(maxSliderValue).toNumber(), 1),
-    [maxSliderValue, value],
-  );
   const [numberInputValue, setNumberInputValue] = useState(value);
 
   const setValue = useCallback(
@@ -69,7 +77,7 @@ export const AssetAmountInputV2: FC<AssetAmountInputV2Props> = ({
           ? new BigNumber(value).times(tonPrice)
           : new BigNumber(value).div(tonPrice);
       setValue(unroundedValue.decimalPlaces(DECIMAL_PLACES, BigNumber.ROUND_FLOOR));
-    } else if (!prevMaxSliderValue.eq(maxSliderValue) && maxSliderValue.gte(value)) {
+    } else if (!prevMaxSliderValue.eq(maxSliderValue) && maxSliderValue.lt(value)) {
       setValue(maxSliderValue);
     }
     prevValueRef.current = value;
@@ -78,12 +86,8 @@ export const AssetAmountInputV2: FC<AssetAmountInputV2Props> = ({
   }, [value, maxSliderValue, onChange, currency, setValue, tonPrice]);
 
   const handleSliderChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const newValue = e.target.value;
-      setNumberInputValue(newValue);
-      onChange(newValue);
-    },
-    [onChange],
+    (newValue: number) => setValue(new BigNumber(newValue).decimalPlaces(DECIMAL_PLACES)),
+    [setValue],
   );
 
   const handleNumberInputChange = useCallback(
@@ -165,28 +169,67 @@ export const AssetAmountInputV2: FC<AssetAmountInputV2Props> = ({
             {error && <span className='text-sm text-red-500'>{error}</span>}
           </div>
 
-          <div className='relative h-12 w-full touch-none'>
-            <input
-              type='range'
-              min='0'
-              max={maxSliderValue.toString()}
-              step={SLIDER_STEP}
-              value={BigNumber.max(value, maxSliderValue).toString()}
-              className='box-border size-full cursor-pointer appearance-none bg-secondary pl-5'
-              onChange={handleSliderChange}
-            />
-
-            <div
-              className='pointer-events-none absolute left-0 top-0 flex h-full items-center bg-primary-foreground'
-              style={{
-                width: `calc(2.5rem * ${1 - sliderShiftQuotient} + 100% * ${sliderShiftQuotient})`,
-              }}
-            >
-              <div className='custom-slider-thumb' />
-            </div>
-          </div>
+          <StyledSlider
+            renderTrack={StyledTrack}
+            renderThumb={StyledThumb}
+            min={0}
+            max={maxSliderValue.toNumber()}
+            step={SLIDER_STEP}
+            value={BigNumber.min(maxSliderValue, value).toNumber()}
+            onChange={handleSliderChange}
+          />
         </div>
       </GlassCard>
     </div>
   );
 };
+
+const StyledSlider = (props: ReactSliderProps) => (
+  <ReactSlider {...props} className={cn(props.className, 'h-12 w-full bg-secondary')} />
+);
+
+const StyledThumb = ({
+  // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
+  children: _,
+  className,
+  key,
+  ...restProps
+}: HTMLPropsWithRefCallback<HTMLDivElement>) => (
+  <div
+    {...restProps}
+    className={cn(
+      className,
+      'flex h-12 w-12 cursor-grab items-center justify-between bg-primary-foreground px-4',
+    )}
+    key={key}
+  >
+    {[0.32, 0.72, 1].map((opacity) => (
+      <div
+        key={opacity}
+        // eslint-disable-next-line tailwindcss/classnames-order
+        className='bg-custom-primary-text h-4 w-0.5 rounded-lg'
+        style={{ opacity }}
+      />
+    ))}
+  </div>
+);
+
+interface TrackState {
+  index: number;
+  value: number;
+}
+
+const StyledTrack = (
+  { className, key, ...restProps }: HTMLPropsWithRefCallback<HTMLDivElement>,
+  { index }: TrackState,
+) => (
+  <div
+    {...restProps}
+    className={cn(
+      className,
+      'bottom-0 top-0',
+      index === 0 ? 'bg-primary-foreground' : 'bg-secondary',
+    )}
+    key={key}
+  />
+);

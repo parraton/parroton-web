@@ -42,9 +42,6 @@ export const useFormData = (vaultAddress: string) => {
   const { deposit } = useDeposit();
   const { withdraw } = useWithdraw();
 
-  const [inputAmount, setInputAmount] = useState<string>('');
-  const setInputAmountDebounced = useDebouncedCallback(setInputAmount, 500);
-
   const [action, setAction] = useState<MainnetAction>('deposit');
   const isDeposit = action === 'deposit';
 
@@ -100,7 +97,9 @@ export const useFormData = (vaultAddress: string) => {
     [currency, maxWithdrawValueTon, maxWithdrawValueUsd],
   );
   const maxValue = currency === Currency.USD ? maxValueUsd : maxValueTon;
-  console.log('oy vey 1', vault, lpBalance, plpBalances, tonPrice);
+
+  const [inputAmount, setInputAmount] = useState<string>(maxValue.toString());
+  const setInputAmountDebounced = useDebouncedCallback(setInputAmount, 500);
 
   const { data: vaultContract } = useSWR(['vault-contract', vaultAddress], getVaultContract, {
     shouldRetryOnError: true,
@@ -147,7 +146,6 @@ export const useFormData = (vaultAddress: string) => {
       const x = await (
         vaultContract ?? (await getVaultContract(['', vaultAddress]))
       ).getEstimatedSharesAmount(toNano(inputAmountLp));
-      console.log('oy vey 2', inputAmountLp, fromNano(x));
 
       return fromNano(x);
     },
@@ -158,7 +156,6 @@ export const useFormData = (vaultAddress: string) => {
       const x = await (
         vaultContract ?? (await getVaultContract(['', vaultAddress]))
       ).getEstimatedLpAmount(toNano(inputAmountPlp));
-      console.log('oy vey 3', inputAmountPlp, fromNano(x));
 
       return fromNano(x);
     },

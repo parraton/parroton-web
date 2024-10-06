@@ -97,7 +97,7 @@ interface Resources {
   },
   "terms": {
     "header": "Accept Terms",
-    "description": "By using this platform, you agree to our Terms of Use and Privacy Policy. The platform is not responsible for any losses incurred. Use at your own risk.",
+    "description": "By using this platform, you agree to our <1>Terms of Use and Privacy Policy</1>. The platform is not responsible for any losses incurred. Use at your own risk.",
     "accept": "I agree"
   },
   "transaction": {

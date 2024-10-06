@@ -24,10 +24,10 @@
 
 .custom-card-content {
   display: grid;
-  grid-template-columns: 2fr 3.5rem 1fr;
+  grid-template-columns: $vaults-list-grid-template-columns;
   align-items: center;
   padding: 20px 10px;
-  gap: 10px;
+  gap: $vaults-list-grid-gap;
   position: relative;
 
   @media (min-width: 420px) {
@@ -61,14 +61,6 @@
     @media (min-width: 768px) {
       right: 30px;
     }
-  }
-}
-
-.custom-card-header {
-  height: var(--header-hieght);
-
-  @media (min-width: 768px) {
-    padding-right: 20px;
   }
 }
 
@@ -123,9 +115,9 @@
 .custom-card-list {
   display: grid;
   padding: 0 10px;
-  grid-template-columns: 2fr 3.5rem 1fr;
+  grid-template-columns: $vaults-list-grid-template-columns;
   grid-template-rows: auto;
-  gap: 20px;
+  gap: $vaults-list-grid-gap;
 
   @media (min-width: 420px) {
     grid-template-columns: 2fr repeat(2, 1fr);

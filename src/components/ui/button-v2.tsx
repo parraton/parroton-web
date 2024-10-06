@@ -6,7 +6,7 @@ export const ButtonV2 = ({
   ...restProps
 }: React.ButtonHTMLAttributes<HTMLButtonElement>) => (
   <button
-    className={cn('w-full rounded-xl bg-custom-button py-3 font-semibold text-white', className)}
+    className={cn('w-full rounded-xl bg-custom-button py-3 font-semibold', className)}
     type={type}
     {...restProps}
   />

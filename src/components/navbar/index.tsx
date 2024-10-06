@@ -1,6 +1,5 @@
 'use client';
 
-import { cn } from '@lib/utils';
 import { Home } from '@routes';
 import { Language } from '@i18n/settings';
 import { ConnectWallet } from '@components/connect-wallet';
@@ -29,8 +28,8 @@ export function Navbar({ lng }: { lng: Language }) {
   }, [pathname]);
 
   return (
-    <div className={cn('custom-header')}>
-      <Home.Link className={cn('flex items-center gap-2')}>
+    <div className='custom-header'>
+      <Home.Link className='flex items-center gap-2'>
         <Image src={Logo} alt='Home' width={36} height={36} />
       </Home.Link>
 
@@ -54,7 +53,7 @@ export function Navbar({ lng }: { lng: Language }) {
         </LinkButton>
       </ul>
 
-      <div className={cn('flex items-center justify-end gap-4')}>
+      <div className='flex items-center justify-end gap-4'>
         <PreferredCurrencyButton />
         <ConnectWallet />
       </div>

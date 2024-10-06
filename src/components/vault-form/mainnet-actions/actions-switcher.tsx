@@ -40,7 +40,7 @@ const ActionItem = ({ action, active, onClick }: ActionItemProps) => {
     <button
       type='button'
       className={cn(
-        'rounded-full py-2 text-xs text-white',
+        'rounded-full py-2 text-xs',
         active ? 'bg-switcher font-semibold' : 'bg-transparent',
       )}
       onClick={handleClick}

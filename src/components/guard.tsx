@@ -24,19 +24,18 @@ export function Guard() {
       <DialogContent>
         <DialogTitle>{t('header')}</DialogTitle>
         <div className='flex-1'>
-          {/* eslint-disable react/jsx-no-literals */}
-          <Trans i18nKey='terms:description'>
-            By using this platform, you agree to our{' '}
-            <a
-              href='https://docs.parraton.com/additional-resources/terms-of-service'
-              target='_blank'
-              className='custom-link'
-            >
-              Terms of Use
-            </a>
-            . The platform is not responsible for any losses incurred. Use at your own risk.
-          </Trans>
-          {/* eslint-enable react/jsx-no-literals */}
+          <Trans
+            i18nKey='terms:description'
+            components={{
+              1: (
+                <a
+                  href='https://docs.parraton.com/additional-resources/terms-of-service'
+                  target='_blank'
+                  className='custom-link'
+                />
+              ),
+            }}
+          />
         </div>
         <DialogFooter className='w-full'>
           <ButtonV2 onClick={close}>{t('accept')}</ButtonV2>

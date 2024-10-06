@@ -43,9 +43,7 @@ export function VaultCard({ data, locale, className, ...props }: CardProps) {
     <Link href={address} className='custom-wrapper'>
       <GlassCard className={cn(className)} {...props}>
         <CardContent className='custom-card-content'>
-          <CardTitle className='custom-card-header'>
-            {title?.replace(/(Parraton: |DeDust Pool: )/, '')}
-          </CardTitle>
+          <CardTitle>{title?.replace(/(Parraton: |DeDust Pool: )/, '')}</CardTitle>
           <NanoInfo
             value={
               <OrLoader

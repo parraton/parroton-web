@@ -27,16 +27,14 @@ export default function RootLayout({
 }: PropsWithChildren<RouteInfoToLayout<typeof Route>>) {
   return (
     <html lang={lng} dir={dir(lng)}>
-      <body className={cn('min-h-screen bg-background font-sans antialiased', fontSans.variable)}>
+      <body className={cn('bg-background font-sans antialiased', fontSans.variable)}>
         <SandwichProvider>
-          <div className={cn('grid min-h-screen', 'grid-rows-[auto,1fr]')}>
-            <Navbar lng={lng!} />
-            <main className='custom-main-container bg-background'>
-              <div className='flex w-full flex-col gap-5 p-5 md:mx-auto md:max-w-md md:px-0'>
-                {children}
-              </div>
-            </main>
-          </div>
+          <Navbar lng={lng!} />
+          <main className='custom-main-container overflow-auto bg-background'>
+            <div className='flex w-full flex-col gap-5 p-5 md:mx-auto md:max-w-md md:px-0'>
+              {children}
+            </div>
+          </main>
         </SandwichProvider>
         <Script src='https://telegram.org/js/telegram-web-app.js' strategy='beforeInteractive' />
       </body>
