@@ -86,7 +86,7 @@ export const useFormData = (vaultAddress: string) => {
   const maxWithdrawValue = currency === Currency.USD ? maxWithdrawValueUsd : maxWithdrawValuePlp;
   const maxValue = currency === Currency.USD ? maxValueUsd : maxValueInputAsset;
 
-  const [inputAmount, setInputAmount] = useState<string>(maxValue.toString());
+  const [inputAmount, setInputAmount] = useState(maxValue.toString());
   const setInputAmountDebounced = useDebouncedCallback(setInputAmount, 500);
 
   const { data: vaultContract } = useSWR(['vault-contract', vaultAddress], getVaultContract, {
@@ -112,11 +112,11 @@ export const useFormData = (vaultAddress: string) => {
         },
         {
           required: true,
-          min: '0.009',
+          min: new BigNumber(currency === Currency.USD ? 9e-3 : 9e-10).toFixed(),
           max: maxValue.toString(),
         },
       ),
-    [isDeposit, maxValue, t],
+    [currency, isDeposit, maxValue, t],
   );
   const validate = useMemo(
     () =>
@@ -179,9 +179,9 @@ export const useFormData = (vaultAddress: string) => {
   const shortInputSymbol = isDeposit ? 'LP' : 'PLP';
   const shortOutputSymbol = isDeposit ? 'PLP' : 'LP';
   const expectedYearlyYield = useMemo(() => {
-    const parsedInputAmount = new BigNumber(inputAmount);
+    const parsedInputAmount = isDeposit ? new BigNumber(inputAmount) : maxDepositValue;
 
-    if (!parsedInputAmount.isFinite() || !vault || !isDeposit) {
+    if (!parsedInputAmount.isFinite() || !vault) {
       return null;
     }
 
@@ -190,11 +190,11 @@ export const useFormData = (vaultAddress: string) => {
     return currency === Currency.USD
       ? formatCurrency(rawResult.toString(), lng)
       : `${formatNumberWithDigitsLimit(
-          rawResult.times(inputAssetExchangeRate ?? 1).div(tonPrice ?? FALLBACK_TON_PRICE),
+          rawResult.times(vault.lpPriceUsd ?? 1).div(tonPrice ?? FALLBACK_TON_PRICE),
           lng,
           4,
         )} TON`;
-  }, [currency, inputAmount, inputAssetExchangeRate, isDeposit, lng, tonPrice, vault]);
+  }, [currency, inputAmount, isDeposit, lng, maxDepositValue, tonPrice, vault]);
 
   const inputToOutputExchangeRate = useMemo(() => {
     const inputAmount = new BigNumber(inputAmountLpOrPlp);

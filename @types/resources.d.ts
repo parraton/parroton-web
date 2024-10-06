@@ -9,7 +9,6 @@ interface Resources {
     "rewards": "Claim Rewards",
     "apy": "APY",
     "earn": "Earn",
-    "stake": "Stake",
     "settings": "Settings",
     "tokens": "Tokens",
   },

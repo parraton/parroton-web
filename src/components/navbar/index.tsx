@@ -24,7 +24,7 @@ export function Navbar({ lng }: { lng: Language }) {
 
     if (pathname.includes('/rewards')) return 'rewards';
 
-    return 'stake';
+    return 'deposit';
   }, [pathname]);
 
   return (
@@ -41,8 +41,8 @@ export function Navbar({ lng }: { lng: Language }) {
         >
           {t('earn')}
         </LinkButton>
-        <LinkButton href='/' isActive={activeButtonSlug === 'stake'} Icon={PiggyBankIcon}>
-          {t('stake')}
+        <LinkButton href='/' isActive={activeButtonSlug === 'deposit'} Icon={PiggyBankIcon}>
+          {t('deposit')}
         </LinkButton>
         <LinkButton
           href={`/${lng}/settings`}

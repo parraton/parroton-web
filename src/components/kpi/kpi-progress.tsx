@@ -24,7 +24,7 @@ type KPIProgressProps = {
 const zero = 0;
 
 export function KPIProgress({ title, value, total, type, lng }: KPIProgressProps) {
-  const percentage = (value / total) * 100;
+  const percentage = Math.min(value / total, 1) * 100;
 
   const valueToShow = KpiTypeToModifier[type](value, lng);
 

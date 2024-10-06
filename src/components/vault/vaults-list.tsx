@@ -15,7 +15,7 @@ export const VaultsList = ({ lng }: { lng: Language }) => {
   const { t } = useTranslation({ ns: 'vault-card' });
   const { balance: tonBalance } = useTonBalance();
   const { tonPrice = FALLBACK_TON_PRICE } = useTonPrice();
-  const [depositValue, setDepositValue] = useState(FALLBACK_MAX_ASSET_VALUE);
+  const [depositValue, setDepositValue] = useState(tonBalance ?? FALLBACK_MAX_ASSET_VALUE);
 
   const renderVaults = useCallback(
     (vaults: BackendVault[]) => (
