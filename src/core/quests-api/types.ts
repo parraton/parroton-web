@@ -22,7 +22,7 @@ interface QuestBase {
   started: boolean;
 }
 
-interface EternalQuest extends QuestBase {
+export interface EternalQuest extends QuestBase {
   type: 'deposit-liquidity' | 'invite-friends' | 'section-name';
 }
 

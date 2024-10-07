@@ -47,7 +47,7 @@ export const InvitedFriendsList = ({ data, loading, claimRewards }: InvitedFrien
   const renderInvitedFriendsList = useCallback(
     (invitedFriends: InvitedFriendProps[]) =>
       invitedFriends.length === 0 ? (
-        t('no_friends_invited')
+        <p className='w-full text-left'>{t('no_friends_invited')}</p>
       ) : (
         <table className='w-full font-semibold'>
           <thead>
@@ -71,7 +71,7 @@ export const InvitedFriendsList = ({ data, loading, claimRewards }: InvitedFrien
   return (
     <div className='flex flex-col gap-2'>
       <p className='text-lg font-medium'>{t('invited_friends')}</p>
-      <GlassCard className='max-h-24 overflow-y-auto p-3 text-lg leading-tight md:max-h-none'>
+      <GlassCard className='flex max-h-28 justify-center overflow-y-auto p-3 text-lg leading-tight md:max-h-none'>
         <OrLoader value={data} animation={loading} modifier={renderInvitedFriendsList} />
       </GlassCard>
     </div>

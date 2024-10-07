@@ -23,7 +23,7 @@ export const RewardsHeader = ({ amount, loading, level }: RewardsHeaderProps) =>
           }}
         />
       </h1>
-      <div className='flex w-full items-center'>
+      <div className='flex w-full justify-center'>
         <OrLoader
           value={amount}
           animation={loading}

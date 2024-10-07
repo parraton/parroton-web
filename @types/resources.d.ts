@@ -151,6 +151,7 @@ interface Resources {
     "telegram_apps_center": "Telegram Apps Center",
     "one_time_rewards_description": "+{{amount}} points",
     "level_number": "Level {{level}}",
+    "link_copied": "Copied"
   }
 }
 

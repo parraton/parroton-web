@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useRef } from 'react';
 
 import AddPersonImgData from '../images/add-person.png';
 import RainbowImgData from '../images/rainbowswap.png';
@@ -14,11 +14,13 @@ import useSWR from 'swr';
 import BigNumber from 'bignumber.js';
 import { QuestsApi } from '@core/quests-api';
 import { useStorage } from './use-storage';
-import { CheckCircledIcon } from '@radix-ui/react-icons';
 import { ActionLink } from '@components/rewards/action-link';
 import { ClaimButton } from '@components/rewards/claim-button';
 import { LEVELS_THRESHOLDS } from '@lib/constants';
 import { ActionButton } from '@components/rewards/action-button';
+import { CheckIcon } from '@components/icons/check-icon';
+import { useCopyReferralLink } from './use-copy-referral-link';
+import { toast } from 'sonner';
 
 export interface InvitedFriendProps {
   id: string;
@@ -53,6 +55,32 @@ export const usePointsSources = () => {
   const [, initData] = useInitData();
   const { t, lng } = useTranslation({ ns: 'rewards' });
   const { push } = useRouter();
+
+  const onAfterCopy = useCallback(() => toast.success(t('link_copied')), [t]);
+  const { link: webAppLink, copyLink: copyWebAppLink } = useCopyReferralLink(false, onAfterCopy);
+  const { link: miniAppLink, copyLink: copyMiniAppLink } = useCopyReferralLink(true, onAfterCopy);
+  const copyRefLink = miniAppLink ? copyMiniAppLink : copyWebAppLink;
+  const refLink = miniAppLink ?? webAppLink;
+  const hiddenShareAnchorRef = useRef<HTMLAnchorElement>(null);
+  const hiddenAnchorHref = useMemo(() => {
+    const url = new URL('https://t.me/share/url');
+    url.searchParams.set('url', refLink ?? '');
+    url.searchParams.set('text', 'TODO: add some motivational text here');
+
+    return url.href;
+  }, [refLink]);
+
+  const shareLink = useCallback(() => {
+    if (!refLink) {
+      return;
+    }
+
+    if (initData) {
+      hiddenShareAnchorRef.current?.click();
+    } else {
+      window.navigator.share({ url: refLink }).catch(console.error);
+    }
+  }, [initData, refLink]);
 
   const getFollowedLinks = useCallback(async (): Promise<string[]> => {
     try {
@@ -106,7 +134,6 @@ export const usePointsSources = () => {
     suspense: false,
     shouldRetryOnError: true,
   });
-  console.log('oy vey 1', userData, questsData, referralsData);
   // TODO: reimplement this logic after claiming rewards by a friend is implemented on the backend
   const friendRewardsStub = useMemo(() => {
     if (!userData || !referralsData) {
@@ -140,10 +167,6 @@ export const usePointsSources = () => {
       pendingPoints: friendRewardsStub[i].pending ?? 0,
     }));
   }, [friendRewardsStub, referralsData]);
-
-  const [referralModalIsOpen, setReferralModalIsOpen] = useState(false);
-  const openReferralModal = useCallback(() => setReferralModalIsOpen(true), []);
-  const closeReferralModal = useCallback(() => setReferralModalIsOpen(false), []);
 
   const claimQuestReward = useCallback(
     async (questId: string) => {
@@ -199,7 +222,11 @@ export const usePointsSources = () => {
               ...basicProps,
               iconSrc: AddPersonImgData,
               rewardsDescription: t('invite_friends_rewards_description'),
-              actionButton: <ActionButton onClick={openReferralModal}>{t('invite')}</ActionButton>,
+              actionButton: (
+                <ActionButton onClick={copyRefLink} onDoubleClick={shareLink}>
+                  {t('invite')}
+                </ActionButton>
+              ),
             };
           }
           case 'section-name': {
@@ -218,7 +245,7 @@ export const usePointsSources = () => {
               iconSrc: domainsLinksImgData[linkDomain],
               rewardsDescription: t('one_time_rewards_description', { amount: quest.reward }),
               actionButton: claimed ? (
-                <CheckCircledIcon className='h-5 w-auto text-green-500' />
+                <CheckIcon className='h-5 w-auto fill-current text-green-500' />
               ) : followedLinks.includes(quest.link) ? (
                 <ClaimButton questId={id} onClick={claimQuestReward} />
               ) : (
@@ -240,12 +267,13 @@ export const usePointsSources = () => {
       .filter((x): x is QuestProps => x !== null);
   }, [
     claimQuestReward,
+    copyRefLink,
     followedLinks,
     handleActionLinkClick,
     lng,
-    openReferralModal,
     push,
     questsData,
+    shareLink,
     t,
   ]);
 
@@ -301,9 +329,8 @@ export const usePointsSources = () => {
     invitedFriendsLoading,
     quests,
     questsLoading,
-    referralModalIsOpen,
     claimFriendRewards,
-    openReferralModal,
-    closeReferralModal,
+    hiddenShareAnchorRef,
+    hiddenAnchorHref,
   };
 };

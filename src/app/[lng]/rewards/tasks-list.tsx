@@ -16,7 +16,7 @@ export const TasksList = ({ quests, loading }: TasksListProps) => {
   const renderQuests = useCallback(
     (questsList: QuestProps[]) =>
       questsList.map(({ id, iconSrc, title, rewardsDescription, actionButton }) => (
-        <div className='flex items-center justify-between gap-2' key={id}>
+        <div className='flex w-full items-center justify-between gap-2' key={id}>
           <div className='flex items-center gap-2'>
             {iconSrc && <Image className='size-11' src={iconSrc} alt='' />}
             <div>
@@ -31,8 +31,8 @@ export const TasksList = ({ quests, loading }: TasksListProps) => {
   );
 
   return (
-    <div className='flex flex-col gap-3'>
-      <p className='text-lg font-semibold'>{t('earn_more')}</p>
+    <div className='flex flex-col items-center gap-3'>
+      <p className='w-full text-lg font-semibold'>{t('earn_more')}</p>
       <OrLoader animation={loading} value={quests} modifier={renderQuests} />
     </div>
   );

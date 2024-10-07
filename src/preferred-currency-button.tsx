@@ -1,11 +1,12 @@
 'use client';
 
 import { GlassCard } from '@components/glass-card';
+import { CheckIcon } from '@components/icons/check-icon';
 import { usePreferredCurrency } from '@hooks/use-preferred-currency';
 import { useTranslation } from '@i18n/client';
 import { Currency } from '@types';
 import { Button } from '@UI/button';
-import { CheckCircle2, ChevronDownIcon } from 'lucide-react';
+import { ChevronDownIcon } from 'lucide-react';
 import React, { useCallback, useRef, useState } from 'react';
 
 export const PreferredCurrencyButton = () => {
@@ -75,7 +76,7 @@ const CurrencyOption = ({ value, isSelected, onClick }: CurrencyOptionProps) => 
     >
       <CurrencyLabel currency={value} />
 
-      {isSelected && <CheckCircle2 size={16} className='text-custom-link' />}
+      {isSelected && <CheckIcon className='size-4 fill-current text-custom-link' />}
     </Button>
   );
 };

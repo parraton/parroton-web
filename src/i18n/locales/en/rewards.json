@@ -18,5 +18,6 @@
   "use_telegram_mini_app": "Use Telegram Mini App to access this section",
   "telegram_apps_center": "Telegram Apps Center",
   "one_time_rewards_description": "+{{amount}} points",
-  "level_number": "Level {{level}}"
+  "level_number": "Level {{level}}",
+  "link_copied": "Copied"
 }
