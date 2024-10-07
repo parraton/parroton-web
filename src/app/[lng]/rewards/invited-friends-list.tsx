@@ -1,8 +1,9 @@
 import React, { useCallback } from 'react';
-import { InvitedFriendProps } from '../../../hooks/use-points-sources';
+import { InvitedFriendProps } from '@hooks/use-points-sources';
 import { useTranslation } from '@i18n/client';
-import { Button } from '@UI/button';
 import { OrLoader } from '@components/loader/loader';
+import { ButtonV2 } from '@UI/button-v2';
+import { GlassCard } from '@components/glass-card';
 
 interface InvitedFriendsListProps {
   data: InvitedFriendProps[] | undefined;
@@ -27,10 +28,14 @@ const InvitedFriendView = ({ friend, claimRewards }: InvitedFriendViewProps) => 
       <td className='py-1 pr-1'>{friend.name}</td>
       <td className='p-1'>{friend.claimedPoints}</td>
       <td className='p-1'>{friend.pendingPoints}</td>
-      <td className='py-1 pl-1 text-right'>
-        <Button onClick={handleClaimClick} disabled={friend.pendingPoints === 0}>
+      <td className='flex justify-end py-1 pl-1'>
+        <ButtonV2
+          className='text-sm font-extrabold'
+          onClick={handleClaimClick}
+          disabled={friend.pendingPoints === 0}
+        >
           {t('claim')}
-        </Button>
+        </ButtonV2>
       </td>
     </tr>
   );
@@ -44,7 +49,7 @@ export const InvitedFriendsList = ({ data, loading, claimRewards }: InvitedFrien
       invitedFriends.length === 0 ? (
         t('no_friends_invited')
       ) : (
-        <table className='w-full'>
+        <table className='w-full font-semibold'>
           <thead>
             <tr>
               <th />
@@ -64,11 +69,11 @@ export const InvitedFriendsList = ({ data, loading, claimRewards }: InvitedFrien
   );
 
   return (
-    <>
-      <p>{t('invited_friends')}</p>
-      <div className='max-h-24 overflow-y-auto rounded-lg bg-gray-500 p-3 md:max-h-none'>
+    <div className='flex flex-col gap-2'>
+      <p className='text-lg font-medium'>{t('invited_friends')}</p>
+      <GlassCard className='max-h-24 overflow-y-auto p-3 text-lg leading-tight md:max-h-none'>
         <OrLoader value={data} animation={loading} modifier={renderInvitedFriendsList} />
-      </div>
-    </>
+      </GlassCard>
+    </div>
   );
 };

@@ -1,6 +1,6 @@
-import { Button } from '@UI/button';
 import { useTranslation } from '@i18n/client';
 import React, { useCallback } from 'react';
+import { ActionButton } from './action-button';
 
 interface ClaimButtonProps {
   questId: string;
@@ -13,5 +13,5 @@ export const ClaimButton = ({ questId, onClick }: ClaimButtonProps) => {
 
   const handleClick = useCallback(() => onClick(questId), [onClick, questId]);
 
-  return <Button onClick={handleClick}>{t('claim')}</Button>;
+  return <ActionButton onClick={handleClick}>{t('claim')}</ActionButton>;
 };

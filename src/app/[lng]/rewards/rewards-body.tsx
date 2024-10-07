@@ -14,6 +14,7 @@ export const RewardsBody = () => {
   const {
     invitedFriends,
     invitedFriendsLoading,
+    userLevel,
     quests,
     questsLoading,
     totalPointsEarned,
@@ -33,7 +34,7 @@ export const RewardsBody = () => {
   if (isTelegram) {
     return (
       <>
-        <RewardsHeader amount={totalPointsEarned} loading={userDataLoading} />
+        <RewardsHeader amount={totalPointsEarned} loading={userDataLoading} level={userLevel} />
         <InvitedFriendsList
           data={invitedFriends}
           loading={invitedFriendsLoading}

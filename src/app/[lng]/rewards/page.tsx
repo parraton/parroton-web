@@ -4,10 +4,8 @@ export { generateFallbackMetadata as generateMetadata } from '@routes/generate-f
 
 export default function Rewards() {
   return (
-    <div className='custom-wrapper flex w-full justify-center'>
-      <div className='flex max-w-md flex-col gap-2 md:gap-4'>
-        <RewardsBody />
-      </div>
+    <div className='custom-wrapper flex w-full flex-col justify-center gap-5'>
+      <RewardsBody />
     </div>
   );
 }
