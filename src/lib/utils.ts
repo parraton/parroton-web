@@ -41,23 +41,25 @@ export const formatNumberWithDigitsLimit = (
   input: BigNumber.Value,
   locale: Language = 'en',
   digitsLimit = 7,
+  shouldUseLessThanForm = true,
 ) => {
   const parsedBalance = input instanceof BigNumber ? input : new BigNumber(input);
+  const exponent = parsedBalance.e ?? 0;
   let result: string;
 
   if (parsedBalance.gte(10 ** (digitsLimit - 1))) {
     result = parsedBalance.integerValue(BigNumber.ROUND_FLOOR).toString();
   } else if (parsedBalance.gte(1)) {
     // Leave 7 significant digits
-    const exponent = parsedBalance.e ?? 0;
-
     result = parsedBalance
       .shiftedBy(-exponent)
       .decimalPlaces(digitsLimit - 1, BigNumber.ROUND_FLOOR)
       .shiftedBy(exponent)
       .toString();
   } else if (parsedBalance.lte(10 ** (-digitsLimit + 1)) && parsedBalance.gt(0)) {
-    result = `< ${formatNumber(10 ** (-digitsLimit + 1), locale)}`;
+    result = shouldUseLessThanForm
+      ? `< ${formatNumber(10 ** (-digitsLimit + 1), locale)}`
+      : parsedBalance.decimalPlaces(-exponent, BigNumber.ROUND_FLOOR).toString();
   } else {
     result = parsedBalance.decimalPlaces(digitsLimit - 1, BigNumber.ROUND_FLOOR).toString();
   }

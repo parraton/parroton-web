@@ -3,7 +3,7 @@ import { IconComponentProps } from './types';
 
 export const DedustIcon: FC<IconComponentProps> = (props) => (
   <svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 220 256' {...props}>
-    <g stroke-linejoin='bevel' stroke-width='2'>
+    <g strokeLinejoin='bevel' strokeWidth='2'>
       <path fill='#CC7400' stroke='#CC7400' d='m110 128 27.25-15.75v31.5L110 159.5z'></path>
       <path fill='#DE7F00' stroke='#DE7F00' d='m110 222.5 27.25-15.75v31.5L110 254z'></path>
       <path fill='#D17200' stroke='#D17200' d='m110 191 27.25-15.75v31.5L110 222.5z'></path>

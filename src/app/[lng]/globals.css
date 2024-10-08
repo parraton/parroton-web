@@ -34,7 +34,7 @@
 
       --radius: 0.5rem;
 
-      --custom-link: #4d69d6;
+      --custom-link: 77 105 214; /* #4d69d6; */
       --custom-button: #c1ff82;
       --custom-primary-text: #212529;
       --switcher: #416a7a;
@@ -69,7 +69,7 @@
       --input: 12 6.5% 15.1%;
       --ring: 24 5.7% 82.9%;
 
-      --custom-link: #a8baff;
+      --custom-link: 168 186 255; /* #a8baff; */
       --custom-button: #cbff96;
       --custom-primary-text: #fff;
       --switcher: #6e8892;

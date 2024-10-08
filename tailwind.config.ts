@@ -55,7 +55,7 @@ const config = {
           foreground: 'hsl(var(--card-foreground))',
         },
         custom: {
-          link: 'var(--custom-link)',
+          link: 'rgb(var(--custom-link))',
           button: 'var(--custom-button)',
           'primary-text': 'var(--custom-primary-text)',
         },

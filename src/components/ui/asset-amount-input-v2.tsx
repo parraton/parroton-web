@@ -23,7 +23,7 @@ interface HTMLPropsWithRefCallback<T> extends HTMLProps<T> {
 interface AssetAmountInputV2Props {
   children?: React.ReactNode | React.ReactNode[];
   value: string;
-  error?: string;
+  error?: React.ReactNode | React.ReactNode[];
   maxValueInAsset: string;
   assetSymbol: string;
   assetExchangeRate: BigNumber.Value;
@@ -176,7 +176,7 @@ export const AssetAmountInputV2: FC<AssetAmountInputV2Props> = ({
                           interpolation: { escapeValue: false },
                         })
                       : ''
-                    : `${/,./.test(numberInputValue) ? '' : '\u00A0'}${assetSymbol}`
+                    : `${/[,.]/.test(numberInputValue) ? '' : '\u00A0'}${assetSymbol}`
                 }
                 className='custom-text-like-asset-input inline-flex cursor-text'
               >
@@ -193,7 +193,7 @@ export const AssetAmountInputV2: FC<AssetAmountInputV2Props> = ({
               </label>
             </div>
 
-            {error && <span className='text-sm text-red-500'>{error}</span>}
+            {error}
           </div>
 
           <StyledSlider

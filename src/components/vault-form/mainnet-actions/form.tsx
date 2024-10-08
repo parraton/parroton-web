@@ -56,6 +56,9 @@ export function MainnetActionsForm({ vaultAddress }: MainnetActionsFormProps) {
     fullInputSymbol,
     inputAssetExchangeRate,
     preferredCurrency,
+    shouldShowErrorGetLpButton,
+    shouldShowErrorDepositButton,
+    lpAddress,
     doAction,
   } = useFormData(vaultAddress);
   const onSubmit = useCallback(async () => {
@@ -108,6 +111,7 @@ export function MainnetActionsForm({ vaultAddress }: MainnetActionsFormProps) {
     },
     [resetValues],
   );
+  const goToDeposit = useCallback(() => handleActionChange('deposit'), [handleActionChange]);
 
   return (
     <FormikProvider value={formik}>
@@ -137,7 +141,40 @@ export function MainnetActionsForm({ vaultAddress }: MainnetActionsFormProps) {
 
         <AssetAmountInputV2
           value={amount}
-          error={errors.amount}
+          error={
+            errors.amount && (
+              <div className='flex flex-wrap items-center text-sm'>
+                <span className='text-red-500'>{errors.amount}</span>
+                {(shouldShowErrorGetLpButton || shouldShowErrorDepositButton) && (
+                  <span className='whitespace-pre'>
+                    {/* eslint-disable-next-line react/jsx-no-literals */}
+                    {' · '}
+                  </span>
+                )}
+                {shouldShowErrorGetLpButton && (
+                  <a
+                    // eslint-disable-next-line tailwindcss/classnames-order
+                    className='bg-custom-link/50 rounded-sm p-1 text-custom-link'
+                    href={`https://dedust.io/pools/${lpAddress}`}
+                    target='_blank'
+                    rel='noreferrrer'
+                  >
+                    {t('get_lp_short_description')}
+                  </a>
+                )}
+                {shouldShowErrorDepositButton && (
+                  <button
+                    type='button'
+                    // eslint-disable-next-line tailwindcss/classnames-order
+                    className='bg-custom-link/50 rounded-sm p-1 text-custom-link'
+                    onClick={goToDeposit}
+                  >
+                    {t('deposit_title')}
+                  </button>
+                )}
+              </div>
+            )
+          }
           maxValueInAsset={inputBalance ?? FALLBACK_MAX_ASSET_VALUE}
           assetSymbol={fullInputSymbol ?? ''}
           assetExchangeRate={inputAssetExchangeRate ?? 1}

@@ -24,6 +24,7 @@ interface Resources {
     "connect_wallet_to_withdraw": "Connect wallet to withdraw",
     "your_balance": "Your balance",
     "some_token_exchange_rate": "{{token}} exchange rate",
+    "get_lp_short_description": "Get LP",
     "get_lp_description": "Not enough LP? Invest in DeDust pool",
     "withdraw_title": "Withdraw",
     "withdraw_description": "Burn your PLPs to get underlying LPs",

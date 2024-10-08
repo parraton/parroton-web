@@ -1,5 +1,6 @@
 $header-height: 80px;
 $bottom-buttons-height: 4.75rem;
+$center-menu-buttons-threshold: 1024px;
 
 .custom-main-container {
   display: flex;
@@ -115,8 +116,13 @@ $bottom-buttons-height: 4.75rem;
 
   @media (min-width: 768px) {
     display: grid;
-    grid-template-columns: 46px 20rem 1fr;
+    grid-template-columns: auto 1fr auto;
+    gap: 0.625rem;
     padding: 20px 30px;
+  }
+
+  @media (min-width: $center-menu-buttons-threshold) {
+    grid-template-columns: 1fr 24rem 1fr;
   }
 }
 
@@ -390,6 +396,10 @@ input[type="number"] {
     justify-content: flex-start;
     padding: 0;
     background-color: transparent !important;
+  }
+
+  @media (min-width: $center-menu-buttons-threshold) {
+    justify-content: center;
   }
 }
 
