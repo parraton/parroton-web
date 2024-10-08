@@ -70,7 +70,7 @@ const CurrencyOption = ({ value, isSelected, onClick }: CurrencyOptionProps) => 
 
   return (
     <Button
-      className='flex w-32 items-center justify-between'
+      className='flex w-32 items-center justify-between hover:bg-switcher'
       variant='ghost'
       onClick={handleClick}
     >

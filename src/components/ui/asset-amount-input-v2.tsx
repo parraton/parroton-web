@@ -234,7 +234,8 @@ const StyledThumb = ({
     key={key}
   >
     {[0, 1, 2].map((i) => (
-      <div key={i} className='h-4 w-0 border-l-2 border-switcher' />
+      // eslint-disable-next-line prettier/prettier
+      <div key={i} className='h-4 w-0 border-l-2 border-slider-thumb' />
     ))}
   </div>
 );

@@ -4,7 +4,7 @@
 
   @layer base {
     :root {
-      --background: 0 0% 100%;
+      --background: 240 241 242;
       --foreground: 20 14.3% 4.1%;
 
       --card: 0 0% 100%;
@@ -37,12 +37,13 @@
       --custom-link: 77 105 214; /* #4d69d6; */
       --custom-button: #c1ff82;
       --custom-primary-text: #212529;
-      --switcher: #416a7a;
-      --dialog: 223 228 235; /* #dfe4eb */
+      --slider-thumb: #416a7a;
+      --switcher: #6b8499;
+      --custom-content: 223 228 235; /* #dfe4eb */
     }
 
     .dark {
-      --background: 20 14.3% 4.1%;
+      --background: 14 22 33;
       --foreground: 60 9.1% 97.8%;
 
       --card: 20 14.3% 4.1%;
@@ -73,8 +74,9 @@
       --custom-link: 168 186 255; /* #a8baff; */
       --custom-button: #cbff96;
       --custom-primary-text: #fff;
-      --switcher: #6e8892;
-      --dialog: 35 47 61; /* #232f3d */
+      --slider-thumb: #6e8892;
+      --switcher: #385167;
+      --custom-content: 35 47 61; /* #232f3d */
     }
   }
 

@@ -159,14 +159,16 @@ export const usePointsSources = () => {
       return;
     }
 
-    return referralsData.map<InvitedFriendProps>((ref, i) => ({
+    /* return referralsData.map<InvitedFriendProps>((ref, i) => ({
       id: ref.id,
       name:
         (ref.firstName ? [ref.firstName, ref.lastName].filter(Boolean).join(' ') : ref.username) ??
         '???',
       claimedPoints: friendRewardsStub[i].claimed ?? 0,
       pendingPoints: friendRewardsStub[i].pending ?? 0,
-    }));
+    })); */
+
+    return [{ name: 'Degen 1', id: '1', claimedPoints: 0, pendingPoints: 1000 }];
   }, [friendRewardsStub, referralsData]);
 
   const claimQuestReward = useCallback(

@@ -39,7 +39,7 @@ const DialogContent = React.forwardRef<
     <DialogPrimitive.Content
       ref={ref}
       className={cn(
-        'fixed z-50 flex w-full max-w-md flex-col gap-2 rounded-t-lg bg-dialog p-4 shadow-lg duration-200',
+        'fixed z-50 flex w-full max-w-md flex-col gap-2 rounded-t-lg bg-background p-4 shadow-lg duration-200',
         'bottom-0 left-1/2 top-32 -translate-x-1/2',
         'data-[state=closed]:slide-out-to-left-1/2 data-[state=open]:slide-in-from-left-1/2',
         'data-[state=closed]:slide-out-to-bottom data-[state=open]:slide-in-from-bottom',
@@ -89,13 +89,7 @@ DialogTitle.displayName = DialogPrimitive.Title.displayName;
 const DialogDescription = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Description>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Description>
->(({ className, ...props }, ref) => (
-  <DialogPrimitive.Description
-    ref={ref}
-    className={cn('text-muted-foreground', className)}
-    {...props}
-  />
-));
+>((props, ref) => <DialogPrimitive.Description ref={ref} {...props} />);
 DialogDescription.displayName = DialogPrimitive.Description.displayName;
 
 export {

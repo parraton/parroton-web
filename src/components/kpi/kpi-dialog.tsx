@@ -37,7 +37,7 @@ export function KpiDialog({ values, lng }: KpiDialogProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <p className='font-semibold text-custom-link'>{t('our_goals')}</p>
+        <button className='h-fit font-semibold text-custom-link'>{t('our_goals')}</button>
       </DialogTrigger>
       <DialogContent className='gap-8'>
         <DialogHeader>

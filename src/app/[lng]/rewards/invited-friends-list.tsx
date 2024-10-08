@@ -30,7 +30,7 @@ const InvitedFriendView = ({ friend, claimRewards }: InvitedFriendViewProps) => 
       <td className='p-1'>{friend.pendingPoints}</td>
       <td className='flex justify-end py-1 pl-1'>
         <ButtonV2
-          className='text-sm font-extrabold'
+          className='p-2 text-sm font-extrabold'
           onClick={handleClaimClick}
           disabled={friend.pendingPoints === 0}
         >
@@ -47,7 +47,7 @@ export const InvitedFriendsList = ({ data, loading, claimRewards }: InvitedFrien
   const renderInvitedFriendsList = useCallback(
     (invitedFriends: InvitedFriendProps[]) =>
       invitedFriends.length === 0 ? (
-        <p className='w-full text-left'>{t('no_friends_invited')}</p>
+        <p className='w-full font-medium'>{t('no_friends_invited')}</p>
       ) : (
         <table className='w-full font-semibold'>
           <thead>
@@ -71,7 +71,7 @@ export const InvitedFriendsList = ({ data, loading, claimRewards }: InvitedFrien
   return (
     <div className='flex flex-col gap-2'>
       <p className='text-lg font-medium'>{t('invited_friends')}</p>
-      <GlassCard className='flex max-h-28 justify-center overflow-y-auto p-3 text-lg leading-tight md:max-h-none'>
+      <GlassCard className='flex max-h-28 justify-center overflow-y-auto p-3 text-xs leading-tight md:max-h-none'>
         <OrLoader value={data} animation={loading} modifier={renderInvitedFriendsList} />
       </GlassCard>
     </div>

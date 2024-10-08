@@ -106,7 +106,7 @@ $center-menu-buttons-threshold: 1024px;
   top: 0;
 
   @include themify($themes) {
-    background-color: themed("header") !important;
+    background-color: themed("back") !important;
     border-color: themed("header-border") !important;
   }
 
