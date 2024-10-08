@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useRef } from 'react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 
 import AddPersonImgData from '../images/add-person.png';
 import RainbowImgData from '../images/rainbowswap.png';
@@ -15,7 +15,6 @@ import BigNumber from 'bignumber.js';
 import { QuestsApi } from '@core/quests-api';
 import { useStorage } from './use-storage';
 import { ActionLink } from '@components/rewards/action-link';
-import { ClaimButton } from '@components/rewards/claim-button';
 import { LEVELS_THRESHOLDS } from '@lib/constants';
 import { ActionButton } from '@components/rewards/action-button';
 import { CheckIcon } from '@components/icons/check-icon';
@@ -35,6 +34,7 @@ export interface QuestProps {
   title: string;
   rewardsDescription: string;
   actionButton: React.ReactNode;
+  isSectionName?: boolean;
 }
 
 const REFERRAL_REWARD_PERCENTAGE = 5;
@@ -51,6 +51,7 @@ const sectionsImgData: Record<string, StaticImageData | undefined> = {
 };
 
 export const usePointsSources = () => {
+  const [loadingQuestsIds, setLoadingQuestsIds] = useState<string[]>([]);
   const { getItem, setItem } = useStorage();
   const [, initData] = useInitData();
   const { t, lng } = useTranslation({ ns: 'rewards' });
@@ -185,7 +186,12 @@ export const usePointsSources = () => {
   );
 
   const handleActionLinkClick = useCallback(
-    async (link: string) => {
+    async (link: string, questId: string) => {
+      setLoadingQuestsIds((ids) => [...ids, questId]);
+      if (followedLinks?.includes(link)) {
+        await claimQuestReward(questId);
+      }
+
       try {
         const newFollowedLinks = [...(followedLinks ?? []), link];
         await setItem(FOLLOWED_LINKS_STORAGE_KEY, JSON.stringify(newFollowedLinks));
@@ -193,8 +199,9 @@ export const usePointsSources = () => {
       } catch (error) {
         console.error(error);
       }
+      setLoadingQuestsIds((ids) => ids.filter((id) => id !== questId));
     },
-    [followedLinks, mutateFollowedLinks, setItem],
+    [claimQuestReward, followedLinks, mutateFollowedLinks, setItem],
   );
 
   // TODO: modify frontend and backend to remove hardcoding icons
@@ -235,6 +242,7 @@ export const usePointsSources = () => {
               iconSrc: sectionsImgData[quest.id],
               rewardsDescription: '',
               actionButton: null,
+              isSectionName: true,
             };
           }
           case 'follow-link': {
@@ -246,11 +254,11 @@ export const usePointsSources = () => {
               rewardsDescription: t('one_time_rewards_description', { amount: quest.reward }),
               actionButton: claimed ? (
                 <CheckIcon className='h-5 w-auto fill-current text-green-500' />
-              ) : followedLinks.includes(quest.link) ? (
-                <ClaimButton questId={id} onClick={claimQuestReward} />
               ) : (
                 <ActionLink
                   link={quest.link}
+                  questId={id}
+                  loading={loadingQuestsIds.includes(id)}
                   isTelegram={quest.isTelegramLink}
                   onClick={handleActionLinkClick}
                 >
@@ -266,11 +274,11 @@ export const usePointsSources = () => {
       })
       .filter((x): x is QuestProps => x !== null);
   }, [
-    claimQuestReward,
     copyRefLink,
     followedLinks,
     handleActionLinkClick,
     lng,
+    loadingQuestsIds,
     push,
     questsData,
     shareLink,

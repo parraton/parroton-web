@@ -30,11 +30,11 @@ export function KPIProgress({ title, value, total, type, lng }: KPIProgressProps
 
   return (
     <div className='flex flex-col gap-1'>
-      <h3 className='text-sm font-semibold'>{title}</h3>
+      <h3 className='font-semibold'>{title}</h3>
       <Progress value={percentage} />
-      <div className='flex justify-between text-[12px] text-[#707070]'>
+      <div className='flex justify-between text-sm text-[#707070]'>
         <p>{zero}</p>
-        <p className='text-[12px] font-semibold text-accent-foreground'>{valueToShow}</p>
+        <p className='text-sm font-semibold text-accent-foreground'>{valueToShow}</p>
         <p>{total}</p>
       </div>
     </div>

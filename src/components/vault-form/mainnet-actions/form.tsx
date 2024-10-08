@@ -41,14 +41,17 @@ export function MainnetActionsForm({ vaultAddress }: MainnetActionsFormProps) {
     validate,
     shouldShowConnectButton,
     estimatedOutput,
+    estimatedOutputInUsd,
     estimatedOutputLoading,
     inputBalance,
+    inputBalanceInUsd,
     inputBalanceLoading,
     shortInputSymbol,
     shortOutputSymbol,
     expectedYearlyYield,
     vaultIsLoading,
-    inputAmountLpOrPlp,
+    inputAmountInTokens,
+    inputAmountInUsd,
     inputToOutputExchangeRate,
     fullInputSymbol,
     inputAssetExchangeRate,
@@ -81,7 +84,7 @@ export function MainnetActionsForm({ vaultAddress }: MainnetActionsFormProps) {
 
   const handleConfirmActionClick = useCallback(async () => {
     try {
-      await doAction(inputAmountLpOrPlp);
+      await doAction(inputAmountInTokens);
       handleConfirmOpenChange(false);
       // TODO: implement status tracking
     } catch (error) {
@@ -90,7 +93,7 @@ export function MainnetActionsForm({ vaultAddress }: MainnetActionsFormProps) {
     } finally {
       resetValues(action);
     }
-  }, [doAction, inputAmountLpOrPlp, resetValues, action]);
+  }, [doAction, inputAmountInTokens, resetValues, action]);
 
   const handleAmountChange = useCallback(
     (newValue: string) => {
@@ -154,16 +157,19 @@ export function MainnetActionsForm({ vaultAddress }: MainnetActionsFormProps) {
             open={confirmIsOpen}
             onOpenChange={handleConfirmOpenChange}
             triggerDisabled={isSubmitting || !isValid || estimatedOutputLoading}
-            triggerLoading={isSubmitting && !isFirstRender}
+            triggerLoading={estimatedOutputLoading && !isFirstRender}
             triggerButtonText={t(`preview_${action}`)}
             confirmActionText={t(`confirm_${action}`)}
             confirmButtonText={t(`${action}_title`)}
             inputAmountLabel={t(`you_${action}`)}
-            inputAmount={inputAmountLpOrPlp}
+            inputAmount={inputAmountInTokens}
+            inputAmountInUsd={inputAmountInUsd}
             inputTokenSymbol={shortInputSymbol}
             outputAmount={estimatedOutput}
+            outputAmountInUsd={estimatedOutputInUsd}
             outputTokenSymbol={shortOutputSymbol}
             inputBalance={inputBalance}
+            inputBalanceInUsd={inputBalanceInUsd}
             inputBalanceLoading={inputBalanceLoading}
             apy={apy}
             apyIsLoading={vaultIsLoading}

@@ -7,7 +7,7 @@ export const ButtonV2 = ({
 }: React.ButtonHTMLAttributes<HTMLButtonElement>) => (
   <button
     className={cn(
-      'w-full rounded-xl bg-custom-button px-2 py-3 font-semibold disabled:opacity-75',
+      'w-full rounded-xl bg-custom-button px-2 py-3 font-semibold text-white disabled:opacity-75',
       className,
     )}
     type={type}
