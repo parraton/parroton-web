@@ -1,6 +1,7 @@
 {
   "deposit_title": "Deposit",
   "deposit_description": "Deposit your lp to automate rewards reinvestment.",
+  "get_lp_short_description": "Get LP",
   "get_lp_description": "Not enough LP? Invest in DeDust pool",
   "withdraw_title": "Withdraw",
   "withdraw_description": "Burn your PLPs to get underlying LPs",
@@ -19,9 +20,9 @@
   "validation": {
     "required": "This field is required",
     "invalid_format": "Invalid format",
-    "min_deposit": "Deposit can not be less or equal {{minAmount}}",
+    "min_deposit": "Deposit can not be zero",
     "max_deposit": "Deposit can not be more than {{maxAmount}}",
-    "min_withdraw": "Withdraw can not be less or equal {{minAmount}}",
+    "min_withdraw": "Withdraw can not be zero",
     "max_withdraw": "Withdraw can not be more than {{maxAmount}}"
   },
   "claim": {
@@ -40,7 +41,7 @@
   "back": "Back",
   "stats": "Stats",
   "deposit_header_in_usd": "Earn up to <1>{{amount}}</1>\nin <2>{{symbol}}</2> yearly",
-  "deposit_header_in_asset": "Earn up to <1>{{amount}}</1>\n{{symbol}} yearly",
+  "deposit_header_in_asset": "Earn up to\n<1>{{amount}}</1> {{symbol}} yearly",
   "you_deposit": "You deposit",
   "you_withdraw": "You withdraw",
   "you_get": "You get",

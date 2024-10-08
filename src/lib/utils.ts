@@ -2,7 +2,6 @@ import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { Language } from '@i18n/settings';
 import BigNumber from 'bignumber.js';
-import z from 'zod';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -41,23 +40,25 @@ export const formatNumberWithDigitsLimit = (
   input: BigNumber.Value,
   locale: Language = 'en',
   digitsLimit = 7,
+  shouldUseLessThanForm = true,
 ) => {
   const parsedBalance = input instanceof BigNumber ? input : new BigNumber(input);
+  const exponent = parsedBalance.e ?? 0;
   let result: string;
 
   if (parsedBalance.gte(10 ** (digitsLimit - 1))) {
     result = parsedBalance.integerValue(BigNumber.ROUND_FLOOR).toString();
   } else if (parsedBalance.gte(1)) {
     // Leave 7 significant digits
-    const exponent = parsedBalance.e ?? 0;
-
     result = parsedBalance
       .shiftedBy(-exponent)
       .decimalPlaces(digitsLimit - 1, BigNumber.ROUND_FLOOR)
       .shiftedBy(exponent)
       .toString();
   } else if (parsedBalance.lte(10 ** (-digitsLimit + 1)) && parsedBalance.gt(0)) {
-    result = `< ${formatNumber(10 ** (-digitsLimit + 1), locale)}`;
+    result = shouldUseLessThanForm
+      ? `< ${formatNumber(10 ** (-digitsLimit + 1), locale)}`
+      : parsedBalance.decimalPlaces(-exponent, BigNumber.ROUND_FLOOR).toString();
   } else {
     result = parsedBalance.decimalPlaces(digitsLimit - 1, BigNumber.ROUND_FLOOR).toString();
   }
@@ -106,7 +107,8 @@ interface AmountValidationOptions {
   max?: string | number;
 }
 
-export const getAmountAsStringValidationSchema = (
+/** Creates a function that returns a string with error if a value is invalid */
+export const getValidateAmountAsStringFn = (
   messages: AmountValidationMessages,
   validationOptions: AmountValidationOptions,
 ) => {
@@ -118,39 +120,31 @@ export const getAmountAsStringValidationSchema = (
   } = messages;
   const { required, min, max } = validationOptions;
 
-  return z.string().superRefine((value, ctx) => {
-    if (!value) {
-      if (required) {
-        ctx.addIssue({ message: requiredMessage, code: z.ZodIssueCode.custom });
-      }
-
+  return (value: unknown) => {
+    if (!required && !value) {
       return;
+    }
+
+    if (required && !value) {
+      return requiredMessage;
+    }
+
+    if (typeof value !== 'string') {
+      return invalidFormatMessage;
     }
 
     const parsedValue = new BigNumber(value.replace(',', '.'));
 
     if (!parsedValue.isFinite()) {
-      ctx.addIssue({ message: invalidFormatMessage, code: z.ZodIssueCode.custom });
-
-      return;
+      return invalidFormatMessage;
     }
 
-    if (min != null && parsedValue.lte(min)) {
-      ctx.addIssue({
-        message: minMessageFn(min),
-        code: z.ZodIssueCode.custom,
-      });
-
-      return;
+    if (min != null && parsedValue.lt(min)) {
+      return minMessageFn(min);
     }
 
     if (max != null && parsedValue.gt(max)) {
-      ctx.addIssue({
-        message: maxMessageFn(formatNumber(max)),
-        code: z.ZodIssueCode.custom,
-      });
-
-      return;
+      return maxMessageFn(max);
     }
-  });
+  };
 };

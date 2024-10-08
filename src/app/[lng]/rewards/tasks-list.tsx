@@ -34,7 +34,6 @@ interface QuestsItemProps {
 
 export const QuestItem = ({ quest }: QuestsItemProps) => {
   const { id, iconSrc, title, rewardsDescription, actionButton, isSectionName } = quest;
-  console.log('oy vey 1', id, isSectionName);
 
   return (
     <>

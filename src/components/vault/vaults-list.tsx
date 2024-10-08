@@ -14,6 +14,7 @@ import BigNumber from 'bignumber.js';
 import { usePreferredCurrency } from '@hooks/use-preferred-currency';
 import { Currency } from '@types';
 import { useRouter } from 'next/navigation';
+import { cn } from '@lib/utils';
 
 export const VaultsList = ({ lng }: { lng: Language }) => {
   const { replace } = useRouter();
@@ -32,7 +33,7 @@ export const VaultsList = ({ lng }: { lng: Language }) => {
   const renderVaults = useCallback(
     (vaults: BackendVault[]) => (
       <>
-        <h1 className='text-center text-3xl font-bold'>
+        <h1 className='text-center text-2xl font-bold'>
           <Trans
             i18nKey='vault-card:put_your_liquidity_at_work'
             components={{ 1: <span className='text-custom-link' /> }}
@@ -50,14 +51,21 @@ export const VaultsList = ({ lng }: { lng: Language }) => {
           onChange={setDepositValue}
         />
 
-        <ul className='custom-card-list'>
-          <li className='custom-card-list-item'>{t('deposit_asset')}</li>
-          <li className='custom-card-list-item'>{t('you_earn')}</li>
-          <li className='custom-card-list-item'>{t('yield')}</li>
-        </ul>
-        {vaults.map((vault) => (
-          <Vault key={vault.vaultAddress} lng={lng} vault={vault} depositValue={depositValue} />
-        ))}
+        <div className='flex flex-col gap-2.5'>
+          <ul className='custom-card-list'>
+            {(['deposit_asset', 'you_earn', 'yield'] as const).map((i18nKey, i) => (
+              <li
+                key={i18nKey}
+                className={cn('text-base font-normal text-[#8b9dad]', i === 2 && 'pr-1.5 text-end')}
+              >
+                {t(i18nKey)}
+              </li>
+            ))}
+          </ul>
+          {vaults.map((vault) => (
+            <Vault key={vault.vaultAddress} lng={lng} vault={vault} depositValue={depositValue} />
+          ))}
+        </div>
       </>
     ),
     [depositValue, lng, t, tonBalance, tonPrice],

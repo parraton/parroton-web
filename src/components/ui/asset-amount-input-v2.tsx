@@ -23,7 +23,7 @@ interface HTMLPropsWithRefCallback<T> extends HTMLProps<T> {
 interface AssetAmountInputV2Props {
   children?: React.ReactNode | React.ReactNode[];
   value: string;
-  error?: string;
+  error?: React.ReactNode | React.ReactNode[];
   maxValueInAsset: string;
   assetSymbol: string;
   assetExchangeRate: BigNumber.Value;
@@ -156,7 +156,11 @@ export const AssetAmountInputV2: FC<AssetAmountInputV2Props> = ({
             <div className='flex items-center justify-between'>
               <span>{label}</span>
 
-              <button type='button' onClick={handleMaxButtonClick} className='custom-card-link'>
+              <button
+                type='button'
+                onClick={handleMaxButtonClick}
+                className='font-semibold text-custom-link'
+              >
                 {t('use_max')}
               </button>
             </div>
@@ -172,7 +176,7 @@ export const AssetAmountInputV2: FC<AssetAmountInputV2Props> = ({
                           interpolation: { escapeValue: false },
                         })
                       : ''
-                    : `\u00A0${assetSymbol}`
+                    : `${/[,.]/.test(numberInputValue) ? '' : '\u00A0'}${assetSymbol}`
                 }
                 className='custom-text-like-asset-input inline-flex cursor-text'
               >
@@ -189,7 +193,7 @@ export const AssetAmountInputV2: FC<AssetAmountInputV2Props> = ({
               </label>
             </div>
 
-            {error && <span className='text-sm text-red-500'>{error}</span>}
+            {error}
           </div>
 
           <StyledSlider
@@ -229,12 +233,8 @@ const StyledThumb = ({
     )}
     key={key}
   >
-    {[0.32, 0.72, 1].map((opacity) => (
-      <div
-        key={opacity}
-        className='h-4 w-0.5 rounded-lg bg-[#5e99a3] dark:bg-[#74bec9]'
-        style={{ opacity }}
-      />
+    {[0, 1, 2].map((i) => (
+      <div key={i} className='h-4 w-0 border-l-2 border-switcher' />
     ))}
   </div>
 );

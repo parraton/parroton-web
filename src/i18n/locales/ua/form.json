@@ -1,6 +1,7 @@
 {
   "deposit_title": "Вкласти",
   "deposit_description": "Вкладіть свої токени ліквідності DeDust та автоматизуйте реінвестування нагород.",
+  "get_lp_short_description": "Отримати LP",
   "get_lp_description": "Недостатньо LP? Інвестуйте в DeDust пул",
   "withdraw_title": "Вивести",
   "withdraw_description": "Обміняйте свою долю у волті назад у токени ліквідності DeDust",
@@ -19,9 +20,9 @@
   "validation": {
     "required": "Це поле обов'язкове",
     "invalid_format": "Невірний формат",
-    "min_deposit": "Мінімальний депозит {{minAmount}}",
+    "min_deposit": "Неможливо внести нульову суму",
     "max_deposit": "Максимальний депозит {{maxAmount}}",
-    "min_withdraw": "Неможливо вивести {{minAmount}} або менше",
+    "min_withdraw": "Неможливо вивести нульову суму",
     "max_withdraw": "Неможливо вивести більше ніж {{maxAmount}}"
   },
   "claim": {

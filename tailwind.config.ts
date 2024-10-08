@@ -55,14 +55,15 @@ const config = {
           foreground: 'hsl(var(--card-foreground))',
         },
         custom: {
-          link: 'var(--custom-link)',
+          link: 'rgb(var(--custom-link))',
           button: 'var(--custom-button)',
           'primary-text': 'var(--custom-primary-text)',
         },
         dialog: {
+          DEFAULT: 'rgb(var(--dialog))',
           overlay: '#384551',
         },
-        switcher: '#6e8892',
+        switcher: 'var(--switcher)',
       },
       borderRadius: {
         lg: 'var(--radius)',

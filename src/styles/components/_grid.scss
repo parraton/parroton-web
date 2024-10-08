@@ -1,5 +1,6 @@
 $header-height: 80px;
 $bottom-buttons-height: 4.75rem;
+$center-menu-buttons-threshold: 1024px;
 
 .custom-main-container {
   display: flex;
@@ -115,8 +116,13 @@ $bottom-buttons-height: 4.75rem;
 
   @media (min-width: 768px) {
     display: grid;
-    grid-template-columns: 46px 20rem 1fr;
+    grid-template-columns: auto 1fr auto;
+    gap: 0.625rem;
     padding: 20px 30px;
+  }
+
+  @media (min-width: $center-menu-buttons-threshold) {
+    grid-template-columns: 1fr 24rem 1fr;
   }
 }
 
@@ -227,23 +233,6 @@ $bottom-buttons-height: 4.75rem;
   &:hover {
     transform: scale(1.02) translate(0, -6px);
     transition: transform 0.2s ease-in-out;
-  }
-}
-
-.custom-list-el {
-  position: relative;
-
-  &:first-child {
-    &::after {
-      content: "";
-      display: block;
-      height: calc(100% - 20px);
-      width: 1px;
-      background-color: #ebebeb;
-      position: absolute;
-      top: 10px;
-      left: calc(100% + 5px);
-    }
   }
 }
 
@@ -396,10 +385,7 @@ input[type="number"] {
   left: 0;
   width: 100%;
   padding: 1.25rem 2.5rem;
-
-  @include themify($themes) {
-    background-color: themed("content");
-  }
+  background-color: $content;
 
   @media (min-width: 768px) {
     z-index: initial;
@@ -407,6 +393,10 @@ input[type="number"] {
     justify-content: flex-start;
     padding: 0;
     background-color: transparent !important;
+  }
+
+  @media (min-width: $center-menu-buttons-threshold) {
+    justify-content: center;
   }
 }
 
@@ -418,18 +408,12 @@ input[type="number"] {
   font-weight: normal;
   border-radius: $border-radius;
 
-  &:hover {
-    @include themify($themes) {
-      color: themed("link");
-    }
-  }
-
   @media (min-width: 768px) {
     padding: 8px 20px;
+    background-color: $content;
 
     @include themify($themes) {
       color: themed("text");
-      background-color: themed("content");
     }
   }
 }
@@ -478,48 +462,6 @@ input[type="number"] {
   gap: 0.2rem;
 }
 
-%custom-info-text {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  @include themify($themes) {
-    color: themed("text");
-  }
-}
-
-.custom-info-value {
-  @extend %custom-info-text;
-  font-size: 1rem;
-  font-weight: bold;
-
-  @media (min-width: 768px) {
-    font-size: 1.2rem;
-  }
-}
-
-.custom-info-title {
-  @extend %custom-info-text;
-  font-size: 0.8rem;
-  font-weight: normal;
-  position: relative;
-}
-
-.custom-info-heading {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  font-size: 1.8rem;
-  @include themify($themes) {
-    color: themed("text");
-  }
-
-  @media (min-width: 768px) {
-    padding-top: 2rem;
-  }
-}
-
 .custom-info-header {
   display: grid;
   align-items: center;
@@ -528,9 +470,7 @@ input[type="number"] {
 
 .custom-link {
   text-decoration: underline;
-  @include themify($themes) {
-    color: themed("link");
-  }
+  color: $primary;
 
   &.bold {
     font-weight: bold;
