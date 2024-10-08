@@ -184,7 +184,7 @@ export const AssetAmountInputV2: FC<AssetAmountInputV2Props> = ({
                   <input
                     className='bg-transparent'
                     type='text'
-                    inputMode='numeric'
+                    inputMode='decimal'
                     style={{ width: `${numberInputValue.length}ch`, minWidth: '1ch' }}
                     value={numberInputValue}
                     onChange={handleNumberInputChange}
