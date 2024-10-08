@@ -38,6 +38,7 @@
       --custom-button: #c1ff82;
       --custom-primary-text: #212529;
       --switcher: #416a7a;
+      --dialog: 223 228 235; /* #dfe4eb */
     }
 
     .dark {
@@ -73,6 +74,7 @@
       --custom-button: #cbff96;
       --custom-primary-text: #fff;
       --switcher: #6e8892;
+      --dialog: 35 47 61; /* #232f3d */
     }
   }
 

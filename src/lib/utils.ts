@@ -2,7 +2,6 @@ import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { Language } from '@i18n/settings';
 import BigNumber from 'bignumber.js';
-import z from 'zod';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -108,7 +107,8 @@ interface AmountValidationOptions {
   max?: string | number;
 }
 
-export const getAmountAsStringValidationSchema = (
+/** Creates a function that returns a string with error if a value is invalid */
+export const getValidateAmountAsStringFn = (
   messages: AmountValidationMessages,
   validationOptions: AmountValidationOptions,
 ) => {
@@ -120,39 +120,31 @@ export const getAmountAsStringValidationSchema = (
   } = messages;
   const { required, min, max } = validationOptions;
 
-  return z.string().superRefine((value, ctx) => {
-    if (!value) {
-      if (required) {
-        ctx.addIssue({ message: requiredMessage, code: z.ZodIssueCode.custom });
-      }
-
+  return (value: unknown) => {
+    if (!required && !value) {
       return;
+    }
+
+    if (required && !value) {
+      return requiredMessage;
+    }
+
+    if (typeof value !== 'string') {
+      return invalidFormatMessage;
     }
 
     const parsedValue = new BigNumber(value.replace(',', '.'));
 
     if (!parsedValue.isFinite()) {
-      ctx.addIssue({ message: invalidFormatMessage, code: z.ZodIssueCode.custom });
-
-      return;
+      return invalidFormatMessage;
     }
 
     if (min != null && parsedValue.lt(min)) {
-      ctx.addIssue({
-        message: minMessageFn(min),
-        code: z.ZodIssueCode.custom,
-      });
-
-      return;
+      return minMessageFn(min);
     }
 
     if (max != null && parsedValue.gt(max)) {
-      ctx.addIssue({
-        message: maxMessageFn(formatNumber(max)),
-        code: z.ZodIssueCode.custom,
-      });
-
-      return;
+      return maxMessageFn(max);
     }
-  });
+  };
 };

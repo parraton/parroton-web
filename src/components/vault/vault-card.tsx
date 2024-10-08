@@ -33,7 +33,7 @@ function NanoInfo({ value }: { value: React.ReactNode }) {
 function LinkedInfo({ value }: { value: React.ReactNode }) {
   return (
     <div className='flex items-center justify-end gap-1'>
-      <span className='custom-card-value'>{value}</span>
+      <span className='custom-card-value text-custom-button'>{value}</span>
       <ChevronRightIcon size={16} className='text-[#8b9dad]' />
     </div>
   );

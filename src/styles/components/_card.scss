@@ -3,10 +3,7 @@
   border-radius: $border-sm-radius;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(4px);
-
-  @include themify($themes) {
-    background-color: themed("content");
-  }
+  background-color: $content;
 }
 
 .custom-card {
@@ -83,8 +80,6 @@
 }
 
 .custom-text-like-asset-input {
-  color: #8f9fac;
-
   &:after, &::before {
     align-items: center;
     display: inline-flex;

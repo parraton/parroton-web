@@ -6,7 +6,7 @@ import { Form, FormikProvider, useFormik } from 'formik';
 import { useCallback, useState } from 'react';
 import { Trans } from 'react-i18next';
 import { toast } from 'sonner';
-import { MainnetAction } from './types';
+import { MainnetAction, MainnetActionsFormValues } from './types';
 import { useFormData } from './use-form-data';
 import { ActionsSwitcher } from './actions-switcher';
 import { ButtonV2 } from '@UI/button-v2';
@@ -17,11 +17,6 @@ import { Currency } from '@types';
 
 interface MainnetActionsFormProps {
   vaultAddress: string;
-}
-
-interface MainnetActionsFormValues {
-  amount: string;
-  action: MainnetAction;
 }
 
 export function MainnetActionsForm({ vaultAddress }: MainnetActionsFormProps) {

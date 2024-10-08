@@ -141,8 +141,8 @@ const NanoInfoPlate = <T extends BigNumber.Value>({
       animation={loading}
       value={value}
       modifier={(x) => (
-        <div className='text-right font-medium text-custom-link'>
-          <p>{modifier(x)}</p>
+        <div className='text-right font-medium'>
+          <p className='text-custom-link'>{modifier(x)}</p>
           {/* eslint-disable-next-line react/jsx-no-literals */}
           {usdEquivalent && <p className='text-sm'>{`(${usdEquivalent})`}</p>}
         </div>

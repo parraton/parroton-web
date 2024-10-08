@@ -10,7 +10,7 @@ import {
   formatCurrency,
   formatNumber,
   formatNumberWithDigitsLimit,
-  getAmountAsStringValidationSchema,
+  getValidateAmountAsStringFn,
 } from '@lib/utils';
 import { Address, fromNano, toNano } from '@ton/core';
 import { useTonAddress } from '@tonconnect/ui-react';
@@ -19,9 +19,7 @@ import BigNumber from 'bignumber.js';
 import { useCallback, useMemo, useState } from 'react';
 import useSWR from 'swr';
 import { useDebouncedCallback } from 'use-debounce';
-import { z } from 'zod';
-import { toFormikValidate } from 'zod-formik-adapter';
-import { MainnetAction } from './types';
+import { MainnetAction, MainnetActionsFormValues } from './types';
 import { useLpBalance } from '@hooks/use-lp-balance';
 import { multiplyIfPossible } from '@utils/multiply-if-possible';
 
@@ -96,15 +94,17 @@ export const useFormData = (vaultAddress: string) => {
     suspense: false,
   });
 
-  const amountValidationSchema = useMemo(
-    () =>
-      getAmountAsStringValidationSchema(
+  const validate = useCallback(
+    async (values: MainnetActionsFormValues): Promise<Record<string, string> | undefined> => {
+      const { amount, action } = values;
+
+      const amountValidationFn = getValidateAmountAsStringFn(
         {
           required: t('validation.required'),
           invalidFormat: t('validation.invalid_format'),
-          min: () => t(isDeposit ? 'validation.min_deposit' : 'validation.min_withdraw'),
+          min: () => t(action === 'deposit' ? 'validation.min_deposit' : 'validation.min_withdraw'),
           max: (amount) =>
-            t(isDeposit ? 'validation.max_deposit' : 'validation.max_withdraw', {
+            t(action === 'deposit' ? 'validation.max_deposit' : 'validation.max_withdraw', {
               maxAmount: amount,
             }),
         },
@@ -113,18 +113,13 @@ export const useFormData = (vaultAddress: string) => {
           min: new BigNumber(currency === Currency.USD ? 1e-2 : 1e-9).toFixed(),
           max: walletAddress ? maxValue.toString() : Number.POSITIVE_INFINITY,
         },
-      ),
-    [currency, isDeposit, maxValue, t, walletAddress],
-  );
-  const validate = useMemo(
-    () =>
-      toFormikValidate(
-        z.object({
-          action: z.enum(['deposit', 'withdraw']),
-          amount: amountValidationSchema,
-        }),
-      ),
-    [amountValidationSchema],
+      );
+
+      const amountError = amountValidationFn(amount);
+
+      return amountError ? { amount: amountError } : undefined;
+    },
+    [currency, maxValue, t, walletAddress],
   );
 
   const fetchSharesEquivalent = useCallback(

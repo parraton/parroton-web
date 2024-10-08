@@ -60,6 +60,7 @@ const config = {
           'primary-text': 'var(--custom-primary-text)',
         },
         dialog: {
+          DEFAULT: 'rgb(var(--dialog))',
           overlay: '#384551',
         },
         switcher: 'var(--switcher)',
