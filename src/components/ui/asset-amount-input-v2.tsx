@@ -212,10 +212,7 @@ export const AssetAmountInputV2: FC<AssetAmountInputV2Props> = ({
 };
 
 const StyledSlider = (props: ReactSliderProps) => (
-  <ReactSlider
-    {...props}
-    className={cn(props.className, 'h-12 w-full bg-gray-300 dark:bg-gray-600')}
-  />
+  <ReactSlider {...props} className={cn(props.className, 'h-12 w-full bg-switcher')} />
 );
 
 const StyledThumb = ({
