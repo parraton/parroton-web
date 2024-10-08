@@ -140,7 +140,7 @@ interface Resources {
     "claim": "Claim",
     "invited_friends": "Invited friends",
     "earn_more": "Earn more",
-    "earn_points_title": "Earn points for your efforts",
+    "earn_points_title": "Earn <1>points</1> for your <2>efforts</2>",
     "claimed": "Claimed",
     "pending": "Pending",
     "referral_title": "Referral link for web page",
@@ -149,7 +149,9 @@ interface Resources {
     "use_telegram_mini_app": "Use Telegram Mini App to access this section",
     "no_friends_invited": "No friends have been invited yet",
     "telegram_apps_center": "Telegram Apps Center",
-    "one_time_rewards_description": "+{{amount}} points"
+    "one_time_rewards_description": "+{{amount}} points",
+    "level_number": "Level {{level}}",
+    "link_copied": "Copied"
   }
 }
 

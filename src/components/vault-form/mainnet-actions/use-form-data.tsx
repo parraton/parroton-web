@@ -9,6 +9,7 @@ import { useTranslation } from '@i18n/client';
 import { FALLBACK_MAX_ASSET_VALUE, FALLBACK_TON_PRICE } from '@lib/constants';
 import {
   formatCurrency,
+  formatNumber,
   formatNumberWithDigitsLimit,
   getAmountAsStringValidationSchema,
 } from '@lib/utils';
@@ -23,6 +24,7 @@ import { z } from 'zod';
 import { toFormikValidate } from 'zod-formik-adapter';
 import { MainnetAction } from './types';
 import { useLpBalance } from '@hooks/use-lp-balance';
+import { multiplyIfPossible } from '@utils/multiply-if-possible';
 
 const getVaultContract = ([, vaultAddress]: [string, string]) =>
   getVault(Address.parse(vaultAddress));
@@ -44,6 +46,7 @@ export const useFormData = (vaultAddress: string) => {
   const [action, setAction] = useState<MainnetAction>('deposit');
   const isDeposit = action === 'deposit';
   const inputAssetExchangeRate = isDeposit ? vault?.lpPriceUsd : vault?.plpPriceUsd;
+  const outputAssetExchangeRate = isDeposit ? vault?.plpPriceUsd : vault?.lpPriceUsd;
 
   const fallbackMaxValueUsd = useMemo(
     () => new BigNumber(FALLBACK_MAX_ASSET_VALUE).times(inputAssetExchangeRate ?? 1),
@@ -150,7 +153,7 @@ export const useFormData = (vaultAddress: string) => {
     [vaultContract],
   );
 
-  const inputAmountLpOrPlp = useMemo(() => {
+  const inputAmountInTokens = useMemo(() => {
     const parsedInputAmount = new BigNumber(inputAmount.replace(',', '.'));
 
     if (!parsedInputAmount.isFinite()) {
@@ -162,10 +165,18 @@ export const useFormData = (vaultAddress: string) => {
         ? parsedInputAmount
         : parsedInputAmount.div(inputAssetExchangeRate ?? 1);
 
-    return roundInputValue(unroundedValue, 9).toString();
-  }, [currency, inputAmount, inputAssetExchangeRate]);
+    return formatNumber(roundInputValue(unroundedValue, 9).toString(), lng);
+  }, [currency, inputAmount, inputAssetExchangeRate, lng]);
+  const inputAmountInUsd = useMemo(
+    () =>
+      formatCurrency(
+        new BigNumber(inputAmountInTokens).times(inputAssetExchangeRate ?? 1).toString(),
+        lng,
+      ),
+    [inputAmountInTokens, inputAssetExchangeRate, lng],
+  );
   const { data: estimatedOutput, error: estimatedOutputError } = useSWR(
-    ['estimated-lp-or-plp', inputAmountLpOrPlp, vaultAddress, isDeposit],
+    ['estimated-lp-or-plp', inputAmountInTokens, vaultAddress, isDeposit],
     isDeposit ? fetchSharesEquivalent : fetchLpEquivalent,
     {
       refreshInterval: 10_000,
@@ -174,6 +185,11 @@ export const useFormData = (vaultAddress: string) => {
       suspense: false,
     },
   );
+  const estimatedOutputInUsd = useMemo(() => {
+    const rawValue = multiplyIfPossible(outputAssetExchangeRate, estimatedOutput)?.toString();
+
+    return rawValue && formatCurrency(rawValue, lng);
+  }, [estimatedOutput, lng, outputAssetExchangeRate]);
 
   const underlyingTokensSymbols = vault?.lpMetadata.name.replace(/(Parraton: |DeDust Pool: )/, '');
   const shortInputSymbol = isDeposit ? 'LP' : 'PLP';
@@ -197,7 +213,7 @@ export const useFormData = (vaultAddress: string) => {
   }, [currency, inputAmount, isDeposit, lng, maxDepositValue, tonPrice, vault]);
 
   const inputToOutputExchangeRate = useMemo(() => {
-    const inputAmount = new BigNumber(inputAmountLpOrPlp);
+    const inputAmount = new BigNumber(inputAmountInTokens);
     const outputAmount = new BigNumber(estimatedOutput ?? '0');
 
     if (inputAmount.isZero() || outputAmount.isZero()) {
@@ -205,7 +221,14 @@ export const useFormData = (vaultAddress: string) => {
     }
 
     return formatNumberWithDigitsLimit(inputAmount.div(outputAmount).toString(), lng, 4);
-  }, [estimatedOutput, inputAmountLpOrPlp, lng]);
+  }, [estimatedOutput, inputAmountInTokens, lng]);
+
+  const inputBalance = isDeposit ? lpBalance : plpBalances?.sharesBalance;
+  const inputBalanceInUsd = useMemo(() => {
+    const rawValue = multiplyIfPossible(inputBalance, inputAssetExchangeRate)?.toString();
+
+    return rawValue && formatCurrency(rawValue, lng);
+  }, [inputAssetExchangeRate, inputBalance, lng]);
 
   const estimatedOutputLoading = !estimatedOutput && !estimatedOutputError;
   const plpBalanceLoading = !plpBalancesError && plpBalances === undefined;
@@ -221,15 +244,18 @@ export const useFormData = (vaultAddress: string) => {
     maxWithdrawValue: maxWithdrawValue.toString(),
     validate,
     shouldShowConnectButton: !walletAddress,
-    estimatedOutput: estimatedOutput,
+    estimatedOutput,
+    estimatedOutputInUsd,
     estimatedOutputLoading,
-    inputBalance: isDeposit ? lpBalance : plpBalances?.sharesBalance,
+    inputBalance,
+    inputBalanceInUsd,
     inputBalanceLoading: isDeposit ? lpBalanceLoading : plpBalanceLoading,
     shortInputSymbol,
     shortOutputSymbol,
     expectedYearlyYield,
     vaultIsLoading,
-    inputAmountLpOrPlp,
+    inputAmountInTokens,
+    inputAmountInUsd,
     inputAssetExchangeRate,
     inputToOutputExchangeRate,
     fullInputSymbol: underlyingTokensSymbols

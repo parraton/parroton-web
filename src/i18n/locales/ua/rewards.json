@@ -8,7 +8,7 @@
   "claim": "Забрати",
   "invited_friends": "Запрошені друзі",
   "earn_more": "Заробляйте більше",
-  "earn_points_title": "Заробляйте бали за свій вклад",
+  "earn_points_title": "Заробляйте <1>бали</1> за свій <2>вклад</2>",
   "claimed": "Забрано",
   "pending": "В очікуванні",
   "referral_title": "Реферальне посилання на веб-сторінку",
@@ -17,5 +17,7 @@
   "use_telegram_mini_app": "Використовуйте міні-застосунок Telegram для доступу до цього розділу",
   "no_friends_invited": "Ніхто ще не був запрошений",
   "telegram_apps_center": "Центр застосунків Telegram",
-  "one_time_rewards_description": "+{{amount}} балів"
+  "one_time_rewards_description": "+{{amount}} балів",
+  "level_number": "Рівень {{level}}",
+  "link_copied": "Скопійовано"
 }

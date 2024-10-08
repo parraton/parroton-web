@@ -18,10 +18,13 @@ interface ConfirmActionDialogProps {
   confirmButtonText: string;
   inputAmountLabel: string;
   inputAmount: Maybe<BigNumber.Value>;
+  inputAmountInUsd: Maybe<string>;
   inputTokenSymbol: string;
   outputAmount: Maybe<BigNumber.Value>;
+  outputAmountInUsd: Maybe<string>;
   outputTokenSymbol: string;
   inputBalance: Maybe<BigNumber.Value>;
+  inputBalanceInUsd: Maybe<string>;
   inputBalanceLoading: boolean;
   apy: Maybe<string>;
   apyIsLoading: boolean;
@@ -47,6 +50,9 @@ export const ConfirmActionDialog = ({
   apy,
   apyIsLoading,
   exchangeRate,
+  inputAmountInUsd,
+  outputAmountInUsd,
+  inputBalanceInUsd,
   onConfirm,
 }: ConfirmActionDialogProps) => {
   const { t: commonT } = useTranslation({ ns: 'common' });
@@ -55,7 +61,9 @@ export const ConfirmActionDialog = ({
   return (
     <>
       <ButtonV2 disabled={triggerDisabled} type='submit'>
-        {triggerLoading ? <Loader animation /> : triggerButtonText}
+        <div className='flex h-6 w-full items-center justify-center text-center'>
+          {triggerLoading ? <Loader animation /> : triggerButtonText}
+        </div>
       </ButtonV2>
 
       <Dialog open={open} onOpenChange={onOpenChange}>
@@ -66,6 +74,7 @@ export const ConfirmActionDialog = ({
             <NanoInfoPlate
               name={inputAmountLabel}
               value={inputAmount}
+              usdEquivalent={inputAmountInUsd}
               modifier={(x) => `${formatNumberWithDigitsLimit(x, lng)} ${inputTokenSymbol}`}
               loading={false}
             />
@@ -73,6 +82,7 @@ export const ConfirmActionDialog = ({
             <NanoInfoPlate
               name={t('you_get')}
               value={outputAmount}
+              usdEquivalent={outputAmountInUsd}
               modifier={(x) => `${formatNumberWithDigitsLimit(x, lng)} ${outputTokenSymbol}`}
               loading={false}
             />
@@ -80,6 +90,7 @@ export const ConfirmActionDialog = ({
             <NanoInfoPlate
               name={t('your_balance')}
               value={inputBalance}
+              usdEquivalent={inputBalanceInUsd}
               modifier={(x) => `${formatNumberWithDigitsLimit(x, lng)} ${inputTokenSymbol}`}
               loading={inputBalanceLoading}
             />
@@ -113,6 +124,7 @@ interface NanoInfoPlateProps<T extends BigNumber.Value> {
   value: Maybe<T>;
   // eslint-disable-next-line no-unused-vars
   modifier: (value: T) => ReactNode;
+  usdEquivalent?: Maybe<string>;
   loading?: boolean;
 }
 
@@ -120,14 +132,21 @@ const NanoInfoPlate = <T extends BigNumber.Value>({
   name,
   value,
   modifier,
+  usdEquivalent,
   loading,
 }: NanoInfoPlateProps<T>) => (
-  <div className='flex items-center justify-between gap-3'>
+  <div className='flex justify-between gap-3'>
     <span className='font-semibold'>{name}</span>
     <OrLoader
       animation={loading}
       value={value}
-      modifier={(x) => <span className='font-medium text-custom-link'>{modifier(x)}</span>}
+      modifier={(x) => (
+        <div className='text-right font-medium text-custom-link'>
+          <p>{modifier(x)}</p>
+          {/* eslint-disable-next-line react/jsx-no-literals */}
+          {usdEquivalent && <p className='text-sm'>{`(${usdEquivalent})`}</p>}
+        </div>
+      )}
     />
   </div>
 );

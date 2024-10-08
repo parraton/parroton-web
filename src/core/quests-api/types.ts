@@ -17,11 +17,12 @@ interface QuestBase {
   type: QuestType;
   id: string;
   /** Key is locale */
-  names: Record<string, string>;
+  name: Record<string, string>;
   claimed: boolean;
+  started: boolean;
 }
 
-interface EternalQuest extends QuestBase {
+export interface EternalQuest extends QuestBase {
   type: 'deposit-liquidity' | 'invite-friends' | 'section-name';
 }
 
@@ -29,7 +30,7 @@ interface FollowLinkQuest extends QuestBase {
   type: 'follow-link';
   link: string;
   isTelegramLink: boolean;
-  amount: number;
+  reward: number;
 }
 
 export type Quest = EternalQuest | FollowLinkQuest;

@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import { ReferralModal } from './referral-modal';
 import { InvitedFriendsList } from './invited-friends-list';
 import { TasksList } from './tasks-list';
 import { RewardsHeader } from './rewards-header';
@@ -14,14 +13,15 @@ export const RewardsBody = () => {
   const {
     invitedFriends,
     invitedFriendsLoading,
+    userLevel,
     quests,
     questsLoading,
     totalPointsEarned,
     userDataLoading,
-    referralModalIsOpen,
     isTelegram,
-    closeReferralModal,
     claimFriendRewards,
+    hiddenShareAnchorRef,
+    hiddenAnchorHref,
   } = usePointsSources();
 
   const isFirstRender = useIsFirstRender();
@@ -33,14 +33,14 @@ export const RewardsBody = () => {
   if (isTelegram) {
     return (
       <>
-        <RewardsHeader amount={totalPointsEarned} loading={userDataLoading} />
+        <RewardsHeader amount={totalPointsEarned} loading={userDataLoading} level={userLevel} />
         <InvitedFriendsList
           data={invitedFriends}
           loading={invitedFriendsLoading}
           claimRewards={claimFriendRewards}
         />
         <TasksList quests={quests} loading={questsLoading} />
-        <ReferralModal isOpen={referralModalIsOpen} onClose={closeReferralModal} />
+        <a className='hidden' ref={hiddenShareAnchorRef} href={hiddenAnchorHref} />
       </>
     );
   }

@@ -2,6 +2,11 @@
   button {
     border-radius: $border-sm-radius;
 
+    & > div {
+      color: white;
+      font-family: var(--font-sans);
+    }
+
     svg {
       display: none;
     }

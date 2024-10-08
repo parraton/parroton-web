@@ -1,6 +1,6 @@
 import './globals.css';
 import React, { PropsWithChildren } from 'react';
-import { Inter as FontSans } from 'next/font/google';
+import { Work_Sans as FontWorkSans } from 'next/font/google';
 import { cn } from '@/lib/utils';
 import { Navbar } from '@components/navbar';
 import { languages } from '@i18n/settings';
@@ -12,7 +12,7 @@ import { RouteInfoToLayout } from '@routes/makeRoute';
 import '../../styles/main.scss';
 import Script from 'next/script';
 
-const fontSans = FontSans({
+const fontSans = FontWorkSans({
   subsets: ['latin'],
   variable: '--font-sans',
 });

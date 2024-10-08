@@ -1,9 +1,20 @@
 import { QUESTS_API_URL } from '@config/api.config';
-import { AdsQuest, Quest, User } from './types';
+import { AdsQuest, EternalQuest, Quest, User } from './types';
 
 export type { User, Quest, AdsQuest } from './types';
 
 const IS_DEV_ENV = process.env.NODE_ENV === 'development';
+
+const INVITE_FRIENDS_QUEST: EternalQuest = {
+  type: 'invite-friends',
+  id: 'invite-friends',
+  name: {
+    en: 'Invite friends',
+    ua: 'Запросити друзів',
+  },
+  claimed: false,
+  started: false,
+};
 
 export class QuestsApi {
   get url() {
@@ -38,8 +49,14 @@ export class QuestsApi {
     });
   }
 
-  getQuests(): Promise<Quest[]> {
-    return this.fetchJSON('/quests');
+  async getQuests() {
+    const questsFromBackend = await this.fetchJSON<Quest[]>('/quests');
+
+    if (!questsFromBackend.some((quest) => quest.type === 'invite-friends')) {
+      questsFromBackend.unshift(INVITE_FRIENDS_QUEST);
+    }
+
+    return questsFromBackend;
   }
 
   async startQuest(questId: string) {
