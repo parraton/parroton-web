@@ -1,8 +1,6 @@
 $themes: (
   light: (
     content: $content-light,
-    link: $primary-light,
-    button: $secondary-light,
     text: $primary-text-light,
     back: $back-light,
     header: $header-light,
@@ -14,8 +12,6 @@ $themes: (
   ),
   dark: (
     content: $content-dark,
-    link: $primary-dark,
-    button: $secondary-dark,
     text: $primary-text-dark,
     back: $back-dark,
     header: $header-dark,

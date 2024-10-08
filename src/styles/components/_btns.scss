@@ -3,7 +3,7 @@
     border-radius: $border-sm-radius;
 
     & > div {
-      color: white;
+      color: black;
       font-family: var(--font-sans);
     }
 
@@ -11,8 +11,6 @@
       display: none;
     }
 
-    @include themify($themes) {
-      background-color: themed("button");
-    }
+    background-color: $secondary;
   }
 }

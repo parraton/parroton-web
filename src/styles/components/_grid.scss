@@ -230,23 +230,6 @@ $bottom-buttons-height: 4.75rem;
   }
 }
 
-.custom-list-el {
-  position: relative;
-
-  &:first-child {
-    &::after {
-      content: "";
-      display: block;
-      height: calc(100% - 20px);
-      width: 1px;
-      background-color: #ebebeb;
-      position: absolute;
-      top: 10px;
-      left: calc(100% + 5px);
-    }
-  }
-}
-
 .custom-list-header {
   position: relative;
   cursor: pointer;
@@ -419,9 +402,7 @@ input[type="number"] {
   border-radius: $border-radius;
 
   &:hover {
-    @include themify($themes) {
-      color: themed("link");
-    }
+    color: $primary;
   }
 
   @media (min-width: 768px) {
@@ -478,48 +459,6 @@ input[type="number"] {
   gap: 0.2rem;
 }
 
-%custom-info-text {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  @include themify($themes) {
-    color: themed("text");
-  }
-}
-
-.custom-info-value {
-  @extend %custom-info-text;
-  font-size: 1rem;
-  font-weight: bold;
-
-  @media (min-width: 768px) {
-    font-size: 1.2rem;
-  }
-}
-
-.custom-info-title {
-  @extend %custom-info-text;
-  font-size: 0.8rem;
-  font-weight: normal;
-  position: relative;
-}
-
-.custom-info-heading {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  font-size: 1.8rem;
-  @include themify($themes) {
-    color: themed("text");
-  }
-
-  @media (min-width: 768px) {
-    padding-top: 2rem;
-  }
-}
-
 .custom-info-header {
   display: grid;
   align-items: center;
@@ -528,9 +467,7 @@ input[type="number"] {
 
 .custom-link {
   text-decoration: underline;
-  @include themify($themes) {
-    color: themed("link");
-  }
+  color: $primary;
 
   &.bold {
     font-weight: bold;

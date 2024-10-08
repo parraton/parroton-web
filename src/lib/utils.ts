@@ -135,7 +135,7 @@ export const getAmountAsStringValidationSchema = (
       return;
     }
 
-    if (min != null && parsedValue.lte(min)) {
+    if (min != null && parsedValue.lt(min)) {
       ctx.addIssue({
         message: minMessageFn(min),
         code: z.ZodIssueCode.custom,

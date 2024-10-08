@@ -13,11 +13,9 @@ $primary-text-dark: #fff;
 $secondary-text-light: #000;
 $secondary-text-dark: #000;
 
-$primary-light: #4dc3d7;
-$primary-dark: #a8f3ff;
+$primary: var(--custom-link);
 
-$secondary-light: #9b6fff;
-$secondary-dark: #a684ff;
+$secondary: var(--custom-button);
 
 $header-light: #fff;
 $header-dark: rgba(37, 44, 51, 0.89);
@@ -31,4 +29,4 @@ $border-radius: 2.5rem;
 $border-sm-radius: 0.75rem;
 
 $vaults-list-grid-template-columns: 2fr 1fr 1fr;
-$vaults-list-grid-gap: 1rem;
+$vaults-list-grid-gap: 0.5rem;

@@ -36,9 +36,9 @@ interface Resources {
     "validation": {
       "required": "Field is required",
       "invalid_format": "Invalid format",
-      "min_deposit": "Deposit can not be less or equal {{minAmount}}",
+      "min_deposit": "Deposit can not be zero",
       "max_deposit": "Deposit can not be more than {{maxAmount}}",
-      "min_withdraw": "Withdraw can not be less or equal {{minAmount}}",
+      "min_withdraw": "Withdraw can not be zero",
       "max_withdraw": "Withdraw can not be more than {{maxAmount}}"
     },
     "claim": {

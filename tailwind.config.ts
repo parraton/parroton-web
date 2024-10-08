@@ -62,7 +62,7 @@ const config = {
         dialog: {
           overlay: '#384551',
         },
-        switcher: '#6e8892',
+        switcher: 'var(--switcher)',
       },
       borderRadius: {
         lg: 'var(--radius)',

@@ -34,9 +34,10 @@
 
       --radius: 0.5rem;
 
-      --custom-link: #4dc3d7;
-      --custom-button: #9b6fff;
+      --custom-link: #4d69d6;
+      --custom-button: #c1ff82;
       --custom-primary-text: #212529;
+      --switcher: #416a7a;
     }
 
     .dark {
@@ -68,9 +69,10 @@
       --input: 12 6.5% 15.1%;
       --ring: 24 5.7% 82.9%;
 
-      --custom-link: #a8f3ff;
-      --custom-button: #a684ff;
+      --custom-link: #a8baff;
+      --custom-button: #cbff96;
       --custom-primary-text: #fff;
+      --switcher: #6e8892;
     }
   }
 

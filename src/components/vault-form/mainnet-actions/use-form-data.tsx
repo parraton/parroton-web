@@ -104,10 +104,7 @@ export const useFormData = (vaultAddress: string) => {
         {
           required: t('validation.required'),
           invalidFormat: t('validation.invalid_format'),
-          min: (amount) =>
-            t(isDeposit ? 'validation.min_deposit' : 'validation.min_withdraw', {
-              minAmount: amount,
-            }),
+          min: () => t(isDeposit ? 'validation.min_deposit' : 'validation.min_withdraw'),
           max: (amount) =>
             t(isDeposit ? 'validation.max_deposit' : 'validation.max_withdraw', {
               maxAmount: amount,
@@ -115,7 +112,7 @@ export const useFormData = (vaultAddress: string) => {
         },
         {
           required: true,
-          min: new BigNumber(currency === Currency.USD ? 9e-3 : 9e-10).toFixed(),
+          min: new BigNumber(currency === Currency.USD ? 1e-2 : 1e-9).toFixed(),
           max: maxValue.toString(),
         },
       ),

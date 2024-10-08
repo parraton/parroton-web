@@ -39,41 +39,6 @@
     gap: 20px;
     padding: 1.5rem;
   }
-
-  &:after {
-    content: "";
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translate(0, -50%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 25px;
-    height: 25px;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: contain;
-    @include themify($themes) {
-      background-image: themed("arrow-next");
-    }
-
-    @media (min-width: 768px) {
-      right: 30px;
-    }
-  }
-}
-
-.custom-card-info {
-  display: grid;
-  grid-template-columns: 0.5fr 1fr;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-
-  @media (min-width: 768px) {
-    grid-template-columns: auto;
-  }
 }
 
 .custom-card-title {
@@ -83,28 +48,8 @@
 }
 
 .custom-card-value {
-  display: flex;
-  font-size: 16px;
-  font-weight: bold;
-  max-width: 100%;
-
   @media (min-width: 420px) {
     white-space: nowrap;
-  }
-
-  @media (min-width: 768px) {
-    text-align: left;
-  }
-}
-
-.custom-card-link {
-  display: flex;
-  font-size: 16px;
-  font-weight: bold;
-  max-width: 100%;
-
-  @include themify($themes) {
-    color: themed("link");
   }
 
   @media (min-width: 768px) {
@@ -138,12 +83,11 @@
 }
 
 .custom-text-like-asset-input {
+  color: #8f9fac;
+
   &:after, &::before {
-    @include themify($themes) {
-      color: #8f9fac;
-      align-items: center;
-      display: inline-flex;
-    }
+    align-items: center;
+    display: inline-flex;
   }
 
   &:before {
