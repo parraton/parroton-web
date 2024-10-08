@@ -153,8 +153,8 @@ export function MainnetActionsForm({ vaultAddress }: MainnetActionsFormProps) {
                 )}
                 {shouldShowErrorGetLpButton && (
                   <a
-                    // eslint-disable-next-line tailwindcss/classnames-order
-                    className='bg-custom-link/50 rounded-sm p-1 text-custom-link'
+                    // eslint-disable-next-line prettier/prettier
+                    className='rounded-sm bg-custom-link/50 p-1 text-custom-link'
                     href={`https://dedust.io/pools/${lpAddress}`}
                     target='_blank'
                     rel='noreferrrer'
@@ -165,8 +165,8 @@ export function MainnetActionsForm({ vaultAddress }: MainnetActionsFormProps) {
                 {shouldShowErrorDepositButton && (
                   <button
                     type='button'
-                    // eslint-disable-next-line tailwindcss/classnames-order
-                    className='bg-custom-link/50 rounded-sm p-1 text-custom-link'
+                    // eslint-disable-next-line prettier/prettier
+                    className='rounded-sm bg-custom-link/50 p-1 text-custom-link'
                     onClick={goToDeposit}
                   >
                     {t('deposit_title')}
