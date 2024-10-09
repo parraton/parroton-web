@@ -8,7 +8,6 @@ import { Locales, THEME, TonConnectUIProvider, useTonConnectUI } from '@tonconne
 import { useParams, useSearchParams } from '@routes/hooks';
 import { Home } from '@routes';
 import { useCloudStorage, useInitData, WebAppProvider } from '@vkruglikov/react-telegram-web-app';
-import { domain } from '@config/links';
 import { Guard } from '@components/guard';
 // import { TxNotification } from '@components/tx-notification';
 
@@ -69,10 +68,10 @@ const SetReferral = () => {
   return <></>;
 };
 
-//import tonconnect manifest as url
-const manifestUrl = `${domain}/tonconnect-manifest.json`;
-
 export function SandwichProvider({ children }: React.PropsWithChildren) {
+  const manifestUrl = `${typeof window === 'undefined' ? 'https:' : window.location.protocol}//\
+${typeof window === 'undefined' ? 'parraton.com' : window.location.hostname}/tonconnect-manifest.json`;
+
   return (
     <WebAppProvider
       options={{
