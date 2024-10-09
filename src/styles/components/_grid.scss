@@ -1,6 +1,6 @@
 $header-height: 80px;
 $bottom-buttons-height: 4.75rem;
-$center-menu-buttons-threshold: 1024px;
+$center-menu-buttons-threshold: 1075px;
 
 .custom-main-container {
   display: flex;
@@ -151,14 +151,10 @@ $center-menu-buttons-threshold: 1024px;
 
   &::before {
     content: "";
-    background-size: 16px;
     display: block;
     position: absolute;
     width: 20px;
     height: 20px;
-    background-image: url("../../images/uk-ua.svg");
-    background-position: 50%;
-    background-size: 14px;
     background-repeat: no-repeat;
 
     @include themify($themes) {
@@ -179,6 +175,17 @@ $center-menu-buttons-threshold: 1024px;
 
   &:checked::before {
     left: 26px;
+  }
+}
+
+.lng-switch {
+  &::before {
+    background-image: url("../../images/uk-ua.svg");
+    background-position: 50%;
+    background-size: 14px;
+  }
+
+  &:checked::before {
     background-image: url("../../images/en-gb.svg");
   }
 }
