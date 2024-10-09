@@ -52,7 +52,7 @@ export const LevelElement = ({ reached, value }: LevelElementProps) => {
     <div
       className={cn(
         'flex h-8 flex-1 items-center justify-center text-sm font-semibold leading-tight',
-        reached ? 'bg-custom-link text-background' : 'bg-gray-300 dark:bg-gray-600',
+        reached ? 'bg-custom-link text-background' : 'bg-switcher',
       )}
     >
       {t('level_number', { level: value })}
