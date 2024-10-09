@@ -7,7 +7,7 @@ export function LanguageToggle() {
 
   return (
     <input
-      className='custom-switch'
+      className='custom-switch bg-custom-button'
       type='checkbox'
       onChange={() => changeLanguage(currentLanguage === 'en' ? 'ua' : 'en')}
       checked={currentLanguage !== 'ua'}
