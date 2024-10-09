@@ -3,7 +3,6 @@ import { Route } from './page.info';
 import { RouteInfoToLayout } from '@routes/makeRoute';
 import { serverTranslation } from '@i18n';
 import { LanguageToggle } from '@components/toggle-language';
-import { ModeToggle } from '@components/mode-toggle';
 import { domain, miniAppLink } from '@config/links';
 import Resources from '../../../../@types/resources';
 
@@ -30,10 +29,6 @@ async function SettingsPage({ params }: RouteInfoToLayout<typeof Route>) {
       <div className='flex items-center justify-between'>
         <span>{t('language_title')}</span>
         <LanguageToggle />
-      </div>
-      <div className='flex items-center justify-between'>
-        <span>{t('theme_title')}</span>
-        <ModeToggle />
       </div>
       <h1 className='text-center text-lg font-bold'>{t('links')}</h1>
       {links.map(({ i18nKey, label, href }) => (

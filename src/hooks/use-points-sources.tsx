@@ -9,7 +9,7 @@ import { useTranslation } from '@i18n/client';
 import { StaticImageData } from 'next/image';
 import { useRouter } from 'next/navigation';
 import { ChevronRightIcon } from 'lucide-react';
-import { useInitData } from '@vkruglikov/react-telegram-web-app';
+import { useInitData, useWebApp } from '@vkruglikov/react-telegram-web-app';
 import useSWR from 'swr';
 import BigNumber from 'bignumber.js';
 import { QuestsApi } from '@core/quests-api';
@@ -52,10 +52,14 @@ const sectionsImgData: Record<string, StaticImageData | undefined> = {
 
 export const usePointsSources = () => {
   const [loadingQuestsIds, setLoadingQuestsIds] = useState<string[]>([]);
+  const [shouldRunConfetti, setShouldRunConfetti] = useState(false);
   const { getItem, setItem } = useStorage();
+  const webApp = useWebApp();
   const [, initData] = useInitData();
   const { t, lng } = useTranslation({ ns: 'rewards' });
   const { push } = useRouter();
+
+  const stopConfetti = useCallback(() => setShouldRunConfetti(false), []);
 
   const onAfterCopy = useCallback(() => toast.success(t('link_copied')), [t]);
   const { link: webAppLink, copyLink: copyWebAppLink } = useCopyReferralLink(false, onAfterCopy);
@@ -177,6 +181,7 @@ export const usePointsSources = () => {
 
       try {
         await api.claimQuest(questId);
+        setShouldRunConfetti(true);
         await Promise.all([mutateQuestsData(), mutateUserData()]);
       } catch (error) {
         console.error(error);
@@ -190,18 +195,24 @@ export const usePointsSources = () => {
       setLoadingQuestsIds((ids) => [...ids, questId]);
       if (followedLinks?.includes(link)) {
         await claimQuestReward(questId);
-      }
+      } else {
+        try {
+          if (new URL(link).hostname === 't.me') {
+            webApp.openTelegramLink(link);
+          } else {
+            webApp.openLink(link);
+          }
 
-      try {
-        const newFollowedLinks = [...(followedLinks ?? []), link];
-        await setItem(FOLLOWED_LINKS_STORAGE_KEY, JSON.stringify(newFollowedLinks));
-        await mutateFollowedLinks(newFollowedLinks);
-      } catch (error) {
-        console.error(error);
+          const newFollowedLinks = [...(followedLinks ?? []), link];
+          await setItem(FOLLOWED_LINKS_STORAGE_KEY, JSON.stringify(newFollowedLinks));
+          await mutateFollowedLinks(newFollowedLinks);
+        } catch (error) {
+          console.error(error);
+        }
       }
       setLoadingQuestsIds((ids) => ids.filter((id) => id !== questId));
     },
-    [claimQuestReward, followedLinks, mutateFollowedLinks, setItem],
+    [claimQuestReward, followedLinks, mutateFollowedLinks, setItem, webApp],
   );
 
   // TODO: modify frontend and backend to remove hardcoding icons
@@ -259,7 +270,6 @@ export const usePointsSources = () => {
                   link={quest.link}
                   questId={id}
                   loading={loadingQuestsIds.includes(id)}
-                  isTelegram={quest.isTelegramLink}
                   onClick={handleActionLinkClick}
                 >
                   <ChevronRightIcon className='h-5 w-auto' />
@@ -291,17 +301,13 @@ export const usePointsSources = () => {
   const questsLoading = !followedLinks || (questsData === undefined && !questsDataError);
 
   const totalPointsEarned = userData?.balance;
-  const userLevel = useMemo(() => {
+  const { userLevel, levelProgress } = useMemo(() => {
     if (totalPointsEarned === undefined) {
-      return;
+      return { userLevel: undefined, levelProgress: undefined };
     }
 
     if (totalPointsEarned < LEVELS_THRESHOLDS[0]) {
-      return 1;
-    }
-
-    if (totalPointsEarned >= LEVELS_THRESHOLDS.at(-1)!) {
-      return LEVELS_THRESHOLDS.length + 1;
+      return { userLevel: 1, levelProgress: totalPointsEarned / LEVELS_THRESHOLDS[0] };
     }
 
     for (let i = 0; i < LEVELS_THRESHOLDS.length - 1; i++) {
@@ -309,9 +315,16 @@ export const usePointsSources = () => {
         totalPointsEarned >= LEVELS_THRESHOLDS[i] &&
         totalPointsEarned < LEVELS_THRESHOLDS[i + 1]
       ) {
-        return i + 2;
+        return {
+          userLevel: i + 2,
+          levelProgress:
+            (totalPointsEarned - LEVELS_THRESHOLDS[i]) /
+            (LEVELS_THRESHOLDS[i + 1] - LEVELS_THRESHOLDS[i]),
+        };
       }
     }
+
+    return { userLevel: LEVELS_THRESHOLDS.length + 1, levelProgress: 1 };
   }, [totalPointsEarned]);
 
   // TODO: implement claiming rewards by a friend after the backend is ready
@@ -330,6 +343,7 @@ export const usePointsSources = () => {
 
   return {
     userLevel,
+    levelProgress,
     totalPointsEarned,
     userDataLoading,
     isTelegram: Boolean(initData),
@@ -340,5 +354,7 @@ export const usePointsSources = () => {
     claimFriendRewards,
     hiddenShareAnchorRef,
     hiddenAnchorHref,
+    shouldRunConfetti,
+    stopConfetti,
   };
 };

@@ -7,6 +7,7 @@ import { RewardsHeader } from './rewards-header';
 import { useTranslation } from '@i18n/client';
 import { useIsFirstRender } from '@hooks/use-is-first-render';
 import { usePointsSources } from '@hooks/use-points-sources';
+import ReactConfetti from 'react-confetti';
 
 export const RewardsBody = () => {
   const { t } = useTranslation({ ns: 'rewards' });
@@ -14,6 +15,7 @@ export const RewardsBody = () => {
     invitedFriends,
     invitedFriendsLoading,
     userLevel,
+    levelProgress,
     quests,
     questsLoading,
     totalPointsEarned,
@@ -22,6 +24,8 @@ export const RewardsBody = () => {
     claimFriendRewards,
     hiddenShareAnchorRef,
     hiddenAnchorHref,
+    shouldRunConfetti,
+    stopConfetti,
   } = usePointsSources();
 
   const isFirstRender = useIsFirstRender();
@@ -33,7 +37,12 @@ export const RewardsBody = () => {
   if (isTelegram) {
     return (
       <>
-        <RewardsHeader amount={totalPointsEarned} loading={userDataLoading} level={userLevel} />
+        <RewardsHeader
+          amount={totalPointsEarned}
+          loading={userDataLoading}
+          level={userLevel}
+          levelProgress={levelProgress}
+        />
         <InvitedFriendsList
           data={invitedFriends}
           loading={invitedFriendsLoading}
@@ -41,6 +50,7 @@ export const RewardsBody = () => {
         />
         <TasksList quests={quests} loading={questsLoading} />
         <a className='hidden' ref={hiddenShareAnchorRef} href={hiddenAnchorHref} />
+        {shouldRunConfetti && <ReactConfetti recycle={false} onConfettiComplete={stopConfetti} />}
       </>
     );
   }

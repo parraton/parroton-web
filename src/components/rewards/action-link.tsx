@@ -1,11 +1,9 @@
-import { useInitData, useWebApp } from '@vkruglikov/react-telegram-web-app';
 import { LoaderCircleIcon } from 'lucide-react';
 import React, { useCallback } from 'react';
 
 interface ActionLinkProps {
   link: string;
   questId: string;
-  isTelegram: boolean;
   className?: string;
   style?: React.CSSProperties;
   children?: React.ReactNode;
@@ -20,32 +18,18 @@ export const ActionLink = ({
   className,
   style,
   children,
-  isTelegram,
   loading,
   onClick,
 }: ActionLinkProps) => {
-  const webApp = useWebApp();
-  const [, initData] = useInitData();
-  const isTelegramButton = initData && isTelegram;
-
-  const handleClick = useCallback(() => {
-    if (isTelegramButton) {
-      webApp.openTelegramLink(link);
-    }
-    onClick(link, questId);
-  }, [isTelegramButton, link, onClick, questId, webApp]);
+  const handleClick = useCallback(() => onClick(link, questId), [link, onClick, questId]);
 
   if (loading) {
     return <LoaderCircleIcon size={16} className='animate-spin' />;
   }
 
-  return isTelegramButton ? (
+  return (
     <button className={className} style={style} type='button' onClick={handleClick}>
       {children}
     </button>
-  ) : (
-    <a className={className} style={style} href={link} target='_blank' onClick={handleClick}>
-      {children}
-    </a>
   );
 };
