@@ -82,8 +82,8 @@ export function MainnetActionsForm({ vaultAddress }: MainnetActionsFormProps) {
 
   const handleConfirmActionClick = useCallback(async () => {
     try {
-      await doAction(inputAmountInTokens);
       handleConfirmOpenChange(false);
+      await doAction(inputAmountInTokens);
       // TODO: implement status tracking
     } catch (error) {
       console.error(error);
