@@ -136,7 +136,7 @@ interface Resources {
     "deposit_liquidity_rewards_description": "+1,000 per $100/hour",
     "deposit": "Deposit",
     "invite_friends": "Invite friends",
-    "invite_friends_rewards_description": "+5,000 per 1 friend + 5% of their points",
+    "invite_friends_rewards_description": "+350 per 1 friend + 5% of their points",
     "invite": "Invite",
     "claim": "Claim",
     "invited_friends": "Invited friends",
