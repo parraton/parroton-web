@@ -1,0 +1,130 @@
+.glass-card {
+  background: none;
+  border-radius: $border-sm-radius;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(4px);
+  background-color: $content;
+}
+
+.custom-card {
+  border-color: #ebebeb;
+  background-color: rgba(255, 255, 255, 0.7);
+
+  .light & {
+    background-color: rgba(255, 255, 255, 0.7);
+  }
+
+  .dark & {
+    background-color: rgba(0, 0, 0, 0.7);
+  }
+}
+
+.custom-card-content {
+  display: grid;
+  grid-template-columns: $vaults-list-grid-template-columns;
+  align-items: center;
+  padding: 20px 10px;
+  gap: $vaults-list-grid-gap;
+  position: relative;
+
+  @media (min-width: 420px) {
+    grid-template-columns: 2fr repeat(2, 1fr);
+  }
+
+  @media (min-width: 768px) {
+    grid-template-rows: auto;
+    gap: 20px;
+    padding: 1.5rem;
+  }
+}
+
+.custom-card-title {
+  display: block;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.custom-card-value {
+  @media (min-width: 420px) {
+    white-space: nowrap;
+  }
+
+  @media (min-width: 768px) {
+    text-align: left;
+  }
+}
+
+.custom-card-list {
+  display: grid;
+  padding: 0 10px;
+  grid-template-columns: $vaults-list-grid-template-columns;
+  grid-template-rows: auto;
+  gap: $vaults-list-grid-gap;
+
+  @media (min-width: 420px) {
+    grid-template-columns: 2fr repeat(2, 1fr);
+  }
+
+  @media (min-width: 768px) {
+    padding: 0 1.5rem;
+  }
+}
+
+.custom-card-list-item {
+  font-size: 16px;
+  font-weight: normal;
+
+  @include themify($themes) {
+    color: themed("text");
+  }
+}
+
+.custom-text-like-asset-input {
+  &:after, &::before {
+    align-items: center;
+    display: inline-flex;
+  }
+
+  &:before {
+    content: attr(data-currency-prefix);
+  }
+  &:after {
+    content: attr(data-currency-suffix);
+  }
+}
+
+.custom-slider-thumb {
+  @include themify($themes) {
+    &, &:before, &:after {
+      content: "";
+      background-color: themed("primary-text");
+      border-radius: 1rem;
+      width: 2px;
+      height: 1rem;
+      display: block;
+      position: absolute;
+    }
+  }
+
+  right: 0.75rem;
+  transform: translate(50%);
+
+  &:before, &:after {
+    top: 0;
+  }
+
+  &:before {
+    opacity: 0.32;
+    right: 1rem;
+  }
+
+  &:after {
+    opacity: 0.72;
+    right: 0.5rem;
+  }
+}
+
+.custom-vault-header {
+  display: grid;
+  grid-template-columns: 5rem 1fr 5rem;
+}

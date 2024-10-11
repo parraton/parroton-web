@@ -15,7 +15,7 @@ interface DashPlugProps {
 const DASH_QUANTITY = 4;
 const DEFAULT_ZOOM = 1;
 
-const Loader: FC<DashPlugProps> = ({ zoom, animation, className, quantity }) => {
+export const Loader: FC<DashPlugProps> = ({ zoom, animation, className, quantity }) => {
   const container = useRef<HTMLDivElement>(null);
 
   const wrapperClassName = cn(

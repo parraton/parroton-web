@@ -17,3 +17,5 @@ export const TONVIEWER_URL = isMainnet ? mainnetTonViewerUrl : testnetTonViewerU
 export const TONAPI_URL = isMainnet ? mainnetTonApiUrl : testnetTonApiUrl;
 export const TONCENTER_URL = isMainnet ? mainnetTonCenterUrl : testnetTonCenterUrl;
 export const VAULTS_API = isMainnet ? mainnetVaultsApi : testnetVaultsApi;
+export const QUESTS_API_URL =
+  process.env.NEXT_PUBLIC_QUESTS_API_URL || 'https://king-prawn-app-lwncd.ondigitalocean.app';

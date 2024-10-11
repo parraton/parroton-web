@@ -1,9 +1,18 @@
 {
   "deposit_title": "Deposit",
   "deposit_description": "Deposit your lp to automate rewards reinvestment.",
+  "get_lp_short_description": "Get LP",
   "get_lp_description": "Not enough LP? Invest in DeDust pool",
   "withdraw_title": "Withdraw",
   "withdraw_description": "Burn your PLPs to get underlying LPs",
+  "preview_deposit": "Preview Deposit",
+  "preview_withdraw": "Preview Withdraw",
+  "confirm_deposit": "Confirm Deposit",
+  "confirm_withdraw": "Confirm Withdraw",
+  "connect_wallet_to_deposit": "Connect wallet to deposit",
+  "connect_wallet_to_withdraw": "Connect wallet to withdraw",
+  "your_balance": "Your balance",
+  "some_token_exchange_rate": "{{token}} exchange rate",
   "faucet_title": "Faucet",
   "faucet_description": "Get some free tokens to test our platform",
   "claim_title": "Claim",
@@ -11,10 +20,10 @@
   "validation": {
     "required": "This field is required",
     "invalid_format": "Invalid format",
-    "min_deposit": "Deposit can not be less or equal {{minDeposit}}",
-    "max_deposit": "Deposit can not be more than {{maxDeposit}}",
-    "min_withdraw": "Withdraw can not be less or equal {{minWithdraw}}",
-    "max_withdraw": "Withdraw can not be more than {{maxWithdraw}}"
+    "min_deposit": "Deposit can not be zero",
+    "max_deposit": "Deposit can not be more than {{maxAmount}}",
+    "min_withdraw": "Withdraw can not be zero",
+    "max_withdraw": "Withdraw can not be more than {{maxAmount}}"
   },
   "claim": {
     "balance": "Your rewards",
@@ -28,5 +37,14 @@
   },
   "lp_output": "LPs to receive",
   "plp_output": "PLPs to receive",
-  "max_label": "MAX"
+  "max_label": "MAX",
+  "back": "Back",
+  "stats": "Stats",
+  "deposit_header_in_usd": "Earn up to <1>{{amount}}</1>\nin <2>{{symbol}}</2> yearly",
+  "deposit_header_in_asset": "Earn up to\n<1>{{amount}}</1> {{symbol}} yearly",
+  "you_deposit": "You deposit",
+  "you_withdraw": "You withdraw",
+  "you_get": "You get",
+  "deposit_or_withdraw_title": "Deposit/Withdraw",
+  "deposit_or_withdraw_description": "Deposit or withdraw your LPs to manage rewards reinvestment"
 }

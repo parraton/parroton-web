@@ -24,7 +24,7 @@ const config = {
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
-        background: 'hsl(var(--background))',
+        background: 'rgb(var(--background))',
         foreground: 'hsl(var(--foreground))',
         primary: {
           DEFAULT: 'hsl(var(--primary))',
@@ -54,6 +54,17 @@ const config = {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))',
         },
+        custom: {
+          link: 'rgb(var(--custom-link))',
+          button: 'var(--custom-button)',
+          'primary-text': 'var(--custom-primary-text)',
+          content: 'rgb(var(--custom-content))',
+        },
+        dialog: {
+          overlay: '#384551',
+        },
+        switcher: 'var(--switcher)',
+        'slider-thumb': 'var(--slider-thumb)',
       },
       borderRadius: {
         lg: 'var(--radius)',

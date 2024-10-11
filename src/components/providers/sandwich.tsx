@@ -7,9 +7,7 @@ import { Toaster } from '@UI/sonner';
 import { Locales, THEME, TonConnectUIProvider, useTonConnectUI } from '@tonconnect/ui-react';
 import { useParams, useSearchParams } from '@routes/hooks';
 import { Home } from '@routes';
-import { useTheme } from 'next-themes';
 import { useCloudStorage, useInitData, WebAppProvider } from '@vkruglikov/react-telegram-web-app';
-import { domain } from '@config/links';
 import { Guard } from '@components/guard';
 // import { TxNotification } from '@components/tx-notification';
 
@@ -23,15 +21,15 @@ const SetTonConnectSettings = () => {
   const [, setOptions] = useTonConnectUI();
 
   const params = useParams(Home);
-  const { theme } = useTheme();
   useEffect(() => {
     setOptions({
       language: params.lng! as Locales,
       uiPreferences: {
-        theme: themeMap[theme as keyof typeof themeMap],
+        // TODO: Use the theme from useTheme when light theme is implemented
+        theme: themeMap.dark,
       },
     });
-  }, [setOptions, theme, params.lng]);
+  }, [setOptions, params.lng]);
 
   useEffect(() => {
     if (process.env.NODE_ENV === 'development') {
@@ -49,7 +47,6 @@ const SetReferral = () => {
 
   useEffect(() => {
     const existingRef = localStorage.getItem('ref');
-    console.log('ref', ref, existingRef);
     if (ref && ref !== existingRef) {
       localStorage.setItem('ref', ref);
     }
@@ -71,10 +68,10 @@ const SetReferral = () => {
   return <></>;
 };
 
-//import tonconnect manifest as url
-const manifestUrl = `${domain}/tonconnect-manifest.json`;
-
 export function SandwichProvider({ children }: React.PropsWithChildren) {
+  const manifestUrl = `${typeof window === 'undefined' ? 'https:' : window.location.protocol}//\
+${typeof window === 'undefined' ? 'parraton.com' : window.location.hostname}/tonconnect-manifest.json`;
+
   return (
     <WebAppProvider
       options={{
@@ -85,7 +82,9 @@ export function SandwichProvider({ children }: React.PropsWithChildren) {
       <Suspense>
         <SetReferral />
       </Suspense>
-      <ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
+      {/* TODO: replace with the element below when the light theme is ready */}
+      <ThemeProvider attribute='class' forcedTheme='dark' disableTransitionOnChange>
+        {/* <ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange> */}
         {/*<TxNotification />*/}
         <TonConnectUIProvider manifestUrl={manifestUrl}>
           <SetTonConnectSettings />

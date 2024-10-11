@@ -1,0 +1,16 @@
+.ton-connect-btn {
+  button {
+    border-radius: $border-sm-radius;
+
+    & > div {
+      color: black;
+      font-family: var(--font-sans);
+    }
+
+    svg {
+      display: none;
+    }
+
+    background-color: $secondary;
+  }
+}

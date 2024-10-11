@@ -1,8 +1,7 @@
 /* eslint-disable no-unused-vars */
 
 export enum Actions {
-  deposit = 'deposit',
-  withdraw = 'withdraw',
+  depositOrWithdraw = 'deposit_or_withdraw',
   faucet = 'faucet',
   claim = 'claim',
 }
@@ -12,4 +11,9 @@ export enum TransactionStatus {
   Success = 'success',
   Error = 'error',
   Hash = 'hash',
+}
+
+export enum Currency {
+  USD = 'USD',
+  Tokens = 'Tokens',
 }

@@ -17,7 +17,7 @@ export function FormCard({
   const { t } = useTranslation({ ns: 'form', lng });
 
   // TODO: use link in Deposit description, remove hardcoded link & style
-  const isDeposit = action === Actions.deposit;
+  const isDeposit = action === Actions.depositOrWithdraw;
 
   return (
     <GlassCard>
@@ -29,11 +29,8 @@ export function FormCard({
           ) : (
             <>
               {t(`${action}_description`)} <br />
-              <Link
-                href={`https://dedust.io/pools/${formattedLpAddress}`}
-                style={{ color: '#007bff', textDecoration: 'underline' }}
-              >
-                {t('get_lp_description')}
+              <Link href={`https://dedust.io/pools/${formattedLpAddress}`}>
+                <span className='custom-link'>{t('get_lp_description')}</span>
               </Link>
             </>
           )}

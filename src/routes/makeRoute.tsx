@@ -19,7 +19,7 @@ export interface RouteInfo<Params extends z.ZodSchema, Search extends z.ZodSchem
   description?: string;
 }
 
-type OptionalFields<T extends object, F extends keyof T> = Omit<T, F> & Partial<Pick<T, F>>;
+export type OptionalFields<T extends object, F extends keyof T> = Omit<T, F> & Partial<Pick<T, F>>;
 
 type Prettify<T> = {
   [K in keyof T]: T[K];

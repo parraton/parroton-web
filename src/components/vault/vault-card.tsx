@@ -1,27 +1,20 @@
 'use client';
 
 import { cn, formatCurrency, formatNumber, formatPercentage } from '@lib/utils';
-import { Card, CardContent, CardTitle } from '@UI/card';
+import { Card, CardContent } from '@UI/card';
 import { Language } from '@i18n/settings';
-import { Maybe } from '@types';
-import { useTranslation } from '@i18n/client';
+import { Currency, Maybe } from '@types';
 import Link from 'next/link';
-import { ReactNode } from 'react';
 import { OrLoader } from '@components/loader/loader';
 import { GlassCard } from '@components/glass-card';
+import { ChevronRightIcon } from 'lucide-react';
+import { DedustIcon } from '@components/icons/dedust';
 
 export type VaultCardProps = {
   title: Maybe<string>;
-  balance: Maybe<string>;
-  currency: Maybe<string>;
-  deposited: Maybe<string>;
-  apy: Maybe<string>;
-  daily: Maybe<string>;
-  extraApr: Maybe<string>;
-  tvl: Maybe<string>;
+  earnValue: Maybe<{ amount: string; currency: Currency }>;
+  totalYield: Maybe<number>;
   address: string;
-  isLpError: boolean;
-  isSharesError: boolean;
 };
 
 type CardProps = React.ComponentProps<typeof Card> & {
@@ -29,129 +22,58 @@ type CardProps = React.ComponentProps<typeof Card> & {
   locale: Language;
 };
 
-function NanoInfo({ title, value }: { title: string; value: ReactNode }) {
+function NanoInfo({ value }: { value: React.ReactNode }) {
   return (
-    <div className='custom-card-info'>
-      <span className='custom-card-title'>{title}</span>
+    <div className='flex items-center gap-1'>
       <span className='custom-card-value'>{value}</span>
     </div>
   );
 }
 
-function LinkedInfo({
-  title,
-  value,
-  tooltip,
-  tooltipTitle,
-}: {
-  title: ReactNode;
-  value: ReactNode;
-  tooltip?: ReactNode;
-  tooltipTitle?: string;
-}) {
+function LinkedInfo({ value }: { value: React.ReactNode }) {
   return (
-    <div className='custom-list-el custom-card-info'>
-      <div className={`custom-card-title `}>
-        <div className={tooltip ? 'custom-list-header' : undefined}>
-          {title}
-          {tooltip && (
-            <span className='custom-tooltip custom-tooltip-xs'>
-              {tooltipTitle} {tooltip}
-            </span>
-          )}
-        </div>
-      </div>
-      <div className={`custom-card-link custom-card-value`}>{value}</div>
+    <div className='flex items-center justify-end gap-1'>
+      <span className='custom-card-value text-custom-button'>{value}</span>
+      <ChevronRightIcon size={16} className='text-[#8b9dad]' />
     </div>
   );
 }
 
 export function VaultCard({ data, locale, className, ...props }: CardProps) {
-  const { t } = useTranslation({
-    ns: 'vault-card',
-  });
-
-  const totalRewardPercent =
-    data.apy != null && data.extraApr != null
-      ? Number(data.apy) + Number(data.extraApr)
-      : undefined;
-
-  const tooltipApy = `${t('apy')}: `;
-  const tooltipExtraApr = `${t('extraApr')}: `;
+  const { totalYield, earnValue, address, title } = data;
 
   return (
-    <Link href={data.address} className='custom-wrapper'>
+    <Link href={address} className='custom-wrapper'>
       <GlassCard className={cn(className)} {...props}>
-        <CardContent className='custom-card-content'>
-          <CardTitle className='custom-card-header'>
-            {data.title?.replace('Parraton: ', '')}
-          </CardTitle>
+        <CardContent className='custom-card-content text-sm font-semibold'>
+          <div className='flex items-center gap-2'>
+            {title?.includes('DeDust') ? (
+              <DedustIcon className='size-4' />
+            ) : (
+              <div className='size-4' />
+            )}
+            {title?.replace(/(Parraton: |DeDust Pool: )/, '')}
+          </div>
           <NanoInfo
-            title={t('balance')}
             value={
               <OrLoader
-                animation={data.balance !== null && !data.isLpError}
-                value={data.balance}
-                modifier={(x) => formatNumber(x, locale)}
-              />
-            }
-          />
-          <NanoInfo
-            title={t('deposited')}
-            value={
-              <OrLoader
-                animation={data.deposited !== null && !data.isSharesError}
-                value={data.deposited}
-                modifier={(x) => formatNumber(x, locale)}
+                animation={false}
+                value={earnValue}
+                modifier={({ amount, currency }) =>
+                  currency === Currency.USD
+                    ? formatCurrency(amount, locale)
+                    : `${formatNumber(amount, locale, false)} TON`
+                }
               />
             }
           />
           <LinkedInfo
-            title={t('apy')}
             value={
               <OrLoader
-                animation
-                value={totalRewardPercent}
+                animation={false}
+                value={totalYield}
                 modifier={(x) => formatPercentage(x, locale)}
               />
-            }
-            tooltip={
-              totalRewardPercent ? (
-                <div>
-                  <div>
-                    {tooltipApy}
-                    <OrLoader
-                      animation
-                      value={data.apy}
-                      modifier={(x) => formatPercentage(x, locale)}
-                    />
-                  </div>
-                  <div>
-                    {tooltipExtraApr}
-                    <OrLoader
-                      animation
-                      value={data.extraApr}
-                      modifier={(x) => formatPercentage(x, locale)}
-                    />
-                  </div>
-                </div>
-              ) : undefined
-            }
-          />
-          <NanoInfo
-            title={t('daily')}
-            value={
-              <OrLoader
-                animation
-                value={data.daily}
-                modifier={(x) => formatPercentage(x, locale)}
-              />
-            }
-          />
-          <NanoInfo
-            title={t('tvl')}
-            value={
-              <OrLoader animation value={data.tvl} modifier={(x) => formatCurrency(x, locale)} />
             }
           />
         </CardContent>

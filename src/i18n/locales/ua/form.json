@@ -1,9 +1,18 @@
 {
   "deposit_title": "Вкласти",
   "deposit_description": "Вкладіть свої токени ліквідності DeDust та автоматизуйте реінвестування нагород.",
+  "get_lp_short_description": "Отримати LP",
   "get_lp_description": "Недостатньо LP? Інвестуйте в DeDust пул",
   "withdraw_title": "Вивести",
   "withdraw_description": "Обміняйте свою долю у волті назад у токени ліквідності DeDust",
+  "preview_deposit": "Попередній перегляд вкладу",
+  "preview_withdraw": "Попередній перегляд виведення",
+  "confirm_deposit": "Підтвердити вклад",
+  "confirm_withdraw": "Підтвердити виведення",
+  "connect_wallet_to_deposit": "Підключіть гаманець, щоб вкласти",
+  "connect_wallet_to_withdraw": "Підключіть гаманець, щоб вивести",
+  "your_balance": "Ваш баланс",
+  "some_token_exchange_rate": "Обмінний курс {{token}}",
   "faucet_title": "Кран",
   "faucet_description": "Отримайте безкоштовні токени для тестування платформи",
   "claim_title": "Бонуси",
@@ -11,10 +20,10 @@
   "validation": {
     "required": "Це поле обов'язкове",
     "invalid_format": "Невірний формат",
-    "min_deposit": "Мінімальний депозит {{minDeposit}}",
-    "max_deposit": "Максимальний депозит {{maxDeposit}}",
-    "min_withdraw": "Неможливо вивести {{minWithdraw}} або менше",
-    "max_withdraw": "Неможливо вивести більше ніж {{maxWithdraw}}"
+    "min_deposit": "Неможливо внести нульову суму",
+    "max_deposit": "Максимальний депозит {{maxAmount}}",
+    "min_withdraw": "Неможливо вивести нульову суму",
+    "max_withdraw": "Неможливо вивести більше ніж {{maxAmount}}"
   },
   "claim": {
     "balance": "Доступні нагороди",
@@ -28,5 +37,14 @@
   },
   "lp_output": "Кількість LP, яку ви отримаєте",
   "plp_output": "Кількість PLP, яку ви отримаєте",
-  "max_label": "Макс."
+  "max_label": "Макс.",
+  "back": "Назад",
+  "stats": "Статистика",
+  "deposit_header_in_usd": "Заробляйте до <1>{{amount}}</1>\nу <2>{{symbol}}</2> щорічно",
+  "deposit_header_in_asset": "Заробляйте до <1>{{amount}}</1>\n{{symbol}} щорічно",
+  "you_deposit": "Ви вкладаєте",
+  "you_withdraw": "Ви виводите",
+  "you_get": "Ви отримуєте",
+  "deposit_or_withdraw_title": "Вкласти/Вивести",
+  "deposit_or_withdraw_description": "Вкладіть або виведіть свої LP, щоб керувати реінвестуванням нагород"
 }

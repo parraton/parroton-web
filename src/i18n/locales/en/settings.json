@@ -1,10 +1,15 @@
 {
-  "dialog_title": "Settings",
+  "settings_title": "Settings",
   "dialog_description": "Here you can manage the settings of the application",
   "dialog_close": "Close",
-  "mode_title": "Color mode",
+  "theme_title": "Theme",
   "language_title": "Language",
   "referral_title": "Reflink for web",
   "referral_mini_app": "Reflink to miniapp",
-  "copy_referral": "Copy"
+  "copy_referral": "Copy",
+  "links": "Links",
+  "website": "Website",
+  "telegram_mini_app": "Telegram miniapp",
+  "telegram_channel": "Telegram channel",
+  "docs": "Docs"
 }

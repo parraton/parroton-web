@@ -5,5 +5,9 @@
   "deposit": "Deposit",
   "withdraw": "Withdraw",
   "rewards": "Claim Rewards",
+  "apy": "APY",
+  "earn": "Earn",
+  "settings": "Settings",
+  "tokens": "Tokens",
   "get_data_error": "Failed to get data, please reload the page"
 }

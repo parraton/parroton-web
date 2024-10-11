@@ -1,31 +1,20 @@
 import { RouteInfoToLayout } from '@routes/makeRoute';
 import { Route } from './page.info';
 import { RouteHoc } from '@routes/hoc';
-import { cn } from '@lib/utils';
+import { VaultHeader } from '@components/vault-form/header';
+import { VaultStats } from '@components/vault-form/stats';
 import { Form } from '@components/vault-form/form';
-import { VaultInfo } from '@components/vault-form/vault.info';
-import { serverTranslation } from '@i18n';
-import type { Metadata } from 'next';
 
-export async function generateMetadata({
-  params,
-}: RouteInfoToLayout<typeof Route>): Promise<Metadata> {
-  const { t } = await serverTranslation(params.lng!, 'common');
+export { generateFallbackMetadata as generateMetadata } from '@routes/generate-fallback-metadata';
 
-  return {
-    title: t('app_title'),
-    description: t('app_description'),
-  };
-}
-
+// eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
 function VaultPage({ params }: RouteInfoToLayout<typeof Route>) {
   return (
-    <div className={'flex flex-col gap-8'}>
-      <VaultInfo />
-      <div className={cn('custom-form')}>
-        <Form lng={params.lng!} vaultAddress={params.vault} />
-      </div>
-    </div>
+    <>
+      <VaultHeader lng={params.lng!} vaultAddress={params.vault} />
+      <Form lng={params.lng!} vaultAddress={params.vault} />
+      <VaultStats lng={params.lng!} vaultAddress={params.vault} />
+    </>
   );
 }
 
