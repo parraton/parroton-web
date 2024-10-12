@@ -33,7 +33,8 @@ interface QuestsItemProps {
 }
 
 export const QuestItem = ({ quest }: QuestsItemProps) => {
-  const { id, iconSrc, title, rewardsDescription, actionButton, isSectionName } = quest;
+  const { iconSrc, title, rewardsDescription, actionIcon, onClick, onDoubleClick, isSectionName } =
+    quest;
 
   return (
     <>
@@ -44,7 +45,12 @@ export const QuestItem = ({ quest }: QuestsItemProps) => {
           <div className='flex-1 border-t bg-gray-400' />
         </div>
       )}
-      <div className='flex w-full items-center justify-between gap-2' key={id}>
+      <button
+        type='button'
+        className='flex w-full items-center justify-between gap-2'
+        onClick={onClick}
+        onDoubleClick={onDoubleClick}
+      >
         <div className='flex items-center gap-2'>
           {iconSrc ? (
             <Image className='size-11' src={iconSrc} alt='' />
@@ -53,15 +59,15 @@ export const QuestItem = ({ quest }: QuestsItemProps) => {
               <StarIcon className='size-7 fill-current text-white' />
             </div>
           )}
-          <div>
+          <div className='text-left'>
             <p className={cn(isSectionName ? 'text-base' : 'text-xs', 'font-semibold')}>{title}</p>
             {rewardsDescription && (
               <p className='text-xs font-semibold text-custom-link'>{rewardsDescription}</p>
             )}
           </div>
         </div>
-        {actionButton}
-      </div>
+        {actionIcon}
+      </button>
     </>
   );
 };

@@ -1,6 +1,18 @@
 $header-height: 80px;
 $bottom-buttons-height: 4.75rem;
 $center-menu-buttons-threshold: 1075px;
+$mobile-main-view-height: calc(100vh - $header-height - $bottom-buttons-height);
+$desktop-main-view-height: calc(100vh - $header-height);
+
+.confetti-container {
+  position: fixed;
+  top: $header-height;
+  height: $mobile-main-view-height;
+
+  @media (min-width: 768px) {
+    height: $desktop-main-view-height;
+  }
+}
 
 .custom-main-container {
   display: flex;
@@ -13,13 +25,13 @@ $center-menu-buttons-threshold: 1075px;
   position: relative;
   max-width: 100vw;
   overflow: hidden;
-  min-height: calc(100vh - $header-height - $bottom-buttons-height);
+  min-height: $mobile-main-view-height;
   @include themify($themes) {
     background-color: themed("back");
   }
 
   @media (min-width: 768px) {
-    min-height: calc(100vh - $header-height);
+    min-height: $desktop-main-view-height;
     margin: $header-height auto 0;
   }
 }

@@ -2,19 +2,19 @@ import React, { useCallback, useMemo, useRef, useState } from 'react';
 
 import AddPersonImgData from '../images/add-person.png';
 import RainbowImgData from '../images/rainbowswap.png';
+import NewRainbowImgData from '../images/new-rainbowswap.png';
 import TelegramImgData from '../images/telegram.png';
 import XComImgData from '../images/x-icon.png';
 import ChessioImgData from '../images/chessio.png';
 import { useTranslation } from '@i18n/client';
 import { StaticImageData } from 'next/image';
 import { useRouter } from 'next/navigation';
-import { ChevronRightIcon } from 'lucide-react';
+import { ChevronRightIcon, LoaderCircleIcon } from 'lucide-react';
 import { useInitData, useWebApp } from '@vkruglikov/react-telegram-web-app';
 import useSWR from 'swr';
 import BigNumber from 'bignumber.js';
 import { QuestsApi } from '@core/quests-api';
 import { useStorage } from './use-storage';
-import { ActionLink } from '@components/rewards/action-link';
 import { LEVELS_THRESHOLDS } from '@lib/constants';
 import { ActionButton } from '@components/rewards/action-button';
 import { CheckIcon } from '@components/icons/check-icon';
@@ -33,7 +33,9 @@ export interface QuestProps {
   iconSrc?: StaticImageData;
   title: string;
   rewardsDescription: string;
-  actionButton: React.ReactNode;
+  actionIcon: React.ReactNode;
+  onClick?: () => void;
+  onDoubleClick?: () => void;
   isSectionName?: boolean;
 }
 
@@ -47,7 +49,7 @@ const domainsLinksImgData: Record<string, StaticImageData | undefined> = {
 
 const sectionsImgData: Record<string, StaticImageData | undefined> = {
   chessio: ChessioImgData,
-  rainbowswap: RainbowImgData,
+  rainbowswap: NewRainbowImgData,
 };
 
 export const usePointsSources = () => {
@@ -232,7 +234,8 @@ export const usePointsSources = () => {
               ...basicProps,
               iconSrc: RainbowImgData,
               rewardsDescription: t('deposit_liquidity_rewards_description'),
-              actionButton: <ActionButton onClick={() => push('/')}>{t('deposit')}</ActionButton>,
+              actionIcon: <ActionButton>{t('deposit')}</ActionButton>,
+              onClick: () => push('/'),
             };
           }
           case 'invite-friends': {
@@ -240,11 +243,9 @@ export const usePointsSources = () => {
               ...basicProps,
               iconSrc: AddPersonImgData,
               rewardsDescription: t('invite_friends_rewards_description'),
-              actionButton: (
-                <ActionButton onClick={copyRefLink} onDoubleClick={shareLink}>
-                  {t('invite')}
-                </ActionButton>
-              ),
+              actionIcon: <ActionButton>{t('invite')}</ActionButton>,
+              onClick: copyRefLink,
+              onDoubleClick: shareLink,
             };
           }
           case 'section-name': {
@@ -252,7 +253,7 @@ export const usePointsSources = () => {
               ...basicProps,
               iconSrc: sectionsImgData[quest.id],
               rewardsDescription: '',
-              actionButton: null,
+              actionIcon: null,
               isSectionName: true,
             };
           }
@@ -263,18 +264,14 @@ export const usePointsSources = () => {
               ...basicProps,
               iconSrc: domainsLinksImgData[linkDomain],
               rewardsDescription: t('one_time_rewards_description', { amount: quest.reward }),
-              actionButton: claimed ? (
+              actionIcon: claimed ? (
                 <CheckIcon className='h-5 w-auto fill-current text-green-500' />
+              ) : loadingQuestsIds.includes(id) ? (
+                <LoaderCircleIcon size={20} className='animate-spin text-custom-primary-text' />
               ) : (
-                <ActionLink
-                  link={quest.link}
-                  questId={id}
-                  loading={loadingQuestsIds.includes(id)}
-                  onClick={handleActionLinkClick}
-                >
-                  <ChevronRightIcon className='h-5 w-auto' />
-                </ActionLink>
+                <ChevronRightIcon className='h-5 w-auto text-custom-primary-text' />
               ),
+              onClick: () => handleActionLinkClick(quest.link, id),
             };
           }
           default: {
