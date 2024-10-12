@@ -50,7 +50,11 @@ export const RewardsBody = () => {
         />
         <TasksList quests={quests} loading={questsLoading} />
         <a className='hidden' ref={hiddenShareAnchorRef} href={hiddenAnchorHref} />
-        {shouldRunConfetti && <ReactConfetti recycle={false} onConfettiComplete={stopConfetti} />}
+        {shouldRunConfetti && (
+          <div className='confetti-container'>
+            <ReactConfetti recycle={false} onConfettiComplete={stopConfetti} />
+          </div>
+        )}
       </>
     );
   }
