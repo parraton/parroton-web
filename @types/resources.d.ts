@@ -62,6 +62,7 @@ interface Resources {
     "you_deposit": "You deposit",
     "you_withdraw": "You withdraw",
     "you_get": "You get",
+    "farm_open_league_airdrop": "Farm The Open League Airdrop",
   },
   "kpi": {
     "our_goals": "Our goals",
