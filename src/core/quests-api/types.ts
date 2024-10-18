@@ -31,6 +31,7 @@ interface FollowLinkQuest extends QuestBase {
   link: string;
   isTelegramLink: boolean;
   reward: number;
+  pointsMultiplier?: number;
 }
 
 export type Quest = EternalQuest | FollowLinkQuest;

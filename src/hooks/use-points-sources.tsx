@@ -42,8 +42,6 @@ export interface QuestProps {
 
 const REFERRAL_REWARD_PERCENTAGE = 5;
 const FOLLOWED_LINKS_STORAGE_KEY = 'followed-links';
-// TODO: fetch from backend
-const POINTS_MULTIPLIER: number = 2;
 
 const domainsLinksImgData: Record<string, StaticImageData | undefined> = {
   't.me': TelegramImgData,
@@ -262,17 +260,18 @@ export const usePointsSources = () => {
           }
           case 'follow-link': {
             const linkDomain = new URL(quest.link).hostname;
+            const pointsMultiplier = quest.pointsMultiplier ?? 1;
 
             return {
               ...basicProps,
               iconSrc: domainsLinksImgData[linkDomain],
               rewardsDescription:
-                POINTS_MULTIPLIER === 1 ? (
+                pointsMultiplier === 1 ? (
                   t('one_time_rewards_description', { amount: quest.reward })
                 ) : (
                   <Trans
                     i18nKey='rewards:one_time_with_multiplier_rewards_description'
-                    values={{ amount: quest.reward / POINTS_MULTIPLIER, newAmount: quest.reward }}
+                    values={{ amount: quest.reward / pointsMultiplier, newAmount: quest.reward }}
                     components={{
                       1: <span className='line-through' />,
                       2: <span className='rounded-sm bg-custom-button px-1 text-black' />,
