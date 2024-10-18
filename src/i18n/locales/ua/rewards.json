@@ -18,6 +18,7 @@
   "no_friends_invited": "Ніхто ще не був запрошений",
   "telegram_apps_center": "Центр застосунків Telegram",
   "one_time_rewards_description": "+{{amount}} балів",
+  "one_time_with_multiplier_rewards_description": "<1>+{{amount}}</1> <2>+{{newAmount}}</2> points",
   "level_number": "Рівень {{level}}",
   "link_copied": "Скопійовано"
 }

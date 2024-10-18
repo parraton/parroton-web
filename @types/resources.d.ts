@@ -156,6 +156,7 @@ interface Resources {
     "no_friends_invited": "No friends have been invited yet",
     "telegram_apps_center": "Telegram Apps Center",
     "one_time_rewards_description": "+{{amount}} points",
+    "one_time_with_multiplier_rewards_description": "<1>+{{amount}}</1> <2>+{{newAmount}}</2> points",
     "level_number": "Level {{level}}",
     "link_copied": "Copied"
   }

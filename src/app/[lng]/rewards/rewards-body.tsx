@@ -26,7 +26,6 @@ export const RewardsBody = () => {
     hiddenAnchorHref,
     shouldRunConfetti,
     stopConfetti,
-    pointsMultiplier,
   } = usePointsSources();
 
   const isFirstRender = useIsFirstRender();
@@ -49,7 +48,7 @@ export const RewardsBody = () => {
           loading={invitedFriendsLoading}
           claimRewards={claimFriendRewards}
         />
-        <TasksList quests={quests} loading={questsLoading} pointsMultiplier={pointsMultiplier} />
+        <TasksList quests={quests} loading={questsLoading} />
         <a className='hidden' ref={hiddenShareAnchorRef} href={hiddenAnchorHref} />
         {shouldRunConfetti && (
           <div className='confetti-container'>

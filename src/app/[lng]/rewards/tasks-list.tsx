@@ -9,18 +9,15 @@ import { cn } from '@lib/utils';
 interface TasksListProps {
   quests: QuestProps[] | undefined;
   loading: boolean;
-  pointsMultiplier: number;
 }
 
-export const TasksList = ({ quests, loading, pointsMultiplier }: TasksListProps) => {
+export const TasksList = ({ quests, loading }: TasksListProps) => {
   const { t } = useTranslation({ ns: 'rewards' });
 
   const renderQuests = useCallback(
     (questsList: QuestProps[]) =>
-      questsList.map((quest) => (
-        <QuestItem key={quest.id} pointsMultiplier={pointsMultiplier} quest={quest} />
-      )),
-    [pointsMultiplier],
+      questsList.map((quest) => <QuestItem key={quest.id} quest={quest} />),
+    [],
   );
 
   return (
@@ -33,10 +30,9 @@ export const TasksList = ({ quests, loading, pointsMultiplier }: TasksListProps)
 
 interface QuestsItemProps {
   quest: QuestProps;
-  pointsMultiplier: number;
 }
 
-export const QuestItem = ({ quest, pointsMultiplier }: QuestsItemProps) => {
+export const QuestItem = ({ quest }: QuestsItemProps) => {
   const { iconSrc, title, rewardsDescription, actionIcon, onClick, onDoubleClick, isSectionName } =
     quest;
 
@@ -66,20 +62,7 @@ export const QuestItem = ({ quest, pointsMultiplier }: QuestsItemProps) => {
           <div className='text-left'>
             <p className={cn(isSectionName ? 'text-base' : 'text-xs', 'font-semibold')}>{title}</p>
             {rewardsDescription && (
-              <p className='text-xs font-semibold text-custom-link'>
-                {pointsMultiplier === 1 ? (
-                  rewardsDescription
-                ) : (
-                  <>
-                    <span className='line-through'>{rewardsDescription}</span>{' '}
-                    <span className='rounded-sm bg-custom-content px-1'>
-                      {/* eslint-disable-next-line react/jsx-no-literals */}
-                      {'x'}
-                      {pointsMultiplier}
-                    </span>
-                  </>
-                )}
-              </p>
+              <p className='text-xs font-semibold text-custom-link'>{rewardsDescription}</p>
             )}
           </div>
         </div>

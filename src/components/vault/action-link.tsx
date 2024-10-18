@@ -7,7 +7,7 @@ interface ActionLinkProps {
   children: React.ReactNode;
 }
 
-const className = 'rounded-full bg-custom-link p-2 text-xs text-white';
+const className = 'rounded-full bg-custom-link p-2 text-xs text-custom-content';
 
 export const ActionLink = ({ href, children }: ActionLinkProps) => {
   const webApp = useWebApp();
