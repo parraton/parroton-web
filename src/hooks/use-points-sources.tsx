@@ -353,5 +353,7 @@ export const usePointsSources = () => {
     hiddenAnchorHref,
     shouldRunConfetti,
     stopConfetti,
+    // TODO: fetch from backend
+    pointsMultiplier: 2,
   };
 };
