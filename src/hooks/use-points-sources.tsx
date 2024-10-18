@@ -20,6 +20,7 @@ import { ActionButton } from '@components/rewards/action-button';
 import { CheckIcon } from '@components/icons/check-icon';
 import { useCopyReferralLink } from './use-copy-referral-link';
 import { toast } from 'sonner';
+import { Trans } from 'react-i18next';
 
 export interface InvitedFriendProps {
   id: string;
@@ -32,7 +33,7 @@ export interface QuestProps {
   id: string;
   iconSrc?: StaticImageData;
   title: string;
-  rewardsDescription: string;
+  rewardsDescription: React.ReactNode | React.ReactNode[];
   actionIcon: React.ReactNode;
   onClick?: () => void;
   onDoubleClick?: () => void;
@@ -259,11 +260,24 @@ export const usePointsSources = () => {
           }
           case 'follow-link': {
             const linkDomain = new URL(quest.link).hostname;
+            const pointsMultiplier = quest.pointsMultiplier ?? 1;
 
             return {
               ...basicProps,
               iconSrc: domainsLinksImgData[linkDomain],
-              rewardsDescription: t('one_time_rewards_description', { amount: quest.reward }),
+              rewardsDescription:
+                pointsMultiplier === 1 ? (
+                  t('one_time_rewards_description', { amount: quest.reward })
+                ) : (
+                  <Trans
+                    i18nKey='rewards:one_time_with_multiplier_rewards_description'
+                    values={{ amount: quest.reward / pointsMultiplier, newAmount: quest.reward }}
+                    components={{
+                      1: <span className='line-through' />,
+                      2: <span className='rounded-sm bg-custom-button px-1 text-black' />,
+                    }}
+                  />
+                ),
               actionIcon: claimed ? (
                 <CheckIcon className='h-5 w-auto fill-current text-green-500' />
               ) : loadingQuestsIds.includes(id) ? (

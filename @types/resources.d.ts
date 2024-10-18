@@ -124,6 +124,11 @@ interface Resources {
     "use_max": "Use Max",
     "put_your_liquidity_at_work": "Put your <1>liquidity</1> at work",
     "actual_asset_postfix": " in {{tokenSymbol}}",
+    "farm_open_league_airdrop": "Farm The Open League Airdrop\ntill November 6th",
+    "get_degen_badge": "Get Degen badge",
+    "swap_any_tokens": "Swap any tokens",
+    "earn_more_points": "Earn more points",
+    "earn_more_points_in_telegram": "More points in Telegram",
   },
   "welcome": {
     "main": "We are on Testnet!",
@@ -151,6 +156,7 @@ interface Resources {
     "no_friends_invited": "No friends have been invited yet",
     "telegram_apps_center": "Telegram Apps Center",
     "one_time_rewards_description": "+{{amount}} points",
+    "one_time_with_multiplier_rewards_description": "<1>+{{amount}}</1> <2>+{{newAmount}}</2> points",
     "level_number": "Level {{level}}",
     "link_copied": "Copied"
   }
