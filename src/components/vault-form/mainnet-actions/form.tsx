@@ -5,7 +5,6 @@ import { AssetAmountInputV2 } from '@UI/asset-amount-input-v2';
 import { Form, FormikProvider, useFormik } from 'formik';
 import { useCallback, useState } from 'react';
 import { Trans } from 'react-i18next';
-import Lottie from 'react-lottie';
 import { toast } from 'sonner';
 import { MainnetAction, MainnetActionsFormValues } from './types';
 import { useFormData } from './use-form-data';
@@ -16,18 +15,12 @@ import { ConfirmActionDialog } from './confirm-action-dialog';
 import { FALLBACK_MAX_ASSET_VALUE } from '@lib/constants';
 import { Currency } from '@types';
 
-import animationData from './duck-animation.json';
-import { ActionLink } from '../action-link';
-import { useInitData } from '@vkruglikov/react-telegram-web-app';
-import { miniAppLink } from '@config/links';
-
 interface MainnetActionsFormProps {
   vaultAddress: string;
 }
 
 export function MainnetActionsForm({ vaultAddress }: MainnetActionsFormProps) {
-  const { t, lng } = useTranslation({ ns: 'form' });
-  const [, initData] = useInitData();
+  const { t } = useTranslation({ ns: 'form' });
   const isFirstRender = useIsFirstRender();
 
   const tonConnectModal = useTonConnectModal();
@@ -217,41 +210,6 @@ export function MainnetActionsForm({ vaultAddress }: MainnetActionsFormProps) {
           />
         )}
       </Form>
-      <div className='glass-card flex w-full flex-col gap-4 p-4'>
-        <h1 className='text-center text-lg font-semibold'>{t('farm_open_league_airdrop')}</h1>
-
-        <div className='flex w-full items-center justify-evenly gap-2'>
-          <div className='h-auto w-[100px]'>
-            <Lottie
-              options={{
-                loop: true,
-                autoplay: true,
-                animationData,
-              }}
-              height={100}
-              width={100}
-              isClickToPauseDisabled
-            />
-          </div>
-          <ol className='list-decimal font-medium leading-10'>
-            {/* eslint-disable react/jsx-no-literals */}
-            <li>
-              <ActionLink href='https://society.ton.org/degen-airdrop'>Get Degen badge</ActionLink>
-            </li>
-            <li>
-              <ActionLink href='https://rainbow.ag/TON/USDT'>Swap any tokens</ActionLink>
-            </li>
-            <li>
-              {initData ? (
-                <ActionLink href={`/${lng}/rewards`}>Earn more points</ActionLink>
-              ) : (
-                <ActionLink href={miniAppLink}>More points in Telegram</ActionLink>
-              )}
-            </li>
-            {/* eslint-enable react/jsx-no-literals */}
-          </ol>
-        </div>
-      </div>
     </FormikProvider>
   );
 }

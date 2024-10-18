@@ -62,7 +62,6 @@ interface Resources {
     "you_deposit": "You deposit",
     "you_withdraw": "You withdraw",
     "you_get": "You get",
-    "farm_open_league_airdrop": "Farm The Open League Airdrop",
   },
   "kpi": {
     "our_goals": "Our goals",
@@ -125,6 +124,11 @@ interface Resources {
     "use_max": "Use Max",
     "put_your_liquidity_at_work": "Put your <1>liquidity</1> at work",
     "actual_asset_postfix": " in {{tokenSymbol}}",
+    "farm_open_league_airdrop": "Farm The Open League Airdrop\ntill November 6th",
+    "get_degen_badge": "Get Degen badge",
+    "swap_any_tokens": "Swap any tokens",
+    "earn_more_points": "Earn more points",
+    "earn_more_points_in_telegram": "More points in Telegram",
   },
   "welcome": {
     "main": "We are on Testnet!",

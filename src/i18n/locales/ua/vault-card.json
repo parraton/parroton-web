@@ -14,5 +14,10 @@
   "you_deposit": "Ви вкладаєте",
   "use_max": "Максимум",
   "put_your_liquidity_at_work": "Нехай ваша <1>ліквідність</1> працює",
-  "actual_asset_postfix": " в {{tokenSymbol}}"
+  "actual_asset_postfix": " в {{tokenSymbol}}",
+  "farm_open_league_airdrop": "Farm The Open League Airdrop\ntill November 6th",
+  "get_degen_badge": "Отримайте бейдж Дегена",
+  "swap_any_tokens": "Обміняйте будь-які токени",
+  "earn_more_points": "Заробіть більше балів",
+  "earn_more_points_in_telegram": "Більше балів в Telegram"
 }

@@ -28,7 +28,7 @@ export const ActionLink = ({ href, children }: ActionLinkProps) => {
     }
   }, [href, parsedUrl, push, webApp]);
 
-  if (parsedUrl?.hostname !== 't.me') {
+  if (parsedUrl && parsedUrl.hostname !== 't.me') {
     return (
       <a href={href} target='_blank' className={className}>
         {children}
