@@ -15,12 +15,8 @@ import { usePreferredCurrency } from '@hooks/use-preferred-currency';
 import { Currency } from '@types';
 import { useRouter } from 'next/navigation';
 import { cn } from '@lib/utils';
-import Lottie from 'react-lottie';
-import { ActionLink } from './action-link';
-import { miniAppLink } from '@config/links';
-import { useInitData } from '@vkruglikov/react-telegram-web-app';
 
-import animationData from './duck-animation.json';
+import { LeagueAirdropCard } from './league-airdrop-card';
 
 export const VaultsList = ({ lng }: { lng: Language }) => {
   const { replace } = useRouter();
@@ -30,7 +26,6 @@ export const VaultsList = ({ lng }: { lng: Language }) => {
   const { balance: tonBalance } = useTonBalance();
   const { preferredCurrency } = usePreferredCurrency();
   const { tonPrice = FALLBACK_TON_PRICE } = useTonPrice();
-  const [, initData] = useInitData();
   const [depositValue, setDepositValue] = useState(() =>
     new BigNumber(tonBalance ?? FALLBACK_MAX_ASSET_VALUE)
       .times(preferredCurrency === Currency.USD ? tonPrice : 1)
@@ -92,51 +87,7 @@ export const VaultsList = ({ lng }: { lng: Language }) => {
     <>
       {renderVaults(vaults)}
 
-      <div className='glass-card flex w-full flex-col gap-4 p-4'>
-        <h1 className='whitespace-pre-line text-center text-lg font-semibold'>
-          {t('farm_open_league_airdrop')}
-        </h1>
-
-        <div className='flex w-full items-center justify-evenly gap-2'>
-          <div className='h-auto w-[100px]'>
-            <Lottie
-              options={{
-                loop: true,
-                autoplay: true,
-                animationData,
-              }}
-              height={100}
-              width={100}
-              isClickToPauseDisabled
-            />
-          </div>
-          <ol className='list-decimal font-medium leading-10'>
-            <li>
-              <ActionLink href='https://society.ton.org/degen-airdrop'>
-                {t('get_degen_badge')}
-              </ActionLink>
-            </li>
-            <li>
-              <ActionLink
-                href={
-                  initData
-                    ? 'https://t.me/rainbow_swap_bot/app?startapp=bot'
-                    : 'https://rainbow.ag/TON/USDT'
-                }
-              >
-                {t('swap_any_tokens')}
-              </ActionLink>
-            </li>
-            <li>
-              {initData ? (
-                <ActionLink href={`/${lng}/rewards`}>{t('earn_more_points')}</ActionLink>
-              ) : (
-                <ActionLink href={miniAppLink}>{t('earn_more_points_in_telegram')}</ActionLink>
-              )}
-            </li>
-          </ol>
-        </div>
-      </div>
+      <LeagueAirdropCard lng={lng} vaults={vaults} />
     </>
   ) : (
     <div className='flex w-full justify-center'>
