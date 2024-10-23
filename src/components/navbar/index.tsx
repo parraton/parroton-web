@@ -33,7 +33,6 @@ export function Navbar({ lng }: { lng: Language }) {
 
   useEffect(() => {
     if (reportedAddresses && !reportedAddresses.includes(tonAddress) && tonAddress) {
-      console.log('oy vey 1', tonAddress);
       dummyQuestsApi
         .reportWalletConnected(tonAddress)
         .then(() => setReportedAddresses([...reportedAddresses, tonAddress]))
