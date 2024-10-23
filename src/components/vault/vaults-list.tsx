@@ -2,7 +2,7 @@
 
 import { Vault as BackendVault, useVaults } from '@hooks/use-vaults';
 import { Language } from '@i18n/settings';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Vault } from './vault';
 import { useTranslation } from '@i18n/client';
 import { AssetAmountInputV2 } from '../ui/asset-amount-input-v2';
@@ -24,13 +24,24 @@ export const VaultsList = ({ lng }: { lng: Language }) => {
   const { t } = useTranslation({ ns: 'vault-card' });
   const { t: commonT } = useTranslation({ ns: 'common' });
   const { balance: tonBalance } = useTonBalance();
+  const prevTonBalanceRef = useRef(tonBalance);
   const { preferredCurrency } = usePreferredCurrency();
   const { tonPrice = FALLBACK_TON_PRICE } = useTonPrice();
-  const [depositValue, setDepositValue] = useState(() =>
-    new BigNumber(tonBalance ?? FALLBACK_MAX_ASSET_VALUE)
-      .times(preferredCurrency === Currency.USD ? tonPrice : 1)
-      .toString(),
+  const maxDepositValue = useMemo(
+    () =>
+      new BigNumber(tonBalance ?? FALLBACK_MAX_ASSET_VALUE)
+        .times(preferredCurrency === Currency.USD ? tonPrice : 1)
+        .toString(),
+    [preferredCurrency, tonBalance, tonPrice],
   );
+  const [depositValue, setDepositValue] = useState(maxDepositValue);
+
+  useEffect(() => {
+    if (!prevTonBalanceRef.current && tonBalance) {
+      setDepositValue(maxDepositValue);
+    }
+    prevTonBalanceRef.current = tonBalance;
+  }, [maxDepositValue, preferredCurrency, tonBalance, tonPrice]);
 
   const renderVaults = useCallback(
     (vaults: BackendVault[]) => (

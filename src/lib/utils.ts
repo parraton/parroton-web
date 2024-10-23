@@ -71,7 +71,7 @@ export const formatCurrency = (
   locale: Language = 'en',
   currency: string = 'USD',
 ) => {
-  const argument = Number.parseFloat(num as string);
+  const argument = typeof num === 'number' ? num : Number.parseFloat(num.replace(',', '.'));
 
   return new Intl.NumberFormat(languageToIntlLocaleMap[locale], {
     style: 'currency',
@@ -148,3 +148,6 @@ export const getValidateAmountAsStringFn = (
     }
   };
 };
+
+export const isStringArray = (value: unknown): value is string[] =>
+  Array.isArray(value) && value.every((item) => typeof item === 'string');

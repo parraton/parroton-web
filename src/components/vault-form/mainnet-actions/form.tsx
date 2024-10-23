@@ -83,7 +83,7 @@ export function MainnetActionsForm({ vaultAddress }: MainnetActionsFormProps) {
   const handleConfirmActionClick = useCallback(async () => {
     try {
       handleConfirmOpenChange(false);
-      await doAction(inputAmountInTokens);
+      await doAction(inputAmountInTokens.replace(',', '.'));
       // TODO: implement status tracking
     } catch (error) {
       console.error(error);
