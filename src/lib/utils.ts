@@ -71,7 +71,7 @@ export const formatCurrency = (
   locale: Language = 'en',
   currency: string = 'USD',
 ) => {
-  const argument = Number.parseFloat(num as string);
+  const argument = typeof num === 'number' ? num : Number.parseFloat(num.replace(',', '.'));
 
   return new Intl.NumberFormat(languageToIntlLocaleMap[locale], {
     style: 'currency',

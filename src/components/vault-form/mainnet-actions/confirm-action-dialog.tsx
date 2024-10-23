@@ -139,7 +139,7 @@ const NanoInfoPlate = <T extends BigNumber.Value>({
     <span className='font-semibold'>{name}</span>
     <OrLoader
       animation={loading}
-      value={value}
+      value={(typeof value === 'string' ? value.replace(',', '.') : value) as Maybe<T>}
       modifier={(x) => (
         <div className='text-right font-medium'>
           <p className='text-custom-link'>{modifier(x)}</p>
