@@ -124,7 +124,7 @@ interface Resources {
     "use_max": "Use Max",
     "put_your_liquidity_at_work": "Put your <1>liquidity</1> at work",
     "actual_asset_postfix": " in {{tokenSymbol}}",
-    "farm_open_league_airdrop": "Farm The Open League Airdrop\ntill November 6th",
+    "farm_open_league_airdrop": "Farm The Open League Airdrop\ntill October 30th",
     "get_degen_badge": "Get Degen badge",
     "deposit_liquidity_task_description": "Deposit at least $200",
     "earn_more_points": "Earn more points",
