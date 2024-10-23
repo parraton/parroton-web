@@ -14,13 +14,14 @@ import { useInitData, useWebApp } from '@vkruglikov/react-telegram-web-app';
 import useSWR from 'swr';
 import BigNumber from 'bignumber.js';
 import { QuestsApi } from '@core/quests-api';
-import { useStorage } from './use-storage';
 import { LEVELS_THRESHOLDS } from '@lib/constants';
 import { ActionButton } from '@components/rewards/action-button';
 import { CheckIcon } from '@components/icons/check-icon';
 import { useCopyReferralLink } from './use-copy-referral-link';
 import { toast } from 'sonner';
 import { Trans } from 'react-i18next';
+import { useTypedStorageItem } from './use-typed-storage-item';
+import { isStringArray } from '@lib/utils';
 
 export interface InvitedFriendProps {
   id: string;
@@ -42,6 +43,7 @@ export interface QuestProps {
 
 const REFERRAL_REWARD_PERCENTAGE = 5;
 const FOLLOWED_LINKS_STORAGE_KEY = 'followed-links';
+const FOLLOWED_LINKS_DEFAULT_VALUE: string[] = [];
 
 const domainsLinksImgData: Record<string, StaticImageData | undefined> = {
   't.me': TelegramImgData,
@@ -56,7 +58,6 @@ const sectionsImgData: Record<string, StaticImageData | undefined> = {
 export const usePointsSources = () => {
   const [loadingQuestsIds, setLoadingQuestsIds] = useState<string[]>([]);
   const [shouldRunConfetti, setShouldRunConfetti] = useState(false);
-  const { getItem, setItem } = useStorage();
   const webApp = useWebApp();
   const [, initData] = useInitData();
   const { t, lng } = useTranslation({ ns: 'rewards' });
@@ -90,28 +91,10 @@ export const usePointsSources = () => {
     }
   }, [initData, refLink]);
 
-  const getFollowedLinks = useCallback(async (): Promise<string[]> => {
-    try {
-      const maybeItems = JSON.parse((await getItem(FOLLOWED_LINKS_STORAGE_KEY)) || '[]');
-
-      if (Array.isArray(maybeItems) && maybeItems.every((item) => typeof item === 'string')) {
-        return maybeItems;
-      }
-
-      throw new Error('Invalid data');
-    } catch {
-      setItem(FOLLOWED_LINKS_STORAGE_KEY, '[]').catch(console.error);
-
-      return [];
-    }
-  }, [getItem, setItem]);
-  const { data: followedLinks, mutate: mutateFollowedLinks } = useSWR(
-    'followed-links',
-    getFollowedLinks,
-    {
-      suspense: false,
-      shouldRetryOnError: true,
-    },
+  const { value: followedLinks, setValue: setFollowedLinks } = useTypedStorageItem<string[]>(
+    FOLLOWED_LINKS_STORAGE_KEY,
+    FOLLOWED_LINKS_DEFAULT_VALUE,
+    isStringArray,
   );
 
   const api = useMemo(() => (initData ? new QuestsApi(initData) : null), [initData]);
@@ -207,15 +190,14 @@ export const usePointsSources = () => {
           }
 
           const newFollowedLinks = [...(followedLinks ?? []), link];
-          await setItem(FOLLOWED_LINKS_STORAGE_KEY, JSON.stringify(newFollowedLinks));
-          await mutateFollowedLinks(newFollowedLinks);
+          await setFollowedLinks(newFollowedLinks);
         } catch (error) {
           console.error(error);
         }
       }
       setLoadingQuestsIds((ids) => ids.filter((id) => id !== questId));
     },
-    [claimQuestReward, followedLinks, mutateFollowedLinks, setItem, webApp],
+    [claimQuestReward, followedLinks, setFollowedLinks, webApp],
   );
 
   // TODO: modify frontend and backend to remove hardcoding icons

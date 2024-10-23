@@ -81,6 +81,13 @@ export class QuestsApi {
     });
   }
 
+  async reportWalletConnected(walletAddress: string): Promise<void> {
+    await this.fetch('/wallet-connected', {
+      method: 'POST',
+      body: JSON.stringify({ walletAddress }),
+    });
+  }
+
   private async fetchJSON<T>(path: string, options: RequestInit = {}): Promise<T> {
     const response = await this.fetch(path, options);
 
