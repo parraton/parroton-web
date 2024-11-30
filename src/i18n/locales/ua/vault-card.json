@@ -15,8 +15,8 @@
   "use_max": "Максимум",
   "put_your_liquidity_at_work": "Нехай ваша <1>ліквідність</1> працює",
   "actual_asset_postfix": " в {{tokenSymbol}}",
-  "farm_open_league_airdrop": "Отримайте Open League Airdrop\nдо 30 жовтня",
-  "get_degen_badge": "Отримайте бейдж Дегена",
+  "farm_open_league_airdrop": "Отримайте Open League Airdrop\nдо {{date}}",
+  "get_defi_badge": "Отримайте бейдж DeFi",
   "deposit_liquidity_task_description": "Вкладіть принаймні $200",
   "earn_more_points": "Заробіть більше балів",
   "earn_more_points_in_telegram": "Більше балів в Telegram"
