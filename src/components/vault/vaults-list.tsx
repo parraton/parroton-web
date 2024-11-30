@@ -16,6 +16,8 @@ import { Currency } from '@types';
 import { useRouter } from 'next/navigation';
 import { cn } from '@lib/utils';
 
+import { LeagueAirdropCard } from './league-airdrop-card';
+
 export const VaultsList = ({ lng }: { lng: Language }) => {
   const { replace } = useRouter();
   const { vaults, error } = useVaults();
@@ -93,7 +95,11 @@ export const VaultsList = ({ lng }: { lng: Language }) => {
   }
 
   return vaults ? (
-    renderVaults(vaults)
+    <>
+      {renderVaults(vaults)}
+
+      <LeagueAirdropCard lng={lng} vaults={vaults} />
+    </>
   ) : (
     <div className='flex w-full justify-center'>
       <div className='logo-loader animate-pulse' />
